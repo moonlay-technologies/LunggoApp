@@ -54,7 +54,7 @@ export default class ExploreScreen extends React.Component {
   _handleResponse = (response) => {
     this.setState({ isLoading: false })
     if(response) {
-      //// change price format to Rp 1.000.000
+      //// navigate
       this.props.navigation.navigate(
         'SearchResults', { list: response}
       )

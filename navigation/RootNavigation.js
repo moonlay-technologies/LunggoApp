@@ -6,12 +6,14 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 import SearchResults from '../screens/SearchResults';
+import LoginScreen from '../screens/LoginScreen';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: MainTabNavigator,
+      screen: LoginScreen,
+      // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
     SearchResults: { screen: SearchResults },

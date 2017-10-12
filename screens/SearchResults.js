@@ -6,6 +6,10 @@ import {
   TouchableHighlight, FlatList,
 } from 'react-native';
 
+//// Format price to Rp1.000.000
+var priceFormatter = price => "Rp" +
+  price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
 class ListItem extends React.PureComponent {
   _onPress = () => {
     this.props.onPressItem(this.props.index);
@@ -22,7 +26,7 @@ class ListItem extends React.PureComponent {
           <View style={styles.rowContainer}>
             <Image style={styles.thumb} source={{ uri: item.src }} />
             <View style={styles.textContainer}>
-              <Text style={styles.price}>{item.price}</Text>
+              <Text style={styles.price}>{priceFormatter(item.price)}</Text>
               <Text style={styles.title}
                 numberOfLines={1}>{item.title}</Text>
             </View>
