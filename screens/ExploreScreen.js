@@ -10,6 +10,7 @@ import {
   View,
   Button, TextInput,
   ActivityIndicator,
+  TouchableNativeFeedback,
   StyleSheet
 } from 'react-native';
 import { WebBrowser } from 'expo';
@@ -78,26 +79,98 @@ export default class ExploreScreen extends React.Component {
     //   });
     return [
       {
-        "title" : "Grand Indonesia Mall",
-        "url" : "grand-indonesia-mall",
-        "src" : "grand-indonesia.png",
-        "area" : "Seminyak",
-        "city" :"Bali",
-        "type" : "Shopping Mall",
-        "price" : 1100000,
-        "discountPrice" : 100000,
+        "title" : "Gili Island Snorkeling Day Trip",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
+        "area" : "Gili Island",
+        "city" :"Lombok",
+        "type" : "Snorkeling",
+        "price" : 1014000,
+        // "discountPrice" : 100000,
         "priceDetail" : "Inclusive of taxes",
-        "rating" : 8.9,
-        "reviewer" : 210
+        "rating" : 5.0,
+        "reviewer" : 2
+        // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
       },
-      // {
-      //    ....dst
-      // }
+      {
+        "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
+        "area" : "Mt Rinjani",
+        "city" :"Lombok",
+        "type" : "Trekking",
+        "price" : 4189000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 0,
+        "reviewer" : 0
+      },
+      {
+        "title" : "Private Tour: Amazing Waterfalls of Lombok",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+        "area" : "Sendang Gile",
+        "city" :"Lombok",
+        "type" : "Tour",
+        "price" : 973000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 1,
+        "reviewer" : 1
+      },
+      {
+        "title" : "Gili Island Snorkeling Day Trip",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
+        "area" : "Gili Island",
+        "city" :"Lombok",
+        "type" : "Snorkeling",
+        "price" : 1014000,
+        // "discountPrice" : 100000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 5.0,
+        "reviewer" : 2
+        // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
+      },
+      {
+        "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
+        "area" : "Mt Rinjani",
+        "city" :"Lombok",
+        "type" : "Trekking",
+        "price" : 4189000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 0,
+        "reviewer" : 0
+      },
+      {
+        "title" : "Private Tour: Amazing Waterfalls of Lombok",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+        "area" : "Sendang Gile",
+        "city" :"Lombok",
+        "type" : "Tour",
+        "price" : 973000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 1,
+        "reviewer" : 1
+      },
+      {
+        "title" : "Private Tour: Amazing Waterfalls of Lombok",
+        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+        "area" : "Sendang Gile",
+        "city" :"Lombok",
+        "type" : "Tour",
+        "price" : 973000,
+        "priceDetail" : "Inclusive of taxes",
+        "rating" : 1,
+        "reviewer" : 1
+      },
     ];
   };
 
   _onSearchPressed = () => {
-    this.setState({ message: '' });
+    this.setState({ message: '', isLoading:true });
     const query = getQueryUrl('place_name', this.state.searchString, 1);
     var result = this._executeQuery(query);
     if (result) this._handleResponse(result);
@@ -111,89 +184,47 @@ export default class ExploreScreen extends React.Component {
   render() {
     const spinner = this.state.isLoading ?
       <ActivityIndicator size='large'/> : null;
+    // const searchButton = Platform.OS === 'ios' ? 
+    //     <Button
+    //       onPress={this._onSearchPressed}
+    //       color='#48BBEC'
+    //       title='Search'
+    //     />
+    //   : <TouchableNativeFeedback
+    //       onPress={this._onSearchPressed}
+    //       color='#48BBEC'
+    //       title='Search'
+    //     />
     return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={ __DEV__ ?
-                require('../assets/images/robot-dev.png') :
-                require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-
-            <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              LOREM IPSUM DOLOR SIT AMEN
-            </Text>
-
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        
-
-          <View style={styles.flowRight}>
-            <TextInput
-              style={styles.searchInput}
-              value={this.state.searchString}
-              onChange={this._onSearchTextChanged}
-              onSubmitEditing={this._onSearchPressed}
-              placeholder='Search via name or postcode'
-              returnKeyType='search'
-              selectTextOnFocus={true}
-            />
-            <Button
-              onPress={this._onSearchPressed}
-              color='#48BBEC'
-              title='Search'
-            />
-          </View>
-          {spinner}
-          <Text>
-            {this.state.message}
-          </Text>
-
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <View style={styles.flowRight}>
+          <TextInput
+            style={styles.searchInput}
+            value={this.state.searchString}
+            onChange={this._onSearchTextChanged}
+            onSubmitEditing={this._onSearchPressed}
+            placeholder='Search via name or postcode'
+            returnKeyType='search'
+            selectTextOnFocus={true}
+          />
+          {/*searchButton*/}
+          <Button
+            onPress={this._onSearchPressed}
+            color='#48BBEC'
+            title='Search'
+          />
         </View>
-      </View>
+        {spinner}
+        <Text>
+          {this.state.message}
+        </Text>
+      </ScrollView>
     );
   }
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
@@ -203,70 +234,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
   flowRight: {
     flexDirection: 'row',

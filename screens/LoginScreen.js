@@ -10,6 +10,7 @@ import {
   TextInput,
   Button,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 export default class LoginScreen extends Component<{}> {
@@ -21,36 +22,36 @@ export default class LoginScreen extends Component<{}> {
     header: null,
   }
 
-  _handlePress() {
-    console.log('Pressed!');
+  _handlePress = () => {
+    this.props.navigation.navigate('MainTabNavigator')
   }
   render() {
     return (
-      <Image blurRadius={10} style={styles.bgimage} source={require('../assets/images/bg.jpg')}>
+      <Image blurRadius={10} style={styles.bgimage}
+        source={require('../assets/images/bg.jpg')}
+      >
+        <KeyboardAvoidingView behavior="position">
       {/*<ScrollView style={styles.container}>*/}
-        <Image style={styles.logo} source={require('../assets/images/logo.png')}></Image>
-        <Text
-          style={styles.normaltext}>
+        <Image style={styles.logo} source={require('../assets/images/logo.png')}/>
+        <Text style={styles.normaltext}>
           login or sign up with:
         </Text>
-        <TextInput
-          style={styles.searchInput}
-          placeholder='Email'/>
-        <TextInput
-          style={styles.searchInput}
-          placeholder='Password'/>
-        <Text
-          style={styles.loginemail}>
+
+        <TextInput style={styles.searchInput} placeholder='Email'/>
+        <TextInput style={styles.searchInput} placeholder='Password'/>
+        
+        <Text style={styles.loginemail}>
           or login or sign up via email
         </Text>
         <Button
           containerStyle={{padding:10, height:45, width:200, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
-          title="Learn More"
+          title="Login"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
           onPress={this._handlePress}
         />
       {/*</ScrollView>*/}
+        </KeyboardAvoidingView>
       </Image>
     );
   }
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    paddingTop:100,
+    paddingTop:150,
     alignItems: 'center',
   },
   logo: {
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     // width: 300,
     alignSelf: 'stretch',
     padding: 5,
-    marginHorizontal: 20,
+    marginHorizontal: 0,
     marginTop:10,
     fontSize: 14,
     borderWidth: 3,

@@ -1,5 +1,6 @@
 import { Notifications } from 'expo';
 import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
@@ -17,12 +18,19 @@ const RootStackNavigator = StackNavigator(
     },
     // Profile: { screen: WelcomeScreen },
     SearchResults: { screen: SearchResults },
+    MainTabNavigator: { screen: MainTabNavigator },
   },
   {
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
       },
+      // headerRight:  <Ionicons
+      //                 name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+      //                 size={28}
+      //                 style={{ marginBottom: -3 }}
+      //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+      //               />,
     }),
   }
 );
