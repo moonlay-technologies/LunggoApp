@@ -24,11 +24,11 @@ class ListItem extends React.PureComponent {
         underlayColor='#dddddd'>
         <View>
           <View style={styles.rowContainer}>
-            <Image style={styles.thumb} source={{ uri: item.src }} />
+            <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.price}>{priceFormatter(item.price)}</Text>
               <Text style={styles.title}
-                numberOfLines={1}>{item.title}</Text>
+                numberOfLines={1}>{item.name}</Text>
             </View>
           </View>
           <View style={styles.separator}/>

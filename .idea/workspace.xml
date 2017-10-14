@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ed4490b-10ed-4584-8395-7ab14dc4884d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/navigation/RootNavigation.js" afterPath="$PROJECT_DIR$/navigation/RootNavigation.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/screens/ExploreScreen.js" afterPath="$PROJECT_DIR$/screens/ExploreScreen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/screens/LoginScreen.js" afterPath="$PROJECT_DIR$/screens/LoginScreen.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/screens/SearchResults.js" afterPath="$PROJECT_DIR$/screens/SearchResults.js" />
     </list>
     <ignored path="travorama.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,7 +60,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -76,8 +77,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
