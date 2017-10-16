@@ -24,11 +24,11 @@ class ListItem extends React.PureComponent {
         underlayColor='#dddddd'>
         <View>
           <View style={styles.rowContainer}>
-            <Image style={styles.thumb} source={{ uri: item.src }} />
+            <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.price}>{priceFormatter(item.price)}</Text>
               <Text style={styles.title}
-                numberOfLines={1}>{item.title}</Text>
+                numberOfLines={1}>{item.name}</Text>
             </View>
           </View>
           <View style={styles.separator}/>
@@ -42,6 +42,16 @@ export default class SearchResults extends Component {
 
   static navigationOptions = {
     title: 'Results',
+    
+    // headerStyle: {
+    //   position: 'absolute',
+    //   backgroundColor: 'transparent',
+    //   color: 'skyBlue',
+    //   zIndex: 100,
+    //   top: 0,
+    //   left: 0,
+    //   right: 0
+    // }
   };
  
   _keyExtractor = (item, index) => index;

@@ -33,7 +33,8 @@ function getQueryUrl (key, value, pageNumber) {
     .join('&');
 
   /// wisata dan kegiatan
-  return 'https://api.travorama.com/'+version+'/activities?'+querystring;
+  // return 'https://api.travorama.com/'+version+'/activities?'+querystring;
+  return 'http://travorama-local-api.azurewebsites.net/v1/activities?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
 }
 
 export default class ExploreScreen extends React.Component {
@@ -53,11 +54,10 @@ export default class ExploreScreen extends React.Component {
   };
 
   _handleResponse = (response) => {
-    this.setState({ isLoading: false })
     if(response) {
       //// navigate
       this.props.navigation.navigate(
-        'SearchResults', { list: response}
+        'SearchResults', { list: response.activityList}
       )
     } else {
       this.setState({ message: 'Location not recognized!'})
@@ -65,115 +65,117 @@ export default class ExploreScreen extends React.Component {
   }
 
   _executeQuery = (query) => {
-    // this.setState({ isLoading: true });
-    // fetch(query)
-    //   .then(response => response.json())
-    //   .then(json => json.response)
-    //   // .then(json => this._handleResponse(json.response))
-    //   .catch(error => { 
-    //     this.setState({
-    //       isLoading: false,
-    //       message: 'Something bad happened :\n'+ error
-    //     })
-    //     return false;
-    //   });
-    return [
-      {
-        "title" : "Gili Island Snorkeling Day Trip",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
-        "area" : "Gili Island",
-        "city" :"Lombok",
-        "type" : "Snorkeling",
-        "price" : 1014000,
-        // "discountPrice" : 100000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 5.0,
-        "reviewer" : 2
-        // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
-      },
-      {
-        "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
-        "area" : "Mt Rinjani",
-        "city" :"Lombok",
-        "type" : "Trekking",
-        "price" : 4189000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 0,
-        "reviewer" : 0
-      },
-      {
-        "title" : "Private Tour: Amazing Waterfalls of Lombok",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-        "area" : "Sendang Gile",
-        "city" :"Lombok",
-        "type" : "Tour",
-        "price" : 973000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 1,
-        "reviewer" : 1
-      },
-      {
-        "title" : "Gili Island Snorkeling Day Trip",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
-        "area" : "Gili Island",
-        "city" :"Lombok",
-        "type" : "Snorkeling",
-        "price" : 1014000,
-        // "discountPrice" : 100000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 5.0,
-        "reviewer" : 2
-        // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
-      },
-      {
-        "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
-        "area" : "Mt Rinjani",
-        "city" :"Lombok",
-        "type" : "Trekking",
-        "price" : 4189000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 0,
-        "reviewer" : 0
-      },
-      {
-        "title" : "Private Tour: Amazing Waterfalls of Lombok",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-        "area" : "Sendang Gile",
-        "city" :"Lombok",
-        "type" : "Tour",
-        "price" : 973000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 1,
-        "reviewer" : 1
-      },
-      {
-        "title" : "Private Tour: Amazing Waterfalls of Lombok",
-        "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-        "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-        "area" : "Sendang Gile",
-        "city" :"Lombok",
-        "type" : "Tour",
-        "price" : 973000,
-        "priceDetail" : "Inclusive of taxes",
-        "rating" : 1,
-        "reviewer" : 1
-      },
-    ];
+    this.setState({ isLoading: true });
+    fetch(query)
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ isLoading: false });
+        this._handleResponse(response);
+      })
+      .catch(error => {
+        this.setState({
+          isLoading: false,
+          message: 'Something bad happened :\n'+ error
+        })
+      });
+    // return [
+    //   {
+    //     "title" : "Gili Island Snorkeling Day Trip",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
+    //     "area" : "Gili Island",
+    //     "city" :"Lombok",
+    //     "type" : "Snorkeling",
+    //     "price" : 1014000,
+    //     // "discountPrice" : 100000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 5.0,
+    //     "reviewer" : 2
+    //     // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
+    //   },
+    //   {
+    //     "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
+    //     "area" : "Mt Rinjani",
+    //     "city" :"Lombok",
+    //     "type" : "Trekking",
+    //     "price" : 4189000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 0,
+    //     "reviewer" : 0
+    //   },
+    //   {
+    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+    //     "area" : "Sendang Gile",
+    //     "city" :"Lombok",
+    //     "type" : "Tour",
+    //     "price" : 973000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 1,
+    //     "reviewer" : 1
+    //   },
+    //   {
+    //     "title" : "Gili Island Snorkeling Day Trip",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
+    //     "area" : "Gili Island",
+    //     "city" :"Lombok",
+    //     "type" : "Snorkeling",
+    //     "price" : 1014000,
+    //     // "discountPrice" : 100000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 5.0,
+    //     "reviewer" : 2
+    //     // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
+    //   },
+    //   {
+    //     "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
+    //     "area" : "Mt Rinjani",
+    //     "city" :"Lombok",
+    //     "type" : "Trekking",
+    //     "price" : 4189000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 0,
+    //     "reviewer" : 0
+    //   },
+    //   {
+    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+    //     "area" : "Sendang Gile",
+    //     "city" :"Lombok",
+    //     "type" : "Tour",
+    //     "price" : 973000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 1,
+    //     "reviewer" : 1
+    //   },
+    //   {
+    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
+    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
+    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
+    //     "area" : "Sendang Gile",
+    //     "city" :"Lombok",
+    //     "type" : "Tour",
+    //     "price" : 973000,
+    //     "priceDetail" : "Inclusive of taxes",
+    //     "rating" : 1,
+    //     "reviewer" : 1
+    //   },
+    // ];
   };
 
   _onSearchPressed = () => {
     this.setState({ message: '', isLoading:true });
     const query = getQueryUrl('place_name', this.state.searchString, 1);
-    var result = this._executeQuery(query);
-    if (result) this._handleResponse(result);
+    // var result = 
+    this._executeQuery(query);
+    // if (result) this._handleResponse(result);
   };
 
   //// Bind <TextInput> searchText with state searchString
