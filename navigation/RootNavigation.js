@@ -8,12 +8,13 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
+import DetailPage from '../screens/DetailPage';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreen,
+      screen: DetailPage,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
