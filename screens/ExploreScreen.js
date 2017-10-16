@@ -54,8 +54,6 @@ export default class ExploreScreen extends React.Component {
   };
 
   _handleResponse = (response) => {
-    console.log("response")
-    console.log(response)
     if(response) {
       //// navigate
       this.props.navigation.navigate(
