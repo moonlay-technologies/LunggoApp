@@ -125,15 +125,36 @@ export default class LoginScreen extends Component<{}> {
             Baca 20 Review Lainnya
           </Text>
 
-          <Panel title="A Panel with short content text">
-            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-          </Panel>
-          <Panel title="A Panel with long content text">
-            <Text>Lorem ipsum...</Text>
-          </Panel>
-          <Panel title="Another Panel">
-            <Text>Lorem ipsum dolor sit amet...</Text>
-          </Panel>
+          <View style={styles.containerdescriptionActivity}>
+            <Panel title="Agenda">
+              <Text>..</Text>
+            </Panel>
+            <Panel title="Guest Requirement">
+              <Text>..</Text>
+            </Panel>
+            <Panel title="Cancelation Policiy">
+              <Text>..</Text>
+            </Panel>{/* end panel */}
+          </View>{/* end containerdescriptionActivity */}
+
+          <Text style={styles.titledescriptionActivity}>
+            Similiar Adventure
+          </Text>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:100, height:120}} source={require('../assets/images/other-img2.jpg')}/>
+                <Text style={{flex:1}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et</Text>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:100, height:120,}} source={require('../assets/images/other-img2.jpg')}/>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:100, height:120,}} source={require('../assets/images/other-img2.jpg')}/>
+              </View>
+            </ScrollView>
+          </View>
 
         </View>{/* end container */}
       </ScrollView>
@@ -145,6 +166,12 @@ const styles = StyleSheet.create({
   container: {
     padding:20,
     backgroundColor: '#fff',
+  },
+  containersimiliaractivity: {
+    overflow:'hidden',
+    marginRight:10,
+    width:100,
+    // flex:1,
   },
   thumbimgreview: {
     width:60,

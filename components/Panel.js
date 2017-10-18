@@ -58,7 +58,7 @@ export default class Panel extends Component{
 var styles = StyleSheet.create({
     container   : {
         backgroundColor: '#fff',
-        margin:10,
+        marginTop:20,
         overflow:'hidden'
     },
     titleContainer : {
@@ -66,19 +66,20 @@ var styles = StyleSheet.create({
     },
     title       : {
         flex    : 1,
-        padding : 10,
         color   :'#2a2f43',
-        fontWeight:'bold'
+        fontSize: 14,
     },
     button      : {
 
     },
     buttonImage : {
-        width   : 30,
-        height  : 25
+        width   : 20,
+        height  : 20
     },
     body        : {
         padding     : 10,
-        paddingTop  : 0
+        paddingTop  : 0,
+        borderBottomColor: "#cdcdcd",
+        borderBottomWidth: 1,
     }
 });
