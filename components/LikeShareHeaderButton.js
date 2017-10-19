@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View, TouchableOpacity, Platform,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default class LikeShareHeaderButton extends Component {
   // goToNotification = () => {
@@ -12,15 +13,29 @@ export default class LikeShareHeaderButton extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View 
+      // style={styles.container}
+      style={{flexDirection:'row'}}
+      >
         <TouchableOpacity>
-          <Icon name="md-search" style={styles.Icon}/>
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+            size={28}
+            style={{ marginBottom: -3 }}
+            // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
         </TouchableOpacity>
         <TouchableOpacity 
-          style={styles.notificationWrapper}
-          onPress={() => this.props.navigate('Notification')}>
-          {/*onPress={() => this.props.navigate('Notification')}>*/}
-          <Icon name="md-notifications" style={styles.Icon}/>
+          // style={styles.notificationWrapper}
+          onPress={() => this.props.navigate('Notification')}
+          //onPress={() => this.props.navigate('Notification')}
+          >
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+            size={28}
+            style={{ marginBottom: -3 }}
+            // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          />
         </TouchableOpacity>
       </View>
     )
@@ -28,5 +43,5 @@ export default class LikeShareHeaderButton extends Component {
 }
 
 const styles = StyleSheet.create({
-thumb: {
+// thumb: {
 });

@@ -19,13 +19,14 @@ import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 export default class DetailScreen extends Component<{}> {
 
   static navigationOptions = {
-    title: 'Tour Title 1',
-    header: ({navigate}) => ({
-        right: (
-            <LikeShareHeaderButton navigate={navigate}/>
-        ),
-    }),
+    title: 'Tour Title 12',
+    // header: ({navigate}) => ({
+    //     right: (
+    //         <LikeShareHeaderButton navigate={navigate}/>
+    //     ),
+    // }),
     // headerTitleStyle: {color:'white'},
+    headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
       // backgroundColor: 'transparent',
       position: 'absolute',
