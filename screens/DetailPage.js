@@ -42,7 +42,7 @@ export default class DetailScreen extends Component<{}> {
         <View style={styles.container}>
 
           <Text style={styles.titleActivity}>
-            Tour Title 1 
+            Tour Title 03
           </Text>
           <Text style={styles.locationActivity}>
             Location | Activity small description 
@@ -153,15 +153,61 @@ export default class DetailScreen extends Component<{}> {
             Baca 20 Review Lainnya
           </Text>
 
-          <Panel title="A Panel with short content text">
-            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-          </Panel>
-          <Panel title="A Panel with long content text">
-            <Text>Lorem ipsum...</Text>
-          </Panel>
-          <Panel title="Another Panel">
-            <Text>Lorem ipsum dolor sit amet...</Text>
-          </Panel>
+          <View style={styles.containerdescriptionActivity}>
+            <Panel title="Agenda">
+              <Text>..</Text>
+            </Panel>
+            <Panel title="Guest Requirement">
+              <Text>..</Text>
+            </Panel>
+            <Panel title="Cancelation Policiy">
+              <Text>..</Text>
+            </Panel>{/* end panel */}
+          </View>{/* end containerdescriptionActivity */}
+
+          <Text style={styles.titledescriptionActivity}>
+            Similiar Adventure
+          </Text>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img2.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img1.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img3.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img4.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
 
         </View>{/* end container */}
       </ScrollView>
@@ -173,6 +219,12 @@ const styles = StyleSheet.create({
   container: {
     padding:20,
     backgroundColor: '#fff',
+  },
+  containersimiliaractivity: {
+    overflow:'hidden',
+    marginRight:10,
+    width:150,
+    // flex:1,
   },
   thumbimgreview: {
     width:60,
