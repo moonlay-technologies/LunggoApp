@@ -12,11 +12,24 @@ import {
   TextInput,
   Button,
   ScrollView,
-  KeyboardAvoidingView,
-  AppRegistry,
 } from 'react-native';
+import MapView from 'react-native-maps';
 
-export default class LoginScreen extends Component<{}> {
+export default class DetailScreen extends Component<{}> {
+
+  static navigationOptions = {
+    title: 'Tour Title 1',
+    // headerTitleStyle: {color:'white'},
+    headerStyle: {
+      // backgroundColor: 'transparent',
+      position: 'absolute',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      right: 0
+    },
+  };
+
   render() {
     return (
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
@@ -104,6 +117,21 @@ export default class LoginScreen extends Component<{}> {
               </Text>
             </View>
           </View>{/* end containerdescriptionActivity */}
+
+          <MapView
+            style={{width:"100%", height:"10%"}}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+          <Text>
+          {/*style={styles.titledescriptionActivity}>*/}
+            Jl. Sisingamangaraja 22
+            Selong
+          </Text>
 
           <Text style={styles.titledescriptionActivity}>
             Review

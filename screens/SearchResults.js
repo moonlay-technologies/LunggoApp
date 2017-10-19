@@ -42,16 +42,6 @@ export default class SearchResults extends Component {
 
   static navigationOptions = {
     title: 'Results',
-    
-    // headerStyle: {
-    //   position: 'absolute',
-    //   backgroundColor: 'transparent',
-    //   color: 'skyBlue',
-    //   zIndex: 100,
-    //   top: 0,
-    //   left: 0,
-    //   right: 0
-    // }
   };
  
   _keyExtractor = (item, index) => index;
