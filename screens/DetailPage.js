@@ -29,7 +29,7 @@ export default class LoginScreen extends Component<{}> {
         <View style={styles.container}>
 
           <Text style={styles.titleActivity}>
-            Tour Title 1 
+            Tour Title 03
           </Text>
           <Text style={styles.locationActivity}>
             Location | Activity small description 
@@ -143,15 +143,40 @@ export default class LoginScreen extends Component<{}> {
           <View style={{flex: 1, flexDirection: 'row'}}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={styles.containersimiliaractivity}>
-                <Image style={{resizeMode:'cover', width:100, height:120}} source={require('../assets/images/other-img2.jpg')}/>
-                <Text style={{flex:1}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et</Text>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img2.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
               </View>
               <View style={styles.containersimiliaractivity}>
-                <Image style={{resizeMode:'cover', width:100, height:120,}} source={require('../assets/images/other-img2.jpg')}/>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img1.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
               </View>
               <View style={styles.containersimiliaractivity}>
-                <Image style={{resizeMode:'cover', width:100, height:120,}} source={require('../assets/images/other-img2.jpg')}/>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img3.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
+              </View>
+              <View style={styles.containersimiliaractivity}>
+                <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img4.jpg')}/>
+                <Text>Tour Title 1</Text>
+                <Text style={{color:'green'}}>Rp. 3.000.000</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{marginRight:7}}>Bintang</Text>
+                  <Text>20 Reviews</Text>
+                </View>
               </View>
             </ScrollView>
           </View>
@@ -170,7 +195,7 @@ const styles = StyleSheet.create({
   containersimiliaractivity: {
     overflow:'hidden',
     marginRight:10,
-    width:100,
+    width:150,
     // flex:1,
   },
   thumbimgreview: {
