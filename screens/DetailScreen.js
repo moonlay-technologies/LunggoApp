@@ -25,7 +25,7 @@ export default class DetailScreen extends Component<{}> {
             <LikeShareHeaderButton navigate={navigate}/>
         ),
     }),
-    headerTitleStyle: {color:'white'},
+    // headerTitleStyle: {color:'white'},
     headerStyle: {
       // backgroundColor: 'transparent',
       position: 'absolute',
@@ -242,7 +242,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   similarActivityContainer: {
-    overflow:'hidden',
     marginRight:10,
     width:150,
     // flex:1,
