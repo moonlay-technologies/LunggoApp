@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
-import Panel from '../components/Panel';
+import MapView from 'react-native-maps';
 import {
   Platform,
   StyleSheet,
@@ -13,12 +13,18 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import MapView from 'react-native-maps';
+import Panel from '../components/Panel';
+import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 
 export default class DetailScreen extends Component<{}> {
 
   static navigationOptions = {
     title: 'Tour Title 1',
+    header: ({navigate}) => ({
+        right: (
+            <LikeShareHeaderButton navigate={navigate}/>
+        ),
+    }),
     headerTitleStyle: {color:'white'},
     headerStyle: {
       // backgroundColor: 'transparent',
