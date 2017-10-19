@@ -19,7 +19,7 @@ export default class DetailScreen extends Component<{}> {
 
   static navigationOptions = {
     title: 'Tour Title 1',
-    // headerTitleStyle: {color:'white'},
+    headerTitleStyle: {color:'white'},
     headerStyle: {
       // backgroundColor: 'transparent',
       position: 'absolute',
@@ -35,7 +35,8 @@ export default class DetailScreen extends Component<{}> {
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View>
         <ScrollView
-          style={{marginBottom:60,marginTop:60}}>  
+          style={{marginBottom:60,marginTop:60}}
+        >
           <ImageSlider height={350} images={[
             require('../assets/images/detailimg.jpg'),
             require('../assets/images/detailimg.jpg'),
@@ -43,7 +44,7 @@ export default class DetailScreen extends Component<{}> {
           ]}/>
           <View style={styles.container}>
 
-            <Text style={styles.titleActivity}>
+            <Text style={styles.activityTitle}>
               Tour Title 03
             </Text>
             <Text style={styles.locationActivity}>
@@ -65,7 +66,7 @@ export default class DetailScreen extends Component<{}> {
             <View style={styles.divider}/>
 
             <View style={styles.containerdescriptionActivity}>
-              <Text style={styles.titledescriptionActivity}>
+              <Text style={styles.sectionTitle}>
                 Tour Description 
               </Text>
               <Text style={styles.descriptionActivity}>
@@ -77,7 +78,7 @@ export default class DetailScreen extends Component<{}> {
             </View>{/* end containerdescriptionActivity */}
 
             <View style={styles.containerdescriptionActivity}>
-              <Text style={styles.titledescriptionActivity}>
+              <Text style={styles.sectionTitle}>
                 Highlights
               </Text>
               <View style={styles.ul}>
@@ -99,7 +100,7 @@ export default class DetailScreen extends Component<{}> {
             </View>{/* end containerdescriptionActivity */}
 
             <View style={styles.containerdescriptionActivity}>
-              <Text style={styles.titledescriptionActivity}>
+              <Text style={styles.sectionTitle}>
                 Price Included
               </Text>
               <View style={styles.ul}>
@@ -120,7 +121,7 @@ export default class DetailScreen extends Component<{}> {
               </View>
             </View>{/* end containerdescriptionActivity */}
 
-            <MapView
+            {/*<MapView
               style={{width:"100%", height:"10%"}}
               initialRegion={{
                 latitude: 37.78825,
@@ -128,16 +129,15 @@ export default class DetailScreen extends Component<{}> {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
-            />
+            />*/}
             <Text>
-            {/*style={styles.titledescriptionActivity}>*/}
               Jl. Sisingamangaraja 22{"\n"}
               Selong
             </Text>
 
             <View style={styles.divider}/>
 
-            <Text style={styles.titledescriptionActivity}>
+            <Text style={styles.sectionTitle}>
               Review
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -147,9 +147,9 @@ export default class DetailScreen extends Component<{}> {
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.thumbimgreview} source={require('../assets/images/thumbimg1.jpg')}/>
-              <Image style={styles.thumbimgreview} source={require('../assets/images/thumbimg2.jpg')}/>
-              <Image style={styles.thumbimgreview} source={require('../assets/images/thumbimg1.jpg')}/>
+              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg1.jpg')}/>
+              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg2.jpg')}/>
+              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg1.jpg')}/>
             </View>
             <Text style={styles.isireview}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -171,7 +171,7 @@ export default class DetailScreen extends Component<{}> {
               </Panel>{/* end panel */}
             </View>{/* end containerdescriptionActivity */}
 
-            <Text style={styles.titledescriptionActivity}>
+            <Text style={styles.sectionTitle}>
               Similar Adventure
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -221,8 +221,9 @@ export default class DetailScreen extends Component<{}> {
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
           <Text style={styles.bottomBarPrice}>
-            Rp. 3.000.000 per orang
-          </Text>
+            Rp. 3.000.000 per orang{"\n"}
+            20 Review | Lihat Tanggal
+          </Text> 
         </View>
       </View>
     );
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   similarActivityContainer: {
-    // overflow:'hidden',
+    overflow:'hidden',
     marginRight:10,
     width:150,
     // flex:1,
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfb',
     paddingVertical: 20,
   },
-  thumbimgreview: {
+  reviewThumbImg: {
     width:60,
     height:50,
     marginRight:5,
@@ -299,7 +300,7 @@ const styles = StyleSheet.create({
   containerdescriptionActivity: {
     marginBottom: 18,
   },
-  titledescriptionActivity: {
+  sectionTitle: {
     fontWeight: 'bold',
     fontSize:16,
     marginBottom: 7,
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
   },
-  titleActivity: {
+  activityTitle: {
     fontWeight: 'bold',
     fontSize:20,
     marginBottom: 7,
