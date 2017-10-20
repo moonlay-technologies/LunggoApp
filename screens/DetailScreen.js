@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
 import Panel from '../components/Panel';
+import Button from 'react-native-button';
 import {
   Platform,
   StyleSheet,
@@ -10,7 +11,6 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   ScrollView,
 } from 'react-native';
 import MapView from 'react-native-maps';
@@ -220,10 +220,23 @@ export default class DetailScreen extends Component<{}> {
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <Text style={styles.bottomBarPrice}>
-            Rp. 3.000.000 per orang{"\n"}
-            20 Review | Lihat Tanggal
-          </Text> 
+          <View style={{alignItems: 'flex-start', flex:1}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:15,}}>Rp. 3.000.000</Text> 
+              <Text style={{fontSize:12,}}>/orang</Text>
+            </View>
+            <View style={{flexDirection: 'row',  }}>
+              <Text style={{marginRight:5, fontSize:12,}}>Bintang</Text> 
+              <Text style={{fontSize:12,}}>20 Review</Text> 
+            </View>
+          </View>
+          <View style={{alignItems: 'flex-end', flex:1}}>
+            <Button
+              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+              style={{fontSize: 12, color: '#ffffff'}}>
+              Lihat Tanggal
+            </Button>
+          </View>
         </View>
       </View>
     );
@@ -242,10 +255,15 @@ const styles = StyleSheet.create({
     // flex:1,
   },
   bottomBarContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    backgroundColor: '#fbfbfb',
+    padding: 20,
+    borderTopColor: "#efefef",
+    borderTopWidth: 2,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -257,9 +275,6 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
   },
   reviewThumbImg: {
     width:60,
