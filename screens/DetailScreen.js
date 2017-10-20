@@ -246,6 +246,7 @@ export default class DetailScreen extends Component<{}> {
 const styles = StyleSheet.create({
   container: {
     padding:20,
+    paddingBottom:40,
     backgroundColor: '#fff',
   },
   similarActivityContainer: {
