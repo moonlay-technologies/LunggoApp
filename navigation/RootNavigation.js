@@ -15,7 +15,8 @@ import DetailScreen from '../screens/DetailScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreen,
+      // screen: LoginScreen,
+      screen: DetailScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
