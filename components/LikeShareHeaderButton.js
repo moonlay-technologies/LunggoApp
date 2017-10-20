@@ -7,9 +7,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export default class LikeShareHeaderButton extends Component {
-  // goToNotification = () => {
-  //   this.props.navigate('Notification');
-  // };
 
   render() {
     return (
@@ -19,22 +16,19 @@ export default class LikeShareHeaderButton extends Component {
       >
         <TouchableOpacity>
           <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+            name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
             size={28}
             style={{ marginBottom: -3 }}
-            // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         </TouchableOpacity>
         <TouchableOpacity 
           // style={styles.notificationWrapper}
-          onPress={() => this.props.navigate('Notification')}
           //onPress={() => this.props.navigate('Notification')}
           >
           <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+            name={Platform.OS === 'ios' ? 'ios-heart-outline' : 'md-heart'}
             size={28}
             style={{ marginBottom: -3 }}
-            // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         </TouchableOpacity>
       </View>
@@ -43,5 +37,6 @@ export default class LikeShareHeaderButton extends Component {
 }
 
 const styles = StyleSheet.create({
-// thumb: {
+  // thumb: {
+  // },
 });

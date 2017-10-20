@@ -15,11 +15,12 @@ import DetailScreen from '../screens/DetailScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: DetailScreen,
+      screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
     SearchResults: { screen: SearchResults },
+    DetailScreen: { screen: DetailScreen },
     MainTabNavigator: { screen: MainTabNavigator },
   },
   {
@@ -28,7 +29,7 @@ const RootStackNavigator = StackNavigator(
         fontWeight: 'normal',
       },
       // headerRight:  <Ionicons
-      //                 name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+      //                 name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
       //                 size={28}
       //                 style={{ marginBottom: -3 }}
       //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}

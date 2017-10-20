@@ -17,7 +17,8 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 
 function getQueryUrl (key, value, pageNumber) {
-  const version = 'v1.0';
+  const domain = 'http://travorama-local-api.azurewebsites.net';
+  const version = 'v1';
   const data = {
       country: 'uk',
       pretty: '1',
@@ -28,13 +29,14 @@ function getQueryUrl (key, value, pageNumber) {
   };
   data[key] = value;
 
-  const querystring = Object.keys(data)
-    .map(key => key + '=' + encodeURIComponent(data[key]))
-    .join('&');
+  // const querystring = Object.keys(data)
+  //   .map(key => key + '=' + encodeURIComponent(data[key]))
+  //   .join('&');
+  const querystring = 'startDate=02-18-2017';
 
   /// wisata dan kegiatan
-  // return 'https://api.travorama.com/'+version+'/activities?'+querystring;
-  return 'http://travorama-local-api.azurewebsites.net/v1/activities?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
+  return `${domain}/${version}/activities?${querystring}`;
+  //+'?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
 }
 
 export default class ExploreScreen extends React.Component {
@@ -49,7 +51,6 @@ export default class ExploreScreen extends React.Component {
   }
 
   static navigationOptions = {
-    // header: null,
     title: 'Explore',
   };
 
@@ -173,8 +174,8 @@ export default class ExploreScreen extends React.Component {
   _onSearchPressed = () => {
     this.setState({ message: '', isLoading:true });
     const query = getQueryUrl('place_name', this.state.searchString, 1);
-    // var result = 
     this._executeQuery(query);
+    // var result = this._executeQuery(query);
     // if (result) this._handleResponse(result);
   };
 
