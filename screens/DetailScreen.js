@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Panel from '../components/Panel';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
+import CalendarView from '../components/CalendarView';
 
 export default class DetailScreen extends Component<{}> {
 
