@@ -15,7 +15,6 @@ import {
   ScrollView,
 } from 'react-native';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import CalendarView from '../components/CalendarView';
 
 export default class DetailScreen extends Component<{}> {
 
@@ -241,7 +240,12 @@ export default class DetailScreen extends Component<{}> {
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}>
+              style={{fontSize: 12, color: '#ffffff'}}
+              // onPress={() => this._handlePress()}
+              onPress={() => this.props.navigation.navigate(
+                'CalendarView'//, { list: response.activityList}
+              )}
+            >
               Lihat Tanggal
             </Button>
           </View>

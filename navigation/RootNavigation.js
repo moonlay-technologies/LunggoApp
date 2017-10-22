@@ -10,19 +10,21 @@ import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
 import AddGuest from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
+import CalendarView from '../components/CalendarView';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: LoginScreen,
-      screen: DetailScreen,
+      screen: LoginScreen,
+      // screen: DetailScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
+    MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
     DetailScreen: { screen: DetailScreen },
-    MainTabNavigator: { screen: MainTabNavigator },
+    CalendarView: { screen: CalendarView },
   },
   {
     navigationOptions: () => ({
