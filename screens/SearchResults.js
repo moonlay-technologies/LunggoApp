@@ -42,16 +42,6 @@ export default class SearchResults extends Component {
 
   static navigationOptions = {
     title: 'Results',
-    
-    // headerStyle: {
-    //   position: 'absolute',
-    //   backgroundColor: 'transparent',
-    //   color: 'skyBlue',
-    //   zIndex: 100,
-    //   top: 0,
-    //   left: 0,
-    //   right: 0
-    // }
   };
  
   _keyExtractor = (item, index) => index;
@@ -66,6 +56,9 @@ export default class SearchResults extends Component {
 
   _onPressItem = (index) => {
     console.log("Pressed row: "+index);
+    this.props.navigation.navigate(
+      'DetailScreen'//, { list: response.activityList}
+    )
   };
   
   render() {

@@ -28,7 +28,7 @@ export default TabNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerRight:  <Ionicons
-                      name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+                      name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
                       size={28}
                       style={{ marginBottom: -3 }}
                       // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}

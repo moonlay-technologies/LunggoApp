@@ -8,18 +8,23 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
-import DetailPage from '../screens/DetailPage';
+import AddGuest from '../screens/AddGuest';
+import DetailScreen from '../screens/DetailScreen';
+import CalendarView from '../components/CalendarView';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: DetailPage,
+      screen: LoginScreen,
+      // screen: DetailScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
-    SearchResults: { screen: SearchResults },
     MainTabNavigator: { screen: MainTabNavigator },
+    SearchResults: { screen: SearchResults },
+    DetailScreen: { screen: DetailScreen },
+    CalendarView: { screen: CalendarView },
   },
   {
     navigationOptions: () => ({
@@ -27,7 +32,7 @@ const RootStackNavigator = StackNavigator(
         fontWeight: 'normal',
       },
       // headerRight:  <Ionicons
-      //                 name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+      //                 name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
       //                 size={28}
       //                 style={{ marginBottom: -3 }}
       //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
