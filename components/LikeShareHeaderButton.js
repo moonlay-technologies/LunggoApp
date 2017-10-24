@@ -18,7 +18,7 @@ export default class LikeShareHeaderButton extends Component {
           <Ionicons
             name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
             size={28}
-            style={{ marginBottom: -3 }}
+            style={{ marginBottom: 0, marginRight:10,}}
           />
         </TouchableOpacity>
         <TouchableOpacity 
@@ -26,9 +26,9 @@ export default class LikeShareHeaderButton extends Component {
           //onPress={() => this.props.navigate('Notification')}
           >
           <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-heart-outline' : 'md-heart'}
+            name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'}
             size={28}
-            style={{ marginBottom: -3 }}
+            style={{ marginBottom: 0,marginRight:15,}}
           />
         </TouchableOpacity>
       </View>

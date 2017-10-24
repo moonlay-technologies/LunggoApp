@@ -11,14 +11,17 @@ import LoginScreen from '../screens/LoginScreen';
 import AddGuest from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
+import Checkout from '../screens/Checkout';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreen,
-      // screen: DetailScreen,
+      screen: Checkout,
+      //screen: LoginScreen,
+      //screen: DetailScreen,
       // screen: MainTabNavigator,
+      //screen: CalendarView,
     },
     // Profile: { screen: WelcomeScreen },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -31,12 +34,6 @@ const RootStackNavigator = StackNavigator(
       headerTitleStyle: {
         fontWeight: 'normal',
       },
-      // headerRight:  <Ionicons
-      //                 name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
-      //                 size={28}
-      //                 style={{ marginBottom: -3 }}
-      //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-      //               />,
     }),
   }
 );

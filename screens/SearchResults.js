@@ -22,16 +22,30 @@ class ListItem extends React.PureComponent {
       <TouchableHighlight
         onPress={this._onPress}
         underlayColor='#dddddd'>
-        <View>
-          <View style={styles.rowContainer}>
-            <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
+        <View style={styles.rowContainer}>
+          <View style={styles.containerItem}>
+            <Image style={styles.thumb}  source={{ uri: item.imgSrc }} />
             <View style={styles.textContainer}>
+              <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
               <Text style={styles.price}>{priceFormatter(item.price)}</Text>
-              <Text style={styles.title}
-                numberOfLines={1}>{item.name}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{marginRight:7}}>Bintang</Text>
+                <Text>20 Reviews</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.separator}/>
+          <View style={styles.containerItem2}>
+            <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
+            <View style={styles.textContainer}>
+              <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
+              <Text style={styles.price}>{priceFormatter(item.price)}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{marginRight:7}}>Bintang</Text>
+                <Text>20 Reviews</Text>
+              </View>
+            </View>
+          </View>
+
         </View>
       </TouchableHighlight>
     );
@@ -75,28 +89,32 @@ export default class SearchResults extends Component {
 
 const styles = StyleSheet.create({
   thumb: {
-    width: 80,
-    height: 80,
-    marginRight: 10
+    resizeMode:'cover', 
+    width:'100%', 
+    height:170, 
+    marginBottom:7,
   },
   textContainer: {
-    flex: 1
   },
   separator: {
     height: 1,
     backgroundColor: '#dddddd'
   },
   price: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: '#48BBEC'
+    color:'green'
   },
   title: {
-    fontSize: 20,
-    color: '#656565'
   },
   rowContainer: {
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
+    flex:1,
   },
+  containerItem: {
+    paddingRight:8,
+    flex:1,
+  },
+  containerItem2: {
+    flex:1,
+  }
 });
