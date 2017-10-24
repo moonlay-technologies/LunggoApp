@@ -51,8 +51,8 @@ export default class CalendarView extends Component {
 
   render() {
     let {selectedDates} = this.state;
-    let dateTime = (selectedDates)
-      ? Moment(selectedDates).format('D MMM') + " | 12.00 - 15.00"
+    let date = (selectedDates)
+      ? Moment(selectedDates).format('D MMM')
       : "Pilih Tanggal";
     return(
       <View>
@@ -66,25 +66,18 @@ export default class CalendarView extends Component {
         />
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text>
-              Judul Activity
-            </Text>
-            <Text>
-              Location
-            </Text>
-            <Text>
-              {dateTime}
-            </Text>
+            <Text>{date}</Text>
+            <Text>12.00 - 15.00</Text>
           </View>
           <Button
             containerStyle={{
-              height:35,
-              width:100,
-              paddingTop:10,
-              paddingBottom:10,
-              overflow:'hidden',
-              borderRadius:4,
-              backgroundColor: '#437ef7'
+              height: 35,
+              width: 100,
+              paddingTop: 10,
+              paddingBottom: 10,
+              overflow: 'hidden',
+              borderRadius: 4,
+              backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#ffffff'}}
             // onPress={() => this.props.navigation.navigate(

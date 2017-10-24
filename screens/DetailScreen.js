@@ -2,19 +2,14 @@
 
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Panel from '../components/Panel';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
-} from 'react-native';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
+import {
+  Platform, StyleSheet,
+  Text, View, Image, TextInput, ScrollView,
+} from 'react-native';
 
 export default class DetailScreen extends Component<{}> {
 
@@ -128,15 +123,23 @@ export default class DetailScreen extends Component<{}> {
               </View>
             </View>{/* end containerdescriptionActivity */}
 
-            {/*<MapView
-              style={{width:"100%", height:"10%"}}
+            <MapView
+              style={{width:"100%", height:150}}
               initialRegion={{
                 latitude: 37.78825,
                 longitude: -122.4324,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
-            />*/}
+              zoomEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
+              pitchEnabled={false}
+            >
+              <Marker
+                coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+              />
+            </MapView>
             <Text>
               Jl. Sisingamangaraja 22{"\n"}
               Selong
