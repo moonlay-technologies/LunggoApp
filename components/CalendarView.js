@@ -49,32 +49,17 @@ export default class CalendarView extends Component {
         />
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text>
-              Judul Activity
-            </Text>
-            <Text>
-              Location
-            </Text>
-            <Text>
-              19 Oct | 12.00 - 15.00
-            </Text>
+            <Text>19 Oct 2017</Text>
+            <Text>12.00 - 15.00</Text>
           </View>
           <Button
-            containerStyle={{
-              height:35,
-              width:100,
-              paddingTop:10,
-              paddingBottom:10,
-              overflow:'hidden',
-              borderRadius:4,
-              backgroundColor: '#437ef7'
-            }}
+            containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
             style={{fontSize: 12, color: '#ffffff'}}
             // onPress={() => this.props.navigation.navigate(
             //   'CalendarView'//, { list: response.activityList}
             // )}
           >
-            Pilih Tanggal / Tambahkan Peserta
+            Pilih Tanggal
           </Button>
         </View>
       </View>
