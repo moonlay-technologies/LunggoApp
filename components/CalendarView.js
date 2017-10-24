@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
 import { StyleSheet, Platform, View, Text } from 'react-native';
 import Button from 'react-native-button';
+import Moment from 'moment';
+import 'moment/locale/id';
 
 export default class CalendarView extends Component {
 
   constructor (props) {
     super(props)
+
+    // Moment.locale('id');
     this.state = {
+      selectedDates : null,
       markedDates : {
         '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
@@ -30,13 +35,25 @@ export default class CalendarView extends Component {
   };
 
   _selectDate = dateString => {
-    let {markedDates} = this.state;
-    markedDates[dateString] = {selected: true}
+    let {markedDates, selectedDates} = this.state;
+
+    //// set remove prev selectedDates from markedDates
+    if (selectedDates) markedDates[selectedDates] = {selected: false};
+    // markedDates[selectedDates] = [{startingDay: true, color: 'blue'}]
+    
+    //// set selectedDates
+    selectedDates = dateString;
+    markedDates[dateString] = {selected: true};
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
-    this.setState({ markedDates });
+
+    this.setState({ markedDates, selectedDates });
   }
 
   render() {
+    let {selectedDates} = this.state;
+    let dateTime = (selectedDates)
+      ? Moment(selectedDates).format('D MMM') + " | 12.00 - 15.00"
+      : "Pilih Tanggal";
     return(
       <View>
         <CalendarList
@@ -56,7 +73,7 @@ export default class CalendarView extends Component {
               Location
             </Text>
             <Text>
-              19 Oct | 12.00 - 15.00
+              {dateTime}
             </Text>
           </View>
           <Button
@@ -74,7 +91,7 @@ export default class CalendarView extends Component {
             //   'CalendarView'//, { list: response.activityList}
             // )}
           >
-            Pilih Tanggal / Tambahkan Peserta
+            Pilih Tanggal
           </Button>
         </View>
       </View>

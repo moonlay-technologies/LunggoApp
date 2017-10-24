@@ -31,12 +31,6 @@ const RootStackNavigator = StackNavigator(
       headerTitleStyle: {
         fontWeight: 'normal',
       },
-      // headerRight:  <Ionicons
-      //                 name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
-      //                 size={28}
-      //                 style={{ marginBottom: -3 }}
-      //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-      //               />,
     }),
   }
 );
