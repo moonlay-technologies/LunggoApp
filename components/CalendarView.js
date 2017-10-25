@@ -12,7 +12,7 @@ export default class CalendarView extends Component {
 
     // Moment.locale('id');
     this.state = {
-      selectedDates : null,
+      selectedDate : null,
       markedDates : {
         '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
@@ -35,24 +35,28 @@ export default class CalendarView extends Component {
   };
 
   _selectDate = dateString => {
-    let {markedDates, selectedDates} = this.state;
+    let {markedDates, selectedDate} = this.state;
 
-    //// set remove prev selectedDates from markedDates
-    if (selectedDates) markedDates[selectedDates] = {selected: false};
-    // markedDates[selectedDates] = [{startingDay: true, color: 'blue'}]
+    //// set remove prev selectedDate from markedDates
+    if (selectedDate) markedDates[selectedDate] = {selected: false};
+    // markedDates[selectedDate] = [{startingDay: true, color: 'blue'}]
     
-    //// set selectedDates
-    selectedDates = dateString;
+    //// set selectedDate
+    selectedDate = dateString;
     markedDates[dateString] = {selected: true};
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
-    this.setState({ markedDates, selectedDates });
+    this.setState({ markedDates, selectedDate });
   }
 
+
   render() {
-    let {selectedDates} = this.state;
-    let date = (selectedDates)
-      ? Moment(selectedDates).format('D MMM')
+    if(this.props.navigation.state.params)
+      console.log(this.props.navigation.state.params.date)
+    else console.log("un")
+    let {selectedDate} = this.state;
+    let date = (selectedDate)
+      ? Moment(selectedDate).format('ddd, D MMM YYYY')
       : "Pilih Tanggal";
     return(
       <View>
@@ -80,9 +84,9 @@ export default class CalendarView extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#ffffff'}}
-            // onPress={() => this.props.navigation.navigate(
-            //   'CalendarView'//, { list: response.activityList}
-            // )}
+            onPress={() => this.props.navigation.navigate(
+              'ParticipantChoice', { date: selectedDate }
+            )}
           >
             Pilih Tanggal
           </Button>

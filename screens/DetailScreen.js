@@ -11,10 +11,9 @@ import {
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 
-export default class DetailScreen extends Component<{}> {
+export default class DetailScreen extends Component {
 
   static navigationOptions = {
-    title: 'Tour Title 12',
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
@@ -244,10 +243,7 @@ export default class DetailScreen extends Component<{}> {
             <Button
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#ffffff'}}
-              // onPress={() => this._handlePress()}
-              onPress={() => this.props.navigation.navigate(
-                'CalendarView'//, { list: response.activityList}
-              )}
+              onPress={() => this.props.navigation.navigate('CalendarView')}
             >
               Lihat Tanggal
             </Button>
