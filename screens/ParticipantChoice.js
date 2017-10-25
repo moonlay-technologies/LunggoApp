@@ -32,15 +32,15 @@ export default class ParticipantChoice extends Component {
     
     fetch(url, {
       method: 'POST',
-      // headers: {
-      //   'Accept': 'application/json',
-      //   'Content-Type': 'application/json',
-      // },
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        activityId: 1121212121,
+        activityId: 1,
         contact: {
           title: 1,
-          name: "Stark",
+          name: "Tony",
           countryCallCd: 62,
           phone : 1234567890,
           email: "developer@travelmadezy.com",
@@ -54,10 +54,10 @@ export default class ParticipantChoice extends Component {
             nationality : "ID",
             passportNo : "1234567",
             passportExp : "02-18-2022",
-            passportCountry : "Aussie",
+            passportCountry : "en",
           }
         ],
-        date: this.props.navigation.state.params.date,
+        // date: this.props.navigation.state.params.date,
       })
     });
   }
