@@ -5,6 +5,7 @@ import ImageSlider from 'react-native-image-slider';
 import MapView from 'react-native-maps';
 import Panel from '../components/Panel';
 import Button from 'react-native-button';
+import { Slider } from 'react-native-elements';
 import { CheckBox } from 'react-native-elements'
 
 import {
@@ -20,7 +21,7 @@ import {
 export default class DetailScreen extends Component<{}> {
 
   static navigationOptions = {
-    title: 'Tour Title 12',
+    title: 'Filter',
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
@@ -44,34 +45,57 @@ export default class DetailScreen extends Component<{}> {
     };
   }
 
+  
+
   render() {
     return (
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View style={styles.container}>
 
-        <ScrollView style={{marginBottom:60,marginTop:60,}}>
+        <ScrollView style={{marginTop:60,}}>
           <View>
+            <Text>Kisaran harga</Text>
+            <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+              <Slider
+                thumbTintColor={'blue'}
+                value={this.state.value}
+                onValueChange={(value) => this.setState({value})} />
+              <Text>Value: {this.state.value}</Text>
+            </View>
+            <View style={styles.divider}/>
+            <Text>Berapa Lama</Text>
+            <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+              <Slider
+                value={this.state.value}
+                onValueChange={(value) => this.setState({value})} />
+              <Text>Value: {this.state.value}</Text>
+            </View>
+            <View style={styles.divider}/>
+            <Text>Kategori</Text>
+            <View style={styles.divider}/>
             <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Ali Zainal' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
+              <Text style={{}}>Food Scene</Text>
+              <View style={{alignItems: 'flex-end', flex:1,}}>
+                <CheckBox iconRight style={{backgroundColor:'#ffffff', paddingRight:0,}} checked={this.state.checked} />
               </View>
             </View>
             <View style={styles.divider}/>
             <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Guest1' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
+              <Text style={{}}>Food Scene</Text>
+              <View style={{alignItems: 'flex-end', flex:1,}}>
+                <CheckBox iconRight style={{backgroundColor:'#ffffff', paddingRight:0,}} checked={this.state.checked} />
               </View>
             </View>
             <View style={styles.divider}/>
             <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Guest2' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
+              <Text style={{}}>Food Scene</Text>
+              <View style={{alignItems: 'flex-end', flex:1,}}>
+                <CheckBox iconRight style={{backgroundColor:'#ffffff', paddingRight:0,}} checked={this.state.checked} />
               </View>
             </View>
             <View style={styles.divider}/>
+
+
             <Button
               containerStyle={{height:35, flex:1, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#ffffff'}}
@@ -80,30 +104,10 @@ export default class DetailScreen extends Component<{}> {
                 'CalendarView'//, { list: response.activityList}
               )}
             >
-              Tambah Guest
+              Filter
             </Button>
           </View>
         </ScrollView>
-
-        {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text style={{marginRight:5, fontSize:12,}}>1 Peserta</Text> 
-            <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:15,}}>Rp. 3.000.000</Text> 
-          </View>
-          <View style={{alignItems: 'flex-end', flex:1}}>
-            <Button
-              containerStyle={{height:35, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
-              // onPress={() => this._handlePress()}
-              onPress={() => this.props.navigation.navigate(
-                'CalendarView'//, { list: response.activityList}
-              )}
-            >
-              Tambah ke Troli
-            </Button>
-          </View>
-        </View>
 
       </View>
     );

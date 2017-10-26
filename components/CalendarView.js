@@ -12,9 +12,9 @@ export default class CalendarView extends Component {
 
     // Moment.locale('id');
     this.state = {
-      selectedDates : null,
+      selectedDate : null,
       markedDates : {
-        '2017-11-20': {marked: true},
+        // '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
         '2017-10-24': {disabled: true},
         
@@ -35,24 +35,31 @@ export default class CalendarView extends Component {
   };
 
   _selectDate = dateString => {
-    let {markedDates, selectedDates} = this.state;
+    let {markedDates, selectedDate} = this.state;
 
-    //// set remove prev selectedDates from markedDates
-    if (selectedDates) markedDates[selectedDates] = {selected: false};
-    // markedDates[selectedDates] = [{startingDay: true, color: 'blue'}]
+    //// if clicked date is disabled, do nothing
+    if (markedDates[dateString] && markedDates[dateString].disabled)
+      return;
+
+    //// set remove prev selectedDate from markedDates
+    if (selectedDate) markedDates[selectedDate] = {selected: false};
+    // if (selectedDate) delete markedDates[selectedDate].selected;
+    // markedDates[selectedDate] = [{startingDay: true, color: 'blue'}]
     
-    //// set selectedDates
-    selectedDates = dateString;
+    //// set selectedDate
+    selectedDate = dateString;
     markedDates[dateString] = {selected: true};
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
-    this.setState({ markedDates, selectedDates });
+    this.setState({ markedDates, selectedDate });
+    //// TODO: all state has already changed but the ui only partly updated
+    //// (only text is updated, CalendarList's marked date isn't)
   }
 
   render() {
-    let {selectedDates} = this.state;
-    let date = (selectedDates)
-      ? Moment(selectedDates).format('D MMM')
+    let {selectedDate} = this.state;
+    let date = (selectedDate)
+      ? Moment(selectedDate).format('ddd, D MMM YYYY')
       : "Pilih Tanggal";
     return(
       <View>
@@ -80,9 +87,9 @@ export default class CalendarView extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#ffffff'}}
-            // onPress={() => this.props.navigation.navigate(
-            //   'CalendarView'//, { list: response.activityList}
-            // )}
+            onPress={() => this.props.navigation.navigate(
+              'ParticipantChoice', { date: selectedDate }
+            )}
           >
             Pilih Tanggal
           </Button>
