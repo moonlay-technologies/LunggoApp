@@ -17,8 +17,8 @@ import Checkout from '../screens/Checkout';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: Checkout,
-      //screen: LoginScreen,
+      // screen: Checkout,
+      screen: LoginScreen,
       //screen: DetailScreen,
       // screen: MainTabNavigator,
       //screen: CalendarView,
