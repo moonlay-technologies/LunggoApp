@@ -5,8 +5,8 @@ import ImageSlider from 'react-native-image-slider';
 import MapView from 'react-native-maps';
 import Panel from '../components/Panel';
 import Button from 'react-native-button';
-import { CheckBox } from 'react-native-elements'
-
+import { CheckBox } from 'react-native-elements';
+import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
@@ -37,7 +37,7 @@ export default class ParticipantChoice extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        activityId: 1,
+        activityId: "ADM-2",
         contact: {
           title: 1,
           name: "Tony",
@@ -93,9 +93,9 @@ export default class ParticipantChoice extends Component {
             <Button
               containerStyle={{height:35, flex:1, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#ffffff'}}
-              // onPress={() => this._handlePress()}
+              onPress={() => this.props.navigation.navigate('AddGuest')}
             >
-              Tambah Guest
+              Tambah Peserta Baru
             </Button>
           </View>
         </ScrollView>
@@ -104,7 +104,12 @@ export default class ParticipantChoice extends Component {
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
             <Text style={{marginRight:5, fontSize:12,}}>1 Peserta</Text> 
-            <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:15,}}>Rp. 3.000.000</Text> 
+            <Text style={{
+              color:'green',
+              marginRight:3,
+              fontWeight: 'bold',
+              fontSize:15,
+            }}>{ Formatter.price(3020000) }</Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button

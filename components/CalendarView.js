@@ -14,7 +14,7 @@ export default class CalendarView extends Component {
     this.state = {
       selectedDate : null,
       markedDates : {
-        '2017-11-20': {marked: true},
+        // '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
         '2017-10-24': {disabled: true},
         
@@ -37,8 +37,13 @@ export default class CalendarView extends Component {
   _selectDate = dateString => {
     let {markedDates, selectedDate} = this.state;
 
+    //// if clicked date is disabled, do nothing
+    if (markedDates[dateString] && markedDates[dateString].disabled)
+      return;
+
     //// set remove prev selectedDate from markedDates
     if (selectedDate) markedDates[selectedDate] = {selected: false};
+    // if (selectedDate) delete markedDates[selectedDate].selected;
     // markedDates[selectedDate] = [{startingDay: true, color: 'blue'}]
     
     //// set selectedDate
@@ -47,10 +52,9 @@ export default class CalendarView extends Component {
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
     this.setState({ markedDates, selectedDate });
-    console.log(selectedDate)
-    console.log(markedDates)
+    //// TODO: all state has already changed but the ui only partly updated
+    //// (only text is updated, CalendarList's marked date isn't)
   }
-
 
   render() {
     let {selectedDate} = this.state;

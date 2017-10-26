@@ -13,6 +13,10 @@ import {
 
 export default class LoginScreen extends Component<{}> {
 
+  static navigationOptions = {
+    title: 'Peserta Baru',
+  };
+
   render() {
     return (
       <View style={styles.container}>

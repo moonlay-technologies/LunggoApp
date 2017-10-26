@@ -29,6 +29,7 @@ const RootStackNavigator = StackNavigator(
     DetailScreen: { screen: DetailScreen },
     CalendarView: { screen: CalendarView },
     ParticipantChoice: { screen: ParticipantChoice },
+    AddGuest: { screen: AddGuest },
   },
   {
     navigationOptions: () => ({
