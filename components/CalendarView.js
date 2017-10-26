@@ -47,13 +47,12 @@ export default class CalendarView extends Component {
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
     this.setState({ markedDates, selectedDate });
+    console.log(selectedDate)
+    console.log(markedDates)
   }
 
 
   render() {
-    if(this.props.navigation.state.params)
-      console.log(this.props.navigation.state.params.date)
-    else console.log("un")
     let {selectedDate} = this.state;
     let date = (selectedDate)
       ? Moment(selectedDate).format('ddd, D MMM YYYY')

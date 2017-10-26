@@ -5,40 +5,42 @@ import {
   StyleSheet, Image, View, Text,
   TouchableHighlight, FlatList,
 } from 'react-native';
-
-//// Format price to Rp1.000.000
-var priceFormatter = price => "Rp" +
-  price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+import * as Formatter from '../components/Formatter';
 
 class ListItem extends React.PureComponent {
+
   _onPress = () => {
-    this.props.onPressItem(this.props.index);
+    this.props.onPressItem(this.props.item);
   }
 
   render() {
-    const item = this.props.item;
+    const {item} = this.props;
     // const price = item.price_formatted.split(' ')[0];
     return (
       <TouchableHighlight
         onPress={this._onPress}
         underlayColor='#dddddd'>
         <View style={styles.rowContainer}>
+
           <View style={styles.containerItem}>
             <Image style={styles.thumb}  source={{ uri: item.imgSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
-              <Text style={styles.price}>{priceFormatter(item.price)}</Text>
+              <Text style={styles.price}>
+                { Formatter.price(item.price) }
+              </Text>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{marginRight:7}}>Bintang</Text>
                 <Text>20 Reviews</Text>
               </View>
             </View>
           </View>
+
           <View style={styles.containerItem2}>
             <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
-              <Text style={styles.price}>{priceFormatter(item.price)}</Text>
+              <Text style={styles.price}>{Formatter.price(item.price)}</Text>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{marginRight:7}}>Bintang</Text>
                 <Text>20 Reviews</Text>
@@ -50,6 +52,7 @@ class ListItem extends React.PureComponent {
       </TouchableHighlight>
     );
   }
+
 }
 
 export default class SearchResults extends Component {
@@ -68,11 +71,9 @@ export default class SearchResults extends Component {
     />
   );
 
-  _onPressItem = (index) => {
-    console.log("Pressed row: "+index);
-    this.props.navigation.navigate(
-      'DetailScreen'//, { list: response.activityList}
-    )
+  _onPressItem = (item) => {
+    console.log(item);
+    this.props.navigation.navigate('DetailScreen', {details: item})
   };
   
   render() {
@@ -80,8 +81,7 @@ export default class SearchResults extends Component {
       <FlatList
         data={this.props.navigation.state.params.list}
         keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-      />
+        renderItem={this._renderItem} />
     );
   }
 

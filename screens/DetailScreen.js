@@ -6,6 +6,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
+import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
@@ -32,6 +33,7 @@ export default class DetailScreen extends Component {
   };
 
   render() {
+    const { details } = this.props.navigation.state.params;
     return (
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View>
@@ -39,39 +41,49 @@ export default class DetailScreen extends Component {
           style={{marginBottom:60,marginTop:60}}
         >
           <ImageSlider height={350} images={[
-            require('../assets/images/detailimg.jpg'),
+            details.imgSrc,
             require('../assets/images/detailimg.jpg'),
             require('../assets/images/detailimg.jpg')
           ]}/>
           <View style={styles.container}>
 
             <Text style={styles.activityTitle}>
-              Tour Title 03
+              { details.name }
             </Text>
             <Text style={styles.locationActivity}>
-              Location | Activity small description 
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.icon}source={require('../assets/icons/time.png')}/>
+              <Image style={styles.icon} 
+                source={require('../assets/icons/time.png')}
+              />
               <Text style={styles.timeActivity}>
-                5 hari 
+                { details.city }
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
+              <Image style={styles.icon} 
+                source={require('../assets/icons/time.png')}
+              />
               <Text style={styles.timeActivity}>
-                20 orang 
+                **5 hari**
               </Text>
             </View>
+            {/*<View style={{flex: 1, flexDirection: 'row'}}>
+              <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
+              <Text style={styles.timeActivity}>
+                **20 orang**
+              </Text>
+            </View>*/}
 
             <View style={styles.divider}/>
 
             <View style={styles.containerdescriptionActivity}>
               <Text style={styles.sectionTitle}>
-                Tour Description 
+                Tour Description
               </Text>
               <Text style={styles.descriptionActivity}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                ****Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
                 nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat 
                 cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -231,7 +243,12 @@ export default class DetailScreen extends Component {
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:15,}}>Rp. 3.000.000</Text> 
+              <Text style={{
+                color:'green',
+                marginRight:3,
+                fontWeight: 'bold',
+                fontSize:15,
+              }}>{ Formatter.price(details.price) }</Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
             <View style={{flexDirection: 'row',  }}>
