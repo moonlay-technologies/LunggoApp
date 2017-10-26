@@ -11,12 +11,14 @@ import LoginScreen from '../screens/LoginScreen';
 import AddParticipant from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
+import MyBooking from '../screens/MyBooking';
 import ParticipantChoice from '../screens/ParticipantChoice';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      //screen: MyBooking,
       // screen: ParticipantChoice,
       screen: LoginScreen,
       //screen: DetailScreen,
