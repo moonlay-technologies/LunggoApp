@@ -8,7 +8,7 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
-import AddGuest from '../screens/AddGuest';
+import AddParticipant from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import ParticipantChoice from '../screens/ParticipantChoice';
@@ -29,7 +29,7 @@ const RootStackNavigator = StackNavigator(
     DetailScreen: { screen: DetailScreen },
     CalendarView: { screen: CalendarView },
     ParticipantChoice: { screen: ParticipantChoice },
-    AddGuest: { screen: AddGuest },
+    AddParticipant: { screen: AddParticipant },
   },
   {
     navigationOptions: () => ({
