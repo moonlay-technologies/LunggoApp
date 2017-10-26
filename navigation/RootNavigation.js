@@ -11,13 +11,13 @@ import LoginScreen from '../screens/LoginScreen';
 import AddGuest from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
-import Filter from '../screens/Filter';
+import MyBooking from '../screens/MyBooking';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: Filter,
+      screen: MyBooking,
       //screen: LoginScreen,
       //screen: DetailScreen,
       // screen: MainTabNavigator,
