@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
 import { StyleSheet, Platform, View, Text } from 'react-native';
 import Button from 'react-native-button';
+import Moment from 'moment';
+import 'moment/locale/id';
 
 export default class CalendarView extends Component {
 
   constructor (props) {
     super(props)
+
+    // Moment.locale('id');
     this.state = {
+      selectedDate : null,
       markedDates : {
-        '2017-11-20': {marked: true},
+        // '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
         '2017-10-24': {disabled: true},
         
@@ -30,13 +35,32 @@ export default class CalendarView extends Component {
   };
 
   _selectDate = dateString => {
-    let {markedDates} = this.state;
-    markedDates[dateString] = {selected: true}
+    let {markedDates, selectedDate} = this.state;
+
+    //// if clicked date is disabled, do nothing
+    if (markedDates[dateString] && markedDates[dateString].disabled)
+      return;
+
+    //// set remove prev selectedDate from markedDates
+    if (selectedDate) markedDates[selectedDate] = {selected: false};
+    // if (selectedDate) delete markedDates[selectedDate].selected;
+    // markedDates[selectedDate] = [{startingDay: true, color: 'blue'}]
+    
+    //// set selectedDate
+    selectedDate = dateString;
+    markedDates[dateString] = {selected: true};
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
-    this.setState({ markedDates });
+
+    this.setState({ markedDates, selectedDate });
+    //// TODO: all state has already changed but the ui only partly updated
+    //// (only text is updated, CalendarList's marked date isn't)
   }
 
   render() {
+    let {selectedDate} = this.state;
+    let date = (selectedDate)
+      ? Moment(selectedDate).format('ddd, D MMM YYYY')
+      : "Pilih Tanggal";
     return(
       <View>
         <CalendarList
@@ -49,15 +73,23 @@ export default class CalendarView extends Component {
         />
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text>19 Oct 2017</Text>
+            <Text>{date}</Text>
             <Text>12.00 - 15.00</Text>
           </View>
           <Button
-            containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+            containerStyle={{
+              height: 35,
+              width: 100,
+              paddingTop: 10,
+              paddingBottom: 10,
+              overflow: 'hidden',
+              borderRadius: 4,
+              backgroundColor: '#437ef7',
+            }}
             style={{fontSize: 12, color: '#ffffff'}}
-            // onPress={() => this.props.navigation.navigate(
-            //   'CalendarView'//, { list: response.activityList}
-            // )}
+            onPress={() => this.props.navigation.navigate(
+              'ParticipantChoice', { date: selectedDate }
+            )}
           >
             Pilih Tanggal
           </Button>

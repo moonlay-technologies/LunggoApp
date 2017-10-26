@@ -26,7 +26,7 @@ export default class LikeShareHeaderButton extends Component {
           //onPress={() => this.props.navigate('Notification')}
           >
           <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'}
+            name={Platform.OS === 'ios' ? 'ios-heart-outline' : 'md-heart'}
             size={28}
             style={{ marginBottom: 0,marginRight:15,}}
           />

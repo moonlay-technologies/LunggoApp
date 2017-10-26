@@ -8,17 +8,19 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
-import AddGuest from '../screens/AddGuest';
+import AddParticipant from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
+import ParticipantChoice from '../screens/ParticipantChoice';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: MyBooking,
-      //screen: LoginScreen,
+      //screen: MyBooking,
+      // screen: ParticipantChoice,
+      screen: LoginScreen,
       //screen: DetailScreen,
       // screen: MainTabNavigator,
       //screen: CalendarView,
@@ -28,18 +30,14 @@ const RootStackNavigator = StackNavigator(
     SearchResults: { screen: SearchResults },
     DetailScreen: { screen: DetailScreen },
     CalendarView: { screen: CalendarView },
+    ParticipantChoice: { screen: ParticipantChoice },
+    AddParticipant: { screen: AddParticipant },
   },
   {
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
       },
-      // headerRight:  <Ionicons
-      //                 name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
-      //                 size={28}
-      //                 style={{ marginBottom: -3 }}
-      //                 // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-      //               />,
     }),
   }
 );
