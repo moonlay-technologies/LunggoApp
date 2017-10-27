@@ -23,7 +23,7 @@ class ListItem extends React.PureComponent {
         <View style={styles.rowContainer}>
 
           <View style={styles.containerItem}>
-            <Image style={styles.thumb}  source={{ uri: item.imgSrc }} />
+            <Image style={styles.thumb}  source={{ uri: item.mediaSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
               <Text style={styles.price}>
@@ -37,7 +37,7 @@ class ListItem extends React.PureComponent {
           </View>
 
           <View style={styles.containerItem2}>
-            <Image style={styles.thumb} source={{ uri: item.imgSrc }} />
+            <Image style={styles.thumb} source={{ uri: item.mediaSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
               <Text style={styles.price}>{Formatter.price(item.price)}</Text>

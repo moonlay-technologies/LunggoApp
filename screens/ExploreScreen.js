@@ -72,6 +72,7 @@ export default class ExploreScreen extends React.Component {
       .then(response => {
         this.setState({ isLoading: false });
         this._handleResponse(response);
+        // console.log(response)
       })
       .catch(error => {
         this.setState({

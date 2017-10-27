@@ -88,7 +88,10 @@ export default class CalendarView extends Component {
             }}
             style={{fontSize: 12, color: '#ffffff'}}
             onPress={() => this.props.navigation.navigate(
-              'ParticipantChoice', { date: selectedDate }
+              'ParticipantChoice', {
+                date: selectedDate,
+                activityId: this.props.navigation.state.params.activityId
+              }
             )}
           >
             Pilih Tanggal

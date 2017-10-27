@@ -18,6 +18,7 @@ import ParticipantChoice from '../screens/ParticipantChoice';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      // screen: Checkout,
       //screen: MyBooking,
       // screen: ParticipantChoice,
       screen: LoginScreen,

@@ -41,7 +41,7 @@ export default class DetailScreen extends Component {
           style={{marginBottom:60,marginTop:60}}
         >
           <ImageSlider height={350} images={[
-            details.imgSrc,
+            details.mediaSrc,
             require('../assets/images/detailimg.jpg'),
             require('../assets/images/detailimg.jpg')
           ]}/>
@@ -66,7 +66,7 @@ export default class DetailScreen extends Component {
                 source={require('../assets/icons/time.png')}
               />
               <Text style={styles.timeActivity}>
-                **5 hari**
+                { details.duration.amount +" "+ details.duration.unit }
               </Text>
             </View>
             {/*<View style={{flex: 1, flexDirection: 'row'}}>
@@ -260,7 +260,8 @@ export default class DetailScreen extends Component {
             <Button
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#ffffff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView')}
+              onPress={() => this.props.navigation.navigate('CalendarView',
+                             {activityId: details.id})}
             >
               Lihat Tanggal
             </Button>
