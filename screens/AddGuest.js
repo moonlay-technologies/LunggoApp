@@ -16,7 +16,7 @@ export default class AddParticipant extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      friendName: null,
+      name: null,
       birthDate : null,
       email : null,
       tel : null,
@@ -28,6 +28,17 @@ export default class AddParticipant extends Component {
     title: 'Peserta Baru',
   };
 
+  _add = () => {
+    //// validation
+    if (!this.state.name) return;
+    
+    //// if validation passed
+    //// pass data to ParticipanChoice
+    const { navigation } = this.props;
+    navigation.goBack();
+    navigation.state.params.addParticipantListItem(this.state);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,8 +48,8 @@ export default class AddParticipant extends Component {
         <TextInput
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
-          onChangeText={ friendName => this.setState({friendName}) }
-          value={this.state.friendName}
+          onChangeText={ name => this.setState({name}) }
+          value={this.state.name}
           placeholder="ex: John Doe"
         />
         <Text style={styles.label}>
@@ -93,7 +104,7 @@ export default class AddParticipant extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 14, color: '#ffffff'}}
-            // onPress={() => this._blabla()}
+            onPress={this._add}
           >
             Tambahkan
           </Button>

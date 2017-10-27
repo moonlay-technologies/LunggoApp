@@ -22,6 +22,10 @@ export default class ParticipantChoice extends Component {
     super(props)
     this.state = {
       checked: false,
+      participants: [
+        { name: "Ali Zainal" },
+        { name: "John Doe (me)" },
+      ]
     };
   }
 
@@ -37,10 +41,10 @@ export default class ParticipantChoice extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        activityId: "ADM-2",
+        activityId: this.props.navigation.state.params.activityId,
         contact: {
           title: 1,
-          name: "Tony",
+          name: "Testing",
           countryCallCd: 62,
           phone : 1234567890,
           email: "developer@travelmadezy.com",
@@ -62,42 +66,48 @@ export default class ParticipantChoice extends Component {
     });
   }
 
+  addParticipantListItem = newParticipantObj => {
+    let {participants} = this.state;
+    participants.push(newParticipantObj)
+    console.log(participants)
+    this.setState({participants})
+  }
+
   render() {
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View style={styles.container}>
-
-        <ScrollView style={{marginBottom:60,marginTop:60,}}>
-          <View>
-            <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Ali Zainal' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
+        <ScrollView style={{ marginBottom:60, marginTop:60, }}>
+          {this.state.participants.map( (participant, index) =>
+            <View key={index}>
+              <View style={{flexDirection: 'row'}}>
+                <CheckBox style={{backgroundColor:'#fff'}}
+                  title={participant.name}
+                  checked={this.state.checked} />
+                <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
+                  <Text>Edit</Text>
+                </View>
               </View>
+              <View style={styles.divider}/>
             </View>
-            <View style={styles.divider}/>
-            <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Guest1' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
-              </View>
-            </View>
-            <View style={styles.divider}/>
-            <View style={{flexDirection: 'row'}}>
-              <CheckBox style={{backgroundColor:'#ffffff'}} title='Guest2' checked={this.state.checked} />
-              <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                <Text>Edit</Text>
-              </View>
-            </View>
-            <View style={styles.divider}/>
-            <Button
-              containerStyle={{height:35, flex:1, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
-              onPress={() => this.props.navigation.navigate('AddGuest')}
-            >
-              Tambah Peserta Baru
-            </Button>
-          </View>
+          )}
+          <Button
+            containerStyle={{
+              height: 35,
+              flex: 1,
+              paddingTop: 10,
+              paddingBottom: 10,
+              overflow: 'hidden',
+              borderRadius: 4,
+              backgroundColor: '#437ef7',
+            }}
+            style={{fontSize: 12, color: '#fff'}}
+            onPress={() => this.props.navigation.navigate(
+              "AddParticipant",
+              { addParticipantListItem: this.addParticipantListItem }
+            )}
+          >
+            Tambah Peserta Baru
+          </Button>
         </ScrollView>
 
         {/*bottom CTA button*/}
@@ -113,8 +123,16 @@ export default class ParticipantChoice extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
+              containerStyle={{
+                height: 35,
+                width: 120,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7',
+              }}
+              style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.postData()}
               //onPress={() => this.props.navigation.navigate(
               //  'CalendarView', { date: this.props.navigation.state.params.date }
