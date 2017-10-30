@@ -15,43 +15,55 @@ export default class Panel extends Component {
 
     this.state = {       
       title: props.title,
-      expanded: true
+      expanded: true,
+      animation: new Animated.Value()
     };
   }
 
   toggle() {
+    let { minHeight, maxHeight, expanded, animation } = this.state;
+    let initialValue = expanded ? maxHeight + minHeight : minHeight,
+          finalValue = expanded ? minHeight : maxHeight + minHeight;
+
+    this.setState({expanded : ! expanded});
+
+    this.state.animation.setValue(initialValue);  //Step 3
+    Animated.spring(animation, {toValue: finalValue}).start();
+  }
+
+  _setMinHeight(event) {
+    this.setState({minHeight : event.nativeEvent.layout.height})
+  }
+  _setMaxHeight(event) {
+    this.setState({maxHeight : event.nativeEvent.layout.height})
   }
 
   render() {
-    let icon = this.icons['down'];
-
-    if(this.state.expanded) {
-      icon = this.icons['up'];   //Step 4
-    }
-
-    //Step 5
+    let icon = (this.state.expanded) ? this.icons['up'] : this.icons['down'];
     return ( 
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
+      <Animated.View style={styles.container,{height: this.state.animation}}>
+
+        <View style={styles.titleContainer}
+          onLayout={this._setMinHeight.bind(this)}
+        >
           <Text style={styles.title}>
             {this.state.title}
           </Text>
           <TouchableHighlight 
-            style={styles.button} 
             onPress={this.toggle.bind(this)}
-            underlayColor="#f1f1f1">
-            <Image
-              style={styles.buttonImage}
-              source={icon}
-            ></Image>
+            underlayColor="#f1f1f1"
+          >
+            <Image style={styles.buttonImage} source={icon}></Image>
           </TouchableHighlight>
         </View>
 
-        <View style={styles.body}>
+        <View style={styles.body}
+          onLayout={this._setMaxHeight.bind(this)}
+        >
           {this.props.children}
         </View>
 
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -59,18 +71,18 @@ export default class Panel extends Component {
 var styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    marginTop:20,
-    overflow:'hidden'
+    marginTop: 20,
+    overflow: 'hidden'
   },
   titleContainer: {
     flexDirection: 'row'
   },
   title: {
     flex    : 1,
-    color   :'#2a2f43',
+    padding : 10,
+    color   : '#2a2f43',
+    fontWeight: 'bold',
     fontSize: 14,
-  },
-  button: {
   },
   buttonImage: {
     width : 20,
@@ -81,5 +93,6 @@ var styles = StyleSheet.create({
     paddingTop: 0,
     borderBottomColor: "#cdcdcd",
     borderBottomWidth: 1,
+    overflow: 'hidden'
   }
 });

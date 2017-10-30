@@ -182,13 +182,16 @@ export default class DetailScreen extends Component {
 
             <View style={styles.containerdescriptionActivity}>
               <Panel title="Agenda">
-                <Text>..</Text>
+                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et</Text>
               </Panel>
               <Panel title="Guest Requirement">
-                <Text>..</Text>
+                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et</Text>
               </Panel>
-              <Panel title="Cancelation Policiy">
-                <Text>..</Text>
+              <Panel title="Cancelation Policy" style={{overflow:'hidden'}}>
+                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sed do eiusmod tempor incididunt ut labore et</Text>
               </Panel>{/* end panel */}
             </View>{/* end containerdescriptionActivity */}
 
@@ -258,8 +261,16 @@ export default class DetailScreen extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
+              containerStyle={{
+                height: 35,
+                width: 100,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7'
+              }}
+              style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.props.navigation.navigate('CalendarView',
                              {activityId: details.id})}
             >
@@ -343,6 +354,7 @@ const styles = StyleSheet.create({
   },
   containerdescriptionActivity: {
     marginBottom: 18,
+    flex: 1
   },
   sectionTitle: {
     fontWeight: 'bold',
