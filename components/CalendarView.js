@@ -90,7 +90,8 @@ export default class CalendarView extends Component {
             onPress={() => this.props.navigation.navigate(
               'ParticipantChoice', {
                 date: selectedDate,
-                activityId: this.props.navigation.state.params.activityId
+                activityId: this.props.navigation.state.params.activityId,
+                price: this.props.navigation.state.params.price,
               }
             )}
           >

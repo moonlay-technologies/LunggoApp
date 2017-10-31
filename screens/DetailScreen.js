@@ -261,7 +261,7 @@ export default class DetailScreen extends Component {
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#ffffff'}}
               onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id})}
+                             {activityId: details.id, price:details.price})}
             >
               Lihat Tanggal
             </Button>

@@ -20,8 +20,8 @@ const RootStackNavigator = StackNavigator(
     Main: {
       // screen: Checkout,
       //screen: MyBooking,
-      // screen: ParticipantChoice,
-      screen: LoginScreen,
+      screen: ParticipantChoice,
+      // screen: LoginScreen,
       //screen: DetailScreen,
       // screen: MainTabNavigator,
       //screen: CalendarView,

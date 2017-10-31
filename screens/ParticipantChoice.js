@@ -21,7 +21,7 @@ export default class ParticipantChoice extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      checked: false,
+      paxListItemIndexes: [undefined,true],
       participants: [
         { name: "Ali Zainal" },
         { name: "John Doe (me)" },
@@ -61,7 +61,7 @@ export default class ParticipantChoice extends Component {
             passportCountry : "en",
           }
         ],
-        // date: this.props.navigation.state.params.date,
+        date: this.props.navigation.state.params.date,
       })
     });
   }
@@ -69,21 +69,35 @@ export default class ParticipantChoice extends Component {
   addParticipantListItem = newParticipantObj => {
     let {participants} = this.state;
     participants.push(newParticipantObj)
-    console.log(participants)
     this.setState({participants})
+  }
+
+  _checkPax = index => {
+    // let {paxListItemIndexes} = this.state;
+    console.log(index)
+    // paxListItemIndexes[index] = !paxListItemIndexes[index];
+    // console.log(paxListItemIndexes[index])
+    // this.setState({ paxListItemIndexes })
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={{ marginBottom:60, marginTop:60, }}>
+        <ScrollView style={{ marginBottom: 60, marginTop: 60, }}>
           {this.state.participants.map( (participant, index) =>
             <View key={index}>
               <View style={{flexDirection: 'row'}}>
-                <CheckBox style={{backgroundColor:'#fff'}}
+                <CheckBox style={{backgroundColor: '#fff'}}
                   title={participant.name}
-                  checked={this.state.checked} />
-                <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
+                  checked={ this.state.paxListItemIndexes[index] }
+                  // onPress={ index => this._checkPax(index) }
+                  // onPress={ console.log(index) }
+                />
+                <View style={{
+                  alignItems: 'flex-end',
+                  flex: 1,
+                  marginTop: 3,
+                }}>
                   <Text>Edit</Text>
                 </View>
               </View>
@@ -101,7 +115,7 @@ export default class ParticipantChoice extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#fff'}}
-            onPress={() => this.props.navigation.navigate(
+            onPress={ () => this.props.navigation.navigate(
               "AddParticipant",
               { addParticipantListItem: this.addParticipantListItem }
             )}
@@ -112,14 +126,20 @@ export default class ParticipantChoice extends Component {
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text style={{marginRight:5, fontSize:12,}}>1 Peserta</Text> 
+          <View style={{alignItems: 'flex-start', flex: 1}}>
+            <Text style={{marginRight: 5, fontSize: 12,}}>
+              1 Peserta
+            </Text>
             <Text style={{
-              color:'green',
-              marginRight:3,
+              color: 'green',
+              marginRight: 3,
               fontWeight: 'bold',
-              fontSize:15,
-            }}>{ Formatter.price(3020000) }</Text> 
+              fontSize: 15,
+            }}>
+              {
+                // Formatter.price(this.props.navigation.state.params.price)
+              }
+            </Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
