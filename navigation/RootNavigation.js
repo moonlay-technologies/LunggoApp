@@ -13,6 +13,7 @@ import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
 import ParticipantChoice from '../screens/ParticipantChoice';
+import WebViewScreen from '../screens/WebViewScreen';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
@@ -33,6 +34,7 @@ const RootStackNavigator = StackNavigator(
     CalendarView: { screen: CalendarView },
     ParticipantChoice: { screen: ParticipantChoice },
     AddParticipant: { screen: AddParticipant },
+    WebViewScreen: { screen: WebViewScreen },
   },
   {
     navigationOptions: () => ({
