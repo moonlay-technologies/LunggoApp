@@ -13,11 +13,13 @@ import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
 import ParticipantChoice from '../screens/ParticipantChoice';
+import Registrasi from '../screens/Registrasi';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      //screen: Registrasi,
       // screen: Checkout,
       //screen: MyBooking,
       // screen: ParticipantChoice,
