@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
+import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import * as Formatter from '../components/Formatter';
@@ -180,21 +180,20 @@ export default class DetailScreen extends Component {
               Baca 20 Review Lainnya
             </Text>
 
-            <View style={styles.containerdescriptionActivity}>
-              <Panel title="Agenda">
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et</Text>
-              </Panel>
-              <Panel title="Guest Requirement">
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et</Text>
-              </Panel>
-              <Panel title="Cancelation Policy" style={{overflow:'hidden'}}>
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et</Text>
-              </Panel>{/* end panel */}
-            </View>{/* end containerdescriptionActivity */}
-
+            <Accordion style={styles.containerdescriptionActivity} sections={[
+              {
+                title: 'Agenda',
+                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
+              },
+              {
+                title: 'Guest Requirement',
+                content: 'Lorem ipsum...',
+              },
+              {
+                title: 'Cancelation Policy',
+                content: 'Lorem ipsum...',
+              },
+            ]}/>
             <Text style={styles.sectionTitle}>
               Similar Adventure
             </Text>
