@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
 import MapView from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import { Slider } from 'react-native-elements';
 import { CheckBox } from 'react-native-elements'

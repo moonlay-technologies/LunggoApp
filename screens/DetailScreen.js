@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
+import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import * as Formatter from '../components/Formatter';
@@ -180,18 +180,20 @@ export default class DetailScreen extends Component {
               Baca 20 Review Lainnya
             </Text>
 
-            <View style={styles.containerdescriptionActivity}>
-              <Panel title="Agenda">
-                <Text>..</Text>
-              </Panel>
-              <Panel title="Guest Requirement">
-                <Text>..</Text>
-              </Panel>
-              <Panel title="Cancelation Policiy">
-                <Text>..</Text>
-              </Panel>{/* end panel */}
-            </View>{/* end containerdescriptionActivity */}
-
+            <Accordion style={styles.containerdescriptionActivity} sections={[
+              {
+                title: 'Agenda',
+                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
+              },
+              {
+                title: 'Guest Requirement',
+                content: 'Lorem ipsum...',
+              },
+              {
+                title: 'Cancelation Policy',
+                content: 'Lorem ipsum...',
+              },
+            ]}/>
             <Text style={styles.sectionTitle}>
               Similar Adventure
             </Text>
@@ -258,8 +260,16 @@ export default class DetailScreen extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
+              containerStyle={{
+                height: 35,
+                width: 100,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7'
+              }}
+              style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.props.navigation.navigate('CalendarView',
                              {activityId: details.id})}
             >
@@ -343,6 +353,7 @@ const styles = StyleSheet.create({
   },
   containerdescriptionActivity: {
     marginBottom: 18,
+    flex: 1
   },
   sectionTitle: {
     fontWeight: 'bold',
