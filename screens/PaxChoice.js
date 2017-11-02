@@ -20,8 +20,8 @@ export default class PaxChoice extends Component {
     this.state = {
       paxListItemIndexes: [undefined,true],
       pax: [
+        { key:0, name: "John Doe (me)" },
         { key:1,id:1, name: "Ali Zainal" },
-        { key:2, name: "John Doe (me)" },
       ]
     };
   }
@@ -61,12 +61,20 @@ export default class PaxChoice extends Component {
         date: this.props.navigation.state.params.date,
       })
     });
+    this.props.navigation.navigate(
+     'MainTabNavigator',
+     // { date: this.props.navigation.state.params.date }
+    )
+
   }
 
   addPaxListItem = newPaxObj => {
-    let {pax} = this.state;
+    let {pax,paxListItemIndexes} = this.state;
+    newPaxObj.key = pax.length;
+    paxListItemIndexes[pax.length] = true;
     pax.push(newPaxObj)
-    this.setState({pax})
+    console.log(paxListItemIndexes)
+    this.setState({pax,paxListItemIndexes})
   }
 
   _checkPax = index => {
@@ -80,8 +88,8 @@ export default class PaxChoice extends Component {
       <View style={{flexDirection: 'row'}}>
         <CheckBox style={{backgroundColor: '#fff'}}
           title={pax.name}
-          checked={ this.state.paxListItemIndexes[pax.id] }
-          onPress={ () => this._checkPax(pax.id) }
+          checked={ this.state.paxListItemIndexes[pax.key] }
+          onPress={ () => this._checkPax(pax.key) }
         />
         <View style={{
           alignItems: 'flex-end',
@@ -149,10 +157,6 @@ export default class PaxChoice extends Component {
               }}
               style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.postData()}
-              //onPress={() => this.props.navigation.navigate(
-              //  'CalendarView',
-              //  { date: this.props.navigation.state.params.date }
-              //)}
             >
               Tambah ke Troli
             </Button>
