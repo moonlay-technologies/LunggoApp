@@ -8,11 +8,11 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
-import AddParticipant from '../screens/AddGuest';
+import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
-import ParticipantChoice from '../screens/ParticipantChoice';
+import PaxChoice from '../screens/PaxChoice';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
@@ -20,7 +20,6 @@ const RootStackNavigator = StackNavigator(
     Main: {
       // screen: Checkout,
       //screen: MyBooking,
-      // screen: ParticipantChoice,
       screen: LoginScreen,
       //screen: DetailScreen,
       // screen: MainTabNavigator,
@@ -31,8 +30,8 @@ const RootStackNavigator = StackNavigator(
     SearchResults: { screen: SearchResults },
     DetailScreen: { screen: DetailScreen },
     CalendarView: { screen: CalendarView },
-    ParticipantChoice: { screen: ParticipantChoice },
-    AddParticipant: { screen: AddParticipant },
+    PaxChoice: { screen: PaxChoice },
+    AddPax: { screen: AddPax },
   },
   {
     navigationOptions: () => ({

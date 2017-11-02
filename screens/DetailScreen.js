@@ -186,7 +186,7 @@ export default class DetailScreen extends Component {
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
               },
               {
-                title: 'Guest Requirement',
+                title: 'Participant Requirement',
                 content: 'Lorem ipsum...',
               },
               {
@@ -271,7 +271,7 @@ export default class DetailScreen extends Component {
               }}
               style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id})}
+                             {activityId: details.id, price:details.price})}
             >
               Lihat Tanggal
             </Button>
