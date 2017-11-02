@@ -8,11 +8,11 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
-import AddPax from '../screens/AddGuest';
+import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
-import PaxChoice from '../screens/ParticipantChoice';
+import PaxChoice from '../screens/PaxChoice';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(

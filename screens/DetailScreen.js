@@ -184,7 +184,7 @@ export default class DetailScreen extends Component {
               <Panel title="Agenda">
                 <Text>..</Text>
               </Panel>
-              <Panel title="Guest Requirement">
+              <Panel title="Participant Requirement">
                 <Text>..</Text>
               </Panel>
               <Panel title="Cancelation Policiy">

@@ -26,7 +26,7 @@ export default class AddPax extends Component {
     if (!this.state.name) return;
     
     //// if validation passed
-    //// pass data to ParticipanChoice
+    //// pass data to PaxChoice
     const { navigation } = this.props;
     navigation.goBack();
     navigation.state.params.addPaxListItem(this.state);
