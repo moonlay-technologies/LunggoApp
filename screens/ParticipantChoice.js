@@ -1,15 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import { CheckBox } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,
+  Text, View, Image, TextInput, FlatList,
 } from 'react-native';
 
 export default class ParticipantChoice extends Component {
@@ -23,8 +20,8 @@ export default class ParticipantChoice extends Component {
     this.state = {
       paxListItemIndexes: [undefined,true],
       participants: [
-        { name: "Ali Zainal" },
-        { name: "John Doe (me)" },
+        { key:1,id:1, name: "Ali Zainal" },
+        { key:2, name: "John Doe (me)" },
       ]
     };
   }
@@ -73,37 +70,38 @@ export default class ParticipantChoice extends Component {
   }
 
   _checkPax = index => {
-    // let {paxListItemIndexes} = this.state;
-    console.log(index)
-    // paxListItemIndexes[index] = !paxListItemIndexes[index];
-    // console.log(paxListItemIndexes[index])
-    // this.setState({ paxListItemIndexes })
+    let {paxListItemIndexes} = this.state;
+    paxListItemIndexes[index] = !paxListItemIndexes[index];
+    this.setState({ paxListItemIndexes })
   }
+
+  _renderItem = pax =>
+    <View>
+      <View style={{flexDirection: 'row'}}>
+        <CheckBox style={{backgroundColor: '#fff'}}
+          title={pax.name}
+          checked={ this.state.paxListItemIndexes[pax.id] }
+          onPress={ () => this._checkPax(pax.id) }
+        />
+        <View style={{
+          alignItems: 'flex-end',
+          flex: 1,
+          marginTop: 3,
+        }}>
+          <Text>Edit</Text>
+        </View>
+      </View>
+      <View style={styles.divider}/>
+    </View>
 
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={{ marginBottom: 60, marginTop: 60, }}>
-          {this.state.participants.map( (participant, index) =>
-            <View key={index}>
-              <View style={{flexDirection: 'row'}}>
-                <CheckBox style={{backgroundColor: '#fff'}}
-                  title={participant.name}
-                  checked={ this.state.paxListItemIndexes[index] }
-                  // onPress={ index => this._checkPax(index) }
-                  // onPress={ console.log(index) }
-                />
-                <View style={{
-                  alignItems: 'flex-end',
-                  flex: 1,
-                  marginTop: 3,
-                }}>
-                  <Text>Edit</Text>
-                </View>
-              </View>
-              <View style={styles.divider}/>
-            </View>
-          )}
+        <FlatList
+          style={{ marginBottom: 60, marginTop: 60, }}
+          data={this.state.participants}
+          renderItem={ ({item}) => this._renderItem(item) }
+        />
           <Button
             containerStyle={{
               height: 35,
@@ -122,7 +120,6 @@ export default class ParticipantChoice extends Component {
           >
             Tambah Peserta Baru
           </Button>
-        </ScrollView>
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
