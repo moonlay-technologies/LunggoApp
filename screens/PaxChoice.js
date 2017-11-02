@@ -1,18 +1,15 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import { CheckBox } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,
+  Text, View, Image, TextInput, FlatList,
 } from 'react-native';
 
-export default class ParticipantChoice extends Component {
+export default class PaxChoice extends Component {
 
   static navigationOptions = {
     title: 'Pilih Peserta',
@@ -21,10 +18,10 @@ export default class ParticipantChoice extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      checked: false,
-      participants: [
-        { name: "Ali Zainal" },
-        { name: "John Doe (me)" },
+      paxListItemIndexes: [undefined,true],
+      pax: [
+        { key:0, name: "John Doe (me)" },
+        { key:1,id:1, name: "Ali Zainal" },
       ]
     };
   }
@@ -61,35 +58,59 @@ export default class ParticipantChoice extends Component {
             passportCountry : "en",
           }
         ],
-        // date: this.props.navigation.state.params.date,
+        date: this.props.navigation.state.params.date,
       })
     });
+    this.props.navigation.navigate(
+     'MainTabNavigator',
+     // { date: this.props.navigation.state.params.date }
+    )
+
   }
 
-  addParticipantListItem = newParticipantObj => {
-    let {participants} = this.state;
-    participants.push(newParticipantObj)
-    console.log(participants)
-    this.setState({participants})
+  addPaxListItem = newPaxObj => {
+    let {pax,paxListItemIndexes} = this.state;
+    newPaxObj.key = pax.length;
+    paxListItemIndexes[pax.length] = true;
+    pax.push(newPaxObj)
+    console.log(paxListItemIndexes)
+    this.setState({pax,paxListItemIndexes})
   }
+
+  _checkPax = index => {
+    let {paxListItemIndexes} = this.state;
+    paxListItemIndexes[index] = !paxListItemIndexes[index];
+    this.setState({ paxListItemIndexes })
+  }
+
+  _renderItem = pax =>
+    <View>
+      <View style={{flexDirection: 'row'}}>
+        <CheckBox style={{backgroundColor: '#fff'}}
+          title={pax.name}
+          checked={ this.state.paxListItemIndexes[pax.key] }
+          onPress={ () => this._checkPax(pax.key) }
+        />
+        <View style={{
+          alignItems: 'flex-end',
+          flex: 1,
+          marginTop: 3,
+        }}>
+          <Text>Edit</Text>
+        </View>
+      </View>
+      <View style={styles.divider}/>
+    </View>
 
   render() {
+    let {navigation} = this.props;
     return (
       <View style={styles.container}>
-        <ScrollView style={{ marginBottom:60, marginTop:60, }}>
-          {this.state.participants.map( (participant, index) =>
-            <View key={index}>
-              <View style={{flexDirection: 'row'}}>
-                <CheckBox style={{backgroundColor:'#fff'}}
-                  title={participant.name}
-                  checked={this.state.checked} />
-                <View style={{alignItems: 'flex-end', flex:1, marginTop:3,}}>
-                  <Text>Edit</Text>
-                </View>
-              </View>
-              <View style={styles.divider}/>
-            </View>
-          )}
+        <FlatList
+          style={{ marginBottom: 60, marginTop: 60, }}
+          data={this.state.pax}
+          renderItem={ ({item}) => this._renderItem(item) }
+        />
           <Button
             containerStyle={{
               height: 35,
@@ -101,25 +122,27 @@ export default class ParticipantChoice extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#fff'}}
-            onPress={() => this.props.navigation.navigate(
-              "AddParticipant",
-              { addParticipantListItem: this.addParticipantListItem }
+            onPress={ () => navigation.navigate(
+              "AddPax", { addPaxListItem: this.addPaxListItem }
             )}
           >
             Tambah Peserta Baru
           </Button>
-        </ScrollView>
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
-            <Text style={{marginRight:5, fontSize:12,}}>1 Peserta</Text> 
+          <View style={{alignItems: 'flex-start', flex: 1}}>
+            <Text style={{marginRight: 5, fontSize: 12,}}>
+              1 Peserta
+            </Text>
             <Text style={{
-              color:'green',
-              marginRight:3,
+              color: 'green',
+              marginRight: 3,
               fontWeight: 'bold',
-              fontSize:15,
-            }}>{ Formatter.price(3020000) }</Text> 
+              fontSize: 15,
+            }}>
+              {Formatter.price(navigation.state.params.price)}
+            </Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
@@ -134,9 +157,6 @@ export default class ParticipantChoice extends Component {
               }}
               style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.postData()}
-              //onPress={() => this.props.navigation.navigate(
-              //  'CalendarView', { date: this.props.navigation.state.params.date }
-              //)}
             >
               Tambah ke Troli
             </Button>
