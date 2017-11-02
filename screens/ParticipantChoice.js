@@ -9,7 +9,7 @@ import {
   Text, View, Image, TextInput, FlatList,
 } from 'react-native';
 
-export default class ParticipantChoice extends Component {
+export default class PaxChoice extends Component {
 
   static navigationOptions = {
     title: 'Pilih Peserta',
@@ -19,7 +19,7 @@ export default class ParticipantChoice extends Component {
     super(props)
     this.state = {
       paxListItemIndexes: [undefined,true],
-      participants: [
+      pax: [
         { key:1,id:1, name: "Ali Zainal" },
         { key:2, name: "John Doe (me)" },
       ]
@@ -63,10 +63,10 @@ export default class ParticipantChoice extends Component {
     });
   }
 
-  addParticipantListItem = newParticipantObj => {
-    let {participants} = this.state;
-    participants.push(newParticipantObj)
-    this.setState({participants})
+  addPaxListItem = newPaxObj => {
+    let {pax} = this.state;
+    pax.push(newPaxObj)
+    this.setState({pax})
   }
 
   _checkPax = index => {
@@ -95,11 +95,12 @@ export default class ParticipantChoice extends Component {
     </View>
 
   render() {
+    let {navigation} = this.props;
     return (
       <View style={styles.container}>
         <FlatList
           style={{ marginBottom: 60, marginTop: 60, }}
-          data={this.state.participants}
+          data={this.state.pax}
           renderItem={ ({item}) => this._renderItem(item) }
         />
           <Button
@@ -113,9 +114,8 @@ export default class ParticipantChoice extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#fff'}}
-            onPress={ () => this.props.navigation.navigate(
-              "AddParticipant",
-              { addParticipantListItem: this.addParticipantListItem }
+            onPress={ () => navigation.navigate(
+              "AddPax", { addPaxListItem: this.addPaxListItem }
             )}
           >
             Tambah Peserta Baru
@@ -133,9 +133,7 @@ export default class ParticipantChoice extends Component {
               fontWeight: 'bold',
               fontSize: 15,
             }}>
-              {
-                // Formatter.price(this.props.navigation.state.params.price)
-              }
+              {Formatter.price(navigation.state.params.price)}
             </Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
@@ -152,7 +150,8 @@ export default class ParticipantChoice extends Component {
               style={{fontSize: 12, color: '#fff'}}
               onPress={() => this.postData()}
               //onPress={() => this.props.navigation.navigate(
-              //  'CalendarView', { date: this.props.navigation.state.params.date }
+              //  'CalendarView',
+              //  { date: this.props.navigation.state.params.date }
               //)}
             >
               Tambah ke Troli

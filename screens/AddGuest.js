@@ -2,16 +2,9 @@
 
 import React, { Component } from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, } from 'react-native';
 
-export default class AddParticipant extends Component {
+export default class AddPax extends Component {
 
   constructor (props) {
     super(props)
@@ -36,7 +29,7 @@ export default class AddParticipant extends Component {
     //// pass data to ParticipanChoice
     const { navigation } = this.props;
     navigation.goBack();
-    navigation.state.params.addParticipantListItem(this.state);
+    navigation.state.params.addPaxListItem(this.state);
   }
 
   render() {
@@ -103,7 +96,7 @@ export default class AddParticipant extends Component {
               borderRadius: 4,
               backgroundColor: '#437ef7',
             }}
-            style={{fontSize: 14, color: '#ffffff'}}
+            style={{fontSize: 14, color: '#fff'}}
             onPress={this._add}
           >
             Tambahkan
