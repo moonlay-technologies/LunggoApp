@@ -26,7 +26,8 @@ export default class WebViewScreen extends Component {
   render() {
     return (
       <WebView
-        source={{uri: 'https://travorama.com'}}
+        // source={{uri: 'http://www.facebook.com'}}
+        source={{uri: 'http://www.qa.travorama.com/id/Payment/Payment?rsvNo=16541079&regId=21001406722946777171319638716'}}
         // style={{marginTop: 20}}
       />
     );

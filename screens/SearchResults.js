@@ -72,7 +72,6 @@ export default class SearchResults extends Component {
   );
 
   _onPressItem = (item) => {
-    console.log(item);
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
   

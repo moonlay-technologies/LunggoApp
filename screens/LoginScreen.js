@@ -23,7 +23,7 @@ export default class LoginScreen extends Component<{}> {
   }
 
   _handlePress = () => {
-    this.props.navigation.navigate('WebViewScreen')
+    this.props.navigation.navigate('MainTabNavigator')
   }
   render() {
     return (

@@ -73,7 +73,6 @@ export default class PaxChoice extends Component {
     newPaxObj.key = pax.length;
     paxListItemIndexes[pax.length] = true;
     pax.push(newPaxObj)
-    console.log(paxListItemIndexes)
     this.setState({pax,paxListItemIndexes})
   }
 
@@ -156,7 +155,8 @@ export default class PaxChoice extends Component {
                 backgroundColor: '#437ef7',
               }}
               style={{fontSize: 12, color: '#fff'}}
-              onPress={() => this.postData()}
+              // onPress={() => this.postData()}
+              onPress={() => navigation.navigate('WebViewScreen')}
             >
               Tambah ke Troli
             </Button>
