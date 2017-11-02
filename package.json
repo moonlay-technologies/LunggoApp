@@ -1,8 +1,8 @@
 {
-  "name": "travorama",
+  "name": "Travorama",
   "version": "0.0.0",
-  "description": "Hello Expo!",
-  "author": null,
+  "description": "Make travel less hassle",
+  "author": "CarlosWirama",
   "license": "",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-21.0.2.tar.gz",
     "react-native-button": "^2.1.0",
     "react-native-calendars": "^1.7.1",
+    "react-native-collapsible": "^0.9.0",
     "react-native-elements": "^0.17.0",
     "react-native-image-slider": "^1.1.5",
     "react-native-maps": "^0.17.1",
