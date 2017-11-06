@@ -31,7 +31,7 @@ export default class PaxChoice extends Component {
     // let domain = 'api.travorama.com';
     let url = domain + '/v1/activities/book';
     
-    fetch(url, {
+    /*fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -60,10 +60,9 @@ export default class PaxChoice extends Component {
         ],
         date: this.props.navigation.state.params.date,
       })
-    });
+    });*/
     this.props.navigation.navigate(
-     'MainTabNavigator',
-     // { date: this.props.navigation.state.params.date }
+     'WebViewScreen', // { date: this.props.navigation.state.params.date }
     )
 
   }
@@ -73,7 +72,6 @@ export default class PaxChoice extends Component {
     newPaxObj.key = pax.length;
     paxListItemIndexes[pax.length] = true;
     pax.push(newPaxObj)
-    console.log(paxListItemIndexes)
     this.setState({pax,paxListItemIndexes})
   }
 
@@ -156,7 +154,8 @@ export default class PaxChoice extends Component {
                 backgroundColor: '#437ef7',
               }}
               style={{fontSize: 12, color: '#fff'}}
-              onPress={() => this.postData()}
+              // onPress={() => this.postData()}
+              onPress={() => navigation.navigate('WebViewScreen')}
             >
               Tambah ke Troli
             </Button>

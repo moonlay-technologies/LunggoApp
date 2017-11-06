@@ -72,11 +72,11 @@ export default class SearchResults extends Component {
   );
 
   _onPressItem = (item) => {
-    console.log(item);
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
   
   render() {
+    this.props.navigation.state.key = 'SearchResults'
     return (
       <FlatList
         data={this.props.navigation.state.params.list}

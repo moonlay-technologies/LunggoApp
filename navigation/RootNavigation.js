@@ -12,6 +12,7 @@ import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
+import WebViewScreen from '../screens/WebViewScreen';
 import PaxChoice from '../screens/PaxChoice';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
@@ -30,6 +31,7 @@ const RootStackNavigator = StackNavigator(
     SearchResults: { screen: SearchResults },
     DetailScreen: { screen: DetailScreen },
     CalendarView: { screen: CalendarView },
+    WebViewScreen: { screen: WebViewScreen },
     PaxChoice: { screen: PaxChoice },
     AddPax: { screen: AddPax },
   },
