@@ -14,11 +14,15 @@ import CalendarView from '../components/CalendarView';
 import MyBooking from '../screens/MyBooking';
 import WebViewScreen from '../screens/WebViewScreen';
 import PaxChoice from '../screens/PaxChoice';
+import Registrasi from '../screens/Registrasi';
+import BookingDetail from '../screens/BookingDetail';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      // screen: BookingDetail,
+      //screen: Registrasi,
       // screen: Checkout,
       //screen: MyBooking,
       screen: LoginScreen,

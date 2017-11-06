@@ -6,6 +6,7 @@ import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
+import { Rating } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
@@ -173,7 +174,7 @@ export default class DetailScreen extends Component {
               <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg1.jpg')}/>
             </View>
             <Text style={styles.isireview}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              sit amet, consectetur aaa adipiscing elit,
               sed do eiusmod tempor incididunt ut labore et
             </Text>
             <Text style={styles.hyperlink}>
@@ -204,7 +205,15 @@ export default class DetailScreen extends Component {
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{marginRight:7}}>Bintang</Text>
+                    <Rating
+                      type="star"
+                      fractions={1}
+                      startingValue={3.6}
+                      readonly
+                      imageSize={12}
+                      onFinishRating={this.ratingCompleted}
+                      style={{ paddingTop: 2.5, marginRight:5}}
+                    />
                     <Text>20 Reviews</Text>
                   </View>
                 </View>
@@ -213,7 +222,15 @@ export default class DetailScreen extends Component {
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{marginRight:7}}>Bintang</Text>
+                    <Rating
+                      type="star"
+                      fractions={1}
+                      startingValue={3.6}
+                      readonly
+                      imageSize={12}
+                      onFinishRating={this.ratingCompleted}
+                      style={{ paddingTop: 2.5, marginRight:5}}
+                    />
                     <Text>20 Reviews</Text>
                   </View>
                 </View>
@@ -222,7 +239,15 @@ export default class DetailScreen extends Component {
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{marginRight:7}}>Bintang</Text>
+                    <Rating
+                      type="star"
+                      fractions={1}
+                      startingValue={3.6}
+                      readonly
+                      imageSize={12}
+                      onFinishRating={this.ratingCompleted}
+                      style={{ paddingTop: 2.5, marginRight:5}}
+                    />
                     <Text>20 Reviews</Text>
                   </View>
                 </View>
@@ -231,7 +256,15 @@ export default class DetailScreen extends Component {
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{marginRight:7}}>Bintang</Text>
+                    <Rating
+                      type="star"
+                      fractions={1}
+                      startingValue={3.6}
+                      readonly
+                      imageSize={12}
+                      onFinishRating={this.ratingCompleted}
+                      style={{ paddingTop: 2.5, marginRight:5}}
+                    />
                     <Text>20 Reviews</Text>
                   </View>
                 </View>
@@ -254,7 +287,15 @@ export default class DetailScreen extends Component {
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
             <View style={{flexDirection: 'row',  }}>
-              <Text style={{marginRight:5, fontSize:12,}}>Bintang</Text> 
+              <Rating
+                type="star"
+                fractions={1}
+                startingValue={3.6}
+                readonly
+                imageSize={12}
+                onFinishRating={this.ratingCompleted}
+                style={{ paddingTop: 2.5, marginRight:5}}
+              />
               <Text style={{fontSize:12,}}>20 Review</Text> 
             </View>
           </View>
