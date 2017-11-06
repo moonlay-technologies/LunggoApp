@@ -76,6 +76,7 @@ export default class SearchResults extends Component {
   };
   
   render() {
+    this.props.navigation.state.key = 'SearchResults'
     return (
       <FlatList
         data={this.props.navigation.state.params.list}
