@@ -1,47 +1,101 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import { Rating } from 'react-native-elements';
+import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements'
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
+import Moment from 'moment';
+import 'moment/locale/id';
+
+// class setScheduleButton extends Component {
+//   render() {
+//     <Button
+//       containerStyle={{height:35, width:'100%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+//       style={{fontSize: 12, color: '#fff'}}
+//       onPress={() => this.props.navigation.navigate('CalendarView', {
+//         price: this.props.navigation.state.params.price,
+//         setSchedule: this.setSchedule,
+//       })}
+//     >
+//       Ubah Jadwal
+//     </Button>
+//   }
+// }
 
 export default class BookingDetail extends Component {
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      date : null,
+      shift: null,
+      pax: null,
+    };
+  }
+
   static navigationOptions = {
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
+    title: 'Detail Pesanan',
     headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
   };
 
+  setPax = pax => this.setState({pax});
+  setSchedule = scheduleObj => this.setState(scheduleObj);
+
   render() {
+    console.log(!!this.state.pax && !!this.state.date)
+    let {navigation} = this.props;
+    let {price,requiredPaxData} = navigation.state.params;
+
+    let calendar = (this.state.date) ?
+      <View>
+        <Text>{Moment(this.state.date).format('ddd, D MMM YYYY')}</Text>
+        <Button
+          containerStyle={{height:35, width:'100%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+          style={{fontSize: 12, color: '#fff'}}
+          onPress={() => navigation.navigate('CalendarView', {
+            setSchedule: this.setSchedule,
+            selectedDate: this.state.date,
+            price,
+          })}
+        >
+          Ubah Jadwal
+        </Button>
+      </View>
+      :
+      <Button
+        containerStyle={{height:35, width:'100%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+        style={{fontSize: 12, color: '#fff'}}
+        onPress={() => navigation.navigate('CalendarView', {
+          setSchedule: this.setSchedule,
+          price,
+        })}
+      >
+        Pilih Jadwal
+      </Button>
+
+    let schedule =
+      <View style={styles.container}>
+        <Text style={styles.activityTitle}>
+          Jadwal
+        </Text>
+        {calendar}
+      </View>
+
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <View style={{flex:1, backgroundColor:'#ffffff'}}>
-        <ScrollView style={{marginBottom:60,marginTop:60}}>
+      <View style={{flex:1, backgroundColor:'#fff'}}>
+        <ScrollView style={{marginBottom:60}}>
           <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
               <View style={{flex:1, marginRight:20,}}>
-                <Image style={styles.thumb} source={require('../assets/images/other-img1.jpg')} />
+                <Image
+                  style={styles.thumb}
+                  source={require('../assets/images/other-img1.jpg')}
+                />
               </View>
               <View style={{flex:1.5}}>
                 <Text style={styles.activityTitle}>
@@ -49,12 +103,10 @@ export default class BookingDetail extends Component {
                 </Text>
                 <View style={{flexDirection: 'row'}}>
                   <Rating
-                    type="star"
-                    fractions={1}
-                    startingValue={3.6}
+                    // startingValue={3.6}
                     readonly
                     imageSize={12}
-                    onFinishRating={this.ratingCompleted}
+                    // onFinishRating={this.ratingCompleted}
                   />
                 </View>
                 <Text style={styles.descriptionActivity}>
@@ -65,28 +117,36 @@ export default class BookingDetail extends Component {
             </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
-          <View style={styles.container}>
-            <Text style={styles.activityTitle}>
-              Calendar
-            </Text>
-          </View>{/* end container */}
+
+          {schedule}
+          
           <View style={styles.divider}/>
           <View style={styles.container}>
             <Text style={styles.activityTitle}>
-              Guest Detail
+              Peserta
             </Text>
+            {this.state.pax && this.state.pax.map(item => <Text>- {item.name}</Text>)}
             <View style={{flexDirection: 'row'}}>
               <View>
                 <Icon
                 name='plus'
-                size='10'
+                size={10}
                 style={{marginTop:5, marginRight:7}}
                 type='font-awesome'
                 color='blue' />
               </View>
-              <View><Text>Tambah Guest Lainnya</Text></View>
+              <Text>Tambah Peserta</Text>
             </View>
-
+            <Button
+              containerStyle={{height:35, width:'100%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+              style={{fontSize: 12, color: '#fff'}}
+              onPress={() => navigation.navigate('PaxChoice', {
+                setPax: this.setPax,
+                price, requiredPaxData,
+              })}
+            >
+              Tambah Peserta
+            </Button>
           </View>{/* end container */}
         </ScrollView>
 
@@ -95,21 +155,20 @@ export default class BookingDetail extends Component {
           <View style={{alignItems: 'flex-start', flex:1}}>
             <View style={{flexDirection: 'row'}}>
               <Text style={{
-                color:'green',
-                marginRight:3,
+                color: 'green',
+                marginRight: 3,
                 fontWeight: 'bold',
-                fontSize:15,
-              }}>1.000.000</Text> 
+                fontSize: 15,
+              }}>
+              { Formatter.price(this.props.navigation.state.params.price) }
+              </Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
-            <View style={{flexDirection: 'row',  }}>
+            <View style={{flexDirection: 'row'}}>
               <Rating
-                type="star"
-                fractions={1}
                 startingValue={3.6}
                 readonly
                 imageSize={12}
-                onFinishRating={this.ratingCompleted}
                 style={{ paddingTop: 2.5, marginRight:5}}
               />
               <Text style={{fontSize:12,}}>20 Review</Text> 
@@ -118,11 +177,12 @@ export default class BookingDetail extends Component {
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id})}
+              style={{fontSize: 12, color: '#fff'}}
+              styleDisabled={{color: 'grey', backgroundColor:'lightgrey'}}
+              onPress={() => this.props.navigation.navigate('WebViewScreen')}
+              disabled={!this.state.pax || !this.state.date}
             >
-              Cari Tiket
+              Pesan
             </Button>
           </View>
         </View>

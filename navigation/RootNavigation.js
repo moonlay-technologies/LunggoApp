@@ -11,11 +11,13 @@ import LoginScreen from '../screens/LoginScreen';
 import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
-import MyBooking from '../screens/MyBooking';
 import WebViewScreen from '../screens/WebViewScreen';
 import PaxChoice from '../screens/PaxChoice';
-import Registrasi from '../screens/Registrasi';
 import BookingDetail from '../screens/BookingDetail';
+
+//// unimplemented
+import MyBooking from '../screens/MyBooking';
+import Registrasi from '../screens/Registrasi';
 import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
@@ -39,6 +41,7 @@ const RootStackNavigator = StackNavigator(
     WebViewScreen: { screen: WebViewScreen },
     PaxChoice: { screen: PaxChoice },
     AddPax: { screen: AddPax },
+    BookingDetail: { screen: BookingDetail },
   },
   {
     navigationOptions: () => ({

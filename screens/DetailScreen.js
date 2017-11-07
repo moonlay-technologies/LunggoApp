@@ -336,13 +336,13 @@ export default class DetailScreen extends Component {
                 backgroundColor: '#437ef7'
               }}
               style={{fontSize: 12, color: '#fff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView', {
+              onPress={() => this.props.navigation.navigate('BookingDetail', {
                 activityId: details.id,
                 price: details.price,
                 requiredPaxData: this.state.requiredPaxData,
               })}
             >
-              Lihat Tanggal
+              Pesan
             </Button>
           </View>
         </View>

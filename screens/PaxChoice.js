@@ -67,6 +67,11 @@ export default class PaxChoice extends Component {
 
   }
 
+  _return = () => {
+    this.props.navigation.state.params.setPax(this.state.pax)
+    this.props.navigation.goBack()
+  }
+
   addPaxListItem = newPaxObj => {
     let {pax,paxListItemIndexes} = this.state;
     newPaxObj.key = pax.length;
@@ -102,10 +107,11 @@ export default class PaxChoice extends Component {
 
   render() {
     let {navigation} = this.props;
+    let {requiredPaxData, price} = navigation.state.params;
     return (
       <View style={styles.container}>
         <FlatList
-          style={{ marginBottom: 60, marginTop: 60, }}
+          style={{ marginBottom: 60,}}
           data={this.state.pax}
           renderItem={ ({item}) => this._renderItem(item) }
         />
@@ -120,12 +126,10 @@ export default class PaxChoice extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#fff'}}
-            onPress={ () => navigation.navigate(
-              "AddPax", {
-                addPaxListItem: this.addPaxListItem,
-                requiredPaxData: this.props.navigation.state.params.requiredPaxData,
-              }
-            )}
+            onPress={ () => navigation.navigate( "AddPax", {
+              addPaxListItem: this.addPaxListItem,
+              requiredPaxData,
+            })}
           >
             Tambah Peserta Baru
           </Button>
@@ -142,7 +146,7 @@ export default class PaxChoice extends Component {
               fontWeight: 'bold',
               fontSize: 15,
             }}>
-              {Formatter.price(navigation.state.params.price)}
+              {Formatter.price(price)}
             </Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
@@ -157,10 +161,9 @@ export default class PaxChoice extends Component {
                 backgroundColor: '#437ef7',
               }}
               style={{fontSize: 12, color: '#fff'}}
-              // onPress={() => this.postData()}
-              onPress={() => navigation.navigate('WebViewScreen')}
+              onPress={this._return}
             >
-              Tambah ke Troli
+              Daftarkan Peserta
             </Button>
           </View>
         </View>
