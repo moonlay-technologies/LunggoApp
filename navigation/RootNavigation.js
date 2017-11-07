@@ -16,6 +16,7 @@ import WebViewScreen from '../screens/WebViewScreen';
 import PaxChoice from '../screens/PaxChoice';
 import Registrasi from '../screens/Registrasi';
 import BookingDetail from '../screens/BookingDetail';
+import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(

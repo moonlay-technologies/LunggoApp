@@ -92,6 +92,7 @@ export default class CalendarView extends Component {
                 date: selectedDate,
                 activityId: this.props.navigation.state.params.activityId,
                 price: this.props.navigation.state.params.price,
+                requiredPaxData: this.props.navigation.state.params.requiredPaxData,
               }
             )}
           >

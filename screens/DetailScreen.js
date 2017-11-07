@@ -15,6 +15,14 @@ import {
 
 export default class DetailScreen extends Component {
 
+  constructor (props) {
+    super(props)
+    const { details } = this.props.navigation.state.params;
+    this.state = {
+      mediaSrc: [details.mediaSrc],
+    };
+  }
+
   static navigationOptions = {
     // header: ({navigate}) => ({
     //     right: (
@@ -33,19 +41,36 @@ export default class DetailScreen extends Component {
     },
   };
 
+  componentDidMount() {
+    console.log('componentDidMount')
+    const domain = 'http://travorama-local-api.azurewebsites.net';
+    const version = 'v1';
+    const {id} = this.props.navigation.state.params.details;
+    fetch(`${domain}/${version}/activities/${id}`)
+      .then(response => response.json())
+      .then(response => {
+        let {mediaSrc, requiredPaxData} = response.activityDetail;
+        console.log(response)
+        this.setState({mediaSrc, requiredPaxData})
+      })
+      .catch(error => {
+        // this.setState({
+        //   isLoading: false,
+        //   message: 'Something bad happened :\n'+ error
+        // })
+      });
+  }
+
   render() {
     const { details } = this.props.navigation.state.params;
+    console.log(details)
     return (
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View>
         <ScrollView
           style={{marginBottom:60,marginTop:60}}
         >
-          <ImageSlider height={350} images={[
-            details.mediaSrc,
-            require('../assets/images/detailimg.jpg'),
-            require('../assets/images/detailimg.jpg')
-          ]}/>
+          <ImageSlider height={350} images={this.state.mediaSrc}/>
           <View style={styles.container}>
 
             <Text style={styles.activityTitle}>
@@ -311,8 +336,11 @@ export default class DetailScreen extends Component {
                 backgroundColor: '#437ef7'
               }}
               style={{fontSize: 12, color: '#fff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id, price:details.price})}
+              onPress={() => this.props.navigation.navigate('CalendarView', {
+                activityId: details.id,
+                price: details.price,
+                requiredPaxData: this.state.requiredPaxData,
+              })}
             >
               Lihat Tanggal
             </Button>

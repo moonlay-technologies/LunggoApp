@@ -121,7 +121,10 @@ export default class PaxChoice extends Component {
             }}
             style={{fontSize: 12, color: '#fff'}}
             onPress={ () => navigation.navigate(
-              "AddPax", { addPaxListItem: this.addPaxListItem }
+              "AddPax", {
+                addPaxListItem: this.addPaxListItem,
+                requiredPaxData: this.props.navigation.state.params.requiredPaxData,
+              }
             )}
           >
             Tambah Peserta Baru

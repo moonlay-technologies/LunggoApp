@@ -14,6 +14,7 @@ export default class AddPax extends Component {
       email : null,
       tel : null,
       idCardNo : null,
+      ticketCount: null,
     };
   }
 
@@ -33,6 +34,68 @@ export default class AddPax extends Component {
   }
 
   render() {
+    let { requiredPaxData } = this.props.navigation.state.params;
+    if (!requiredPaxData)
+      return (
+        <View style={styles.container}>
+          <Text style={styles.label}>
+            Ticket Amount
+          </Text>
+          <TextInput
+            underlineColorAndroid= 'transparent'
+            style={styles.txtInput}
+            onChangeText={ ticketCount => this.setState({ticketCount}) }
+            value={this.state.ticketCount}
+            // placeholder=""
+          />
+        </View>
+      )
+
+    let birthDate = (requiredPaxData.indexOf('Date of Birth') >= 0) ?
+      <View>
+        <Text style={styles.label}>
+          Tanggal Lahir
+        </Text>
+        <TextInput
+          underlineColorAndroid= 'transparent'
+          style={styles.txtInput}
+          onChangeText={ birthDate => this.setState({birthDate}) }
+          value={this.state.birthDate}
+          placeholder="DD/MM/YYYY"
+        />
+      </View>
+      : null;
+
+    let idCardNo = (requiredPaxData.indexOf('ID Card No') >= 0) ?
+      <View>
+        <Text style={styles.label}>
+          No. KTP / Passport
+        </Text>
+        <TextInput
+          underlineColorAndroid= 'transparent'
+          style={styles.txtInput}
+          onChangeText={ idCardNo => this.setState({idCardNo}) }
+          value={this.state.idCardNo}
+          placeholder="01234567890"
+        />
+      </View>
+      : null;
+
+    let passportNumber = (requiredPaxData.indexOf('Passport Number') >= 0) ?
+      <View>
+        <Text style={styles.label}>
+          No. Passport
+        </Text>
+        <TextInput
+          underlineColorAndroid= 'transparent'
+          style={styles.txtInput}
+          onChangeText={ idCardNo => this.setState({idCardNo}) }
+          value={this.state.idCardNo}
+          placeholder="01234567890"
+        />
+      </View>
+      : null;
+
     return (
       <View style={styles.container}>
         <Text style={styles.label}>
@@ -45,16 +108,9 @@ export default class AddPax extends Component {
           value={this.state.name}
           placeholder="ex: John Doe"
         />
-        <Text style={styles.label}>
-          Tanggal Lahir
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ birthDate => this.setState({birthDate}) }
-          value={this.state.birthDate}
-          placeholder="DD/MM/YYYY"
-        />
+        
+        {birthDate}
+
         <Text style={styles.label}>
           Email
         </Text>
@@ -75,16 +131,10 @@ export default class AddPax extends Component {
           value={this.state.tel}
           placeholder="0812345678"
         />
-        <Text style={styles.label}>
-          No. KTP / Passport
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ idCardNo => this.setState({idCardNo}) }
-          value={this.state.idCardNo}
-          placeholder="01234567890"
-        />
+
+        {idCardNo}
+        {passportNumber}
+        
         <View style={{alignItems: 'flex-end',}}>
           <Button
             containerStyle={{

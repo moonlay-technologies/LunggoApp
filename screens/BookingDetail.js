@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
 import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating } from 'react-native-elements';
