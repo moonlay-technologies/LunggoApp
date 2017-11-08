@@ -9,39 +9,59 @@ import {
   View,
   Image,
   TextInput,
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
 
-export default class AddParticipant extends Component {
+export default class Registration extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      name: null,
-      birthDate : null,
-      email : null,
-      tel : null,
-      idCardNo : null,
+      passwordMatch : false,
     };
   }
 
   static navigationOptions = {
-    title: 'Registrasi',
+    title: 'Daftarkan Akun',
   };
 
-  _add = () => {
+  _register = () => {
     //// validation
-    if (!this.state.name) return;
-    
+    //TODO
+
     //// if validation passed
-    //// pass data to ParticipanChoice
-    const { navigation } = this.props;
-    navigation.goBack();
-    navigation.state.params.addParticipantListItem(this.state);
+    //// POST to login API
+
+    let domain = 'http://travorama-local-api.azurewebsites.net';
+    // let domain = 'api.travorama.com';
+    let url = domain + '/v1/register';
+    console.log(JSON.stringify(this.state))
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state)
+    }).then(response => response.json())
+    .then(response => {
+      console.log(response)
+      this.props.navigation.navigate('MainTabNavigator')
+    })
+    .catch(error => {
+      console.log("error!!!!")
+      console.log(error)
+      // this.setState({
+      //   isLoading: false,
+      //   message: 'Something bad happened :\n'+ error
+      // })
+    });
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.label}>
           Nama
         </Text>
@@ -50,6 +70,7 @@ export default class AddParticipant extends Component {
           style={styles.txtInput}
           onChangeText={ name => this.setState({name}) }
           value={this.state.name}
+          placeholder="contoh: Andi Budi"
         />
         <Text style={styles.label}>
           Email
@@ -59,24 +80,37 @@ export default class AddParticipant extends Component {
           style={styles.txtInput}
           onChangeText={ email => this.setState({email}) }
           value={this.state.email}
+          placeholder="contoh@email.com"
+        />
+        <Text style={styles.label}>
+          No. Telepon
+        </Text>
+        <TextInput
+          underlineColorAndroid= 'transparent'
+          style={styles.txtInput}
+          onChangeText={ phone => this.setState({phone}) }
+          value={this.state.phone}
+          placeholder="08123456789"
         />
         <Text style={styles.label}>
           Password
         </Text>
         <TextInput
           underlineColorAndroid= 'transparent'
-          style={{ height: 40, borderColor: '#cdcdcd', borderWidth: 1, paddingRight:10, paddingLeft:10, marginBottom:5, }}
+          style={styles.txtInput}
           onChangeText={ password => this.setState({password}) }
           value={this.state.password}
+          placeholder="minimal 6 digit, huruf dan angka"
         />
-        <Text style={{marginBottom:20, fontSize:12}}>Gunakan kombinasi huruf kapital dan angka</Text>
         <Text style={styles.label}>
           Ulangi Password
         </Text>
         <TextInput
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
-          value={this.state.password}
+          onChangeText={ repeatPassword => this.setState({repeatPassword}) }
+          value={this.state.repeatPassword}
+          placeholder="minimal 6 digit, huruf dan angka"
         />
         <View style={{alignItems: 'flex-end',}}>
           <Button
@@ -90,9 +124,12 @@ export default class AddParticipant extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 15, color: '#ffffff'}}
-            onPress={this._add}
+            onPress={this._register}
+            disabled={ !this.state.name || !this.state.passwordMatch
+              || !this.state.email || !this.state.phone }
+            styleDisabled={{color:'#aaa'}}
           >
-            Sign In
+            Daftarkan
           </Button>
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', marginTop:25, flexDirection: 'row'}}>
@@ -103,7 +140,7 @@ export default class AddParticipant extends Component {
             Login
           </Text>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -113,6 +150,7 @@ const styles = StyleSheet.create({
     padding:20,
     backgroundColor: '#fff',
     flex:1,
+    // paddingBottom: 100
   },
   label: {
     marginBottom: 5,

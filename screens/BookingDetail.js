@@ -47,7 +47,6 @@ export default class BookingDetail extends Component {
   setSchedule = scheduleObj => this.setState(scheduleObj);
 
   render() {
-    console.log(!!this.state.pax && !!this.state.date)
     let {navigation} = this.props;
     let {price,requiredPaxData} = navigation.state.params;
 
@@ -178,7 +177,7 @@ export default class BookingDetail extends Component {
             <Button
               containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
               style={{fontSize: 12, color: '#fff'}}
-              styleDisabled={{color: 'grey', backgroundColor:'lightgrey'}}
+              styleDisabled={{color: 'aaa'}}
               onPress={() => this.props.navigation.navigate('WebViewScreen')}
               disabled={!this.state.pax || !this.state.date}
             >
