@@ -15,12 +15,14 @@ import MyBooking from '../screens/MyBooking';
 import ParticipantChoice from '../screens/ParticipantChoice';
 import Registrasi from '../screens/Registrasi';
 import BookingDetail from '../screens/BookingDetail';
+import Cart from '../screens/Cart';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: BookingDetail,
+      screen: Cart,
+      //screen: BookingDetail,
       //screen: Registrasi,
       // screen: Checkout,
       //screen: MyBooking,
