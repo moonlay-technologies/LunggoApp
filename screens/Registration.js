@@ -13,19 +13,11 @@ import {
   ScrollView
 } from 'react-native';
 
-// class RegistrationInput  extends React.PureComponent {}
 export default class Registration extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {
-      name: null,
-      email: null,
-      phone: null,
-      password: null,
-      repeatPassword: null,
-      passwordMatch : false,
-    };
+    this.state = {}
   }
 
   static navigationOptions = {
@@ -34,10 +26,7 @@ export default class Registration extends Component {
 
   _register = () => {
     // //// validation
-    // if (this.state.password !== this.state.repeatPassword) {
-    //   //TODO make repeatPassword field red
-    //   return;
-    // }
+    //TODO
 
     //// if validation passed
     //// POST to login API
@@ -45,7 +34,7 @@ export default class Registration extends Component {
     let domain = 'http://travorama-local-api.azurewebsites.net';
     // let domain = 'api.travorama.com';
     let url = domain + '/v1/register';
-    console.log(JSON.stringify(this.state))
+    // console.log(JSON.stringify(this.state))
     fetch(url, {
       method: 'POST',
       headers: {
@@ -69,59 +58,55 @@ export default class Registration extends Component {
   }
 
   render() {
+    const registrationTextInput = props => {
+      let _onChange = input => {
+        let state = {}
+        state[props.field] = input;
+        this.setState(state);
+      }
+      return (
+        <View>
+          <Text style={styles.label}> {props.label} </Text>
+          <TextInput
+            underlineColorAndroid= 'transparent'
+            style={styles.txtInput}
+            onChangeText={_onChange}
+            value={this.state[props.field]}
+            placeholder={props.placeholder}
+          />
+        </View>
+      );
+    }
+
     let { name, email, phone, password, repeatPassword } = this.state;
+    
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.label}>
-          Nama
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ name => this.setState({name}) }
-          value={name}
-          placeholder="contoh: Andi Budi"
-        />
-        <Text style={styles.label}>
-          Email
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ email => this.setState({email}) }
-          value={email}
-          placeholder="contoh@email.com"
-        />
-        <Text style={styles.label}>
-          No. Telepon
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ phone => this.setState({phone}) }
-          value={phone}
-          placeholder="08123456789"
-        />
-        <Text style={styles.label}>
-          Password
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ password => this.setState({password}) }
-          value={password}
-          placeholder="minimal 6 digit, huruf dan angka"
-        />
-        <Text style={styles.label}>
-          Ulangi Password
-        </Text>
-        <TextInput
-          underlineColorAndroid= 'transparent'
-          style={styles.txtInput}
-          onChangeText={ repeatPassword => this.setState({repeatPassword}) }
-          value={repeatPassword}
-          placeholder="minimal 6 digit, huruf dan angka"
-        />
+        {registrationTextInput({
+          field: 'name',
+          label: 'Nama',
+          placeholder:'contoh: Andi Budi',
+        })}
+        {registrationTextInput({
+          field: 'email',
+          label: 'Email',
+          placeholder:'contoh@email.com',
+        })}
+        {registrationTextInput({
+          field: 'phone',
+          label: 'No. Telepon',
+          placeholder:'08123456789',
+        })}
+        {registrationTextInput({
+          field: 'password',
+          label: 'Password',
+          placeholder:'minimal 6 digit, huruf dan angka',
+        })}
+        {registrationTextInput({
+          field: 'repeatPassword',
+          label: 'Ulangi Password',
+          placeholder:'minimal 6 digit, huruf dan angka',
+        })}
         <View style={{alignItems: 'flex-end',}}>
           <Button
             containerStyle={{
@@ -142,13 +127,18 @@ export default class Registration extends Component {
             Daftarkan
           </Button>
         </View>
-        <View style={{justifyContent: 'center', alignItems: 'center', marginTop:25, flexDirection: 'row'}}>
-          <Text>
-            Sudah punya akun ?
-          </Text>
-          <Text style={{marginLeft:10, color:'#437ef7', textDecorationLine: 'underline'}}>
-            Login
-          </Text>
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop:25,
+          flexDirection: 'row'
+        }}>
+          <Text>Sudah punya akun ?</Text>
+          <Text style={{
+            marginLeft:10,
+            color:'#437ef7',
+            textDecorationLine: 'underline'
+          }}>Login</Text>
         </View>
       </ScrollView>
     );
