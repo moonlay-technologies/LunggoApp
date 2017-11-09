@@ -24,37 +24,43 @@ export default class Registration extends Component {
     title: 'Daftarkan Akun',
   };
 
+  fetchTravoramaApi = (request, callback, errCallback) => {
+    let domain = 'http://travorama-local-api.azurewebsites.net';
+    // let domain = 'api.travorama.com';
+    let url = domain + (request.path || request);
+    // console.log(request.data)
+    fetch(url, {
+      method: request.method || 'GET',
+      headers: request.headers || {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request.data),
+    }).then(response => response.json())
+    .then(callback)
+    .catch( (!!errCallback)? errCallback :
+      error => {
+        console.log("Fetch error!!")
+        console.log(error)
+      }
+    );
+  }
+
   _register = () => {
     // //// validation
     //TODO
 
-    //// if validation passed
-    //// POST to login API
-
-    let domain = 'http://travorama-local-api.azurewebsites.net';
-    // let domain = 'api.travorama.com';
-    let url = domain + '/v1/register';
-    // console.log(JSON.stringify(this.state))
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(this.state)
-    }).then(response => response.json())
-    .then(response => {
-      console.log(response)
-      this.props.navigation.navigate('MainTabNavigator')
-    })
-    .catch(error => {
-      console.log("error!!!!")
-      console.log(error)
-      // this.setState({
-      //   isLoading: false,
-      //   message: 'Something bad happened :\n'+ error
-      // })
-    });
+    //// if validation passed, POST to API
+    let request = {
+      path: '/v1/register',
+      method: 'POST', 
+      data: this.state
+    }, callback = response => {
+      // console.log(response)
+      if (response.status == 200)
+        this.props.navigation.navigate('MainTabNavigator')
+    }
+    this.fetchTravoramaApi(request, callback);
   }
 
   render() {
