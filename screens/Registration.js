@@ -13,11 +13,17 @@ import {
   ScrollView
 } from 'react-native';
 
+// class RegistrationInput  extends React.PureComponent {}
 export default class Registration extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
+      name: null,
+      email: null,
+      phone: null,
+      password: null,
+      repeatPassword: null,
       passwordMatch : false,
     };
   }
@@ -27,8 +33,11 @@ export default class Registration extends Component {
   };
 
   _register = () => {
-    //// validation
-    //TODO
+    // //// validation
+    // if (this.state.password !== this.state.repeatPassword) {
+    //   //TODO make repeatPassword field red
+    //   return;
+    // }
 
     //// if validation passed
     //// POST to login API
@@ -60,6 +69,7 @@ export default class Registration extends Component {
   }
 
   render() {
+    let { name, email, phone, password, repeatPassword } = this.state;
     return (
       <ScrollView style={styles.container}>
         <Text style={styles.label}>
@@ -69,7 +79,7 @@ export default class Registration extends Component {
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
           onChangeText={ name => this.setState({name}) }
-          value={this.state.name}
+          value={name}
           placeholder="contoh: Andi Budi"
         />
         <Text style={styles.label}>
@@ -79,7 +89,7 @@ export default class Registration extends Component {
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
           onChangeText={ email => this.setState({email}) }
-          value={this.state.email}
+          value={email}
           placeholder="contoh@email.com"
         />
         <Text style={styles.label}>
@@ -89,7 +99,7 @@ export default class Registration extends Component {
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
           onChangeText={ phone => this.setState({phone}) }
-          value={this.state.phone}
+          value={phone}
           placeholder="08123456789"
         />
         <Text style={styles.label}>
@@ -99,7 +109,7 @@ export default class Registration extends Component {
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
           onChangeText={ password => this.setState({password}) }
-          value={this.state.password}
+          value={password}
           placeholder="minimal 6 digit, huruf dan angka"
         />
         <Text style={styles.label}>
@@ -109,7 +119,7 @@ export default class Registration extends Component {
           underlineColorAndroid= 'transparent'
           style={styles.txtInput}
           onChangeText={ repeatPassword => this.setState({repeatPassword}) }
-          value={this.state.repeatPassword}
+          value={repeatPassword}
           placeholder="minimal 6 digit, huruf dan angka"
         />
         <View style={{alignItems: 'flex-end',}}>
@@ -125,8 +135,8 @@ export default class Registration extends Component {
             }}
             style={{fontSize: 15, color: '#ffffff'}}
             onPress={this._register}
-            disabled={ !this.state.name || !this.state.passwordMatch
-              || !this.state.email || !this.state.phone }
+            disabled={ !name || !email || !phone || !password ||
+              (password !== repeatPassword) }
             styleDisabled={{color:'#aaa'}}
           >
             Daftarkan
