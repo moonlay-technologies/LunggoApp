@@ -51,7 +51,7 @@ export default class DetailScreen extends Component<{}> {
     return (
       //<View style={styles.divider}></View>
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <ScrollView style={{paddingTop:80, flex:1, backgroundColor: '#fff',}}>
+      <ScrollView style={{paddingTop:80, backgroundColor: '#fff',}}>
         <View style={{flex:1,}}>
           <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor:'#ffffff'}}>
             <Button
