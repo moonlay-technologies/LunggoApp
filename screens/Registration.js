@@ -39,6 +39,7 @@ export default class Registration extends Component {
       console.log(response)
       if (response.status == 200)
         this.props.navigation.navigate('MainTabNavigator')
+      this.setState({isLoading:false})
     }
     this.setState({isLoading:true})
     fetchTravoramaApi(request, callback);

@@ -17,57 +17,49 @@ import {
   ScrollView,
 } from 'react-native';
 
-export default class DetailScreen extends Component<{}> {
+export default class MyBookingScreen extends Component {
 
   static navigationOptions = {
-    title: 'MyBooking',
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
+    title: 'Pesananku',
   };
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      checked: false,
-    };
-  }
+  // constructor (props) {
+  //   super(props)
+  //   this.state = {};
+  // }
 
-  
 
   render() {
     return (
       //<View style={styles.divider}></View>
       //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <ScrollView style={{paddingTop:80, flex:1, backgroundColor: '#fff',}}>
-        <View style={{flex:1,}}>
-          <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor:'#ffffff'}}>
-            <Button
-              containerStyle={{ marginRight:3, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 14, color: '#ffffff'}}
-              onPress={() => this._handlePress()}>
-              Active
-            </Button>
-            <Button
-              containerStyle={{ height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderWidth: 1,
-              borderColor: '#437ef7',backgroundColor: '#ffffff'}}
-              style={{fontSize: 14, color: '#437ef7'}}
-              onPress={() => this._handlePress()}>
-              History 
-            </Button>
-          </View>
+      <ScrollView style={{flex:1, backgroundColor: '#fff',}}>
+        <View style={{
+          flex:1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor:'#fff',
+          marginTop:10,
+        }}>
+          <Button
+            containerStyle={{ marginRight:3, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+            style={{fontSize: 14, color: '#ffffff'}}
+            onPress={() => this._handlePress()}>
+            Active
+          </Button>
+          <Button
+            containerStyle={{ height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderWidth: 1,
+            borderColor: '#437ef7',backgroundColor: '#ffffff'}}
+            style={{fontSize: 14, color: '#437ef7'}}
+            onPress={() => this._handlePress()}>
+            History 
+          </Button>
+        </View>
+        <View style={{marginBottom:10}}>
 
+
+        
           <View style={styles.divider}></View>
 
           <View style={styles.containerBooking}>
@@ -167,7 +159,6 @@ export default class DetailScreen extends Component<{}> {
                 <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
             </View> 
           </View>
-
         </View>
       </ScrollView>
     );

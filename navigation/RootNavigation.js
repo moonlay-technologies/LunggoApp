@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
-import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import registerForPushNotificationsAsync
+  from '../api/registerForPushNotificationsAsync';
 
 import SearchResults from '../screens/SearchResults';
 import LoginScreen from '../screens/LoginScreen';
@@ -17,7 +18,6 @@ import BookingDetail from '../screens/BookingDetail';
 import Registration from '../screens/Registration';
 
 //// unimplemented
-import MyBooking from '../screens/MyBooking';
 import Filter from '../screens/Filter';
 import BookedPageDetail from '../screens/BookedPageDetail';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -27,9 +27,9 @@ const RootStackNavigator = StackNavigator(
     Main: {
       // screen: Checkout,
       //screen: MyBooking,
-      screen: LoginScreen,
+      // screen: LoginScreen,
       //screen: DetailScreen,
-      // screen: MainTabNavigator,
+      screen: MainTabNavigator,
       //screen: CalendarView,
     },
     // Profile: { screen: WelcomeScreen },
