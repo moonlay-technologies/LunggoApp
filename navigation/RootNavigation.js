@@ -19,12 +19,12 @@ import Registration from '../screens/Registration';
 //// unimplemented
 import MyBooking from '../screens/MyBooking';
 import Filter from '../screens/Filter';
+import BookedPageDetail from '../screens/BookedPageDetail';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: BookingDetail,
       // screen: Checkout,
       //screen: MyBooking,
       screen: LoginScreen,
