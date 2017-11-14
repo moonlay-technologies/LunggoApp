@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
+import {fetchTravoramaApi} from '../components/Common';
 
 export default class Registration extends Component {
 
@@ -24,29 +25,8 @@ export default class Registration extends Component {
     title: 'Daftarkan Akun',
   };
 
-  fetchTravoramaApi = (request, callback, errCallback) => {
-    let domain = 'http://travorama-local-api.azurewebsites.net';
-    // let domain = 'api.travorama.com';
-    let url = domain + (request.path || request);
-    // console.log(request.data)
-    fetch(url, {
-      method: request.method || 'GET',
-      headers: request.headers || {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request.data),
-    }).then(response => response.json())
-    .then(callback)
-    .catch( (!!errCallback)? errCallback :
-      error => {
-        console.log("Fetch error!!")
-        console.log(error)
-      }
-    );
-  }
-
   _register = () => {
+
     // //// validation
     //TODO
 
@@ -56,11 +36,12 @@ export default class Registration extends Component {
       method: 'POST', 
       data: this.state
     }, callback = response => {
-      // console.log(response)
+      console.log(response)
       if (response.status == 200)
         this.props.navigation.navigate('MainTabNavigator')
     }
-    this.fetchTravoramaApi(request, callback);
+    this.setState({isLoading:true})
+    fetchTravoramaApi(request, callback);
   }
 
   render() {
@@ -84,7 +65,8 @@ export default class Registration extends Component {
       );
     }
 
-    let { name, email, phone, password, repeatPassword } = this.state;
+    let { name, email, phone, password,
+      repeatPassword, isLoading } = this.state;
     
     return (
       <ScrollView style={styles.container}>
@@ -126,8 +108,8 @@ export default class Registration extends Component {
             }}
             style={{fontSize: 15, color: '#ffffff'}}
             onPress={this._register}
-            disabled={ !name || !email || !phone || !password ||
-              (password !== repeatPassword) }
+            disabled={!name || !email || !phone || !password ||
+              (password !== repeatPassword) || isLoading}
             styleDisabled={{color:'#aaa'}}
           >
             Daftarkan
