@@ -27,9 +27,9 @@ const RootStackNavigator = StackNavigator(
     Main: {
       // screen: Checkout,
       //screen: MyBooking,
-      // screen: LoginScreen,
+      screen: LoginScreen,
       //screen: DetailScreen,
-      screen: MainTabNavigator,
+      // screen: MainTabNavigator,
       //screen: CalendarView,
     },
     // Profile: { screen: WelcomeScreen },

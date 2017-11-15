@@ -12,13 +12,13 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import { fetchTravoramaApi, clientId, clientSecret
-} from '../components/Common';
+// import { clientId, clientSecret } from '../constants/env';
+import { fetchTravoramaLoginApi } from '../components/Common';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { clientId, clientSecret }
+    this.state = {}
   }
 
   static navigationOptions = {
@@ -26,23 +26,31 @@ export default class LoginScreen extends Component {
   }
 
   _login = () => {
+    this.setState({isLoading:true})
     // //// validation
     //TODO
 
     //// if validation passed, POST to API
-    let request = {
-      path: '/v1/login',
-      method: 'POST', 
-      data: this.state
-    }, callback = response => {
-      console.log(response)
+    // let request = {
+    //   path: '/v1/login',
+    //   method: 'POST', 
+    //   data: this.state
+    // }, callback = 
+    // }, errCallback = 
+
+    fetchTravoramaLoginApi(this.state.userName, this.state.password)
+    .then(response => {
+      this.setState({isLoading:false});
       if (response.status == 200)
-        this.props.navigation.navigate('MainTabNavigator')
-      this.setState({isLoading:false})
-    }
-    this.setState({isLoading:true})
-    fetchTravoramaApi(request, callback);
+        this.props.navigation.navigate('MainTabNavigator');
+      else console.log(response);
+    }).catch(error => {
+      this.setState({isLoading:false});
+      console.log("Login error!!");
+      console.log(error);
+    })
   }
+  
 
   // _login = () => {
   //   //// POST to login API
@@ -87,12 +95,12 @@ export default class LoginScreen extends Component {
 
         <TextInput
           style={styles.searchInput}
-          placeholder='Email'
+          placeholder='Email atau No. Handphone'
           onChangeText={ userName => this.setState({userName}) }
         />
         <TextInput
           style={styles.searchInput}
-          placeholder='Password'
+          placeholder='Password min 6 digit huruf/angka'
           onChangeText={ password => this.setState({password}) }
         />
         
