@@ -12,6 +12,8 @@ import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
+import {AUTH_LEVEL} from '../constants/env';
+import {fetchTravoramaApi} from '../components/Common';
 
 export default class DetailScreen extends Component {
 
@@ -42,23 +44,16 @@ export default class DetailScreen extends Component {
   };
 
   componentDidMount() {
-    console.log('componentDidMount')
-    const domain = 'http://travorama-local-api.azurewebsites.net';
     const version = 'v1';
     const {id} = this.props.navigation.state.params.details;
-    fetch(`${domain}/${version}/activities/${id}`)
-      .then(response => response.json())
-      .then(response => {
-        let {mediaSrc, requiredPaxData} = response.activityDetail;
-        console.log(response)
-        this.setState({mediaSrc, requiredPaxData})
-      })
-      .catch(error => {
-        // this.setState({
-        //   isLoading: false,
-        //   message: 'Something bad happened :\n'+ error
-        // })
-      });
+    let request = {
+      path: `/${version}/activities/${id}`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    }
+    fetchTravoramaApi(request).then( response => {
+      let {mediaSrc, requiredPaxData} = response.activityDetail;
+      this.setState({mediaSrc, requiredPaxData});
+    }).catch(error => console.log(error));
   }
 
   render() {

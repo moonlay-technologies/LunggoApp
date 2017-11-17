@@ -13,6 +13,7 @@ import {
   ScrollView
 } from 'react-native';
 import {fetchTravoramaApi} from '../components/Common';
+import {AUTH_LEVEL} from '../constants/env';
 
 export default class Registration extends Component {
 
@@ -26,7 +27,7 @@ export default class Registration extends Component {
   };
 
   _register = () => {
-
+    this.setState({isLoading:true})
     // //// validation
     //TODO
 
@@ -34,14 +35,14 @@ export default class Registration extends Component {
     let request = {
       path: '/v1/register',
       method: 'POST', 
-      data: this.state
-    }, callback = response => {
-      console.log(response)
-      if (response.status == 200)
-        this.props.navigation.navigate('MainTabNavigator')
+      data: this.state,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
     }
-    this.setState({isLoading:true})
-    fetchTravoramaApi(request, callback);
+    fetchTravoramaApi(request).then( response => {
+      if (response.status == 200)
+        this.props.navigation.navigate('MainTabNavigator');
+      else this.setState({isLoading:false});
+    }).catch(error => console.log(error));
   }
 
   render() {
@@ -70,6 +71,7 @@ export default class Registration extends Component {
     
     return (
       <ScrollView style={styles.container}>
+      <View style={{marginBottom:40}}>
         {registrationTextInput({
           field: 'name',
           label: 'Nama',
@@ -128,6 +130,7 @@ export default class Registration extends Component {
             textDecorationLine: 'underline'
           }}>Login</Text>
         </View>
+      </View>
       </ScrollView>
     );
   }
