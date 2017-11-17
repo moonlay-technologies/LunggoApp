@@ -16,6 +16,7 @@ import {
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import {AUTH_LEVEL} from '../constants/env';
+import {fetchTravoramaApi} from '../components/Common';
 
 function getQueryPath (key, value, pageNumber) {
   const version = 'v1';

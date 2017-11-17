@@ -8,10 +8,10 @@ import {clientId, clientSecret, deviceId,
 // }
 
 const {getItemAsync,setItemAsync,deleteItemAsync} = Expo.SecureStore;
-export async function fetchTravoramaLoginApi(username, password) {
+export async function fetchTravoramaLoginApi(userName, password) {
   let url = DOMAIN + '/v1/login';
-  let data = {clientId, clientSecret, deviceId, username, password};
-  setItemAsync('authLevel', AUTH_LEVEL.User)
+  let data = {clientId, clientSecret, deviceId, userName, password};
+  setItemAsync('authLevel', AUTH_LEVEL.User);
   //redundant with getAuthAccess()
   let response = await fetch(url, {
     method: 'POST',
@@ -27,7 +27,11 @@ export async function fetchTravoramaLoginApi(username, password) {
     case '200':
       setItemAsync('accessToken', accessToken);
       setItemAsync('refreshToken', refreshToken);
-      setItemAsync('expTime', expTime);
+          if (__DEV__) {
+              console.log(response)
+              setItemAsync('expTime', new Date().toISOString());
+              console.log('set expTime to ' + new Date())
+      } else setItemAsync('expTime', expTime);
       break;
     case '400':
     case '500':
@@ -48,6 +52,7 @@ async function getAuthAccess() {
         ]);
     //console.log(accessToken)
     let data = {clientId, clientSecret, deviceId};
+                __DEV__ && console.log(new Date(expTime))
     if( new Date(expTime) > new Date() ) { //// token not expired
       //already logged in, go to next step
       return {accessToken, authLevel};
@@ -71,8 +76,7 @@ async function getAuthAccess() {
       body: JSON.stringify(data)
     });
     response = await response.json();
-    console.log(response)
-    ({accessToken, refreshToken, expTime, status} = response);
+    ;({accessToken, refreshToken, expTime, status} = response);
     switch (status + '') { //// cast to string
       case '200':
         setItemAsync('accessToken', accessToken);
@@ -99,7 +103,10 @@ export async function fetchTravoramaApi (request) {
 
   //// Get auth info and check if user authorized for the request
   let {accessToken, authLevel} = await getAuthAccess();
+
   //// check if client have sufficent authLevel for request
+  authLevel = parseInt(authLevel);
+  requiredAuthLevel = parseInt(requiredAuthLevel);
   if (authLevel < requiredAuthLevel) return {
     status: 400, message:'Not Authorized!', requiredAuthLevel
   }
@@ -118,8 +125,15 @@ export async function fetchTravoramaApi (request) {
   if (response.status == 401) {
     await deleteItemAsync('expTime');
     return fetchTravoramaApi(request);
+  } else if (response.error == "ERRGEN98") { //invalid JSON format
+    console.log(JSON.stringify(request.data))
   }
   response = await response.json();
-  console.log(response) ///
+                if (__DEV__){
+                    console.log(response) ///
+                    console.log('accessToken, authLevel')
+                    console.log(accessToken)
+                    console.log(authLevel)
+                }
   return response;
 }

@@ -12,7 +12,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-// import { clientId, clientSecret } from '../constants/env';
 import { fetchTravoramaLoginApi } from '../components/Common';
 
 export default class LoginScreen extends Component {
@@ -31,13 +30,6 @@ export default class LoginScreen extends Component {
     //TODO
 
     //// if validation passed, POST to API
-    // let request = {
-    //   path: '/v1/login',
-    //   method: 'POST', 
-    //   data: this.state
-    // }, callback = 
-    // }, errCallback = 
-
     fetchTravoramaLoginApi(this.state.userName, this.state.password)
     .then(response => {
       this.setState({isLoading:false});

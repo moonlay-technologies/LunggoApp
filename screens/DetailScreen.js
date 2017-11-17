@@ -13,6 +13,7 @@ import {
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 import {AUTH_LEVEL} from '../constants/env';
+import {fetchTravoramaApi} from '../components/Common';
 
 export default class DetailScreen extends Component {
 
