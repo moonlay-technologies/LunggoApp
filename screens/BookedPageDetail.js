@@ -14,39 +14,31 @@ import {
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 
-export default class BookingDetail extends Component {
+export default class BookedPageDetail extends Component {
 
-  static navigationOptions = {
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
-  };
+  constructor (props) {
+    super(props)
+    // const { details } = this.props.navigation.state.params;
+    // this.state = details;
+    this.state = this.props.navigation.state.params.details;
+  }
+
+  // static navigationOptions = {
+  //   headerRight: <LikeShareHeaderButton/>,
+  // };
 
   render() {
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <View style={{flex:1, backgroundColor:'#ffffff'}}>
-        <ScrollView style={{marginBottom:60,marginTop:60}}>
+      <View style={{flex:1, backgroundColor:'#fff'}}>
+        <ScrollView style={{marginBottom:60}}>
           <View style={styles.container}>
             <View>
               <View>
                 <Text style={styles.activityTitle}>
-                  Trip to Sahara Desert
+                  {this.state.name}
                 </Text>
                 <Text style={styles.descriptionActivity}>
-                  Menunggu Pembayaran
+                  {this.state.bookingStatus}
                 </Text>
               </View>
             </View>
@@ -131,18 +123,23 @@ export default class BookingDetail extends Component {
           <View style={{alignItems: 'flex-start', flex:1.5}}>
             <Button
               containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}>
-            Lihat Instruksi Pembayaran
+              style={{fontSize: 12, color: '#fff'}}
+              styleDisabled={{color: '#aaa'}}
+              onPress={() =>
+                this.props.navigation.navigate('WebViewScreen')
+              }
+            >
+            Lanjutkan Pembayaran
             </Button>
           </View>
-          <View style={{alignItems: 'flex-end', flex:1}}>
+          {/*<View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderColor:'#000000', borderWidth:1, backgroundColor: '#ffffff'}}
               style={{fontSize: 12, color: '#000000'}}
             >
               Hubungi Kami
             </Button>
-          </View>
+          </View>*/}
         </View>
         
       </View>
