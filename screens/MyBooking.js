@@ -4,10 +4,72 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Slider, CheckBox } from 'react-native-elements'
 import {
-  Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,
+  Platform, StyleSheet, FlatList,
+  Text, View, Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
+
+
+class ListItem extends React.PureComponent {
+
+  _onPress = () => this.props.onPressItem(this.props.item);
+  render() {
+    const {item} = this.props;
+    return (
+      <View key={item.rsvNo}>
+        <View style={styles.divider}></View>
+        <TouchableHighlight
+          onPress={this._onPress}
+          underlayColor='#ddd'
+        >
+          <View style={styles.containerBooking}>
+            <Image source={{uri: item.mediaSrc}} style={{
+              flex: 1.8,
+              resizeMode: 'cover',
+              width: '100%',
+              height: 110,
+            }}/>
+            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
+              <Text style={styles.activityTitle}>
+                {item.name}
+              </Text>
+              <Text style={styles.status}>{item.bookingStatus}</Text>
+              <View style={{
+                marginTop: 10,
+                marginBottom: 5,
+                width: '100%',
+                flexDirection:'row',
+              }}>
+                <View style={{ flexDirection:'row', marginRight:10 }}>
+                  <Image style={styles.icon}
+                    source={require('../assets/icons/person.png')}/>
+                  <Text style={styles.timeActivity}>
+                    {/*item.paxCount*/} peserta
+                  </Text>
+                </View>
+                <View style={{ flexDirection:'row' }}>
+                  <Image style={styles.icon}
+                    source={require('../assets/icons/calendar.png')}/>
+                  <Text style={styles.timeActivity}>
+                    {/*item.duration.count +' '+ item.duration.unit*/}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection:'row' }}>
+                <Image style={styles.icon}
+                  source={require('../assets/icons/calendar.png')}/>
+                <Text style={styles.timeActivity}>
+                  {item.date}
+                </Text>
+              </View>
+            </View> 
+          </View>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+}
 
 export default class MyBookingScreen extends Component {
 
@@ -21,8 +83,6 @@ export default class MyBookingScreen extends Component {
   }
 
   componentDidMount() {
-    console.log('authlvl')
-    console.log(AUTH_LEVEL)
     const version = 'v1';
     let request = {
       path: `/${version}/activities/mybooking`,
@@ -30,60 +90,81 @@ export default class MyBookingScreen extends Component {
     }
     fetchTravoramaApi(request).then( response => {
       this.setState({bookingList: response.myBookings});
-      console.log(response)
     }).catch(error => console.log(error));
   }
 
+  _keyExtractor = (item, index) => index;
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+      onPressItem={this._onPressItem}
+    />
+  );
+  _onPressItem = (item) => {
+    this.props.navigation.navigate('BookedPageDetail',{details: item});
+  };
+  
   render() {
 
-    const bookingListItem = bookingItem =>
-      <View>
-        <View style={styles.divider}></View>
-        <View style={styles.containerBooking}>
-          <Image source={{uri: bookingItem.mediaSrc}} style={{
-            flex: 1.8,
-            resizeMode: 'cover',
-            width: '100%',
-            height: 110,
-          }}/>
-          <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-            <Text style={styles.activityTitle}>
-              {bookingItem.name}
-            </Text>
-            <Text style={styles.status}>{bookingItem.bookingStatus}</Text>
-            <View style={{
-              marginTop: 10,
-              marginBottom: 5,
-              width: '100%',
-              flexDirection:'row',
-            }}>
-              <View style={{ flexDirection:'row', marginRight:10 }}>
-                <Image style={styles.icon}
-                  source={require('../assets/icons/person.png')}/>
-                <Text style={styles.timeActivity}>
-                  {/*bookingItem.paxCount*/} peserta
-                </Text>
-              </View>
-              <View style={{ flexDirection:'row' }}>
-                <Image style={styles.icon}
-                  source={require('../assets/icons/calendar.png')}/>
-                <Text style={styles.timeActivity}>
-                  {/*bookingItem.duration.count +' '+ bookingItem.duration.unit*/}
-                </Text>
-              </View>
-            </View>
+    // const bookingListItem = bookingItem => {
+    //   let _onPress = (item) => console.log(item)
+    //   return (
+    //     <View key={bookingItem.rsvNo}>
+    //       <View style={styles.divider}></View>
+    //       <TouchableHighlight
+    //         onPress={_onPress}
+    //         underlayColor='#ddd'
+    //       >
+    //         <View style={styles.containerBooking}
+    //           onPress={item=>console.log(item)}
+    //         >
+    //           <Image source={{uri: bookingItem.mediaSrc}} style={{
+    //             flex: 1.8,
+    //             resizeMode: 'cover',
+    //             width: '100%',
+    //             height: 110,
+    //           }}/>
+    //           <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
+    //             <Text style={styles.activityTitle}>
+    //               {bookingItem.name}
+    //             </Text>
+    //             <Text style={styles.status}>{bookingItem.bookingStatus}</Text>
+    //             <View style={{
+    //               marginTop: 10,
+    //               marginBottom: 5,
+    //               width: '100%',
+    //               flexDirection:'row',
+    //             }}>
+    //               <View style={{ flexDirection:'row', marginRight:10 }}>
+    //                 <Image style={styles.icon}
+    //                   source={require('../assets/icons/person.png')}/>
+    //                 <Text style={styles.timeActivity}>
+    //                   {/*bookingItem.paxCount*/} peserta
+    //                 </Text>
+    //               </View>
+    //               <View style={{ flexDirection:'row' }}>
+    //                 <Image style={styles.icon}
+    //                   source={require('../assets/icons/calendar.png')}/>
+    //                 <Text style={styles.timeActivity}>
+    //                   {/*bookingItem.duration.count +' '+ bookingItem.duration.unit*/}
+    //                 </Text>
+    //               </View>
+    //             </View>
 
-            <View style={{ flexDirection:'row' }}>
-              <Image style={styles.icon}
-                source={require('../assets/icons/calendar.png')}/>
-              <Text style={styles.timeActivity}>
-                {bookingItem.date}
-              </Text>
-            </View>
-          </View> 
-        </View>
-      </View>
-
+    //             <View style={{ flexDirection:'row' }}>
+    //               <Image style={styles.icon}
+    //                 source={require('../assets/icons/calendar.png')}/>
+    //               <Text style={styles.timeActivity}>
+    //                 {bookingItem.date}
+    //               </Text>
+    //             </View>
+    //           </View> 
+    //         </View>
+    //       </TouchableHighlight>
+    //       </View>
+    //   );
+    // }
       console.log("this.state.bookingList :")
       console.log(this.state.bookingList)
     return (
@@ -100,14 +181,22 @@ export default class MyBookingScreen extends Component {
           marginTop:10,
         }}>
           <Button
-            containerStyle={{ marginRight:3, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+            containerStyle={{
+              marginRight:3,
+              height:40, width:120, paddingTop:10, paddingBottom:10,
+              overflow:'hidden', borderRadius:4,
+              backgroundColor: '#437ef7'
+            }}
             style={{fontSize: 14, color: '#ffffff'}}
             onPress={() => this._handlePress()}>
             Active
           </Button>
           <Button
-            containerStyle={{ height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderWidth: 1,
-            borderColor: '#437ef7',backgroundColor: '#ffffff'}}
+            containerStyle={{ height:40, width:120, paddingTop:10,
+              paddingBottom:10, overflow:'hidden', borderRadius:4,
+              borderWidth: 1,
+              borderColor: '#437ef7',backgroundColor: '#ffffff'
+            }}
             style={{fontSize: 14, color: '#437ef7'}}
             onPress={() => this._handlePress()}>
             History 
@@ -117,7 +206,12 @@ export default class MyBookingScreen extends Component {
       */}
 
         <View style={{marginBottom:10}}>
-          {this.state.bookingList.map(item => bookingListItem(item))}
+          <FlatList
+            data={this.state.bookingList}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+          />
+          {/*this.state.bookingList.map(item => bookingListItem(item))*/}
         </View>
       </ScrollView>
     );
