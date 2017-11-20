@@ -175,10 +175,20 @@ export default class BookingDetail extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+              containerStyle={{
+                height: 35,
+                width: 100,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7'
+              }}
               style={{fontSize: 12, color: '#fff'}}
-              styleDisabled={{color: 'aaa'}}
-              onPress={() => this.props.navigation.navigate('WebViewScreen')}
+              styleDisabled={{color: '#aaa'}}
+              onPress={() =>
+                this.props.navigation.navigate('WebViewScreen')
+              }
               disabled={!this.state.pax || !this.state.date}
             >
               Pesan

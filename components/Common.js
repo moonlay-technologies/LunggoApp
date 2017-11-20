@@ -27,11 +27,6 @@ export async function fetchTravoramaLoginApi(userName, password) {
     case '200':
       setItemAsync('accessToken', accessToken);
       setItemAsync('refreshToken', refreshToken);
-          if (__DEV__) {
-              console.log(response)
-              setItemAsync('expTime', new Date().toISOString());
-              console.log('set expTime to ' + new Date())
-      } else setItemAsync('expTime', expTime);
       break;
     case '400':
     case '500':
@@ -50,9 +45,7 @@ async function getAuthAccess() {
           getItemAsync('accessToken'), getItemAsync('refreshToken'),
           getItemAsync('expTime'), getItemAsync('authLevel')
         ]);
-    //console.log(accessToken)
     let data = {clientId, clientSecret, deviceId};
-                __DEV__ && console.log(new Date(expTime))
     if( new Date(expTime) > new Date() ) { //// token not expired
       //already logged in, go to next step
       return {accessToken, authLevel};
@@ -66,7 +59,6 @@ async function getAuthAccess() {
       setItemAsync('authLevel', AUTH_LEVEL.Guest);
     }
 
-    console.log('prepare fetching auth')
     let response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -132,8 +124,5 @@ export async function fetchTravoramaApi (request) {
                 if (__DEV__){
                     console.log(response) ///
                     console.log('accessToken, authLevel')
-                    console.log(accessToken)
-                    console.log(authLevel)
-                }
   return response;
 }

@@ -1,21 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView from 'react-native-maps';
 import Button from 'react-native-button';
-import { Slider } from 'react-native-elements';
-import { CheckBox } from 'react-native-elements'
-
+import { Slider, CheckBox } from 'react-native-elements'
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
+  Platform, StyleSheet,
+  Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 
 export default class MyBookingScreen extends Component {
 
@@ -23,17 +15,82 @@ export default class MyBookingScreen extends Component {
     title: 'Pesananku',
   };
 
-  // constructor (props) {
-  //   super(props)
-  //   this.state = {};
-  // }
+  constructor (props) {
+    super(props)
+    this.state = {bookingList: []};
+  }
 
+  componentDidMount() {
+    console.log('authlvl')
+    console.log(AUTH_LEVEL)
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/mybooking`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    }
+    fetchTravoramaApi(request).then( response => {
+      this.setState({bookingList: response.myBookings});
+      console.log(response)
+    }).catch(error => console.log(error));
+  }
 
   render() {
+
+    const bookingListItem = bookingItem =>
+      <View>
+        <View style={styles.divider}></View>
+        <View style={styles.containerBooking}>
+          <Image source={{uri: bookingItem.mediaSrc}} style={{
+            flex: 1.8,
+            resizeMode: 'cover',
+            width: '100%',
+            height: 110,
+          }}/>
+          <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
+            <Text style={styles.activityTitle}>
+              {bookingItem.name}
+            </Text>
+            <Text style={styles.status}>{bookingItem.bookingStatus}</Text>
+            <View style={{
+              marginTop: 10,
+              marginBottom: 5,
+              width: '100%',
+              flexDirection:'row',
+            }}>
+              <View style={{ flexDirection:'row', marginRight:10 }}>
+                <Image style={styles.icon}
+                  source={require('../assets/icons/person.png')}/>
+                <Text style={styles.timeActivity}>
+                  {/*bookingItem.paxCount*/} peserta
+                </Text>
+              </View>
+              <View style={{ flexDirection:'row' }}>
+                <Image style={styles.icon}
+                  source={require('../assets/icons/calendar.png')}/>
+                <Text style={styles.timeActivity}>
+                  {/*bookingItem.duration.count +' '+ bookingItem.duration.unit*/}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{ flexDirection:'row' }}>
+              <Image style={styles.icon}
+                source={require('../assets/icons/calendar.png')}/>
+              <Text style={styles.timeActivity}>
+                {bookingItem.date}
+              </Text>
+            </View>
+          </View> 
+        </View>
+      </View>
+
+      console.log("this.state.bookingList :")
+      console.log(this.state.bookingList)
     return (
-      //<View style={styles.divider}></View>
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <ScrollView style={{flex:1, backgroundColor: '#fff',}}>
+
+      {/* Tab Button
+
         <View style={{
           flex:1,
           flexDirection: 'row',
@@ -56,109 +113,11 @@ export default class MyBookingScreen extends Component {
             History 
           </Button>
         </View>
-        <View style={{marginBottom:10}}>
-
-
         
-          <View style={styles.divider}></View>
+      */}
 
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-              <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                  <Text style={styles.timeActivity}>
-                    5 hari
-                  </Text>
-                </View>
-                <View style={{ flexDirection:'row' }}>
-                  <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                  <Text style={styles.timeActivity}>
-                    20 Oktober 2017
-                  </Text>
-                </View>
-              </View>
-              <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
+        <View style={{marginBottom:10}}>
+          {this.state.bookingList.map(item => bookingListItem(item))}
         </View>
       </ScrollView>
     );
@@ -195,27 +154,5 @@ const styles = StyleSheet.create({
   },
   timeActivity: {
     fontSize:12,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });
