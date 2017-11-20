@@ -123,18 +123,23 @@ export default class BookedPageDetail extends Component {
           <View style={{alignItems: 'flex-start', flex:1.5}}>
             <Button
               containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}>
-            Lihat Instruksi Pembayaran
+              style={{fontSize: 12, color: '#fff'}}
+              styleDisabled={{color: '#aaa'}}
+              onPress={() =>
+                this.props.navigation.navigate('WebViewScreen')
+              }
+            >
+            Lanjutkan Pembayaran
             </Button>
           </View>
-          <View style={{alignItems: 'flex-end', flex:1}}>
+          {/*<View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderColor:'#000000', borderWidth:1, backgroundColor: '#ffffff'}}
               style={{fontSize: 12, color: '#000000'}}
             >
               Hubungi Kami
             </Button>
-          </View>
+          </View>*/}
         </View>
         
       </View>
