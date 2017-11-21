@@ -22,6 +22,11 @@ import BookedPageDetail from '../screens/BookedPageDetail';
 import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
+
+/// Operator
+import LoginScreenOp from '../screens/LoginScreenOp';
+import AppointmentRequest from '../screens/AppointmentRequest';
+
 const RootStackNavigator = StackNavigator(
   {
     Main: {
