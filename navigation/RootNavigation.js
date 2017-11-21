@@ -25,12 +25,8 @@ import Filter from '../screens/Filter';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: Checkout,
-      //screen: MyBooking,
-      screen: LoginScreen,
-      //screen: DetailScreen,
-      // screen: MainTabNavigator,
-      //screen: CalendarView,
+      // screen: LoginScreen,
+      screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
     MainTabNavigator: { screen: MainTabNavigator },

@@ -11,47 +11,47 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
 
 export default class BookingDetail extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      date : null,
-      shift: null,
-      pax: null,
+      // date : null,
+      // shift: null,
+      // pax: null,
     };
   }
 
   static navigationOptions = {
     title: 'Detail Pesanan',
-    headerRight: <LikeShareHeaderButton/>,
+    // headerRight: <LikeShareHeaderButton/>,
   };
 
+  setPaxListItemIndexes = indexes =>
+    this.setState({paxListItemIndexes: indexes});
   setPax = pax => this.setState({pax});
   setSchedule = scheduleObj => this.setState(scheduleObj);
 
-
   _book = () => {
-    let domain = 'http://travorama-local-api.azurewebsites.net';
-    // let domain = 'api.travorama.com';
-    let url = domain + '/v1/activities/book';
+    this.setState({isLoading:true});
+    const version = 'v1';
     let {pax, date} = this.state;
-    fetch(url, {
+    let request = {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+      path: `/${version}/activities/book`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+      data: {
         activityId: this.props.navigation.state.params.activityId,
         contact: {
           title: 1,
           name: "Testing",
           countryCallCd: 62,
           phone : 1234567890,
-          email: "developer@travelmadezy.com",
-        }, pax, date,
+          email: "developer@travelmadezy.com"
+        }, date, pax,
+        // "ticketCount" : 2
         // pax: [
         //   {
         //     type : 1,
@@ -64,20 +64,30 @@ export default class BookingDetail extends Component {
         //     passportCountry : "en",
         //   }
         // ],
-      })
+      }
+    };
+    fetchTravoramaApi(request).then( response => {
+      if(response.status == 200)
+        this.props.navigation.navigate(
+          'WebViewScreen',/*{date:date}*/
+        );
+    }).catch(error => {
+      this.setState({isLoading:false});
+      console.log(error);
     });
-    this.props.navigation.navigate(
-     'WebViewScreen', // { date: this.props.navigation.state.params.date }
-    )
+
+    
   }
 
   render() {
     let {navigation} = this.props;
     let {price,requiredPaxData} = navigation.state.params;
+    let {pax, date, paxListItemIndexes} = this.state;
+    if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let calendar = (this.state.date) ?
+    let calendar = (date) ?
       <View>
-        <Text>{Moment(this.state.date).format('ddd, D MMM YYYY')}</Text>
+        <Text>{Moment(date).format('ddd, D MMM YYYY')}</Text>
         <Button
           containerStyle={{
             height:35,
@@ -89,11 +99,13 @@ export default class BookingDetail extends Component {
             backgroundColor: '#437ef7'
           }}
           style={{fontSize: 12, color: '#fff'}}
-          onPress={() => navigation.navigate('CalendarView', {
-            setSchedule: this.setSchedule,
-            selectedDate: this.state.date,
-            price,
-          })}
+          onPress={() => {
+            navigation.navigate('CalendarView', {
+              setSchedule: this.setSchedule,
+              selectedDate: date,
+              price,
+            });
+          }}
         >
           Ubah Jadwal
         </Button>
@@ -110,10 +122,15 @@ export default class BookingDetail extends Component {
           backgroundColor: '#437ef7'
         }}
         style={{fontSize: 12, color: '#fff'}}
-        onPress={() => navigation.navigate('CalendarView', {
-          setSchedule: this.setSchedule,
-          price,
-        })}
+        // disabled={this.state.isLoading}
+        // styleDisabled={{color:'#aaa'}}
+        onPress={() => {
+          // this.setState({isLoading:true});
+          navigation.navigate('CalendarView', {
+            setSchedule: this.setSchedule,
+            price,
+          });
+        }}
       >
         Pilih Jadwal
       </Button>
@@ -166,8 +183,8 @@ export default class BookingDetail extends Component {
             <Text style={styles.activityTitle}>
               Peserta
             </Text>
-            {this.state.pax && this.state.pax.map(
-              item => <Text>- {item.name}</Text>
+            {pax && pax.map(
+              item => <Text key={item.key}>- {item.name}</Text>
             )}
             <View style={{flexDirection: 'row'}}>
               <View>
@@ -193,10 +210,12 @@ export default class BookingDetail extends Component {
               style={{fontSize: 12, color: '#fff'}}
               onPress={() => navigation.navigate('PaxChoice', {
                 setPax: this.setPax,
+                setPaxListItemIndexes: this.setPaxListItemIndexes,
+                paxListItemIndexes: paxListItemIndexes.slice(),
                 price, requiredPaxData,
               })}
             >
-              Tambah Peserta
+              Tambah Peserta {paxListItemIndexes}
             </Button>
           </View>{/* end container */}
         </ScrollView>
@@ -211,7 +230,7 @@ export default class BookingDetail extends Component {
                 fontWeight: 'bold',
                 fontSize: 15,
               }}>
-              { Formatter.price(this.props.navigation.state.params.price) }
+              { Formatter.price(price) }
               </Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
@@ -239,7 +258,7 @@ export default class BookingDetail extends Component {
               style={{fontSize: 12, color: '#fff'}}
               styleDisabled={{color: '#aaa'}}
               onPress={this._book}
-              disabled={!this.state.pax || !this.state.date}
+              disabled={!pax || !date}
             >
               Pesan
             </Button>

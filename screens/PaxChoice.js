@@ -18,17 +18,30 @@ export default class PaxChoice extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      paxListItemIndexes: [undefined,true],
+      paxListItemIndexes:
+        this.props.navigation.state.params.paxListItemIndexes || [],
       pax: [
         { key:0, name: "John Doe (me)" },
         { key:1,id:1, name: "Ali Zainal" },
       ]
     };
+    console.log(this.state.paxListItemIndexes);
   }
 
   _return = () => {
-    this.props.navigation.state.params.setPax(this.state.pax)
-    this.props.navigation.goBack()
+    let choosenPax = [],
+        {paxListItemIndexes, pax} = this.state,
+        {navigation} = this.props,
+        {params} = navigation.state;
+    paxListItemIndexes.map( (currValue, index) => {
+      // console.log(index, currValue);
+      if (currValue) choosenPax.push( pax[index] );
+    });
+    // console.log(choosenPax);
+    params.setPax(choosenPax);
+    params.setPaxListItemIndexes(paxListItemIndexes);
+    navigation.goBack();
+    
   }
 
   addPaxListItem = newPaxObj => {
@@ -70,28 +83,28 @@ export default class PaxChoice extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          style={{ marginBottom: 60,}}
+          style={{ marginBottom: 60, flex:1}}
           data={this.state.pax}
           renderItem={ ({item}) => this._renderItem(item) }
         />
-          <Button
-            containerStyle={{
-              height: 35,
-              flex: 1,
-              paddingTop: 10,
-              paddingBottom: 10,
-              overflow: 'hidden',
-              borderRadius: 4,
-              backgroundColor: '#437ef7',
-            }}
-            style={{fontSize: 12, color: '#fff'}}
-            onPress={ () => navigation.navigate( "AddPax", {
-              addPaxListItem: this.addPaxListItem,
-              requiredPaxData,
-            })}
-          >
-            Tambah Peserta Baru
-          </Button>
+        <Button
+          containerStyle={{
+            height: 35,
+            flex: .2,
+            paddingTop: 10,
+            paddingBottom: 10,
+            overflow: 'hidden',
+            borderRadius: 4,
+            backgroundColor: '#437ef7',
+          }}
+          style={{fontSize: 12, color: '#fff'}}
+          onPress={ () => navigation.navigate( "AddPax", {
+            addPaxListItem: this.addPaxListItem,
+            requiredPaxData,
+          })}
+        >
+          Tambah Peserta Baru
+        </Button>
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
@@ -161,7 +174,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-   divider: {
+  divider: {
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
