@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import Button from 'react-native-button';
-import { Slider, CheckBox } from 'react-native-elements'
 import {
   Platform, StyleSheet, FlatList,
   Text, View, Image, TextInput, ScrollView, TouchableHighlight,

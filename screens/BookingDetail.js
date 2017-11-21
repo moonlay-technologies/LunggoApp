@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
@@ -186,7 +185,7 @@ export default class BookingDetail extends Component {
             {pax && pax.map(
               item => <Text key={item.key}>- {item.name}</Text>
             )}
-            <View style={{flexDirection: 'row'}}>
+            {/*<View style={{flexDirection: 'row'}}>
               <View>
                 <Icon
                 name='plus'
@@ -196,7 +195,7 @@ export default class BookingDetail extends Component {
                 color='blue' />
               </View>
               <Text>Tambah Peserta</Text>
-            </View>
+            </View>*/}
             <Button
               containerStyle={{
                 height:35,
@@ -215,7 +214,7 @@ export default class BookingDetail extends Component {
                 price, requiredPaxData,
               })}
             >
-              Tambah Peserta {paxListItemIndexes}
+              Tambah Peserta
             </Button>
           </View>{/* end container */}
         </ScrollView>

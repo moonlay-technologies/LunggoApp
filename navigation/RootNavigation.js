@@ -1,3 +1,5 @@
+'use strict';
+
 import { Notifications } from 'expo';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,8 +26,8 @@ import Filter from '../screens/Filter';
 
 
 /// Operator
-import LoginScreenOp from '../screens/LoginScreenOp';
-import AppointmentRequest from '../screens/AppointmentRequest';
+// import LoginScreenOp from '../screens/LoginScreenOp';
+// import AppointmentRequest from '../screens/AppointmentRequest';
 
 const RootStackNavigator = StackNavigator(
   {
