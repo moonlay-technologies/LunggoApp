@@ -16,13 +16,13 @@ import ParticipantChoice from '../screens/ParticipantChoice';
 import Registrasi from '../screens/Registrasi';
 import BookingDetail from '../screens/BookingDetail';
 import BookedPageDetail from '../screens/BookedPageDetail';
-import ActivityList from '../screens/ActivityList';
+import AppointmentRequest from '../screens/AppointmentRequest';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: ActivityList,
+      screen: AppointmentRequest,
       //screen: LoginScreenOp,
       //screen: BookingDetail,
       //screen: Registrasi,
