@@ -26,47 +26,6 @@ export default class PaxChoice extends Component {
     };
   }
 
-  postData = () => {
-    let domain = 'http://travorama-local-api.azurewebsites.net';
-    // let domain = 'api.travorama.com';
-    let url = domain + '/v1/activities/book';
-    
-    /*fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        activityId: this.props.navigation.state.params.activityId,
-        contact: {
-          title: 1,
-          name: "Testing",
-          countryCallCd: 62,
-          phone : 1234567890,
-          email: "developer@travelmadezy.com",
-        },
-        pax: [
-          {
-            type : 1,
-            title : 1,
-            name : "guest 1",
-            dob : "02-18-1997",
-            nationality : "ID",
-            passportNo : "1234567",
-            passportExp : "02-18-2022",
-            passportCountry : "en",
-          }
-        ],
-        date: this.props.navigation.state.params.date,
-      })
-    });*/
-    this.props.navigation.navigate(
-     'WebViewScreen', // { date: this.props.navigation.state.params.date }
-    )
-
-  }
-
   _return = () => {
     this.props.navigation.state.params.setPax(this.state.pax)
     this.props.navigation.goBack()
