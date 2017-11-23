@@ -18,18 +18,21 @@ export default class DetailScreen extends Component {
 
   constructor (props) {
     super(props)
-    const defaultDetails = {
-      requiredPaxData: '',
-      // isLoading,
-      name: 'loading activity name...',
-      city: 'loading address...',
-      duration: {amount: 'loading ', unit: 'duration...'},
-      price: 'loading price...',
-      // id,
-      mediaSrc: []
-    }
     const {details} = this.props.navigation.state.params || {};
-    this.state = details || defaultDetails; //// prevent error when params == undefined
+    if (!details) {   //// if params.details doesnt exist,
+      this.state = {  //// use default state object
+        // isLoading, id
+        requiredPaxData: '',
+        name: 'loading activity name...',
+        city: 'loading address...',
+        duration: {amount: 'loading ', unit: 'duration...'},
+        price: 'loading price...',
+        mediaSrc: []
+      }
+    } else {
+      details.mediaSrc = [details.mediaSrc];
+      this.state = details; //// prevent error when params == undefined
+    }
   }
 
   static navigationOptions = {
@@ -41,7 +44,7 @@ export default class DetailScreen extends Component {
     // headerTitleStyle: {color:'white'},
     headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
-      backgroundColor: 'transparent',
+      // backgroundColor: 'transparent',
       position: 'absolute',
       zIndex: 100,
       top: 0,
@@ -59,8 +62,6 @@ export default class DetailScreen extends Component {
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
     fetchTravoramaApi(request).then( response => {
-      // let {mediaSrc, requiredPaxData} = response.activityDetail;
-      // this.setState({mediaSrc, requiredPaxData});
       this.setState(response.activityDetail);
     }).catch(error => console.log(error));
   }
@@ -71,7 +72,7 @@ export default class DetailScreen extends Component {
     return (
       <View>
         <ScrollView
-          style={{marginBottom:60,marginTop:60}}
+          style={{marginBottom:60}}
         >
           <ImageSlider height={350} images={mediaSrc}/>
           <View style={styles.container}>
