@@ -54,6 +54,7 @@ export default class LoginScreen extends Component {
           placeholder='Email atau No. Handphone'
           underlineColorAndroid='transparent'
           autoCapitalize={'none'}
+          autoCorrect={false}
           onChangeText={ userName => this.setState({userName}) }
         />
         <TextInput
@@ -62,6 +63,7 @@ export default class LoginScreen extends Component {
           underlineColorAndroid='transparent'
           secureTextEntry={true}
           autoCapitalize={'none'}
+          autoCorrect={false}
           onChangeText={ password => this.setState({password}) }
         />
         

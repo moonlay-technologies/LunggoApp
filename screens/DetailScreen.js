@@ -18,10 +18,18 @@ export default class DetailScreen extends Component {
 
   constructor (props) {
     super(props)
-    const { details } = this.props.navigation.state.params;
-    this.state = {
-      mediaSrc: [details.mediaSrc],
-    };
+    const defaultDetails = {
+      requiredPaxData: '',
+      // isLoading,
+      name: 'loading activity name...',
+      city: 'loading address...',
+      duration: {amount: 'loading ', unit: 'duration...'},
+      price: 'loading price...',
+      // id,
+      mediaSrc: []
+    }
+    const {details} = this.props.navigation.state.params || {};
+    this.state = details || defaultDetails; //// prevent error when params == undefined
   }
 
   static navigationOptions = {
@@ -33,7 +41,7 @@ export default class DetailScreen extends Component {
     // headerTitleStyle: {color:'white'},
     headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
-      // backgroundColor: 'transparent',
+      backgroundColor: 'transparent',
       position: 'absolute',
       zIndex: 100,
       top: 0,
@@ -44,29 +52,32 @@ export default class DetailScreen extends Component {
 
   componentDidMount() {
     const version = 'v1';
-    const {id} = this.props.navigation.state.params.details;
+    const id = 1;
+    // const {id} = this.state;
     let request = {
       path: `/${version}/activities/${id}`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
     fetchTravoramaApi(request).then( response => {
-      let {mediaSrc, requiredPaxData} = response.activityDetail;
-      this.setState({mediaSrc, requiredPaxData});
+      // let {mediaSrc, requiredPaxData} = response.activityDetail;
+      // this.setState({mediaSrc, requiredPaxData});
+      this.setState(response.activityDetail);
     }).catch(error => console.log(error));
   }
 
   render() {
-    const { details } = this.props.navigation.state.params;
+    const { requiredPaxData, isLoading, name, city, duration, price, id,
+      mediaSrc } = this.state;
     return (
       <View>
         <ScrollView
           style={{marginBottom:60,marginTop:60}}
         >
-          <ImageSlider height={350} images={this.state.mediaSrc}/>
+          <ImageSlider height={350} images={mediaSrc}/>
           <View style={styles.container}>
 
             <Text style={styles.activityTitle}>
-              { details.name }
+              { name }
             </Text>
             <Text style={styles.locationActivity}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -76,7 +87,7 @@ export default class DetailScreen extends Component {
                 source={require('../assets/icons/time.png')}
               />
               <Text style={styles.timeActivity}>
-                { details.city }
+                { city }
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -84,7 +95,7 @@ export default class DetailScreen extends Component {
                 source={require('../assets/icons/time.png')}
               />
               <Text style={styles.timeActivity}>
-                { details.duration.amount +" "+ details.duration.unit }
+                { duration.amount +" "+ duration.unit }
               </Text>
             </View>
             {/*<View style={{flex: 1, flexDirection: 'row'}}>
@@ -350,7 +361,7 @@ export default class DetailScreen extends Component {
                 marginRight:3,
                 fontWeight: 'bold',
                 fontSize:15,
-              }}>{ Formatter.price(details.price) }</Text> 
+              }}>{ Formatter.price(price) }</Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
             <View style={{flexDirection: 'row',  }}>
@@ -378,12 +389,15 @@ export default class DetailScreen extends Component {
                 backgroundColor: '#437ef7'
               }}
               style={{fontSize: 12, color: '#fff'}}
-              onPress={() =>
+              onPress={() => {
+                this.setState({isLoading: true})
                 this.props.navigation.navigate('BookingDetail', {
-                  activityId: details.id,
-                  price: details.price,
-                  requiredPaxData: this.state.requiredPaxData,
-              })}
+                  activityId: id,
+                  price, requiredPaxData,
+                });
+              }}
+              disabled={!requiredPaxData || isLoading}
+              styleDisabled={{color:'#aaa'}}
             >
               Pesan
             </Button>
