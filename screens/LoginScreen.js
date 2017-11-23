@@ -1,6 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { Icon } from 'react-native-elements'
+import Button from 'react-native-button';
 import {
   Platform,
   StyleSheet,
@@ -8,7 +10,6 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -27,41 +28,78 @@ export default class LoginScreen extends Component<{}> {
   }
   render() {
     return (
-      <Image blurRadius={10} style={styles.bgimage}
-        source={require('../assets/images/bg.jpg')}
-      >
+      <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
-      {/*<ScrollView style={styles.container}>*/}
-        <Image style={styles.logo} source={require('../assets/images/logo.png')}/>
-        <Text style={styles.normaltext}>
-          login or sign up with:
-        </Text>
-
-        <TextInput style={styles.searchInput} placeholder='Email'/>
-        <TextInput style={styles.searchInput} placeholder='Password'/>
-        
-        <Text style={styles.loginemail}>
-          or login or sign up via email
-        </Text>
-        <Button
-          containerStyle={{padding:10, height:45, width:200, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
-          title="Login"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-          onPress={this._handlePress}
-        />
-      {/*</ScrollView>*/}
+          <View style={{marginBottom:40}}>
+            <Text style={styles.categoryTitle}>Sign In</Text>
+          </View>
+          <View style={{marginBottom:10}}>
+            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
+          </View>
+          <View>
+            <TextInput
+              style={styles.searchInput} 
+              underlineColorAndroid='transparent' 
+              placeholder='Password'
+            />
+            <View style={{position:'absolute', right:20, top:11,}}>
+              <Icon
+                //name='eye'
+                name='eye-with-line'
+                type='entypo'
+                size={22}
+                color='#acacac'/>
+            </View>
+          </View>
+          <Button
+            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
+          >
+          Sign in
+          </Button>
+          <View style={{marginTop:15, alignItems:'flex-end'}}>
+            <Text style={{fontSize:12, color:'#464646'}}>
+              Forgot Password ?
+            </Text>
+          </View>
+          <Button
+            containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#0080d4',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
+          >
+          Login With Facebook
+          </Button>
+          <Button
+            containerStyle={{marginTop:15, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#24bf49',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
+          >
+          Login With Facebook
+          </Button>
+          <View style={{marginTop:30, alignItems:'center'}}>
+            <Text style={{fontSize:12, color:'#000'}}>
+              Don't have account ? Register here
+            </Text>
+          </View>
         </KeyboardAvoidingView>
-      </Image>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  // },
+  container: {
+    flex: 1,
+    padding:15,
+    paddingTop:60,
+    backgroundColor: '#fff',
+  },
+  categoryTitle :{
+    fontWeight:'bold',
+    fontSize:26,
+    color:'#454545'
+  },
   normaltext: {
     backgroundColor: 'transparent',
     color: '#ffffff',
@@ -78,30 +116,18 @@ const styles = StyleSheet.create({
     padding: 40,
     color: '#ffffff'
   },
-  bgimage: {
-    backgroundColor: '#ccc',
-    flex: 1,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    paddingTop:150,
-    alignItems: 'center',
-  },
-  logo: {
-    marginBottom: 40,
-  },
   searchInput: {
-    height: 40,
-    // width: 300,
-    alignSelf: 'stretch',
-    padding: 5,
-    marginHorizontal: 0,
-    marginTop:10,
-    fontSize: 14,
-    borderWidth: 3,
-    borderColor: '#48BBEC',
-    borderRadius: 3,
-    color: '#48BBEC',
-    backgroundColor: '#ffffff',
+    height: 45,
+    paddingLeft:15,
+    paddingTop:10,
+    paddingBottom:10,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 25,
+    color: '#acacac',
+    backgroundColor:'#f5f5f5',
   },
 });

@@ -7,7 +7,7 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 import SearchResults from '../screens/SearchResults';
-import LoginScreenOp from '../screens/LoginScreenOp';
+import LoginScreen from '../screens/LoginScreen';
 import AddParticipant from '../screens/AddGuest';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
@@ -17,12 +17,16 @@ import Registrasi from '../screens/Registrasi';
 import BookingDetail from '../screens/BookingDetail';
 import BookedPageDetail from '../screens/BookedPageDetail';
 import AppointmentRequest from '../screens/AppointmentRequest';
+import ExploreScreen from '../screens/ExploreScreen';
+import ForgotPassword from '../screens/ForgotPassword'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: AppointmentRequest,
+      screen: ForgotPassword,
+      //screen: Registrasi,
+      //screen: ExploreScreen,
       //screen: LoginScreenOp,
       //screen: BookingDetail,
       //screen: Registrasi,

@@ -30,54 +30,26 @@ export default class LoginScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
-          <View style={{marginBottom:40}}>
-            <Text style={styles.categoryTitle}>Registrasi</Text>
-          </View>
           <View style={{marginBottom:15}}>
-            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='User Name'/>
+            <Text style={styles.categoryTitle}>Forgot Your Password ?</Text>
           </View>
-          <View style={{marginBottom:15}}>
+          <View style={{marginBottom:25}}>
+            <Text style={styles.mediumText}>Enter your email to reset your password</Text>
+          </View>
+          <View style={{}}>
             <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
           </View>
-          <View style={{marginBottom:15, flexDirection:'row'}}>
-            <View style={{flex:1.4}}>
-              <TextInput
-                style={styles.searchInput} 
-                underlineColorAndroid='transparent' 
-                placeholder='+62'
-              />
-            </View>
-            <View style={{flex:4}}>
-              <TextInput
-                style={styles.searchInput} 
-                underlineColorAndroid='transparent' 
-                placeholder='Phone Number'
-              />
-            </View>
-          </View>
-          <View style={{marginBottom:15}}>
-            <TextInput
-              style={styles.searchInput} 
-              underlineColorAndroid='transparent' 
-              placeholder='Password'
-            />
-            <View style={{position:'absolute', right:20, top:11,}}>
-              <Icon
-                //name='eye'
-                name='eye-with-line'
-                type='entypo'
-                size={22}
-                color='#acacac'/>
-            </View>
-          </View>
           <Button
-            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            containerStyle={{marginTop:40, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._handlePress}
           >
-          Registrasi
+          Kirim
           </Button>
-          
+          <View style={{alignItems:'center', marginTop:15, }}>
+            <Text style={styles.smallText}>Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
+            be the most annoying cat that you can.</Text>
+          </View>
         </KeyboardAvoidingView>
       </View>
     );
@@ -96,9 +68,14 @@ const styles = StyleSheet.create({
     fontSize:26,
     color:'#454545'
   },
-  normaltext: {
-    backgroundColor: 'transparent',
-    color: '#ffffff',
+  mediumText: {
+    fontSize:15,
+    color:'#454545'
+  },
+  smallText: {
+    fontSize:13,
+    color:'#afafaf',
+    textAlign:'justify'
   },
   loginemail: {
     backgroundColor: 'transparent',
