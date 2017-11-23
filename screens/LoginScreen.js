@@ -1,23 +1,14 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image,
+  TextInput, Button, KeyboardAvoidingView, } from 'react-native';
 import { fetchTravoramaLoginApi } from '../components/Common';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {};
   }
 
   static navigationOptions = {
@@ -43,36 +34,6 @@ export default class LoginScreen extends Component {
     })
   }
   
-
-  // _login = () => {
-  //   //// POST to login API
-  //   let domain = 'http://travorama-local-api.azurewebsites.net';
-  //   // let domain = 'api.travorama.com';
-  //   let url = domain + '/v1/login';
-  //   console.log(JSON.stringify(this.state))
-  //   fetch(url, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(this.state)
-  //   }).then(response => response.json())
-  //   .then((response) => {
-  //     console.log(response)
-  //     if (response.status==200) //TODO: salah
-  //       this.props.navigation.navigate('MainTabNavigator')
-  //   })
-  //   .catch(error => {
-  //     console.log("error!!!!")
-  //     console.log(error)
-  //     // this.setState({
-  //     //   isLoading: false,
-  //     //   message: 'Something bad happened :\n'+ error
-  //     // })
-  //   });
-  // }
-
   render() {
     let {isLoading, userName, password} = this.state;
     return (
@@ -80,7 +41,10 @@ export default class LoginScreen extends Component {
         source={require('../assets/images/bg.jpg')}
       >
         <KeyboardAvoidingView behavior="position">
-        <Image style={styles.logo} source={require('../assets/images/logo.png')}/>
+        <Image
+          style={styles.logo}
+          source={require('../assets/images/logo.png')}
+        />
         <Text style={styles.normaltext}>
           login or sign up with:
         </Text>
@@ -88,11 +52,16 @@ export default class LoginScreen extends Component {
         <TextInput
           style={styles.searchInput}
           placeholder='Email atau No. Handphone'
+          underlineColorAndroid='transparent'
+          autoCapitalize={'none'}
           onChangeText={ userName => this.setState({userName}) }
         />
         <TextInput
           style={styles.searchInput}
           placeholder='Password min 6 digit huruf/angka'
+          underlineColorAndroid='transparent'
+          secureTextEntry={true}
+          autoCapitalize={'none'}
           onChangeText={ password => this.setState({password}) }
         />
         
