@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 import {
   Platform,
@@ -9,149 +10,120 @@ import {
   View,
   Image,
   TextInput,
+  ScrollView,
   KeyboardAvoidingView,
-  ScrollView
 } from 'react-native';
-import {fetchTravoramaApi} from '../components/Common';
-import {AUTH_LEVEL} from '../constants/env';
 
 export default class Registration extends Component {
-
-  constructor (props) {
-    super(props)
-    this.state = {}
+  constructor(props, context) {
+    super(props, context);
   }
 
   static navigationOptions = {
-    title: 'Daftarkan Akun',
-  };
-
-  _register = () => {
-    this.setState({isLoading:true})
-    // //// validation
-    //TODO
-
-    //// if validation passed, POST to API
-    let request = {
-      path: '/v1/register',
-      method: 'POST', 
-      data: this.state,
-      requiredAuthLevel: AUTH_LEVEL.Guest,
-    }
-    fetchTravoramaApi(request).then( response => {
-      if (response.status == 200)
-        this.props.navigation.navigate('MainTabNavigator');
-      else this.setState({isLoading:false});
-    }).catch(error => console.log(error));
+    header: null,
   }
 
+  _handlePress = () => {
+    this.props.navigation.navigate('MainTabNavigator')
+  }
   render() {
-    const registrationTextInput = props => {
-      let _onChange = input => {
-        let state = {}
-        state[props.field] = input;
-        this.setState(state);
-      }
-      return (
-        <View>
-          <Text style={styles.label}> {props.label} </Text>
-          <TextInput
-            underlineColorAndroid= 'transparent'
-            style={styles.txtInput}
-            onChangeText={_onChange}
-            value={this.state[props.field]}
-            placeholder={props.placeholder}
-          />
-        </View>
-      );
-    }
-
-    let { name, email, phone, password,
-      repeatPassword, isLoading } = this.state;
-    
     return (
-      <ScrollView style={styles.container}>
-      <View style={{marginBottom:40}}>
-        {registrationTextInput({
-          field: 'name',
-          label: 'Nama',
-          placeholder:'contoh: Andi Budi',
-        })}
-        {registrationTextInput({
-          field: 'email',
-          label: 'Email',
-          placeholder:'contoh@email.com',
-        })}
-        {registrationTextInput({
-          field: 'phone',
-          label: 'No. Telepon',
-          placeholder:'08123456789',
-        })}
-        {registrationTextInput({
-          field: 'password',
-          label: 'Password',
-          placeholder:'minimal 6 digit, huruf dan angka',
-        })}
-        {registrationTextInput({
-          field: 'repeatPassword',
-          label: 'Ulangi Password',
-          placeholder:'minimal 6 digit, huruf dan angka',
-        })}
-        <View style={{alignItems: 'flex-end',}}>
+      <View style={styles.container}>
+        <KeyboardAvoidingView behavior="position">
+          <View style={{marginBottom:40}}>
+            <Text style={styles.categoryTitle}>Registrasi</Text>
+          </View>
+          <View style={{marginBottom:15}}>
+            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='User Name'/>
+          </View>
+          <View style={{marginBottom:15}}>
+            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
+          </View>
+          <View style={{marginBottom:15, flexDirection:'row'}}>
+            <View style={{flex:1.4}}>
+              <TextInput
+                style={styles.searchInput} 
+                underlineColorAndroid='transparent' 
+                placeholder='+62'
+              />
+            </View>
+            <View style={{flex:4}}>
+              <TextInput
+                style={styles.searchInput} 
+                underlineColorAndroid='transparent' 
+                placeholder='Phone Number'
+              />
+            </View>
+          </View>
+          <View style={{marginBottom:15}}>
+            <TextInput
+              style={styles.searchInput} 
+              underlineColorAndroid='transparent' 
+              placeholder='Password'
+            />
+            <View style={{position:'absolute', right:20, top:11,}}>
+              <Icon
+                //name='eye'
+                name='eye-with-line'
+                type='entypo'
+                size={22}
+                color='#acacac'/>
+            </View>
+          </View>
           <Button
-            containerStyle={{
-              height: 50,
-              width: '100%',
-              paddingTop: 15,
-              paddingBottom :10,
-              overflow: 'hidden',
-              borderRadius: 4,
-              backgroundColor: '#437ef7',
-            }}
-            style={{fontSize: 15, color: '#ffffff'}}
-            onPress={this._register}
-            disabled={!name || !email || !phone || !password ||
-              (password !== repeatPassword) || isLoading}
-            styleDisabled={{color:'#aaa'}}
+            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
           >
-            Daftarkan
+          Registrasi
           </Button>
-        </View>
-        <View style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop:25,
-          flexDirection: 'row'
-        }}>
-          <Text>Sudah punya akun ?</Text>
-          <Text style={{
-            marginLeft:10,
-            color:'#437ef7',
-            textDecorationLine: 'underline'
-          }}>Login</Text>
-        </View>
+          
+        </KeyboardAvoidingView>
       </View>
-      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding:20,
+    flex: 1,
+    padding:15,
+    paddingTop:60,
     backgroundColor: '#fff',
-    flex:1,
-    // paddingBottom: 100
   },
-  label: {
-    marginBottom: 5,
+  categoryTitle :{
+    fontWeight:'bold',
+    fontSize:26,
+    color:'#454545'
   },
-  txtInput: {
-    height: 40, 
-    borderColor: '#cdcdcd', 
-    borderWidth: 1, 
-    paddingRight:10, 
-    paddingLeft:10, 
-    marginBottom:20, 
+  normaltext: {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+  },
+  loginemail: {
+    backgroundColor: 'transparent',
+    color: '#ffffff',
+    marginTop: 50,
+  },
+  description: {
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    fontSize: 30,
+    padding: 40,
+    color: '#ffffff'
+  },
+  searchInput: {
+    height: 45,
+    paddingLeft:15,
+    paddingTop:10,
+    paddingBottom:10,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 25,
+    color: '#acacac',
+    backgroundColor:'#f5f5f5',
   },
 });

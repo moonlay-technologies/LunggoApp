@@ -47,7 +47,7 @@ export default class LoginScreen extends Component {
           <View style={{marginBottom:10}}>
             <TextInput
               style={styles.searchInput}
-              placeholder='Email atau No. Handphone'
+              placeholder='Email / No. Handphone'
               underlineColorAndroid='transparent'
               autoCapitalize={'none'}
               autoCorrect={false}
@@ -58,7 +58,7 @@ export default class LoginScreen extends Component {
             <TextInput
               style={styles.searchInput} 
               underlineColorAndroid='transparent' 
-              placeholder='Password min 6 digit huruf/angka'
+              placeholder='Password'
               underlineColorAndroid='transparent'
               secureTextEntry={true}
               autoCapitalize={'none'}
