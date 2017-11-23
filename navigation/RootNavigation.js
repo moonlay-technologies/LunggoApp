@@ -22,6 +22,7 @@ import BookedPageDetail from '../screens/BookedPageDetail';
 
 //// unimplemented
 import Filter from '../screens/Filter';
+import ForgotPassword from '../screens/ForgotPassword'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 
@@ -32,8 +33,8 @@ import Filter from '../screens/Filter';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: LoginScreen,
-      screen: MainTabNavigator,
+      screen: LoginScreen,
+      // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
     MainTabNavigator: { screen: MainTabNavigator },

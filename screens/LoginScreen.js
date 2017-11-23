@@ -2,8 +2,10 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
-  TextInput, Button, KeyboardAvoidingView, } from 'react-native';
+  TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
 import { fetchTravoramaLoginApi } from '../components/Common';
+import { Icon } from 'react-native-elements'
+import Button from 'react-native-button';
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -37,66 +39,96 @@ export default class LoginScreen extends Component {
   render() {
     let {isLoading, userName, password} = this.state;
     return (
-      <Image blurRadius={10} style={styles.bgimage}
-        source={require('../assets/images/bg.jpg')}
-      >
+      <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
-        <Image
-          style={styles.logo}
-          source={require('../assets/images/logo.png')}
-        />
-        <Text style={styles.normaltext}>
-          login or sign up with:
-        </Text>
-
-        <TextInput
-          style={styles.searchInput}
-          placeholder='Email atau No. Handphone'
-          underlineColorAndroid='transparent'
-          autoCapitalize={'none'}
-          autoCorrect={false}
-          onChangeText={ userName => this.setState({userName}) }
-        />
-        <TextInput
-          style={styles.searchInput}
-          placeholder='Password min 6 digit huruf/angka'
-          underlineColorAndroid='transparent'
-          secureTextEntry={true}
-          autoCapitalize={'none'}
-          autoCorrect={false}
-          onChangeText={ password => this.setState({password}) }
-        />
-        
-        <Text style={styles.loginemail}>
-          or login or sign up via email
-        </Text>
-        <Button
-          containerStyle={{padding:10, height:45, width:200, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
-          title="Login"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-          onPress={this._login}
-          disabled={isLoading || !userName || !password}
-        />
-        <View style={{marginBottom:5}}/>
-        <Button
-          containerStyle={{padding:10, height:45, width:200, overflow:'hidden', borderRadius:4, backgroundColor: 'white'}}
-          title="Register"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-          onPress={() => this.props.navigation.navigate('Registration')}
-        />
+          <View style={{marginBottom:40}}>
+            <Text style={styles.categoryTitle}>Sign In</Text>
+          </View>
+          <View style={{marginBottom:10}}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder='Email atau No. Handphone'
+              underlineColorAndroid='transparent'
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={ userName => this.setState({userName}) }
+            />
+          </View>
+          <View>
+            <TextInput
+              style={styles.searchInput} 
+              underlineColorAndroid='transparent' 
+              placeholder='Password min 6 digit huruf/angka'
+              underlineColorAndroid='transparent'
+              secureTextEntry={true}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={ password => this.setState({password}) }
+            />
+            <View style={{position:'absolute', right:20, top:11,}}>
+              <Icon
+                //name='eye'
+                name='eye-with-line'
+                type='entypo'
+                size={22}
+                color='#acacac'/>
+            </View>
+          </View>
+          <Button
+            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._login}
+            disabled={isLoading || !userName || !password}
+          >
+            Sign in
+          </Button>
+          <View style={{marginTop:15, alignItems:'flex-end'}}>
+            <Text style={{fontSize:12, color:'#464646'}}>
+              Forgot Password ?
+            </Text>
+          </View>
+          <Button
+            containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#0080d4',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
+          >
+          Login With Facebook
+          </Button>
+          <Button
+            containerStyle={{marginTop:15, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#24bf49',}}
+            style={{fontSize: 16, color: '#ffffff'}}
+            onPress={this._handlePress}
+          >
+          Login With Facebook
+          </Button>
+          <View style={{marginTop:30, alignItems:'center'}}>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Registration')}
+              // disabled={isLoading || !userName || !password}
+            >
+              <Text style={{fontSize:12, color:'#000'}}>
+                Don't have account ? Register here
+              </Text>
+            </TouchableHighlight>
+          </View>
         </KeyboardAvoidingView>
-      </Image>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  // },
+  container: {
+    flex: 1,
+    padding:15,
+    paddingTop:60,
+    backgroundColor: '#fff',
+  },
+  categoryTitle :{
+    fontWeight:'bold',
+    fontSize:26,
+    color:'#454545'
+  },
   normaltext: {
     backgroundColor: 'transparent',
     color: '#ffffff',
@@ -113,30 +145,18 @@ const styles = StyleSheet.create({
     padding: 40,
     color: '#ffffff'
   },
-  bgimage: {
-    backgroundColor: '#ccc',
-    flex: 1,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    paddingTop:150,
-    alignItems: 'center',
-  },
-  logo: {
-    marginBottom: 40,
-  },
   searchInput: {
-    height: 40,
-    // width: 300,
-    alignSelf: 'stretch',
-    padding: 5,
-    marginHorizontal: 0,
-    marginTop:10,
-    fontSize: 14,
-    borderWidth: 3,
-    borderColor: '#48BBEC',
-    borderRadius: 3,
-    color: '#48BBEC',
-    backgroundColor: '#ffffff',
+    height: 45,
+    paddingLeft:15,
+    paddingTop:10,
+    paddingBottom:10,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 25,
+    color: '#acacac',
+    backgroundColor:'#f5f5f5',
   },
 });
