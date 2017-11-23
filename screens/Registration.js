@@ -3,30 +3,70 @@
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
+import { Platform, StyleSheet,
+  Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 
 export default class Registration extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {}
   }
 
   static navigationOptions = {
     header: null,
   }
 
-  _handlePress = () => {
-    this.props.navigation.navigate('MainTabNavigator')
+  _register = () => {
+    this.setState({isLoading:true})
+    // //// validation
+    //TODO
+
+    //// if validation passed, POST to API
+    let request = {
+      path: '/v1/register',
+      method: 'POST', 
+      data: this.state,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    }
+    fetchTravoramaApi(request).then( response => {
+      if (response.status == 200)
+        this.props.navigation.navigate('MainTabNavigator');
+      else this.setState({isLoading:false});
+    }).catch(error => console.log(error));
   }
+
   render() {
+    // const registrationTextInput = props => {
+    //   let _onChange = input => {
+    //     let state = {}
+    //     state[props.field] = input;
+    //     this.setState(state);
+    //   }
+    //   return (
+    //     <View>
+    //       <Text style={styles.label}> {props.label} </Text>
+    //       <TextInput
+    //         underlineColorAndroid= 'transparent'
+    //         style={styles.txtInput}
+    //         onChangeText={_onChange}
+    //         value={this.state[props.field]}
+    //         placeholder={props.placeholder}
+    //       />
+    //     </View>
+    //   );
+    // }
+
+    let { userName, email, phone, password, countryCode,
+    //   repeatPassword,
+     isLoading } = this.state;
+
+// {registrationTextInput({
+//           field: 'name',
+//           label: 'Nama',
+//           placeholder:'contoh: Andi Budi',
+//         })}
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
@@ -34,10 +74,21 @@ export default class Registration extends Component {
             <Text style={styles.categoryTitle}>Registrasi</Text>
           </View>
           <View style={{marginBottom:15}}>
-            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='User Name'/>
+            <TextInput style={styles.searchInput}
+              underlineColorAndroid='transparent'
+              placeholder='User Name'
+              value={userName}
+              onChangeText={userName => this.setState({userName})}
+            />
           </View>
           <View style={{marginBottom:15}}>
-            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
+            <TextInput style={styles.searchInput}
+              underlineColorAndroid='transparent'
+              placeholder='Email'
+              value={email}
+              onChangeText={email => this.setState({email})}
+              autoCapitalize='none'
+            />
           </View>
           <View style={{marginBottom:15, flexDirection:'row'}}>
             <View style={{flex:1.4}}>
@@ -45,6 +96,8 @@ export default class Registration extends Component {
                 style={styles.searchInput} 
                 underlineColorAndroid='transparent' 
                 placeholder='+62'
+                value={countryCode}
+                onChangeText={countryCode => this.setState({countryCode})}
               />
             </View>
             <View style={{flex:4}}>
@@ -52,6 +105,8 @@ export default class Registration extends Component {
                 style={styles.searchInput} 
                 underlineColorAndroid='transparent' 
                 placeholder='Phone Number'
+                value={phone}
+                onChangeText={phone => this.setState({phone})}
               />
             </View>
           </View>
@@ -60,6 +115,11 @@ export default class Registration extends Component {
               style={styles.searchInput} 
               underlineColorAndroid='transparent' 
               placeholder='Password'
+              value={password}
+              onChangeText={password => this.setState({password})}
+              autoCapitalize='none'
+              autoCorrect={false}
+              secureTextEntry={true}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
               <Icon
@@ -71,11 +131,24 @@ export default class Registration extends Component {
             </View>
           </View>
           <Button
-            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            containerStyle={{
+              marginTop:30,
+              height:45,
+              paddingTop:13,
+              paddingBottom:10,
+              overflow:'hidden',
+              borderRadius:25,
+              backgroundColor:
+              '#01d4cb',
+            }}
             style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._handlePress}
+            onPress={this._register}
+            disabled={!userName || !email || !phone || !password ||
+              // (password !== repeatPassword) || 
+              !countryCode || isLoading}
+            styleDisabled={{color:'#aaa'}}
           >
-          Registrasi
+          Daftarkan
           </Button>
           
         </KeyboardAvoidingView>
