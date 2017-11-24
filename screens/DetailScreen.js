@@ -7,6 +7,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
@@ -35,23 +36,23 @@ export default class DetailScreen extends Component {
     }
   }
 
-  static navigationOptions = {
+  //static navigationOptions = {
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
     //     ),
     // }),
     // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
+   // headerRight: <LikeShareHeaderButton/>,
+    //headerStyle: {
       // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
-  };
+      //position: 'absolute',
+      //zIndex: 100,
+      //top: 0,
+      //left: 0,
+      //right: 0
+    //},
+  //};
 
   componentDidMount() {
     const version = 'v1';
@@ -74,15 +75,37 @@ export default class DetailScreen extends Component {
         <ScrollView
           style={{marginBottom:60}}
         >
-          <ImageSlider height={350} images={mediaSrc}/>
+          <View>
+            <ImageSlider height={350} images={mediaSrc}/>
+            <View style={{position:'absolute', top:20, right:20, flexDirection:'row'}}>
+              <View style={{}}>
+                <Icon
+                name='share'
+                type='materialicons'
+                size={30}
+                color='#fff'/>
+              </View>
+              <View style={{marginLeft:10}}>
+                <Icon
+                name='favorite-border'
+                type='materialicons'
+                size={30}
+                color='#fff'/>
+              </View>
+            </View>
+          </View>
           <View style={styles.container}>
-
-            <Text style={styles.activityTitle}>
-              { name }
-            </Text>
-            <Text style={styles.locationActivity}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </Text>
+            <View style={{marginBottom:10}}>
+              <Text style={styles.activityTitle}>
+                { name }
+              </Text>
+            </View>
+            <View style={{marginBottom:10}}>
+              <Text style={styles.activityDesc}>
+                Jump five feet high and sideways when a shadow moves hiding behind the couch 
+                until lured out by a feathery toy so yowling nonstop the whole night.
+              </Text>
+            </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <Image style={styles.icon} 
                 source={require('../assets/icons/time.png')}
@@ -420,6 +443,15 @@ const styles = StyleSheet.create({
     width:150,
     // flex:1,
   },
+  activityTitle: {
+    fontWeight:'bold',
+    fontSize:18,
+    color:'#454545',
+  },
+  activityDesc: {
+    fontSize:14,
+    color:'#454545',
+  },
   bottomBarContainer: {
     flexDirection: 'row',
     position: 'absolute',
@@ -504,9 +536,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   activityTitle: {
-    fontWeight: 'bold',
-    fontSize:20,
-    marginBottom: 7,
+    fontWeight:'bold',
+    fontSize:18,
+    color:'#454545',
   },
   locationActivity: {
     fontSize:12,

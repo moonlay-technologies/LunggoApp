@@ -19,6 +19,7 @@ import PaxChoice from '../screens/PaxChoice';
 import BookingDetail from '../screens/BookingDetail';
 import Registration from '../screens/Registration';
 import BookedPageDetail from '../screens/BookedPageDetail';
+// import DetailScreen from '../screens/DetailScreen';
 
 //// unimplemented
 import Filter from '../screens/Filter';
@@ -34,7 +35,8 @@ import Verifikasi from '../screens/Verifikasi'
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreen,
+      screen: DetailScreen,
+      //screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
