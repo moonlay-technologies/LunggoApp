@@ -36,7 +36,6 @@ export default TabNavigator(
           name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
           size={28}
           style={{ marginRight: 10}}
-          // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
         />,
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;

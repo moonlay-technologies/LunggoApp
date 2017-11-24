@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableHighlight } from 'react-native';
+  TextInput, KeyboardAvoidingView, TouchableHighlight,
+} from 'react-native';
 import { fetchTravoramaLoginApi } from '../components/Common';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
@@ -37,10 +38,10 @@ export default class LoginScreen extends Component {
   }
   
   render() {
-    let {isLoading, userName, password} = this.state;
+    let {userName, password, showPassword, isLoading} = this.state;
     return (
       <View style={styles.container}>
-        <KeyboardAvoidingView behavior="position">
+        {/*<KeyboardAvoidingView behavior="position">*/}
           <View style={{marginBottom:40}}>
             <Text style={styles.categoryTitle}>Sign In</Text>
           </View>
@@ -59,19 +60,26 @@ export default class LoginScreen extends Component {
               style={styles.searchInput} 
               underlineColorAndroid='transparent' 
               placeholder='Password'
-              underlineColorAndroid='transparent'
-              secureTextEntry={true}
+              secureTextEntry={!showPassword}
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={ password => this.setState({password}) }
             />
             <View style={{position:'absolute', right:20, top:11,}}>
-              <Icon
-                //name='eye'
-                name='eye-with-line'
-                type='entypo'
-                size={22}
-                color='#acacac'/>
+              <TouchableHighlight
+                onPress={() =>
+                  this.setState({showPassword:!showPassword})}
+                underlayColor='transparent'
+              >
+                <View>
+                  <Icon
+                    name={showPassword ? 'eye' : 'eye-with-line'}
+                    type='entypo'
+                    size={22}
+                    color='#acacac'
+                  />
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
           <Button
@@ -104,14 +112,13 @@ export default class LoginScreen extends Component {
           <View style={{marginTop:30, alignItems:'center'}}>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Registration')}
-              // disabled={isLoading || !userName || !password}
             >
               <Text style={{fontSize:12, color:'#000'}}>
                 Don't have account ? Register here
               </Text>
             </TouchableHighlight>
           </View>
-        </KeyboardAvoidingView>
+        {/*</KeyboardAvoidingView>*/}
       </View>
     );
   }
