@@ -14,8 +14,8 @@ export default class App extends React.Component {
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
           onFinish={this._handleFinishLoading}
+          onError={this._handleLoadingError}
         />
       );
     } else {

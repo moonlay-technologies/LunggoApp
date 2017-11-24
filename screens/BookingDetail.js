@@ -1,48 +1,157 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import { Rating } from 'react-native-elements';
+import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements'
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
+import Moment from 'moment';
+import 'moment/locale/id';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
 
 export default class BookingDetail extends Component {
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      // date : null,
+      // shift: null,
+      // pax: null,
+    };
+  }
+
   static navigationOptions = {
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
+    title: 'Detail Pesanan',
+    // headerRight: <LikeShareHeaderButton/>,
   };
 
+  setPaxListItemIndexes = indexes =>
+    this.setState({paxListItemIndexes: indexes});
+  setPax = pax => this.setState({pax});
+  setSchedule = scheduleObj => this.setState(scheduleObj);
+
+  _book = () => {
+    this.setState({isLoading:true});
+    const version = 'v1';
+    let {pax, date} = this.state;
+    let request = {
+      method: 'POST',
+      path: `/${version}/activities/book`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+      data: {
+        activityId: this.props.navigation.state.params.activityId,
+        contact: {
+          title: 1,
+          name: "Testing",
+          countryCallCd: 62,
+          phone : 1234567890,
+          email: "developer@travelmadezy.com"
+        }, date, pax,
+        // "ticketCount" : 2
+        // pax: [
+        //   {
+        //     type : 1,
+        //     title : 1,
+        //     name : "guest 1",
+        //     dob : "02-18-1997",
+        //     nationality : "ID",
+        //     passportNo : "1234567",
+        //     passportExp : "02-18-2022",
+        //     passportCountry : "en",
+        //   }
+        // ],
+      }
+    };
+    fetchTravoramaApi(request).then( response => {
+      if(response.status == 200)
+        this.props.navigation.navigate(
+          'WebViewScreen',/*{date:date}*/
+        );
+    }).catch(error => {
+      this.setState({isLoading:false});
+      console.log(error);
+    });
+
+    
+  }
+
   render() {
+    let {navigation} = this.props;
+    let {price,requiredPaxData} = navigation.state.params;
+    let {pax, date, paxListItemIndexes} = this.state;
+    if (!paxListItemIndexes) paxListItemIndexes = [];
+
+    let calendar = (date) ?
+      <View>
+        <Text>{Moment(date).format('ddd, D MMM YYYY')}</Text>
+        <Button
+          containerStyle={{
+            height:35,
+            width:'100%',
+            paddingTop:10,
+            paddingBottom:10,
+            overflow:'hidden',
+            borderRadius:4,
+            backgroundColor: '#437ef7'
+          }}
+          style={{fontSize: 12, color: '#fff'}}
+          onPress={() => {
+            navigation.navigate('CalendarView', {
+              setSchedule: this.setSchedule,
+              selectedDate: date,
+              price,
+            });
+          }}
+        >
+          Ubah Jadwal
+        </Button>
+      </View>
+      :
+      <Button
+        containerStyle={{
+          height:35,
+          width:'100%',
+          paddingTop:10,
+          paddingBottom:10,
+          overflow:'hidden',
+          borderRadius:4,
+          backgroundColor: '#437ef7'
+        }}
+        style={{fontSize: 12, color: '#fff'}}
+        // disabled={this.state.isLoading}
+        // styleDisabled={{color:'#aaa'}}
+        onPress={() => {
+          // this.setState({isLoading:true});
+          navigation.navigate('CalendarView', {
+            setSchedule: this.setSchedule,
+            price,
+          });
+        }}
+      >
+        Pilih Jadwal
+      </Button>
+
+    let schedule =
+      <View style={styles.container}>
+        <Text style={styles.activityTitle}>
+          Jadwal
+        </Text>
+        {calendar}
+      </View>
+
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <View style={{flex:1, backgroundColor:'#ffffff'}}>
-        <ScrollView style={{marginBottom:60,marginTop:60}}>
+      <View style={{flex:1, backgroundColor:'#fff'}}>
+        <ScrollView style={{marginBottom:60}}>
           <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
               <View style={{flex:1, marginRight:20,}}>
-                <Image style={styles.thumb} source={require('../assets/images/other-img1.jpg')} />
+                <Image
+                  style={styles.thumb}
+                  source={require('../assets/images/other-img1.jpg')}
+                />
               </View>
               <View style={{flex:1.5}}>
                 <Text style={styles.activityTitle}>
@@ -50,44 +159,63 @@ export default class BookingDetail extends Component {
                 </Text>
                 <View style={{flexDirection: 'row'}}>
                   <Rating
-                    type="star"
-                    fractions={1}
-                    startingValue={3.6}
+                    // startingValue={3.6}
                     readonly
                     imageSize={12}
-                    onFinishRating={this.ratingCompleted}
+                    // onFinishRating={this.ratingCompleted}
                   />
                 </View>
                 <Text style={styles.descriptionActivity}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
                   dolore magna aliqua. Ut enim ad minim veniam.
                 </Text>
               </View>
             </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
-          <View style={styles.container}>
-            <Text style={styles.activityTitle}>
-              Calendar
-            </Text>
-          </View>{/* end container */}
+
+          {schedule}
+          
           <View style={styles.divider}/>
           <View style={styles.container}>
             <Text style={styles.activityTitle}>
-              Guest Detail
+              Peserta
             </Text>
-            <View style={{flexDirection: 'row'}}>
+            {pax && pax.map(
+              item => <Text key={item.key}>- {item.name}</Text>
+            )}
+            {/*<View style={{flexDirection: 'row'}}>
               <View>
                 <Icon
                 name='plus'
-                size='10'
+                size={10}
                 style={{marginTop:5, marginRight:7}}
                 type='font-awesome'
                 color='blue' />
               </View>
-              <View><Text>Tambah Guest Lainnya</Text></View>
-            </View>
-
+              <Text>Tambah Peserta</Text>
+            </View>*/}
+            <Button
+              containerStyle={{
+                height:35,
+                width:'100%',
+                paddingTop:10,
+                paddingBottom:10,
+                overflow:'hidden',
+                borderRadius:4,
+                backgroundColor: '#437ef7'
+              }}
+              style={{fontSize: 12, color: '#fff'}}
+              onPress={() => navigation.navigate('PaxChoice', {
+                setPax: this.setPax,
+                setPaxListItemIndexes: this.setPaxListItemIndexes,
+                paxListItemIndexes: paxListItemIndexes.slice(),
+                price, requiredPaxData,
+              })}
+            >
+              Tambah Peserta
+            </Button>
           </View>{/* end container */}
         </ScrollView>
 
@@ -96,21 +224,20 @@ export default class BookingDetail extends Component {
           <View style={{alignItems: 'flex-start', flex:1}}>
             <View style={{flexDirection: 'row'}}>
               <Text style={{
-                color:'green',
-                marginRight:3,
+                color: 'green',
+                marginRight: 3,
                 fontWeight: 'bold',
-                fontSize:15,
-              }}>1.000.000</Text> 
+                fontSize: 15,
+              }}>
+              { Formatter.price(price) }
+              </Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
-            <View style={{flexDirection: 'row',  }}>
+            <View style={{flexDirection: 'row'}}>
               <Rating
-                type="star"
-                fractions={1}
                 startingValue={3.6}
                 readonly
                 imageSize={12}
-                onFinishRating={this.ratingCompleted}
                 style={{ paddingTop: 2.5, marginRight:5}}
               />
               <Text style={{fontSize:12,}}>20 Review</Text> 
@@ -118,12 +245,21 @@ export default class BookingDetail extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id})}
+              containerStyle={{
+                height: 35,
+                width: 100,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7'
+              }}
+              style={{fontSize: 12, color: '#fff'}}
+              styleDisabled={{color: '#aaa'}}
+              onPress={this._book}
+              disabled={!pax || !date}
             >
-              Cari Tiket
+              Pesan
             </Button>
           </View>
         </View>

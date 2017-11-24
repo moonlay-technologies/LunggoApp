@@ -15,7 +15,6 @@ class ListItem extends React.PureComponent {
 
   render() {
     const {item} = this.props;
-    // const price = item.price_formatted.split(' ')[0];
     return (
       <TouchableHighlight
         onPress={this._onPress}
@@ -72,11 +71,11 @@ export default class SearchResults extends Component {
   );
 
   _onPressItem = (item) => {
-    console.log(item);
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
   
   render() {
+    this.props.navigation.state.key = 'SearchResults'
     return (
       <FlatList
         data={this.props.navigation.state.params.list}

@@ -15,10 +15,11 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
+import {AUTH_LEVEL} from '../constants/env';
+import {fetchTravoramaApi} from '../components/Common';
 import { Icon } from 'react-native-elements'
 
-function getQueryUrl (key, value, pageNumber) {
-  const domain = 'http://travorama-local-api.azurewebsites.net';
+function getQueryPath (key, value, pageNumber) {
   const version = 'v1';
   const data = {
       country: 'uk',
@@ -36,7 +37,7 @@ function getQueryUrl (key, value, pageNumber) {
   const querystring = 'startDate=02-18-2017';
 
   /// wisata dan kegiatan
-  return `${domain}/${version}/activities?${querystring}`;
+  return `/${version}/activities?${querystring}`;
   //+'?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
 }
 
@@ -66,21 +67,20 @@ export default class ExploreScreen extends React.Component {
     }
   }
 
-  _executeQuery = (query) => {
+  _executeRequest = (path) => {
     this.setState({ isLoading: true });
-    fetch(query)
-      .then(response => response.json())
-      .then(response => {
-        this.setState({ isLoading: false });
-        this._handleResponse(response);
-        // console.log(response)
-      })
-      .catch(error => {
-        this.setState({
-          isLoading: false,
-          message: 'Something bad happened :\n'+ error
-        })
+    let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
+    fetchTravoramaApi(request).then(response => {
+      this.setState({ isLoading: false });
+      this._handleResponse(response);
+    }).catch(error => {
+      this.setState({
+        isLoading: false,
+        message: 'Something bad happened :\n'+ error
       });
+      console.log(error);
+    });
+
     // return [
     //   {
     //     "title" : "Gili Island Snorkeling Day Trip",
@@ -175,8 +175,8 @@ export default class ExploreScreen extends React.Component {
 
   _onSearchPressed = () => {
     this.setState({ message: '', isLoading:true });
-    const query = getQueryUrl('place_name', this.state.searchString, 1);
-    this._executeQuery(query);
+    const path = getQueryPath('place_name', this.state.searchString, 1);
+    this._executeRequest(path);
     // var result = this._executeQuery(query);
     // if (result) this._handleResponse(result);
   };

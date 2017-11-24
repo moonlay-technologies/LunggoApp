@@ -1,174 +1,161 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
-import { Slider } from 'react-native-elements';
-import { CheckBox } from 'react-native-elements'
-
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
+  Platform, StyleSheet, FlatList,
+  Text, View, Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 
-export default class DetailScreen extends Component<{}> {
+
+class ListItem extends React.PureComponent {
+
+  _onPress = () => this.props.onPressItem(this.props.item);
+  render() {
+    const {item} = this.props;
+    return (
+      <View key={item.rsvNo}>
+        <View style={styles.divider}></View>
+        <TouchableHighlight
+          onPress={this._onPress}
+          underlayColor='#ddd'
+        >
+          <View style={styles.containerBooking}>
+            <Image source={{uri: item.mediaSrc}} style={{
+              flex: 1.8,
+              resizeMode: 'cover',
+              width: '100%',
+              height: 110,
+            }}/>
+            <View style={{
+              flex:3,
+              marginRight: '10%',
+              marginLeft: '5%',
+            }}>
+              <Text style={styles.activityTitle}>
+                {item.name}
+              </Text>
+              <Text style={styles.status}>{item.bookingStatus}</Text>
+              <View style={{
+                marginTop: 10,
+                marginBottom: 5,
+                width: '100%',
+                flexDirection:'row',
+              }}>
+                <View style={{ flexDirection:'row', marginRight:10 }}>
+                  <Image style={styles.icon}
+                    source={require('../assets/icons/person.png')}/>
+                  <Text style={styles.timeActivity}>
+                    {/*item.paxCount*/} peserta
+                  </Text>
+                </View>
+                <View style={{ flexDirection:'row' }}>
+                  <Image style={styles.icon}
+                    source={require('../assets/icons/calendar.png')}/>
+                  <Text style={styles.timeActivity}>
+                    {/*item.duration.count +' '+ item.duration.unit*/}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={{ flexDirection:'row' }}>
+                <Image style={styles.icon}
+                  source={require('../assets/icons/calendar.png')}/>
+                <Text style={styles.timeActivity}>
+                  {item.date}
+                </Text>
+              </View>
+            </View> 
+          </View>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+}
+
+export default class MyBookingScreen extends Component {
 
   static navigationOptions = {
-    title: 'MyBooking',
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
+    title: 'Pesananku',
   };
 
   constructor (props) {
     super(props)
-    this.state = {
-      checked: false,
-    };
+    this.state = {bookingList: []};
   }
 
+  componentDidMount() {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/mybooking`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    }
+    fetchTravoramaApi(request).then( response => {
+      this.setState({bookingList: response.myBookings});
+    }).catch(error => console.log(error));
+  }
+
+  _keyExtractor = (item, index) => index;
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+      onPressItem={this._onPressItem}
+    />
+  );
+  _onPressItem = (item) => {
+    this.props.navigation.navigate(
+      'BookedPageDetail',{details: item}
+    );
+  };
   
-
   render() {
+
     return (
-      //<View style={styles.divider}></View>
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <ScrollView style={{paddingTop:80, backgroundColor: '#fff',}}>
-        <View style={{flex:1,}}>
-          <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor:'#ffffff'}}>
-            <Button
-              containerStyle={{ marginRight:3, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 14, color: '#ffffff'}}
-              onPress={() => this._handlePress()}>
-              Active
-            </Button>
-            <Button
-              containerStyle={{ height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderWidth: 1,
-              borderColor: '#437ef7',backgroundColor: '#ffffff'}}
-              style={{fontSize: 14, color: '#437ef7'}}
-              onPress={() => this._handlePress()}>
-              History 
-            </Button>
-          </View>
+      <ScrollView style={{flex:1, backgroundColor: '#fff',}}>
 
-          <View style={styles.divider}></View>
+      {/* Tab Button
 
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-              <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                  <Text style={styles.timeActivity}>
-                    5 hari
-                  </Text>
-                </View>
-                <View style={{ flexDirection:'row' }}>
-                  <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                  <Text style={styles.timeActivity}>
-                    20 Oktober 2017
-                  </Text>
-                </View>
-              </View>
-              <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
+        <View style={{
+          flex:1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor:'#fff',
+          marginTop:10,
+        }}>
+          <Button
+            containerStyle={{
+              marginRight:3,
+              height:40, width:120, paddingTop:10, paddingBottom:10,
+              overflow:'hidden', borderRadius:4,
+              backgroundColor: '#437ef7'
+            }}
+            style={{fontSize: 14, color: '#ffffff'}}
+            onPress={() => this._handlePress()}>
+            Active
+          </Button>
+          <Button
+            containerStyle={{ height:40, width:120, paddingTop:10,
+              paddingBottom:10, overflow:'hidden', borderRadius:4,
+              borderWidth: 1,
+              borderColor: '#437ef7',backgroundColor: '#ffffff'
+            }}
+            style={{fontSize: 14, color: '#437ef7'}}
+            onPress={() => this._handlePress()}>
+            History 
+          </Button>
+        </View>
+        
+      */}
 
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerBooking}>
-            <Image source={require('../assets/images/other-img1.jpg')} style={{flex:1.8,resizeMode:'cover',width:'100%',height:110,}}/>
-            <View style={{flex:3,marginRight: '10%',marginLeft: '5%',}}>
-              <Text style={styles.activityTitle}>Trip to Sahara Desert</Text>
-              <Text style={styles.status}>On Going</Text>
-                <View style={{marginTop:10, marginBottom:5, width:'100%',flexDirection:'row',}}>
-                  <View style={{ flexDirection:'row', marginRight:10 }}>
-                    <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
-                    <Text style={styles.timeActivity}>
-                      5 hari
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection:'row' }}>
-                    <Image style={styles.icon}source={require('../assets/icons/calendar.png')}/>
-                    <Text style={styles.timeActivity}>
-                      20 Oktober 2017
-                    </Text>
-                  </View>
-                </View>
-                <Text style={{color:'green', marginRight:3, fontWeight: 'bold', fontSize:18,}}>Rp. 3.000.000</Text> 
-            </View> 
-          </View>
-
+        <View style={{marginBottom:10}}>
+          <FlatList
+            data={this.state.bookingList}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+          />
         </View>
       </ScrollView>
     );
@@ -205,27 +192,5 @@ const styles = StyleSheet.create({
   },
   timeActivity: {
     fontSize:12,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });

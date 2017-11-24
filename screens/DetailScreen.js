@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import ImageSlider from 'react-native-image-slider';
+import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating } from 'react-native-elements';
@@ -12,8 +12,28 @@ import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
 
 export default class DetailScreen extends Component {
+
+  constructor (props) {
+    super(props)
+    const {details} = this.props.navigation.state.params || {};
+    if (!details) {   //// if params.details doesnt exist,
+      this.state = {  //// use default state object
+        // isLoading, id
+        requiredPaxData: '',
+        name: 'loading activity name...',
+        city: 'loading address...',
+        duration: {amount: 'loading ', unit: 'duration...'},
+        price: 'loading price...',
+        mediaSrc: []
+      }
+    } else {
+      details.mediaSrc = [details.mediaSrc];
+      this.state = details; //// prevent error when params == undefined
+    }
+  }
 
   static navigationOptions = {
     // header: ({navigate}) => ({
@@ -33,23 +53,32 @@ export default class DetailScreen extends Component {
     },
   };
 
+  componentDidMount() {
+    const version = 'v1';
+    const id = 1;
+    // const {id} = this.state;
+    let request = {
+      path: `/${version}/activities/${id}`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    };
+    fetchTravoramaApi(request).then( response => {
+      this.setState(response.activityDetail);
+    }).catch(error => console.log(error));
+  }
+
   render() {
-    const { details } = this.props.navigation.state.params;
+    const { requiredPaxData, isLoading, name, city, duration, price, id,
+      mediaSrc } = this.state;
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View>
         <ScrollView
-          style={{marginBottom:60,marginTop:60}}
+          style={{marginBottom:60}}
         >
-          <ImageSlider height={350} images={[
-            details.mediaSrc,
-            require('../assets/images/detailimg.jpg'),
-            require('../assets/images/detailimg.jpg')
-          ]}/>
+          <ImageSlider height={350} images={mediaSrc}/>
           <View style={styles.container}>
 
             <Text style={styles.activityTitle}>
-              { details.name }
+              { name }
             </Text>
             <Text style={styles.locationActivity}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -59,7 +88,7 @@ export default class DetailScreen extends Component {
                 source={require('../assets/icons/time.png')}
               />
               <Text style={styles.timeActivity}>
-                { details.city }
+                { city }
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -67,11 +96,12 @@ export default class DetailScreen extends Component {
                 source={require('../assets/icons/time.png')}
               />
               <Text style={styles.timeActivity}>
-                { details.duration.amount +" "+ details.duration.unit }
+                { duration.amount +" "+ duration.unit }
               </Text>
             </View>
             {/*<View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.icon}source={require('../assets/icons/person.png')}/>
+              <Image style={styles.icon}
+              source={require('../assets/icons/person.png')}/>
               <Text style={styles.timeActivity}>
                 **20 orang**
               </Text>
@@ -84,10 +114,15 @@ export default class DetailScreen extends Component {
                 Tour Description
               </Text>
               <Text style={styles.descriptionActivity}>
-                ****Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat 
-                cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                ****Lorem ipsum dolor sit amet, consectetur adipiscing
+                elit, sed do eiusmod tempor incididunt ut labore et 
+                dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris 
+                nisi ut aliquip ex ea commodo consequat. Duis aute
+                irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                occaecat cupidatat non proident, sunt in culpa qui
+                officia deserunt mollit anim id est laborum.
               </Text>
             </View>{/* end containerdescriptionActivity */}
 
@@ -100,7 +135,7 @@ export default class DetailScreen extends Component {
                   &#5867;
                 </Text>
                 <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking and rafting adventure tour from Denpasar
+                  Full-day quad biking adventure tour from Denpasar
                 </Text>
               </View>
               <View style={styles.ul}>
@@ -108,7 +143,7 @@ export default class DetailScreen extends Component {
                   &#5867;
                 </Text>
                 <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking and rafting adventure tour from Denpasar
+                  Full-day quad biking adventure tour from Denpasar
                 </Text>
               </View>
             </View>{/* end containerdescriptionActivity */}
@@ -122,7 +157,7 @@ export default class DetailScreen extends Component {
                   &#5867;
                 </Text>
                 <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking and rafting adventure tour from Denpasar
+                  Full-day quad biking adventure tour from Denpasar
                 </Text>
               </View>
               <View style={styles.ul}>
@@ -130,7 +165,7 @@ export default class DetailScreen extends Component {
                   &#5867;
                 </Text>
                 <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking and rafting adventure tour from Denpasar
+                  Full-day quad biking adventure tour from Denpasar
                 </Text>
               </View>
             </View>{/* end containerdescriptionActivity */}
@@ -163,15 +198,23 @@ export default class DetailScreen extends Component {
               Review
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
+              <Image
+                style={styles.thumbprofile}
+                source={require('../assets/images/poto-profile.jpg')}
+              />
               <Text style={{fontWeight:'bold'}}>Jane Doe{"\n"}
-                <Text style={{fontSize:10, fontWeight:'normal'}}>3 maret 2017</Text>
+                <Text style={{fontSize:10, fontWeight:'normal'}}>
+                  3 maret 2017
+                </Text>
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg1.jpg')}/>
-              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg2.jpg')}/>
-              <Image style={styles.reviewThumbImg} source={require('../assets/images/thumbimg1.jpg')}/>
+              <Image style={styles.reviewThumbImg}
+                source={require('../assets/images/thumbimg1.jpg')}/>
+              <Image style={styles.reviewThumbImg}
+                source={require('../assets/images/thumbimg2.jpg')}/>
+              <Image style={styles.reviewThumbImg}
+                source={require('../assets/images/thumbimg1.jpg')}/>
             </View>
             <Text style={styles.isireview}>
               sit amet, consectetur aaa adipiscing elit,
@@ -181,25 +224,39 @@ export default class DetailScreen extends Component {
               Baca 20 Review Lainnya
             </Text>
 
-            <View style={styles.containerdescriptionActivity}>
-              <Panel title="Agenda">
-                <Text>..</Text>
-              </Panel>
-              <Panel title="Guest Requirement">
-                <Text>..</Text>
-              </Panel>
-              <Panel title="Cancelation Policiy">
-                <Text>..</Text>
-              </Panel>{/* end panel */}
-            </View>{/* end containerdescriptionActivity */}
-
+            <Accordion style={styles.containerdescriptionActivity}
+              sections={[
+              {
+                title: 'Agenda',
+                content: 'Lorem ipsum dolor sit amet, consectetur ',
+              },
+              {
+                title: 'Participant Requirement',
+                content: 'Lorem ipsum...',
+              },
+              {
+                title: 'Cancelation Policy',
+                content: 'Lorem ipsum...',
+              },
+            ]}/>
             <Text style={styles.sectionTitle}>
               Similar Adventure
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
                 <View style={styles.similarActivityContainer}>
-                  <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img2.jpg')}/>
+                  <Image
+                    style={{
+                      resizeMode:'cover',
+                      width:150,
+                      height:170,
+                      marginBottom:7,
+                    }}
+                    source={require('../assets/images/other-img2.jpg')}
+                  />
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
@@ -216,7 +273,15 @@ export default class DetailScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.similarActivityContainer}>
-                  <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img1.jpg')}/>
+                  <Image
+                    style={{
+                      resizeMode:'cover',
+                      width:150,
+                      height:170,
+                      marginBottom:7,
+                    }}
+                    source={require('../assets/images/other-img1.jpg')}
+                  />
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
@@ -233,7 +298,15 @@ export default class DetailScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.similarActivityContainer}>
-                  <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img3.jpg')}/>
+                  <Image
+                    style={{
+                      resizeMode:'cover',
+                      width:150,
+                      height:170,
+                      marginBottom:7,
+                    }}
+                    source={require('../assets/images/other-img3.jpg')}
+                  />
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
@@ -250,7 +323,15 @@ export default class DetailScreen extends Component {
                   </View>
                 </View>
                 <View style={styles.similarActivityContainer}>
-                  <Image style={{resizeMode:'cover', width:150, height:170, marginBottom:7,}} source={require('../assets/images/other-img4.jpg')}/>
+                  <Image
+                    style={{
+                      resizeMode:'cover',
+                      width:150,
+                      height:170,
+                      marginBottom:7,
+                    }}
+                    source={require('../assets/images/other-img4.jpg')}
+                  />
                   <Text>Tour Title 1</Text>
                   <Text style={{color:'green'}}>Rp. 3.000.000</Text>
                   <View style={{flexDirection: 'row'}}>
@@ -281,7 +362,7 @@ export default class DetailScreen extends Component {
                 marginRight:3,
                 fontWeight: 'bold',
                 fontSize:15,
-              }}>{ Formatter.price(details.price) }</Text> 
+              }}>{ Formatter.price(price) }</Text> 
               <Text style={{fontSize:12,}}>/orang</Text>
             </View>
             <View style={{flexDirection: 'row',  }}>
@@ -299,12 +380,27 @@ export default class DetailScreen extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{height:35, width:100, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#ffffff'}}
-              onPress={() => this.props.navigation.navigate('CalendarView',
-                             {activityId: details.id})}
+              containerStyle={{
+                height: 35,
+                width: 100,
+                paddingTop: 10,
+                paddingBottom: 10,
+                overflow: 'hidden',
+                borderRadius: 4,
+                backgroundColor: '#437ef7'
+              }}
+              style={{fontSize: 12, color: '#fff'}}
+              onPress={() => {
+                this.setState({isLoading: true})
+                this.props.navigation.navigate('BookingDetail', {
+                  activityId: id,
+                  price, requiredPaxData,
+                });
+              }}
+              disabled={!requiredPaxData || isLoading}
+              styleDisabled={{color:'#aaa'}}
             >
-              Lihat Tanggal
+              Pesan
             </Button>
           </View>
         </View>
@@ -384,6 +480,7 @@ const styles = StyleSheet.create({
   },
   containerdescriptionActivity: {
     marginBottom: 18,
+    flex: 1
   },
   sectionTitle: {
     fontWeight: 'bold',

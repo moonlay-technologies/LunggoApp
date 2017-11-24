@@ -9,10 +9,9 @@ export default class CalendarView extends Component {
 
   constructor (props) {
     super(props)
-
-    // Moment.locale('id');
+    let {selectedDate} = this.props.navigation.state.params;
     this.state = {
-      selectedDate : null,
+      selectedDate,
       markedDates : {
         // '2017-11-20': {marked: true},
         '2017-11-21': {disabled: true},
@@ -28,6 +27,7 @@ export default class CalendarView extends Component {
         // '2017-11-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
       }
     };
+    if (selectedDate) this.state.markedDates[selectedDate] = {selected: true};
   }
 
   static navigationOptions = {
@@ -52,8 +52,16 @@ export default class CalendarView extends Component {
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
     this.setState({ markedDates, selectedDate });
-    //// TODO: all state has already changed but the ui only partly updated
+    //// TODO: sometimes all state has already changed but the ui only partly updated
     //// (only text is updated, CalendarList's marked date isn't)
+  };
+
+  _return = () => {
+    this.props.navigation.state.params.setSchedule({
+      date:this.state.selectedDate,
+      shift:'1'
+    })
+    this.props.navigation.goBack()
   }
 
   render() {
@@ -87,12 +95,7 @@ export default class CalendarView extends Component {
               backgroundColor: '#437ef7',
             }}
             style={{fontSize: 12, color: '#ffffff'}}
-            onPress={() => this.props.navigation.navigate(
-              'ParticipantChoice', {
-                date: selectedDate,
-                activityId: this.props.navigation.state.params.activityId
-              }
-            )}
+            onPress={this._return}
           >
             Pilih Tanggal
           </Button>

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import AppIntro from 'react-native-app-intro';
+// import AppIntro from 'react-native-app-intro';
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
