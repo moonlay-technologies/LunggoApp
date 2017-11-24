@@ -2,7 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
@@ -22,15 +22,10 @@ import BookedPageDetail from '../screens/BookedPageDetail';
 // import DetailScreen from '../screens/DetailScreen';
 
 //// unimplemented
-import Filter from '../screens/Filter';
-import ForgotPassword from '../screens/ForgotPassword'
-import Verifikasi from '../screens/Verifikasi'
+// import Filter from '../screens/Filter';
+// import ForgotPassword from '../screens/ForgotPassword'
+// import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
-
-
-/// Operator
-// import LoginScreenOp from '../screens/LoginScreenOp';
-// import AppointmentRequest from '../screens/AppointmentRequest';
 
 const RootStackNavigator = StackNavigator(
   {

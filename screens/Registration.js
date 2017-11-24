@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import { Platform, StyleSheet,
+import { Platform, StyleSheet, TouchableHighlight,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
@@ -38,38 +38,12 @@ export default class Registration extends Component {
   }
 
   render() {
-    // const registrationTextInput = props => {
-    //   let _onChange = input => {
-    //     let state = {}
-    //     state[props.field] = input;
-    //     this.setState(state);
-    //   }
-    //   return (
-    //     <View>
-    //       <Text style={styles.label}> {props.label} </Text>
-    //       <TextInput
-    //         underlineColorAndroid= 'transparent'
-    //         style={styles.txtInput}
-    //         onChangeText={_onChange}
-    //         value={this.state[props.field]}
-    //         placeholder={props.placeholder}
-    //       />
-    //     </View>
-    //   );
-    // }
-
     let { userName, email, phone, password, countryCode,
-    //   repeatPassword,
-     isLoading } = this.state;
+      showPassword, isLoading } = this.state;
 
-// {registrationTextInput({
-//           field: 'name',
-//           label: 'Nama',
-//           placeholder:'contoh: Andi Budi',
-//         })}
     return (
       <View style={styles.container}>
-        <KeyboardAvoidingView behavior="position">
+        <KeyboardAvoidingView behavior="padding">
           <View style={{marginBottom:40}}>
             <Text style={styles.categoryTitle}>Registrasi</Text>
           </View>
@@ -119,15 +93,23 @@ export default class Registration extends Component {
               onChangeText={password => this.setState({password})}
               autoCapitalize='none'
               autoCorrect={false}
-              secureTextEntry={true}
+              secureTextEntry={!showPassword}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
-              <Icon
-                //name='eye'
-                name='eye-with-line'
-                type='entypo'
-                size={22}
-                color='#acacac'/>
+              <TouchableHighlight
+                onPress={() =>
+                  this.setState({showPassword:!showPassword})}
+                underlayColor='transparent'
+              >
+                <View>
+                  <Icon
+                    name={showPassword ? 'eye' : 'eye-with-line'}
+                    type='entypo'
+                    size={22}
+                    color='#acacac'
+                  />
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
           <Button
@@ -138,19 +120,23 @@ export default class Registration extends Component {
               paddingBottom:10,
               overflow:'hidden',
               borderRadius:25,
-              backgroundColor:
-              '#01d4cb',
+              backgroundColor: '#01d4cb',
             }}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._register}
             disabled={!userName || !email || !phone || !password ||
-              // (password !== repeatPassword) || 
               !countryCode || isLoading}
             styleDisabled={{color:'#aaa'}}
           >
           Daftarkan
           </Button>
-          
+          <TouchableHighlight style={{marginTop:30, alignItems:'center'}}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <Text style={{fontSize:12, color:'#000'}}>
+              Already have an account ? Login here
+            </Text>
+          </TouchableHighlight>
         </KeyboardAvoidingView>
       </View>
     );
