@@ -18,13 +18,13 @@ import BookingDetail from '../screens/BookingDetail';
 import BookedPageDetail from '../screens/BookedPageDetail';
 import AppointmentRequest from '../screens/AppointmentRequest';
 import ExploreScreen from '../screens/ExploreScreen';
-import ForgotPassword from '../screens/ForgotPassword'
+import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: ForgotPassword,
+      screen: Verifikasi,
       //screen: Registrasi,
       //screen: ExploreScreen,
       //screen: LoginScreenOp,
