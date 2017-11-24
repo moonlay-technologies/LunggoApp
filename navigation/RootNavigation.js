@@ -23,6 +23,7 @@ import BookedPageDetail from '../screens/BookedPageDetail';
 //// unimplemented
 import Filter from '../screens/Filter';
 import ForgotPassword from '../screens/ForgotPassword'
+import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 
