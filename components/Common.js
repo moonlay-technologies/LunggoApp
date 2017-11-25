@@ -37,7 +37,9 @@ export async function fetchTravoramaLoginApi(userName, password) {
     case '400':
     case '500':
     default:
-      console.log('error ' + status)
+      console.log('LOGIN API error ' + status)
+      console.log('LOGIN API request data:')
+      console.log(data)
   }
   //end of redundant
   return response;
@@ -86,8 +88,10 @@ async function getAuthAccess() {
       case '400':
       case '500':
       default:
-        console.log('error!!');
+        console.log('GET AUTH error!!');
         console.log(response);
+        console.log('GET AUTH request data :');
+        console.log(data);
     }
     return {accessToken, authLevel};
   } catch (error) {
@@ -142,5 +146,9 @@ export async function fetchTravoramaApi (request) {
       // throw response;
     // }
     return response;
-  } catch (err) { console.log(err) }
+  } catch (err) {
+    console.log('error while fetching this request :')
+    console.log(request)
+    console.log(err)
+  }
 }

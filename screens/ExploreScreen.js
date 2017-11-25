@@ -10,7 +10,6 @@ import {
   View,
   Button, TextInput,
   ActivityIndicator,
-  TouchableNativeFeedback,
   StyleSheet
 } from 'react-native';
 import { WebBrowser } from 'expo';
@@ -46,14 +45,53 @@ export default class ExploreScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      searchString: 'Search..',
+      searchString: '',
       isLoading: false,
       message: ''
     };
   }
 
   static navigationOptions = {
-    title: 'Explore',
+    header: (props) => 
+      <View style={{ backgroundColor: '#fff', height:64 ,paddingTop:20}}>
+        <View style={[styles.header,styles.flowRight]}>
+          <View style={{flex:6}}>
+            <TextInput
+              style={styles.searchInput}
+              // value={ExploreScreen.state.searchString}
+              onChange={ExploreScreen._onSearchTextChanged}
+              onSubmitEditing={()=>console.log(new ExploreScreen())}
+              // onSubmitEditing={this._onSearchPressed}
+              placeholder='Try "snorkeling"...'
+              returnKeyType='search'
+              underlineColorAndroid='transparent'
+              selectTextOnFocus={true}
+            />
+            <TouchableOpacity
+              onPress={()=>console.log(new ExploreScreen())}
+              style={{position:'absolute', right:5, top:-3, padding:9}}
+              >
+              <View 
+                // style={{position:'absolute', right:20, top:11,}}
+                >
+                <Icon
+                  name='magnifying-glass'
+                  type='entypo'
+                  size={22}
+                  color='#acacac'/>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-end'}}>
+            <Icon
+              name='shopping-cart'
+              type='feather'
+              size={30}
+              color='#acacac'/>
+          </View>
+        </View>
+      </View>,
   };
 
   _handleResponse = (response) => {
@@ -80,105 +118,13 @@ export default class ExploreScreen extends React.Component {
       });
       console.log(error);
     });
-
-    // return [
-    //   {
-    //     "title" : "Gili Island Snorkeling Day Trip",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
-    //     "area" : "Gili Island",
-    //     "city" :"Lombok",
-    //     "type" : "Snorkeling",
-    //     "price" : 1014000,
-    //     // "discountPrice" : 100000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 5.0,
-    //     "reviewer" : 2
-    //     // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
-    //   },
-    //   {
-    //     "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
-    //     "area" : "Mt Rinjani",
-    //     "city" :"Lombok",
-    //     "type" : "Trekking",
-    //     "price" : 4189000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 0,
-    //     "reviewer" : 0
-    //   },
-    //   {
-    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-    //     "area" : "Sendang Gile",
-    //     "city" :"Lombok",
-    //     "type" : "Tour",
-    //     "price" : 973000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 1,
-    //     "reviewer" : 1
-    //   },
-    //   {
-    //     "title" : "Gili Island Snorkeling Day Trip",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11457788-Gili_Island_Snorkeling_Day_Trip-Lombok_West_Nusa_Tenggara.html",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/7980/SITours/gili-island-snorkeling-day-trip-in-mataram-211397.jpg",
-    //     "area" : "Gili Island",
-    //     "city" :"Lombok",
-    //     "type" : "Snorkeling",
-    //     "price" : 1014000,
-    //     // "discountPrice" : 100000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 5.0,
-    //     "reviewer" : 2
-    //     // "otherDetails" : "3 other travelers have booked this activity in the past 30 days."
-    //   },
-    //   {
-    //     "title" : "3-Day Mt Rinjani Volcano Trekking Tour from Lombok",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail-g297733-d11988509-3_Day_Mt_Rinjani_Volcano_Trekking_Tour_from_Lombok-Lombok_West_Nusa_Tenggara.html",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/28798/SITours/3-day-mt-rinjani-volcano-trekking-tour-from-lombok-in-mataram-285702.jpg",
-    //     "area" : "Mt Rinjani",
-    //     "city" :"Lombok",
-    //     "type" : "Trekking",
-    //     "price" : 4189000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 0,
-    //     "reviewer" : 0
-    //   },
-    //   {
-    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-    //     "area" : "Sendang Gile",
-    //     "city" :"Lombok",
-    //     "type" : "Tour",
-    //     "price" : 973000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 1,
-    //     "reviewer" : 1
-    //   },
-    //   {
-    //     "title" : "Private Tour: Amazing Waterfalls of Lombok",
-    //     "url" : "https://www.tripadvisor.com/AttractionProductDetail?product=26391P4&d=1723009&aidSuffix=tvrm&partner=Viator",
-    //     "src" : "https://cache-graphicslib.viator.com/graphicslib/thumbs674x446/26391/SITours/private-tour-amazing-waterfalls-of-lombok-in-lombok-284920.jpg",
-    //     "area" : "Sendang Gile",
-    //     "city" :"Lombok",
-    //     "type" : "Tour",
-    //     "price" : 973000,
-    //     "priceDetail" : "Inclusive of taxes",
-    //     "rating" : 1,
-    //     "reviewer" : 1
-    //   },
-    // ];
   };
 
   _onSearchPressed = () => {
+    console.log('aa')
     this.setState({ message: '', isLoading:true });
     const path = getQueryPath('place_name', this.state.searchString, 1);
     this._executeRequest(path);
-    // var result = this._executeQuery(query);
-    // if (result) this._handleResponse(result);
   };
 
   //// Bind <TextInput> searchText with state searchString
@@ -186,52 +132,12 @@ export default class ExploreScreen extends React.Component {
     this.setState({ searchString: event.nativeEvent.text });
   };
 
+
   render() {
-    const spinner = this.state.isLoading ?
+    const loadingIndicator = this.state.isLoading ?
       <ActivityIndicator size='large'/> : null;
-    // const searchButton = Platform.OS === 'ios' ? 
-    //     <Button
-    //       onPress={this._onSearchPressed}
-    //       color='#48BBEC'
-    //       title='Search'
-    //     />
-    //   : <TouchableNativeFeedback
-    //       onPress={this._onSearchPressed}
-    //       color='#48BBEC'
-    //       title='Search'
-    //     />
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
-        <View style={styles.container}>
-          <View style={styles.flowRight}>
-            <View style={{flex:6}}>
-              <TextInput
-                style={styles.searchInput}
-                value={this.state.searchString}
-                onChange={this._onSearchTextChanged}
-                onSubmitEditing={this._onSearchPressed}
-                placeholder='Search via name or postcode'
-                returnKeyType='search'
-                underlineColorAndroid='transparent'
-                selectTextOnFocus={true}
-              />
-              <View style={{position:'absolute', right:20, top:11,}}>
-                <Icon
-                  name='magnifying-glass'
-                  type='entypo'
-                  size={22}
-                  color='#acacac'/>
-              </View>
-            </View>
-
-            <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-end'}}>
-              <Icon
-                name='shopping-cart'
-                type='feather'
-                size={30}
-                color='#acacac'/>
-            </View>
-          </View>
 
           {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
@@ -272,7 +178,10 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */} 
 
-          <View style={{marginTop:40}}>
+        <View style={styles.container}>
+          <View 
+            //style={{marginTop:40}}
+          >
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Top View</Text>
@@ -651,11 +560,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'stretch',
   },
+  header: {
+    paddingHorizontal:15,
+    paddingVertical:5,
+    backgroundColor: '#fff',
+  },
   searchInput: {
-    height: 45,
+    height: 35,
     paddingLeft:15,
-    paddingTop:10,
-    paddingBottom:10,
+    paddingTop:5,
+    paddingBottom:5,
     marginRight: 5,
     flexGrow: 1,
     fontSize: 18,
