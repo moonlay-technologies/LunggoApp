@@ -1,5 +1,6 @@
+import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 
-export default function getQueryPath (key, value, pageNumber) {
+function getQueryPath (key, value, pageNumber) {
   const version = 'v1';
   const data = {
       name: 'hiking',
@@ -15,38 +16,30 @@ export default function getQueryPath (key, value, pageNumber) {
   // const querystring = Object.keys(data)
   //   .map(key => key + '=' + encodeURIComponent(data[key]))
   //   .join('&');
-  const querystring = 'name='+value;
+  // const querystring = '';
+  const querystring = 'startDate=2017-02-18';
+  // const querystring = 'name='+value;
 
   /// wisata dan kegiatan
   return `/${version}/activities?${querystring}`;
   //+'?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
 }
 
-
-
-  _handleResponse = (response) => {
+export default async function search(searchString) {
+  const path = getQueryPath('place_name', searchString, 1);
+  console.log(path)
+  let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
+  try {
+    let response = await fetchTravoramaApi(request);
     if(response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'SearchResults', { list: response.activityList}
-      )
+      return response.activityList;
     } else {
-      this.setState({ message: 'Location not recognized!'})
+      // this.setState({ message: 'Location not recognized!'})
+      console.log('location not recognized')
+      console.log(response)
     }
+  } catch(error) {
+    // this.setState({message: 'Something bad happened :\n'+ error});
+    console.log(error);
   }
-
-  _executeRequest = (searchString) => {
-    const path = getQueryPath('place_name', searchString, 1);
-    this.setState({ isLoading: true });
-    let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._handleResponse(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n'+ error
-      });
-      console.log(error);
-    });
-  };
+}

@@ -32,8 +32,8 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: ExploreScreen,
-      // screen: LoginScreen,
+      // screen: ExploreScreen,
+      screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },

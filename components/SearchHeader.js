@@ -3,7 +3,6 @@ import {
   Platform, StyleSheet, FlatList,
   Text, View, Image, TextInput, TouchableOpacity,
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import { Icon } from 'react-native-elements'
 
 export default class SearchHeader extends Component {
@@ -29,7 +28,7 @@ export default class SearchHeader extends Component {
           <View style={{flex:6}}>
             <TextInput
               style={styles.searchInput}
-              onChangeText={txt => this.setState({searchString:txt})}
+              onChangeText={str => this.setState({searchString:str})}
               onSubmitEditing={this._goToSearchResult}
               placeholder={this.state.placeholder}
               returnKeyType='search'

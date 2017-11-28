@@ -5,8 +5,9 @@ import {
   StyleSheet, Image, View, Text,
   TouchableHighlight, FlatList,
 } from 'react-native';
+// import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import * as Formatter from '../components/Formatter';
-// import * as SearchController from './SearchController';
+import search from '../components/searchController';
 
 class ListItem extends React.PureComponent {
 
@@ -29,10 +30,6 @@ class ListItem extends React.PureComponent {
               <Text style={styles.price}>
                 { Formatter.price(item.price) }
               </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{marginRight:7}}>Bintang</Text>
-                <Text>20 Reviews</Text>
-              </View>
             </View>
           </View>
 
@@ -40,11 +37,9 @@ class ListItem extends React.PureComponent {
             <Image style={styles.thumbnailMedium} source={{ uri: item.mediaSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
-              <Text style={styles.price}>{Formatter.price(item.price)}</Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{marginRight:7}}>Bintang</Text>
-                <Text>20 Reviews</Text>
-              </View>
+              <Text style={styles.price}>
+                {Formatter.price(item.price)}
+              </Text>
             </View>
           </View>
 
@@ -57,10 +52,26 @@ class ListItem extends React.PureComponent {
 
 export default class SearchResults extends Component {
 
+  constructor (props) {
+    super(props)
+    let {searchString} = this.props.navigation.params || {};
+    this.state = {
+      searchString: searchString || '',
+      placeholder: 'Try "snorkeling"...',
+      list:{}
+    };
+  }
+
   static navigationOptions = {
     title: 'Results',
   };
  
+  componentDidMount() {
+    search(this.state.searchString)
+      .then(response => this.setState({list: response}))
+      .catch(error=>console.log(error))
+  }
+
   _keyExtractor = (item, index) => index;
 
   _renderItem = ({item, index}) => (
@@ -79,7 +90,7 @@ export default class SearchResults extends Component {
     this.props.navigation.state.key = 'SearchResults'
     return (
       <FlatList
-        data={this.props.navigation.state.params.list}
+        data={this.state.list}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem} />
     );
