@@ -2,6 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
+import {View, Image, Text, StyleSheet} from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
@@ -19,7 +20,6 @@ import PaxChoice from '../screens/PaxChoice';
 import BookingDetail from '../screens/BookingDetail';
 import Registration from '../screens/Registration';
 import BookedPageDetail from '../screens/BookedPageDetail';
-// import DetailScreen from '../screens/DetailScreen';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -27,11 +27,13 @@ import BookedPageDetail from '../screens/BookedPageDetail';
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
+import ExploreScreen from '../screens/ExploreScreen';
+
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: DetailScreen,
-      //screen: LoginScreen,
+      screen: ExploreScreen,
+      // screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },

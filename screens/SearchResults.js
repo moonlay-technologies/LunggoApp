@@ -6,6 +6,7 @@ import {
   TouchableHighlight, FlatList,
 } from 'react-native';
 import * as Formatter from '../components/Formatter';
+// import * as SearchController from './SearchController';
 
 class ListItem extends React.PureComponent {
 

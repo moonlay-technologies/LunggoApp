@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableHighlight,
+  TextInput, KeyboardAvoidingView, TouchableHighlight,TouchableOpacity,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../components/Common';
 import { Icon } from 'react-native-elements'
@@ -66,10 +66,9 @@ export default class LoginScreen extends Component {
               onChangeText={ password => this.setState({password}) }
             />
             <View style={{position:'absolute', right:20, top:11,}}>
-              <TouchableHighlight
+              <TouchableOpacity
                 onPress={() =>
                   this.setState({showPassword:!showPassword})}
-                underlayColor='transparent'
               >
                 <View>
                   <Icon
@@ -79,7 +78,7 @@ export default class LoginScreen extends Component {
                     color='#acacac'
                   />
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
           <Button

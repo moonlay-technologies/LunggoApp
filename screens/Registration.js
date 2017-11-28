@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import { Platform, StyleSheet, TouchableHighlight,
+import { Platform, StyleSheet, TouchableHighlight,TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
@@ -33,7 +33,11 @@ export default class Registration extends Component {
     fetchTravoramaApi(request).then( response => {
       if (response.status == 200)
         this.props.navigation.navigate('MainTabNavigator');
-      else this.setState({isLoading:false});
+      else {
+        this.setState({isLoading:false});
+        console.log(request)
+        console.log(response)
+      }
     }).catch(error => console.log(error));
   }
 
@@ -47,6 +51,7 @@ export default class Registration extends Component {
           <View style={{marginBottom:40}}>
             <Text style={styles.categoryTitle}>Registrasi</Text>
           </View>
+          
           <View style={{marginBottom:15}}>
             <TextInput style={styles.searchInput}
               underlineColorAndroid='transparent'
@@ -59,6 +64,7 @@ export default class Registration extends Component {
             <TextInput style={styles.searchInput}
               underlineColorAndroid='transparent'
               placeholder='Email'
+              keyboardType='email-address'
               value={email}
               onChangeText={email => this.setState({email})}
               autoCapitalize='none'
@@ -70,6 +76,7 @@ export default class Registration extends Component {
                 style={styles.searchInput} 
                 underlineColorAndroid='transparent' 
                 placeholder='+62'
+                keyboardType='phone-pad'
                 value={countryCode}
                 onChangeText={countryCode => this.setState({countryCode})}
               />
@@ -79,6 +86,7 @@ export default class Registration extends Component {
                 style={styles.searchInput} 
                 underlineColorAndroid='transparent' 
                 placeholder='Phone Number'
+                keyboardType='phone-pad'
                 value={phone}
                 onChangeText={phone => this.setState({phone})}
               />
@@ -96,10 +104,9 @@ export default class Registration extends Component {
               secureTextEntry={!showPassword}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
-              <TouchableHighlight
+              <TouchableOpacity
                 onPress={() =>
                   this.setState({showPassword:!showPassword})}
-                underlayColor='transparent'
               >
                 <View>
                   <Icon
@@ -109,7 +116,7 @@ export default class Registration extends Component {
                     color='#acacac'
                   />
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
           <Button
