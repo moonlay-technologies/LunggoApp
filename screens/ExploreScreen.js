@@ -12,126 +12,23 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
-import { WebBrowser } from 'expo';
-import { MonoText } from '../components/StyledText';
-import {AUTH_LEVEL} from '../constants/env';
-import {fetchTravoramaApi} from '../components/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
+import SearchHeader from '../components/SearchHeader';
 import { Icon } from 'react-native-elements'
-
-function getQueryPath (key, value, pageNumber) {
-  const version = 'v1';
-  const data = {
-      country: 'uk',
-      pretty: '1',
-      encoding: 'json',
-      listing_type: 'buy',
-      action: 'search_listings',
-      page: pageNumber,
-  };
-  data[key] = value;
-
-  // const querystring = Object.keys(data)
-  //   .map(key => key + '=' + encodeURIComponent(data[key]))
-  //   .join('&');
-  const querystring = 'startDate=02-18-2017';
-
-  /// wisata dan kegiatan
-  return `/${version}/activities?${querystring}`;
-  //+'?searchActivityType=ActivityName&name=tiket&page=1&perPage=10&date=180217';
-}
 
 export default class ExploreScreen extends React.Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      searchString: '',
       isLoading: false,
       message: ''
     };
   }
 
   static navigationOptions = {
-    header: (props) => 
-      <View style={{ backgroundColor: '#fff', height:64 ,paddingTop:20}}>
-        <View style={[styles.header,styles.flowRight]}>
-          <View style={{flex:6}}>
-            <TextInput
-              style={styles.searchInput}
-              // value={ExploreScreen.state.searchString}
-              onChange={ExploreScreen._onSearchTextChanged}
-              onSubmitEditing={()=>console.log(new ExploreScreen())}
-              // onSubmitEditing={this._onSearchPressed}
-              placeholder='Try "snorkeling"...'
-              returnKeyType='search'
-              underlineColorAndroid='transparent'
-              selectTextOnFocus={true}
-            />
-            <TouchableOpacity
-              onPress={()=>console.log(new ExploreScreen())}
-              style={{position:'absolute', right:5, top:-3, padding:9}}
-              >
-              <View 
-                // style={{position:'absolute', right:20, top:11,}}
-                >
-                <Icon
-                  name='magnifying-glass'
-                  type='entypo'
-                  size={22}
-                  color='#acacac'/>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-end'}}>
-            <Icon
-              name='shopping-cart'
-              type='feather'
-              size={30}
-              color='#acacac'/>
-          </View>
-        </View>
-      </View>,
+    header: (props) => <SearchHeader {...props}/>
   };
-
-  _handleResponse = (response) => {
-    if(response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'SearchResults', { list: response.activityList}
-      )
-    } else {
-      this.setState({ message: 'Location not recognized!'})
-    }
-  }
-
-  _executeRequest = (path) => {
-    this.setState({ isLoading: true });
-    let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._handleResponse(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n'+ error
-      });
-      console.log(error);
-    });
-  };
-
-  _onSearchPressed = () => {
-    console.log('aa')
-    this.setState({ message: '', isLoading:true });
-    const path = getQueryPath('place_name', this.state.searchString, 1);
-    this._executeRequest(path);
-  };
-
-  //// Bind <TextInput> searchText with state searchString
-  _onSearchTextChanged = (event) => {
-    this.setState({ searchString: event.nativeEvent.text });
-  };
-
 
   render() {
     const loadingIndicator = this.state.isLoading ?
@@ -554,29 +451,5 @@ const styles = StyleSheet.create({
     padding:15,
     paddingTop:25,
     backgroundColor: '#fff',
-  },
-  flowRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-  },
-  header: {
-    paddingHorizontal:15,
-    paddingVertical:5,
-    backgroundColor: '#fff',
-  },
-  searchInput: {
-    height: 35,
-    paddingLeft:15,
-    paddingTop:5,
-    paddingBottom:5,
-    marginRight: 5,
-    flexGrow: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    borderRadius: 25,
-    color: '#acacac',
-    backgroundColor:'#f5f5f5',
   },
 });
