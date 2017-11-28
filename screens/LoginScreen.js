@@ -49,14 +49,19 @@ export default class LoginScreen extends Component {
             <TextInput
               style={styles.searchInput}
               placeholder='Email / No. Handphone'
+              keyboardType='email-address'
               underlineColorAndroid='transparent'
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={ userName => this.setState({userName}) }
+              onSubmitEditing={(event) => { 
+                this.refs.passwordInput.focus(); 
+              }}
             />
           </View>
           <View>
             <TextInput
+              ref='passwordInput'
               style={styles.searchInput} 
               underlineColorAndroid='transparent' 
               placeholder='Password'
@@ -64,6 +69,7 @@ export default class LoginScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={ password => this.setState({password}) }
+              onSubmitEditing={this._login}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
               <TouchableOpacity
