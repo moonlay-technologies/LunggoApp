@@ -83,7 +83,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Top View</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-end',}}>
                 <Text style={styles.seeMore}>See More</Text>
               </View>
             </View>
@@ -96,18 +96,18 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
-                  <Text style={styles.activityTitle}>
+                  <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
-                  <Text style={styles.priceTitle}>
+                  <Text style={styles.priceTitleBig}>
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite'
                   type='materialicons'
-                  size={28}
+                  size={30}
                   color='#ff0d4a'/>
                 </View>
               </View>
@@ -116,18 +116,18 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
-                  <Text style={styles.activityTitle}>
+                  <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
-                  <Text style={styles.priceTitle}>
+                  <Text style={styles.priceTitleBig}>
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={30}
                   color='#cdcdcd'/>
                 </View>
               </View>
@@ -136,18 +136,18 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
-                  <Text style={styles.activityTitle}>
+                  <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
-                  <Text style={styles.priceTitle}>
+                  <Text style={styles.priceTitleBig}>
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={30}
                   color='#cdcdcd'/>
                 </View>
               </View>
@@ -161,7 +161,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Water Sport</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-end',}}>
                 <Text style={styles.seeMore}>See More</Text>
               </View>
             </View>
@@ -170,7 +170,7 @@ export default class ExploreScreen extends React.Component {
 
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:160, marginLeft:15,}}>
+            <View style={{width:140, marginLeft:15,}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -181,16 +181,16 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15}}>
+            <View style={{width:140, marginLeft:15}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -201,16 +201,16 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15, marginRight:15}}>
+            <View style={{width:140, marginLeft:15, marginRight:15}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -221,11 +221,11 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
@@ -239,7 +239,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>City Tour</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-end',}}>
                 <Text style={styles.seeMore}>See More</Text>
               </View>
             </View>
@@ -248,7 +248,7 @@ export default class ExploreScreen extends React.Component {
 
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:160, marginLeft:15,}}>
+            <View style={{width:140, marginLeft:15,}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -259,16 +259,16 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15}}>
+            <View style={{width:140, marginLeft:15}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -279,16 +279,16 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1,}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15, marginRight:15}}>
+            <View style={{width:140, marginLeft:15, marginRight:15}}>
               <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
@@ -299,11 +299,11 @@ export default class ExploreScreen extends React.Component {
                     IDR 300.000
                   </Text>
                 </View>
-                <View style={{flex:1, marginTop:34}}>
+                <View style={{flex:1, alignItems:'flex-end',}}>
                   <Icon
                   name='favorite-border'
                   type='materialicons'
-                  size={28}
+                  size={24}
                   color='#cdcdcd'/>
                 </View>
               </View>
@@ -317,7 +317,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Places</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-end'}}>
                 <Text style={styles.seeMore}>See More</Text>
               </View>
             </View>
@@ -326,7 +326,7 @@ export default class ExploreScreen extends React.Component {
 
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:160, marginLeft:15,}}>
+            <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
                 <Image style={styles.thumbnailPlaces} source={require('../assets/images/yogya.jpg')}/>
               </View>
@@ -334,7 +334,7 @@ export default class ExploreScreen extends React.Component {
                 <Text style={styles.placeTitle}>Jogja</Text>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15,}}>
+            <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
                 <Image style={styles.thumbnailPlaces} source={require('../assets/images/surabaya.jpg')}/>
               </View>
@@ -342,7 +342,7 @@ export default class ExploreScreen extends React.Component {
                 <Text style={styles.placeTitle}>Surabaya</Text>
               </View>
             </View>
-            <View style={{width:160, marginLeft:15,}}>
+            <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
                 <Image style={styles.thumbnailPlaces} source={require('../assets/images/bg.jpg')}/>
               </View>
@@ -360,7 +360,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Promo</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-end',}}>
                 <Text style={styles.seeMore}>See More</Text>
               </View>
             </View>
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   placeTitle: {
     color:'#fff', 
     fontWeight:'bold', 
-    fontSize:20
+    fontSize:16
   },
   thumbnailBig: {
     resizeMode:'cover', 
@@ -416,30 +416,40 @@ const styles = StyleSheet.create({
   },
   thumbnailMedium: {
     resizeMode:'cover', 
-    width:160, 
-    height:180, 
+    width:140, 
+    height:150, 
     borderRadius:5,
   },
   thumbnailPlaces: {
     resizeMode:'cover', 
-    width:160, 
-    height:180, 
+    width:140, 
+    height:150, 
     borderRadius:5,
     opacity: 0.7
   },
   activityTitle: {
     fontWeight:'bold',
-    fontSize:18,
+    fontSize:15,
     color:'#454545',
   },
   priceTitle: {
-    fontSize:16,
+    fontSize:12,
+    color:'#676767',
+    marginTop:2
+  },
+  activityTitleBig: {
+    fontWeight:'bold',
+    fontSize:18,
+    color:'#454545',
+  },
+  priceTitleBig: {
+    fontSize:14,
     color:'#676767',
     marginTop:2
   },
   categoryTitle :{
     fontWeight:'bold',
-    fontSize:24,
+    fontSize:22,
     color:'#454545'
   },
   seeMore :{
@@ -449,7 +459,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding:15,
-    paddingTop:25,
+    paddingTop:20,
     backgroundColor: '#fff',
   },
 });

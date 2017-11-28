@@ -23,7 +23,7 @@ class ListItem extends React.PureComponent {
         <View style={styles.rowContainer}>
 
           <View style={styles.containerItem}>
-            <Image style={styles.thumb}  source={{ uri: item.mediaSrc }} />
+            <Image style={styles.thumbnailMedium}  source={{ uri: item.mediaSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
               <Text style={styles.price}>
@@ -37,7 +37,7 @@ class ListItem extends React.PureComponent {
           </View>
 
           <View style={styles.containerItem2}>
-            <Image style={styles.thumb} source={{ uri: item.mediaSrc }} />
+            <Image style={styles.thumbnailMedium} source={{ uri: item.mediaSrc }} />
             <View style={styles.textContainer}>
               <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
               <Text style={styles.price}>{Formatter.price(item.price)}</Text>
@@ -88,11 +88,11 @@ export default class SearchResults extends Component {
 }
 
 const styles = StyleSheet.create({
-  thumb: {
+  thumbnailMedium: {
     resizeMode:'cover', 
     width:'100%', 
-    height:170, 
-    marginBottom:7,
+    height:150, 
+    borderRadius:5,
   },
   textContainer: {
   },
@@ -107,11 +107,11 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 20,
     flex:1,
   },
   containerItem: {
-    paddingRight:8,
+    paddingRight:15,
     flex:1,
   },
   containerItem2: {
