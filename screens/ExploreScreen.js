@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import SearchHeader from '../components/SearchHeader';
 import { Icon } from 'react-native-elements'
 
