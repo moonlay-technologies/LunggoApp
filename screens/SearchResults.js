@@ -68,8 +68,10 @@ export default class SearchResults extends Component {
  
   componentDidMount() {
     search(this.state.searchString)
-      .then(response => this.setState({list: response}))
-      .catch(error=>console.log(error))
+      .then(response => {
+        this.setState({list: response});
+        forceUpdate();
+      }).catch(error=>console.log(error));
   }
 
   _keyExtractor = (item, index) => index;
@@ -85,14 +87,18 @@ export default class SearchResults extends Component {
   _onPressItem = (item) => {
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
-  
+
   render() {
-    this.props.navigation.state.key = 'SearchResults'
+    this.props.navigation.state.key = 'SearchResults';
     return (
-      <FlatList
-        data={this.state.list}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem} />
+      <View>
+        {/*<Text>{this.state.list.length}</Text>*/}
+        <FlatList
+          data={this.state.list}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+        />
+      </View>
     );
   }
 
