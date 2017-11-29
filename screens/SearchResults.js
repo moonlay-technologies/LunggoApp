@@ -99,6 +99,11 @@ export default class SearchResults extends Component {
 }
 
 const styles = StyleSheet.create({
+  rowContainer: {
+    flexDirection: 'row',
+    padding: 20,
+    flex:1,
+  },
   thumbnailMedium: {
     resizeMode:'cover', 
     width:'100%', 
@@ -112,14 +117,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#dddddd'
   },
   price: {
-    color:'green'
+    color:'red'
   },
   title: {
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    padding: 20,
-    flex:1,
   },
   containerItem: {
     paddingRight:15,

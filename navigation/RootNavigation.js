@@ -11,7 +11,7 @@ import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
 import SearchResults from '../screens/SearchResults';
-import LoginScreen from '../screens/LoginScreen';
+import BeforeLoginScreen from '../screens/BeforeLoginScreen';
 import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
@@ -32,8 +32,8 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: ExploreScreen,
-      screen: LoginScreen,
+      screen: BeforeLoginScreen,
+      //screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
