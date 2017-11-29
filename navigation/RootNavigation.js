@@ -33,7 +33,8 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       // screen: ExploreScreen,
-      screen: LoginScreen,
+      // screen: LoginScreen,
+      screen: SearchResults,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
