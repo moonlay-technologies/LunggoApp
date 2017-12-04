@@ -34,7 +34,7 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: MainTabNavigator
+      screen: MyBooking
       // screen: AdvanceSearch,
       // screen: LoginScreen,
       // screen: MainTabNavigator,

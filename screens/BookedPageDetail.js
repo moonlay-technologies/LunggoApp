@@ -47,7 +47,7 @@ export default class BookedPageDetail extends Component {
                   source={require('../assets/icons/person.png')}
                 />
                 <Text style={styles.timeActivity}>
-                  2 orang
+                  11 orang
                 </Text>
               </View>
               <View style={{flexDirection: 'row'}}>
