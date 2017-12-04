@@ -8,6 +8,8 @@ import {
 // import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import * as Formatter from '../components/Formatter';
 import search from '../components/searchController';
+import SearchHeader from '../components/SearchHeader';
+import { Icon } from 'react-native-elements'
 
 class ListItem extends React.PureComponent {
 
@@ -18,33 +20,42 @@ class ListItem extends React.PureComponent {
   render() {
     const {item} = this.props;
     return (
-      <TouchableHighlight
-        onPress={this._onPress}
-        underlayColor='#dddddd'>
-        <View style={styles.rowContainer}>
-
-          <View style={styles.containerItem}>
-            <Image style={styles.thumbnailMedium}  source={{ uri: item.mediaSrc }} />
-            <View style={styles.textContainer}>
-              <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
-              <Text style={styles.price}>
-                { Formatter.price(item.price) }
-              </Text>
+      <View style={{backgroundColor:'#fff'}}>
+        <TouchableHighlight
+          onPress={this._onPress}
+          underlayColor='#dddddd'>
+          <View style={styles.rowContainer}>
+            <View style={styles.containerItem}>
+              <Image style={styles.thumbnailMedium}  source={{ uri: item.mediaSrc }} />
+              <View style={{flexDirection:'row'}}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.activityTitle}numberOfLines={1}>{item.name}</Text>
+                  <Text style={styles.priceTitle}>
+                    { Formatter.price(item.price) }
+                  </Text>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end',}}>
+                  <Icon
+                  name='favorite-border'
+                  type='materialicons'
+                  size={24}
+                  color='#cdcdcd'/>
+                </View>
+              </View>
             </View>
-          </View>
-
-          <View style={styles.containerItem2}>
-            <Image style={styles.thumbnailMedium} source={{ uri: item.mediaSrc }} />
-            <View style={styles.textContainer}>
-              <Text style={styles.title}numberOfLines={1}>{item.name}</Text>
-              <Text style={styles.price}>
-                {Formatter.price(item.price)}
-              </Text>
+            <View style={styles.containerItem2}>
+              <Image style={styles.thumbnailMedium} source={{ uri: item.mediaSrc }} />
+              <View style={styles.textContainer}>
+                <Text style={styles.activityTitle}numberOfLines={1}>{item.name}</Text>
+                <Text style={styles.priceTitle}>
+                  {Formatter.price(item.price)}
+                </Text>
+              </View>
             </View>
-          </View>
 
-        </View>
-      </TouchableHighlight>
+          </View>
+        </TouchableHighlight>
+      </View>
     );
   }
 
@@ -101,31 +112,42 @@ export default class SearchResults extends Component {
 const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
-    padding: 20,
+    paddingTop: 15,
+    paddingLeft:15,
+    paddingRight:15,
+    paddingBottom:7.5,
+
     flex:1,
-  },
-  thumbnailMedium: {
-    resizeMode:'cover', 
-    width:'100%', 
-    height:150, 
-    borderRadius:5,
-  },
-  textContainer: {
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#dddddd'
-  },
-  price: {
-    color:'red'
-  },
-  title: {
-  },
+  }, 
   containerItem: {
     paddingRight:15,
     flex:1,
   },
   containerItem2: {
     flex:1,
-  }
+  },
+  thumbnailMedium: {
+    resizeMode:'cover', 
+    width:'100%', 
+    height:100, 
+    borderRadius:5,
+  },
+  activityTitle: {
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
+  },
+  priceTitle: {
+    fontSize:12,
+    color:'#676767',
+    marginTop:2
+  },
+  textContainer: {
+    marginTop:5,
+    flex:4
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#dddddd'
+  },
 });
