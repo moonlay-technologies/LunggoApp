@@ -54,7 +54,14 @@ async function getAuthAccess() {
           getItemAsync('expTime'), getItemAsync('authLevel')
         ]);
     let data = {clientId, clientSecret, deviceId};
+    console.log('accessToken: '+accessToken);
+    console.log('refreshToken: '+refreshToken);
+    console.log('expTime: '+expTime+ '; authLevel: '+authLevel);
+    console.log('new Date() : '+new Date().toISOString())
     if( new Date(expTime) > new Date() ) { //// token not expired
+      console.log(
+        'session not expired, continue the request...'
+      )
       //already logged in, go to next step
       return {accessToken, authLevel};
     } //// else then token is expired or client dont have expTime
@@ -63,11 +70,14 @@ async function getAuthAccess() {
       data.refreshToken = refreshToken;
     } else {
       console.log('login-as-guest---------')
-      authLevel = AUTH_LEVEL.Guest
+      authLevel = AUTH_LEVEL.Guest;
       setItemAsync('authLevel', AUTH_LEVEL.Guest);
     }
 
-    // console.log('prepare fetching auth')
+    console.log('prepare fetching auth')
+    console.log('AUTH request:');
+    console.log(data);
+    console.log('url: '+url)
     let response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -75,23 +85,29 @@ async function getAuthAccess() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data)
-    });
+    }).catch(console.error);
+
+    console.log('response')
+    console.log(response)
     response = await response.json();
+    console.log('response.json()')
             __DEV__ && console.log(response);
     ;({accessToken, refreshToken, expTime, status} = response);
+    console.log('don')
     switch (status + '') { //// cast to string
       case '200':
         setItemAsync('accessToken', accessToken);
         setItemAsync('refreshToken', refreshToken);
         setItemAsync('expTime', expTime);
+        console.log('200!!')
         break;
       case '400':
       case '500':
       default:
-        console.log('GET AUTH error!!');
+        console.log(
+          'GET AUTH error: status other than 200 returned!'
+        );
         console.log(response);
-        console.log('GET AUTH request data :');
-        console.log(data);
     }
     return {accessToken, authLevel};
   } catch (error) {
@@ -114,11 +130,12 @@ export async function fetchTravoramaApi (request) {
     authLevel = parseInt(authLevel);
     requiredAuthLevel = parseInt(requiredAuthLevel);
     if (authLevel < requiredAuthLevel) return {
-      status: 400, message:'Not Authorized!', requiredAuthLevel
+      status: 400, message:'Not Authorized: Not enough auth level!',
+      requiredAuthLevel
     }
-
     //// Execute request
     let url = DOMAIN + (path || request);
+    console.log(url)
     let response = await fetch(url, {
       method: method || 'GET',
       headers: {
@@ -127,7 +144,7 @@ export async function fetchTravoramaApi (request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(request.data),
-    });
+    }).catch(console.error);
     if (response.status == 401) {
       await deleteItemAsync('expTime');
       return fetchTravoramaApi(request);

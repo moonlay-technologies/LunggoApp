@@ -21,6 +21,7 @@ import BookingDetail from '../screens/BookingDetail';
 import Registration from '../screens/Registration';
 import BookedPageDetail from '../screens/BookedPageDetail';
 import AdvanceSearch from '../screens/AdvanceSearch';
+import LoginScreen from '../screens/LoginScreen';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -33,8 +34,9 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: AdvanceSearch,
-      //screen: LoginScreen,
+      screen: MainTabNavigator
+      // screen: AdvanceSearch,
+      // screen: LoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
