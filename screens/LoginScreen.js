@@ -62,7 +62,7 @@ export default class LoginScreen extends Component {
           <View>
             <TextInput
               ref='passwordInput'
-              style={styles.searchInput} 
+              style={styles.searchInputFalse} 
               underlineColorAndroid='transparent' 
               placeholder='Password'
               secureTextEntry={!showPassword}
@@ -86,6 +86,9 @@ export default class LoginScreen extends Component {
                 </View>
               </TouchableOpacity>
             </View>
+          </View>
+          <View style={{alignItems:'center', marginTop:10}}>
+            <Text style={{color:'#fc2b4e'}}>Invalid username or password</Text>
           </View>
           <Button
             containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
@@ -167,6 +170,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: 'transparent',
+    borderRadius: 25,
+    color: '#acacac',
+    backgroundColor:'#f5f5f5',
+  },
+  searchInputFalse: {
+    height: 45,
+    paddingLeft:15,
+    paddingTop:10,
+    paddingBottom:10,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#fc2b4e',
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',
