@@ -115,7 +115,7 @@ export default class DetailScreen extends Component {
                 color='#454545'/>
               </View>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:12}}>
+                <Text style={{fontSize:14}}>
                   { city }
                 </Text>
               </View>
@@ -129,7 +129,7 @@ export default class DetailScreen extends Component {
                 color='#454545'/>
               </View>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:12}}>
+                <Text style={{fontSize:14}}>
                   Maksimum 6 orang
                 </Text>
               </View>
@@ -143,7 +143,7 @@ export default class DetailScreen extends Component {
                 color='#454545'/>
               </View>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:12}}>
+                <Text style={{fontSize:14}}>
                   Khusus hari minggu
                 </Text>
               </View>
@@ -157,7 +157,7 @@ export default class DetailScreen extends Component {
                 color='#454545'/>
               </View>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:12}}>
+                <Text style={{fontSize:14}}>
                   Untuk usia diatas 10 tahun
                 </Text>
               </View>
@@ -192,28 +192,33 @@ export default class DetailScreen extends Component {
 
             <View style={styles.containerdescriptionActivity}>
               <View style={{flexDirection:'row', flex:1}}>
-                <View style={{flex:2}}>
-                  <Text style={styles.reviewTitle}>
-                    Amazing Experience!
-                  </Text>
+                <View style={{flex:2, flexDirection:'row'}}>
+                  <View style={{marginRight:10}}>
+                    <Image style={styles.avatar} source={require('../assets/images/janedoe.jpg')}/>
+                  </View>
+                  <View>
+                    <Text style={styles.reviewTitle}>
+                      Amazing Experience!
+                    </Text>
+                    <View>
+                      <Rating
+                        type="star"
+                        fractions={1}
+                        startingValue={3.6}
+                        readonly
+                        imageSize={12}
+                        ratingColor="#00c5bc"
+                        onFinishRating={this.ratingCompleted}
+                        style={{ paddingTop: 2.5, marginRight:5,}}
+                      />
+                    </View>
+                  </View>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end',}}>
                   <Text style={styles.reviewDate}>
                     June 2017
                   </Text>
                 </View>
-              </View>
-              <View>
-                <Rating
-                  type="star"
-                  fractions={1}
-                  startingValue={3.6}
-                  readonly
-                  imageSize={12}
-                  ratingColor="#00c5bc"
-                  onFinishRating={this.ratingCompleted}
-                  style={{ paddingTop: 2.5, marginRight:5,}}
-                />
               </View>
               <View style={{marginTop:10}}>
                 <Text style={styles.activityDesc}>
@@ -520,6 +525,12 @@ const styles = StyleSheet.create({
     fontSize:12,
     color:'#454545',
   },
+  avatar:{
+    width:40, 
+    height:40, 
+    resizeMode:'cover', 
+    borderRadius:20
+  },
   activityTitle: {
     fontWeight:'bold',
     fontSize:15,
@@ -540,8 +551,9 @@ const styles = StyleSheet.create({
     color:'#acacac'
   },
   activityDesc: {
-    fontSize:13,
+    fontSize:14,
     color:'#454545',
+    lineHeight: 20,
   },
   containerdescriptionActivity: {
     marginBottom: 30,
