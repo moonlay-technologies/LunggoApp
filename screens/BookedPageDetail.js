@@ -29,118 +29,206 @@ export default class BookedPageDetail extends Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView style={{marginBottom:60}}>
+        <ScrollView style={{}}>
           <View style={styles.container}>
-            <View>
+            <View style={{flexDirection:'row'}}>
+              <View style={{flex:1}}>
+                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
+              </View>
+              <View style={{flex:2, paddingLeft:10}}>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityTitle}>
+                    {this.state.name}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', marginBottom:5}}>
+                  <View style={{}}>
+                    <Icon
+                    name='event'
+                    type='materialicons'
+                    size={16}
+                    color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={{fontSize:12}}>
+                      20 May 2018
+                    </Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: 'row', marginBottom:5}}>
+                  <View style={{}}>
+                    <Icon
+                    name='access-time'
+                    type='materialicons'
+                    size={16}
+                    color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={{fontSize:12}}>
+                      10am - 12am
+                    </Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: 'row', marginBottom:5}}>
+                  <View style={{}}>
+                    <Icon
+                    name='location'
+                    type='entypo'
+                    size={16}
+                    color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={{fontSize:12}}>
+                      Sentul, Bogor
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{flex:0.5, alignItems:'flex-end'}}>
+                <Text style={{fontSize:12, color:'#676767',}}>Detail</Text>
+              </View>
+            </View>
+          </View>{/* end container */}
+          <View style={styles.divider}/>
+          <View style={styles.container}>
+            <View style={{flex:1, flexDirection:'row'}}>
               <View>
                 <Text style={styles.activityTitle}>
-                  {this.state.name}
+                  Operator Detail
                 </Text>
-                <Text style={styles.descriptionActivity}>
-                  {this.state.bookingStatus}
-                </Text>
+              </View>
+              <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
+                <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../assets/images/phone.png')}/>
+                <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../assets/images/sms.png')}/>
               </View>
             </View>
-            <View style={{flex: 1, flexDirection: 'row', marginTop:20}}>
-              <View style={{flexDirection: 'row', marginRight:20}}>
-                <Image style={styles.icon} 
-                  source={require('../assets/icons/person.png')}
-                />
-                <Text style={styles.timeActivity}>
-                  11 orang
-                </Text>
+            <View style={{flex:1, flexDirection:'row'}}>
+              <View style={{marginRight:10}}>
+                <Image style={styles.avatar} source={require('../assets/images/janedoe.jpg')}/>
               </View>
-              <View style={{flexDirection: 'row'}}>
-                <Image style={styles.icon} 
-                  source={require('../assets/icons/calendar.png')}
-                />
-                <Text style={styles.timeActivity}>
-                  Besok siang
-                </Text>
+              <View>
+                <Text style={{fontWeight:'bold', fontSize:16, color:'#454545'}}>Jane Doe</Text>
+                <Text style={{fontSize:13, color:'#454545'}}>Jl. sentul utara no.30, Bogor</Text>
               </View>
             </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
           <View style={styles.container}>
-            <Text style={styles.activityTitle}>
-              Maps Location Activity
-            </Text>
+            <View style={{flex:1, flexDirection:'row',}}>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Status
+                </Text>
+                <Text style={styles.status}>
+                  Menunggu Pembayaran
+                </Text>
+              </View>
+              <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
+                <Button
+                  containerStyle={{height:35, width:'70%', paddingTop:10, paddingBottom:10, borderRadius:4, backgroundColor: '#00c8be'}}
+                  style={{fontSize: 12, color: '#fff', fontWeight:'bold'}}
+                >
+                Lanjut Bayar
+                </Button>
+              </View>
+            </View>
+            <View style={{flex:1, flexDirection:'row', marginTop:25}}>
+              <View style={{flex:1}}>
+                <Text style={{fontSize:12, color:'#454545',}}>Total yang harus dibayar</Text>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
+                <Text style={{fontSize:12}}>IDR 2.350.000</Text>
+              </View>
+            </View>
+            <View style={{flex:1, flexDirection:'row', marginTop:5}}>
+              <View style={{flex:1}}>
+                <Text style={{fontSize:12, color:'#454545',}}>Sisa waktu pembayaran</Text>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
+                <Text style={{fontSize:12, color:'#00c8be'}}>4 jam 29 menit</Text>
+              </View>
+            </View>
+          </View>{/* end container */}
+          <View style={styles.divider}/>
+          <View style={styles.container}>
+            <View style={{flex:1,}}>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Kode verifikasi anda
+                </Text>
+              </View>
+              <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                <View style={{marginTop:30, marginBottom:10}}>
+                  <Image style={styles.barcode} source={require('../assets/images/barcode.jpg')}/>
+                </View>
+                <View>
+                  <Text style={{fontWeight:'bold', fontSize:16}}>AJ20090189</Text>
+                </View>
+              </View>
+            </View>
+          </View>{/* end container */}
+          <View style={styles.divider}/>
+          <View style={styles.container}>
+            <View style={{flex:1,}}>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Lokasi Appointment
+                </Text>
+                <Text style={{marginTop:10}}>Disini ada maps</Text>
+              </View>
+            </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
           <View style={styles.container}>
             <View>
-              <Text style={styles.activityTitle}>
-                Guest List
-              </Text>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:10, marginTop:10}}>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityTitle}>
+                  Guest List (2)
+                </Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
                 <View><Text>Guest 1</Text></View>
-                <View><Text>Details</Text></View>
+                <View>
+                  <Icon
+                    name='chevron-thin-right'
+                    type='entypo'
+                    size={20}
+                    color='#707070'/>
+                </View>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:10, marginTop:10}}>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
                 <View><Text>Guest 2</Text></View>
-                <View><Text>Details</Text></View>
+                <View>
+                  <Icon
+                    name='chevron-thin-right'
+                    type='entypo'
+                    size={20}
+                    color='#707070'/>
+                </View>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:10, marginTop:10}}>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
                 <View><Text>Guest 3</Text></View>
-                <View><Text>Details</Text></View>
+                <View>
+                  <Icon
+                    name='chevron-thin-right'
+                    type='entypo'
+                    size={20}
+                    color='#707070'/>
+                </View>
               </View>
             </View>
             <View style={{marginTop:25,}}>
               <Text style={styles.activityTitle}>
-                Yang Perlu Dibawa
+                Hal yang Perlu Diperhatikan
               </Text>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Eat the fat cats food plop down
-                </Text>
-              </View>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Sit and stare a nice warm laptop
-                </Text>
-              </View>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Run outside as soon as door open
+              <View style={{marginTop:8}}>
+                <Text style={{fontSize:13, color:'#454545',}}>
+                  Arung jeram dapat diikuti oleh peserta dewasa, remaja dana anak-anak berusia di atas 12 tahun.
                 </Text>
               </View>
             </View>
           </View>{/* end container */}
-        </ScrollView>
-
-        {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1.5}}>
-            <Button
-              containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
-              style={{fontSize: 12, color: '#fff'}}
-              styleDisabled={{color: '#aaa'}}
-              onPress={() =>
-                this.props.navigation.navigate('WebViewScreen')
-              }
-            >
-            Lanjutkan Pembayaran
-            </Button>
-          </View>
-          {/*<View style={{alignItems: 'flex-end', flex:1}}>
-            <Button
-              containerStyle={{height:35, width:'95%', paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, borderColor:'#000000', borderWidth:1, backgroundColor: '#ffffff'}}
-              style={{fontSize: 12, color: '#000000'}}
-            >
-              Hubungi Kami
-            </Button>
-          </View>*/}
-        </View>
-        
+        </ScrollView>  
       </View>
     );
   }
@@ -148,24 +236,46 @@ export default class BookedPageDetail extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding:20,
+    padding:15,
     backgroundColor: '#fff',
     flex:1
   },
-    thumb: {
+  thumbnailMedium: {
+    resizeMode:'cover', 
+    width:'100%', 
+    height:100, 
+    borderRadius:5,
+  },
+  thumb: {
     resizeMode:'cover', 
     width:'100%', 
     height:170,
   },
   activityTitle: {
-    fontWeight: 'bold',
-    fontSize:16,
-    marginBottom: 4,
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
+  },
+  status:{
+    color:'#f19a4b',
+    fontSize:12,
+    marginTop:2,
   },
   descriptionActivity: {
     fontSize:11,
     marginTop:0,
     color:'blue'
+  },
+  avatar:{
+    width:40, 
+    height:40, 
+    resizeMode:'cover', 
+    borderRadius:20
+  },
+  barcode:{
+    width:130, 
+    height:130, 
+    resizeMode:'cover',
   },
    divider: {
     height: 1,
@@ -195,28 +305,5 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
-  },
-  ul: {
-    flex: 1, 
-    flexDirection: 'row',
-    marginLeft: 10,
-  },
-  li: {
-    fontSize:13,
-    marginRight:8
-  },
-    lidescriptionActivity: {
-    fontSize:13,
-    marginBottom: 2,
-    lineHeight: 15,
-  },
-  icon: {
-    width:20,
-    height:20,
-    marginRight:3,
-  },
-  timeActivity: {
-    fontSize:13,
-    marginTop: 2,
   },
 });
