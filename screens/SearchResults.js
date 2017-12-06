@@ -81,7 +81,7 @@ export default class SearchResults extends Component {
     search(this.state.searchString)
       .then(response => {
         this.setState({list: response});
-        forceUpdate();
+        // forceUpdate();
       }).catch(error=>console.log(error));
   }
 

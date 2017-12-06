@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
-import { StyleSheet, Platform, View, Text } from 'react-native';
+import { StyleSheet, Platform, View, Text,
+          TouchableHighlight } from 'react-native';
+import Modal from 'react-native-modal'
 import Button from 'react-native-button';
 import Moment from 'moment';
 import 'moment/locale/id';
@@ -25,7 +27,8 @@ export default class CalendarView extends Component {
         // '2017-11-23': [{color: 'green', textColor: 'gray'}],
         // '2017-11-24': [{endingDay: true, color: 'green', textColor: 'gray'}],
         // '2017-11-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
-      }
+      },
+      isModalVisible: false,
     };
     if (selectedDate) this.state.markedDates[selectedDate] = {selected: true};
   }
@@ -64,6 +67,18 @@ export default class CalendarView extends Component {
     this.props.navigation.goBack()
   }
 
+  _setModalVisible(visible) {
+    this.setState({isModalVisible: visible});
+  }
+
+  _onDatePressed = dateString => {
+    //// choose session, if any
+    this._setModalVisible(true);
+
+    //// continue set date
+    this._selectDate(dateString);
+  }
+
   render() {
     let {selectedDate} = this.state;
     let date = (selectedDate)
@@ -74,11 +89,33 @@ export default class CalendarView extends Component {
         <CalendarList
           minDate={Date()}
           markedDates={this.state.markedDates}
-          onDayPress={ day => this._selectDate(day.dateString)}
+          onDayPress={ day => this._onDatePressed(day.dateString)}
           pastScrollRange={0}
           futureScrollRange={12}
           // markingType={'interactive'}
         />
+        <Modal
+          style={{
+            justifyContent: 'flex-end',
+            margin: 0,
+          }}
+          animationType="fade"
+          transparent={true}
+          isVisible={this.state.isModalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+        >
+          <View style={{flex:2}}/>
+          <View style={{flex:1, backgroundColor:'white', flexDirection: 'row'}}>
+            <View style={{flex:1}}/>
+            <Text style={{flex:3, textAlign:'center'}}>Pilih Sesi</Text>
+            <TouchableHighlight
+              style={{flex:1, alignItems: 'flex-end', marginRight:10}}
+              onPress={() => this._setModalVisible(false)}>
+              <Text>X</Text>
+            </TouchableHighlight>
+
+          </View>
+        </Modal>
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
             <Text>{date}</Text>
