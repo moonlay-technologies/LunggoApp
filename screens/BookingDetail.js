@@ -154,10 +154,10 @@ export default class BookingDetail extends Component {
                 />
               </View>
               <View style={{flex:1.5}}>
-                <Text style={styles.activityTitle}>
+                <Text style={styles.activitydetailTitle}>
                   Trip to Sahara Desert
                 </Text>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', marginBottom:5}}>
                   <Rating
                     // startingValue={3.6}
                     readonly
@@ -165,7 +165,7 @@ export default class BookingDetail extends Component {
                     // onFinishRating={this.ratingCompleted}
                   />
                 </View>
-                <Text style={styles.descriptionActivity}>
+                <Text style={styles.activityDesc}>
                   Lorem ipsum dolor sit amet, consectetur adipiscing
                   elit, sed do eiusmod tempor incididunt ut labore et 
                   dolore magna aliqua. Ut enim ad minim veniam.
@@ -179,13 +179,51 @@ export default class BookingDetail extends Component {
           
           <View style={styles.divider}/>
           <View style={styles.container}>
+            <View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityTitle}>
+                  Jadwal
+                </Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
+                <View>
+                  <Text>Atur Jadwal</Text>
+                </View>
+                <View>
+                  <Icon
+                    name='plus'
+                    type='entypo'
+                    size={20}
+                    color='#01d4cb'/>
+                </View>
+              </View>
+            </View>
+            <View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityTitle}>
+                  Peserta
+                </Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
+                <View>
+                  <Text>Add Guest</Text>
+                </View>
+                <View>
+                  <Icon
+                    name='plus'
+                    type='entypo'
+                    size={20}
+                    color='#01d4cb'/>
+                </View>
+              </View>
+            </View>
             <Text style={styles.activityTitle}>
               Peserta
             </Text>
             {pax && pax.map(
               item => <Text key={item.key}>- {item.name}</Text>
             )}
-            {/*<View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
               <View>
                 <Icon
                 name='plus'
@@ -195,7 +233,7 @@ export default class BookingDetail extends Component {
                 color='blue' />
               </View>
               <Text>Tambah Peserta</Text>
-            </View>*/}
+            </View>
             <Button
               containerStyle={{
                 height:35,
@@ -221,43 +259,39 @@ export default class BookingDetail extends Component {
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
-            <View style={{flexDirection: 'row'}}>
+          <View style={{alignItems: 'flex-start', flex:1.5}}>
+            <View >
+              <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
+            </View>
+            <View>
               <Text style={{
-                color: 'green',
-                marginRight: 3,
+                color:'#000',
                 fontWeight: 'bold',
-                fontSize: 15,
-              }}>
-              { Formatter.price(price) }
-              </Text> 
-              <Text style={{fontSize:12,}}>/orang</Text>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <Rating
-                startingValue={3.6}
-                readonly
-                imageSize={12}
-                style={{ paddingTop: 2.5, marginRight:5}}
-              />
-              <Text style={{fontSize:12,}}>20 Review</Text> 
-            </View>
+                fontSize:20,
+              }}>{ Formatter.price(price) }</Text>
+            </View> 
+            
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{
-                height: 35,
-                width: 100,
-                paddingTop: 10,
-                paddingBottom: 10,
+                height: 45,
+                width: '100%',
+                paddingTop: 13,
+                paddingBottom: 13,
                 overflow: 'hidden',
-                borderRadius: 4,
-                backgroundColor: '#437ef7'
+                borderRadius:25,
+                backgroundColor: '#01d4cb',
               }}
-              style={{fontSize: 12, color: '#fff'}}
-              styleDisabled={{color: '#aaa'}}
-              onPress={this._book}
-              disabled={!pax || !date}
+              style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+              onPress={() => {
+                this.setState({isLoading: true})
+                this.props.navigation.navigate('BookingDetail', {
+                  activityId: id,
+                  price, requiredPaxData,
+                });
+              }}
+              styleDisabled={{color:'#aaa'}}
             >
               Pesan
             </Button>
@@ -279,16 +313,24 @@ const styles = StyleSheet.create({
     resizeMode:'cover', 
     width:'100%', 
     height:170,
+    borderRadius:5
   },
   activityTitle: {
-    fontWeight: 'bold',
-    fontSize:16,
-    marginBottom: 7,
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
+    marginBottom:5
   },
-  descriptionActivity: {
-    fontSize:11,
-    lineHeight: 15,
-    marginTop:10,
+  activitydetailTitle: {
+    fontWeight:'bold',
+    fontSize:18,
+    color:'#454545',
+    marginBottom:5
+  },
+  activityDesc: {
+    fontSize:14,
+    color:'#454545',
+    lineHeight: 20,
   },
    divider: {
     height: 1,
