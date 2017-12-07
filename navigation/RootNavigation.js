@@ -50,6 +50,7 @@ const RootStackNavigator = StackNavigator(
     BookingDetail: { screen: BookingDetail },
     Registration: { screen: Registration },
     BookedPageDetail: { screen: BookedPageDetail },
+    LoginScreen: { screen: LoginScreen },
   },
   {
     navigationOptions: () => ({

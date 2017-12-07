@@ -13,7 +13,8 @@ import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
-import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
+import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+        removeAccessToken } from '../components/Common';
 
 export default class DetailScreen extends Component {
 
@@ -67,8 +68,20 @@ export default class DetailScreen extends Component {
     }).catch(error => console.log(error));
   }
 
+  _goToBookingDetail = async () => {
+    this.setState({isLoading: true})
+    const { requiredPaxData, price, id } = this.state;
+    let isUserLoggedIn = await checkUserLoggedIn();
+    let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
+    this.props.navigation.navigate(nextScreen, {
+      price, requiredPaxData,
+      activityId: id,
+    });
+    this.setState({isLoading: false})
+  }
+
   render() {
-    const { requiredPaxData, isLoading, name, city, duration, price, id,
+    const { requiredPaxData, isLoading, name, city, duration, price,
       mediaSrc } = this.state;
     return (
       <View>
@@ -77,20 +90,19 @@ export default class DetailScreen extends Component {
         >
           <View>
             <ImageSlider height={350} images={mediaSrc}/>
-            <View style={{position:'absolute', top:20, right:20, flexDirection:'row'}}>
+            <View style={{
+              position:'absolute',
+              top:20,
+              right:20,
+              flexDirection:'row'
+            }}>
               <View style={{}}>
-                <Icon
-                name='share'
-                type='materialicons'
-                size={30}
-                color='#fff'/>
+                <Icon name='share' type='materialicons'
+                  size={30} color='#fff'/>
               </View>
               <View style={{marginLeft:10}}>
-                <Icon
-                name='favorite-border'
-                type='materialicons'
-                size={30}
-                color='#fff'/>
+                <Icon name='favorite-border' type='materialicons'
+                  size={30} color='#fff'/>
               </View>
             </View>
           </View>
@@ -486,13 +498,11 @@ export default class DetailScreen extends Component {
                 backgroundColor: '#01d4cb',
               }}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => {
-                this.setState({isLoading: true})
-                this.props.navigation.navigate('BookingDetail', {
-                  activityId: id,
-                  price, requiredPaxData,
-                });
-              }}
+              onPress={() => this._goToBookingDetail()}
+              // onPress={() => {
+              //   removeAccessToken();
+              //   this.props.navigation.navigate('LoginScreen')
+              // }}
               disabled={!requiredPaxData || isLoading}
               styleDisabled={{color:'#aaa'}}
             >
@@ -504,6 +514,7 @@ export default class DetailScreen extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

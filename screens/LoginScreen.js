@@ -20,6 +20,7 @@ export default class LoginScreen extends Component {
 
   _login = () => {
     this.setState({isLoading:true})
+    let {navigation} = this.props;
     // //// validation
     //TODO
 
@@ -28,7 +29,10 @@ export default class LoginScreen extends Component {
     .then(response => {
       this.setState({isLoading:false});
       if (response.status == 200)
-        this.props.navigation.navigate('MainTabNavigator');
+        if (navigation.state.params)
+          navigation.navigate('BookingDetail',navigation.state.params);
+        else
+          navigation.navigate('MainTabNavigator');
       else console.log(response);
     }).catch(error => {
       this.setState({isLoading:false});
