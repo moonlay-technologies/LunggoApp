@@ -9,11 +9,13 @@ import {clientId, clientSecret, deviceId,
 
 const {getItemAsync,setItemAsync,deleteItemAsync} = Expo.SecureStore;
 export {AUTH_LEVEL} from '../constants/env';
-export async function fetchTravoramaLoginApi(userName, password) {
+
+
+async function fetchAuth(data) {
   let url = DOMAIN + '/v1/login';
-  let data = {clientId, clientSecret, deviceId, userName, password};
-  setItemAsync('authLevel', AUTH_LEVEL.User);
-  //redundant with getAuthAccess()
+
+  console.log('AUTH request data:');
+  console.log(data);
   let response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -21,32 +23,39 @@ export async function fetchTravoramaLoginApi(userName, password) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data)
-  });
+  }).catch(console.error);
   response = await response.json();
+  console.log('AUTH response:')
+          __DEV__ && console.log(response);
+  return response;
+}
+
+export async function fetchTravoramaLoginApi(userName, password) {
+  let data = {clientId, clientSecret, deviceId, userName, password};
+  //redundant with getAuthAccess()
+
+  let response = await fetchAuth(data);
   ({accessToken, refreshToken, expTime, status} = response);
   switch (status + '') { //// cast to string
     case '200':
       setItemAsync('accessToken', accessToken);
       setItemAsync('refreshToken', refreshToken);
+      setItemAsync('authLevel', AUTH_LEVEL.User);
           if (__DEV__) console.log(response)
-              // setItemAsync('expTime', new Date().toISOString());
-              // console.log('set expTime to ' + new Date())
-            // } else
       setItemAsync('expTime', expTime);
       break;
     case '400':
     case '500':
     default:
-      console.log('LOGIN API error ' + status)
-      console.log('LOGIN API request data:')
-      console.log(data)
+      console.log('LOGIN API error ' + status);
+      console.log('LOGIN API request data:');
+      console.log(data);
   }
   //end of redundant
   return response;
 }
 
 async function getAuthAccess() {
-  let url = DOMAIN + '/v1/login';
   try {
     let [accessToken, refreshToken, expTime, authLevel] = 
         await Promise.all([
@@ -56,7 +65,7 @@ async function getAuthAccess() {
     let data = {clientId, clientSecret, deviceId};
     console.log('accessToken: '+accessToken);
     console.log('refreshToken: '+refreshToken);
-    console.log('expTime: '+expTime+ '; authLevel: '+authLevel);
+    console.log('expTime    : '+expTime+ '; authLevel: '+authLevel);
     console.log('new Date() : '+new Date().toISOString())
     if( new Date(expTime) > new Date() ) { //// token not expired
       console.log(
@@ -65,49 +74,32 @@ async function getAuthAccess() {
       //already logged in, go to next step
       return {accessToken, authLevel};
     } //// else then token is expired or client dont have expTime
-    if (refreshToken) {
-      console.log('login-by-refreshToken---------')
+    else if (refreshToken) {
+      console.log('....     prepare login by refreshToken')
       data.refreshToken = refreshToken;
     } else {
-      console.log('login-as-guest---------')
+      console.log('....     login as guest')
       authLevel = AUTH_LEVEL.Guest;
-      setItemAsync('authLevel', AUTH_LEVEL.Guest);
     }
 
-    console.log('prepare fetching auth')
-    console.log('AUTH request:');
-    console.log(data);
-    console.log('url: '+url)
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    }).catch(console.error);
-
-    console.log('response')
-    console.log(response)
-    response = await response.json();
-    console.log('response.json()')
-            __DEV__ && console.log(response);
+    let response = await fetchAuth(data);
     ;({accessToken, refreshToken, expTime, status} = response);
-    console.log('don')
     switch (status + '') { //// cast to string
       case '200':
         setItemAsync('accessToken', accessToken);
         setItemAsync('refreshToken', refreshToken);
         setItemAsync('expTime', expTime);
-        console.log('200!!')
+        setItemAsync('authLevel', authLevel);
         break;
       case '400':
       case '500':
       default:
-        console.log(
+        console.error(
           'GET AUTH error: status other than 200 returned!'
         );
-        console.log(response);
+        await removeAccessToken();
+        return getAuthAccess();
+        // console.log(response);
     }
     return {accessToken, authLevel};
   } catch (error) {
@@ -120,6 +112,8 @@ async function getAuthAccess() {
 export async function fetchTravoramaApi (request) {
   try{
     let {path, method, data, requiredAuthLevel} = request;
+    let url = DOMAIN + (path || request);
+    console.log('fetching from '+url+' ...')
     if (!requiredAuthLevel)
       throw 'ERROR fetch: requiredAuthLevel needed!';
 
@@ -134,8 +128,6 @@ export async function fetchTravoramaApi (request) {
       requiredAuthLevel
     }
     //// Execute request
-    let url = DOMAIN + (path || request);
-    console.log(url)
     let response = await fetch(url, {
       method: method || 'GET',
       headers: {
@@ -168,4 +160,18 @@ export async function fetchTravoramaApi (request) {
     console.log(request)
     console.log(err)
   }
+}
+
+export async function checkUserLoggedIn (request) {
+  let {authLevel} = await getAuthAccess();
+  console.log(authLevel);
+  return (authLevel >= AUTH_LEVEL.User);
+}
+
+export async function removeAccessToken () {
+  await Promise.all([
+    deleteItemAsync('accessToken'), deleteItemAsync('refreshToken'),
+    deleteItemAsync('expTime'), deleteItemAsync('authLevel')
+  ]);
+  return;
 }

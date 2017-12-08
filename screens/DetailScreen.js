@@ -7,12 +7,14 @@ import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
-import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
+import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+        removeAccessToken } from '../components/Common';
 
 export default class DetailScreen extends Component {
 
@@ -42,9 +44,9 @@ export default class DetailScreen extends Component {
     //     ),
     // }),
     // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
+   // headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
-      // backgroundColor: 'transparent',
+      backgroundColor: 'transparent',
       position: 'absolute',
       zIndex: 100,
       top: 0,
@@ -66,32 +68,113 @@ export default class DetailScreen extends Component {
     }).catch(error => console.log(error));
   }
 
+  _goToBookingDetail = async () => {
+    this.setState({isLoading: true})
+    const { requiredPaxData, price, id } = this.state;
+    let isUserLoggedIn = await checkUserLoggedIn();
+    let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
+    this.props.navigation.navigate(nextScreen, {
+      price, requiredPaxData,
+      activityId: id,
+    });
+    this.setState({isLoading: false})
+  }
+
   render() {
-    const { requiredPaxData, isLoading, name, city, duration, price, id,
+    const { requiredPaxData, isLoading, name, city, duration, price,
       mediaSrc } = this.state;
     return (
       <View>
         <ScrollView
-          style={{marginBottom:60}}
+          style={{backgroundColor:'#fff'}}
         >
-          <ImageSlider height={350} images={mediaSrc}/>
+          <View>
+            <ImageSlider height={350} images={mediaSrc}/>
+            <View style={{
+              position:'absolute',
+              top:20,
+              right:20,
+              flexDirection:'row'
+            }}>
+              <View style={{}}>
+                <Icon name='share' type='materialicons'
+                  size={30} color='#fff'/>
+              </View>
+              <View style={{marginLeft:10}}>
+                <Icon name='favorite-border' type='materialicons'
+                  size={30} color='#fff'/>
+              </View>
+            </View>
+          </View>
           <View style={styles.container}>
-
-            <Text style={styles.activityTitle}>
-              { name }
-            </Text>
-            <Text style={styles.locationActivity}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </Text>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <Image style={styles.icon} 
-                source={require('../assets/icons/time.png')}
-              />
-              <Text style={styles.timeActivity}>
-                { city }
+            <View style={{marginBottom:10}}>
+              <Text style={styles.activitydetailTitle}>
+                { name }
+              </Text>
+            </View>
+            <View style={{marginBottom:15}}>
+              <Text style={styles.activityDesc}>
+                Jump five feet high and sideways when a shadow moves hiding behind the couch 
+                until lured out by a feathery toy so yowling nonstop the whole night.
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{}}>
+                <Icon
+                name='location'
+                type='entypo'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  { city }
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='person'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Maksimum 6 orang
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='event'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Khusus hari minggu
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='receipt'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Untuk usia diatas 10 tahun
+                </Text>
+              </View>
+            </View>
+            {/*<View style={{flex: 1, flexDirection: 'row'}}>
               <Image style={styles.icon} 
                 source={require('../assets/icons/time.png')}
               />
@@ -99,7 +182,7 @@ export default class DetailScreen extends Component {
                 { duration.amount +" "+ duration.unit }
               </Text>
             </View>
-            {/*<View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
               <Image style={styles.icon}
               source={require('../assets/icons/person.png')}/>
               <Text style={styles.timeActivity}>
@@ -107,94 +190,115 @@ export default class DetailScreen extends Component {
               </Text>
             </View>*/}
 
-            <View style={styles.divider}/>
-
             <View style={styles.containerdescriptionActivity}>
               <Text style={styles.sectionTitle}>
-                Tour Description
+                Hal yang Perlu Diperhatikan
               </Text>
-              <Text style={styles.descriptionActivity}>
-                ****Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam, quis
-                nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                occaecat cupidatat non proident, sunt in culpa qui
-                officia deserunt mollit anim id est laborum.
+              <Text style={styles.activityDesc}>
+                Eat all the power cords rub whiskers on bare skin act innocent 
+                for slap kitten brother with paw. Chase mice i just saw other cats
               </Text>
             </View>{/* end containerdescriptionActivity */}
 
-            <View style={styles.containerdescriptionActivity}>
-              <Text style={styles.sectionTitle}>
-                Highlights
-              </Text>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking adventure tour from Denpasar
-                </Text>
-              </View>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking adventure tour from Denpasar
-                </Text>
-              </View>
-            </View>{/* end containerdescriptionActivity */}
+            <View style={styles.divider}></View>
 
             <View style={styles.containerdescriptionActivity}>
-              <Text style={styles.sectionTitle}>
-                Price Included
-              </Text>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking adventure tour from Denpasar
-                </Text>
+              <View style={{flexDirection:'row', flex:1}}>
+                <View style={{flex:2, flexDirection:'row'}}>
+                  <View style={{marginRight:10}}>
+                    <Image style={styles.avatar} source={require('../assets/images/janedoe.jpg')}/>
+                  </View>
+                  <View>
+                    <Text style={styles.reviewTitle}>
+                      Amazing Experience!
+                    </Text>
+                    <View>
+                      <Rating
+                        type="star"
+                        fractions={1}
+                        startingValue={3.6}
+                        readonly
+                        imageSize={12}
+                        ratingColor="#00c5bc"
+                        onFinishRating={this.ratingCompleted}
+                        style={{ paddingTop: 2.5, marginRight:5,}}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end',}}>
+                  <Text style={styles.reviewDate}>
+                    June 2017
+                  </Text>
+                </View>
               </View>
-              <View style={styles.ul}>
-                <Text style={styles.li}>
-                  &#5867;
-                </Text>
-                <Text style={styles.lidescriptionActivity}>
-                  Full-day quad biking adventure tour from Denpasar
+              <View style={{marginTop:10}}>
+                <Text style={styles.activityDesc}>
+                  Eat all the power cords rub whiskers on bare skin act innocent 
+                  for slap kitten brother with paw. Chase mice i just saw other cats
                 </Text>
               </View>
             </View>{/* end containerdescriptionActivity */}
 
-            <MapView
-              style={{width:"100%", height:150}}
-              initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-              zoomEnabled={false}
-              rotateEnabled={false}
-              scrollEnabled={false}
-              pitchEnabled={false}
-            >
-              <Marker
-                coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-              />
-            </MapView>
-            <Text>
-              Jl. Sisingamangaraja 22{"\n"}
-              Selong
-            </Text>
+            <View style={styles.divider}></View>
 
-            <View style={styles.divider}/>
+            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row', justifyContent:'flex-end'}}>
+              <View style={{marginTop:3}}>
+                <Text style={{ color:'#454545', fontSize:16,}}>
+                  See all 20 reviews
+                </Text>
+              </View>
+              <View style={{marginLeft:10,}}>
+                <Icon
+                name='chevron-right'
+                type='entypo'
+                size={24}
+                color='#00c5bc'/>
+              </View>
+            </View>
 
-            <Text style={styles.sectionTitle}>
+            <View style={styles.divider}></View>
+
+            <View style={styles.containerdescriptionActivity}>
+              <MapView
+                style={{width:"100%", height:150}}
+                initialRegion={{
+                  latitude: 37.78825,
+                  longitude: -122.4324,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                zoomEnabled={false}
+                rotateEnabled={false}
+                scrollEnabled={false}
+                pitchEnabled={false}
+              >
+                <Marker
+                  coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                />
+              </MapView>
+              <View style={{marginTop:10}}>
+                <Text>
+                  Jl. Sisingamangaraja 22{"\n"}
+                  Selong
+                </Text>
+              </View>
+
+              <View style={{marginTop:30, marginBottom:30}}>
+                <Text style={styles.sectionTitle}>
+                  Hal yang Perlu Dibawa
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Eat all the power cords rub whiskers on bare skin act innocent 
+                  for slap kitten brother with paw. Chase mice i just saw other cats
+                </Text>
+              </View>{/* end containerdescriptionActivity */}
+
+              <View style={styles.divider}></View>
+
+            </View>
+
+            {/*<Text style={styles.sectionTitle}>
               Review
             </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -238,165 +342,167 @@ export default class DetailScreen extends Component {
                 title: 'Cancelation Policy',
                 content: 'Lorem ipsum...',
               },
-            ]}/>
-            <Text style={styles.sectionTitle}>
-              Similar Adventure
-            </Text>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <View style={styles.similarActivityContainer}>
-                  <Image
-                    style={{
-                      resizeMode:'cover',
-                      width:150,
-                      height:170,
-                      marginBottom:7,
-                    }}
-                    source={require('../assets/images/other-img2.jpg')}
-                  />
-                  <Text>Tour Title 1</Text>
-                  <Text style={{color:'green'}}>Rp. 3.000.000</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Rating
-                      type="star"
-                      fractions={1}
-                      startingValue={3.6}
-                      readonly
-                      imageSize={12}
-                      onFinishRating={this.ratingCompleted}
-                      style={{ paddingTop: 2.5, marginRight:5}}
-                    />
-                    <Text>20 Reviews</Text>
-                  </View>
+            ]}/>*/}
+            <View style={{marginTop:0}}>
+              <View style={{flexDirection:'row'}}>
+                <View style={{flex:1}}>
+                  <Text style={styles.sectionTitle}>Similiar Activities</Text>
                 </View>
-                <View style={styles.similarActivityContainer}>
-                  <Image
-                    style={{
-                      resizeMode:'cover',
-                      width:150,
-                      height:170,
-                      marginBottom:7,
-                    }}
-                    source={require('../assets/images/other-img1.jpg')}
-                  />
-                  <Text>Tour Title 1</Text>
-                  <Text style={{color:'green'}}>Rp. 3.000.000</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Rating
-                      type="star"
-                      fractions={1}
-                      startingValue={3.6}
-                      readonly
-                      imageSize={12}
-                      onFinishRating={this.ratingCompleted}
-                      style={{ paddingTop: 2.5, marginRight:5}}
-                    />
-                    <Text>20 Reviews</Text>
-                  </View>
+                <View style={{flex:1,alignItems:'flex-end',}}>
+                  <Text style={styles.seeMore}>See More</Text>
                 </View>
-                <View style={styles.similarActivityContainer}>
-                  <Image
-                    style={{
-                      resizeMode:'cover',
-                      width:150,
-                      height:170,
-                      marginBottom:7,
-                    }}
-                    source={require('../assets/images/other-img3.jpg')}
-                  />
-                  <Text>Tour Title 1</Text>
-                  <Text style={{color:'green'}}>Rp. 3.000.000</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Rating
-                      type="star"
-                      fractions={1}
-                      startingValue={3.6}
-                      readonly
-                      imageSize={12}
-                      onFinishRating={this.ratingCompleted}
-                      style={{ paddingTop: 2.5, marginRight:5}}
-                    />
-                    <Text>20 Reviews</Text>
-                  </View>
-                </View>
-                <View style={styles.similarActivityContainer}>
-                  <Image
-                    style={{
-                      resizeMode:'cover',
-                      width:150,
-                      height:170,
-                      marginBottom:7,
-                    }}
-                    source={require('../assets/images/other-img4.jpg')}
-                  />
-                  <Text>Tour Title 1</Text>
-                  <Text style={{color:'green'}}>Rp. 3.000.000</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <Rating
-                      type="star"
-                      fractions={1}
-                      startingValue={3.6}
-                      readonly
-                      imageSize={12}
-                      onFinishRating={this.ratingCompleted}
-                      style={{ paddingTop: 2.5, marginRight:5}}
-                    />
-                    <Text>20 Reviews</Text>
-                  </View>
-                </View>
-              </ScrollView>
+              </View>
             </View>
-
+            
           </View>{/* end container */}
+
+          
+          <View style={{flex: 1, flexDirection: 'row',}}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              <View style={{width:140, marginLeft:15,}}>
+                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
+                <View style={{marginTop:8, flexDirection:'row'}}>
+                  <View style={{flex:4,}}>
+                    <Text style={styles.namaKota}>
+                      Jepang
+                    </Text>
+                    <Text style={styles.activityTitle}>
+                      Create your own Sushi
+                    </Text>
+                    <Text style={styles.priceTitle}>
+                      IDR 300.000
+                    </Text>
+                    <View>
+                      <Rating
+                        type="star"
+                        fractions={1}
+                        startingValue={3.6}
+                        readonly
+                        imageSize={11}
+                        ratingColor="#00c5bc"
+                        onFinishRating={this.ratingCompleted}
+                        style={{ paddingTop: 2.5, marginRight:5,}}
+                      />
+                    </View>
+                  </View>
+                  <View style={{flex:1, marginTop:0}}>
+                    <Icon
+                    name='favorite-border'
+                    type='materialicons'
+                    size={24}
+                    color='#cdcdcd'/>
+                  </View>
+                </View>
+              </View>
+              <View style={{width:140, marginLeft:15,}}>
+                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
+                <View style={{marginTop:8, flexDirection:'row'}}>
+                  <View style={{flex:4,}}>
+                    <Text style={styles.namaKota}>
+                      Jepang
+                    </Text>
+                    <Text style={styles.activityTitle}>
+                      Create your own Sushi
+                    </Text>
+                    <Text style={styles.priceTitle}>
+                      IDR 300.000
+                    </Text>
+                    <View>
+                      <Rating
+                        type="star"
+                        fractions={1}
+                        startingValue={3.6}
+                        readonly
+                        imageSize={11}
+                        ratingColor="#00c5bc"
+                        onFinishRating={this.ratingCompleted}
+                        style={{ paddingTop: 2.5, marginRight:5,}}
+                      />
+                    </View>
+                  </View>
+                  <View style={{flex:1, marginTop:0}}>
+                    <Icon
+                    name='favorite-border'
+                    type='materialicons'
+                    size={24}
+                    color='#cdcdcd'/>
+                  </View>
+                </View>
+              </View>
+              <View style={{width:140, marginLeft:15, marginRight:15}}>
+                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
+                <View style={{marginTop:8, flexDirection:'row'}}>
+                  <View style={{flex:4,}}>
+                    <Text style={styles.namaKota}>
+                      Jepang
+                    </Text>
+                    <Text style={styles.activityTitle}>
+                      Create your own Sushi
+                    </Text>
+                    <Text style={styles.priceTitle}>
+                      IDR 300.000
+                    </Text>
+                    <View>
+                      <Rating
+                        type="star"
+                        fractions={1}
+                        startingValue={3.6}
+                        readonly
+                        imageSize={11}
+                        ratingColor="#00c5bc"
+                        onFinishRating={this.ratingCompleted}
+                        style={{ paddingTop: 2.5, marginRight:5,}}
+                      />
+                    </View>
+                  </View>
+                  <View style={{flex:1, marginTop:0}}>
+                    <Icon
+                    name='favorite-border'
+                    type='materialicons'
+                    size={24}
+                    color='#cdcdcd'/>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+
+          <View style={{paddingBottom:100}}></View>
+
         </ScrollView>
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
-            <View style={{flexDirection: 'row'}}>
+          <View style={{alignItems: 'flex-start', flex:1.5}}>
+            <View >
+              <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
+            </View>
+            <View>
               <Text style={{
-                color:'green',
-                marginRight:3,
+                color:'#000',
                 fontWeight: 'bold',
-                fontSize:15,
-              }}>{ Formatter.price(price) }</Text> 
-              <Text style={{fontSize:12,}}>/orang</Text>
-            </View>
-            <View style={{flexDirection: 'row',  }}>
-              <Rating
-                type="star"
-                fractions={1}
-                startingValue={3.6}
-                readonly
-                imageSize={12}
-                onFinishRating={this.ratingCompleted}
-                style={{ paddingTop: 2.5, marginRight:5}}
-              />
-              <Text style={{fontSize:12,}}>20 Review</Text> 
-            </View>
+                fontSize:20,
+              }}>{ Formatter.price(price) }</Text>
+            </View> 
+            
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{
-                height: 35,
-                width: 100,
-                paddingTop: 10,
-                paddingBottom: 10,
+                height: 45,
+                width: '100%',
+                paddingTop: 13,
+                paddingBottom: 13,
                 overflow: 'hidden',
-                borderRadius: 4,
-                backgroundColor: '#437ef7'
+                borderRadius:25,
+                backgroundColor: '#01d4cb',
               }}
-              style={{fontSize: 12, color: '#fff'}}
-              onPress={() => {
-                this.setState({isLoading: true})
-                this.props.navigation.navigate('BookingDetail', {
-                  activityId: id,
-                  price, requiredPaxData,
-                });
-              }}
+              style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+              onPress={() => this._goToBookingDetail()}
+              // onPress={() => {
+              //   removeAccessToken();
+              //   this.props.navigation.navigate('LoginScreen')
+              // }}
               disabled={!requiredPaxData || isLoading}
               styleDisabled={{color:'#aaa'}}
             >
@@ -409,16 +515,83 @@ export default class DetailScreen extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    padding:20,
-    paddingBottom:40,
+    padding:15,
     backgroundColor: '#fff',
   },
   similarActivityContainer: {
     marginRight:10,
     width:150,
     // flex:1,
+  },
+  thumbnailMedium: {
+    resizeMode:'cover', 
+    width:140, 
+    height:150, 
+    borderRadius:5,
+  },
+  namaKota: {
+    fontSize:12,
+    color:'#454545',
+  },
+  avatar:{
+    width:40, 
+    height:40, 
+    resizeMode:'cover', 
+    borderRadius:20
+  },
+  activityTitle: {
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
+  },
+  activitydetailTitle: {
+    fontWeight:'bold',
+    fontSize:18,
+    color:'#454545',
+  },
+  priceTitle: {
+    fontSize:12,
+    color:'#676767',
+    marginTop:2
+  },
+  seeMore :{
+    fontSize:14,
+    color:'#acacac'
+  },
+  activityDesc: {
+    fontSize:14,
+    color:'#454545',
+    lineHeight: 20,
+  },
+  containerdescriptionActivity: {
+    marginBottom: 30,
+    marginTop:30,
+    flex: 1
+  },
+  containersimiliarActivity: {
+    marginBottom: 20,
+    marginTop:20,
+    flex: 1
+  },
+  sectionTitle: {
+    fontWeight: 'bold',
+    fontSize:16,
+    marginBottom: 7,
+    color:'#454545',
+  },
+
+  reviewTitle: {
+    fontSize:15,
+    marginBottom: 5,
+    color:'#454545',
+  },
+  reviewDate: {
+    fontSize:12,
+    color:'#cecece'
+
   },
   bottomBarContainer: {
     flexDirection: 'row',
@@ -441,12 +614,6 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
-  },
-  reviewThumbImg: {
-    width:60,
-    height:50,
-    marginRight:5,
-    marginTop:10,
   },
   hyperlink: {
     fontSize:11,
@@ -478,15 +645,6 @@ const styles = StyleSheet.create({
     height:15,
     marginRight:5,
   },
-  containerdescriptionActivity: {
-    marginBottom: 18,
-    flex: 1
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    fontSize:16,
-    marginBottom: 7,
-  },
   descriptionActivity: {
     fontSize:11,
     lineHeight: 15,
@@ -500,13 +658,6 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
-    marginTop: 15,
-    marginBottom: 15,
-  },
-  activityTitle: {
-    fontWeight: 'bold',
-    fontSize:20,
-    marginBottom: 7,
   },
   locationActivity: {
     fontSize:12,

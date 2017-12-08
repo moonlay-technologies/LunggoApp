@@ -11,7 +11,7 @@ import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
 import SearchResults from '../screens/SearchResults';
-import LoginScreen from '../screens/LoginScreen';
+import MyBooking from '../screens/MyBooking';
 import AddPax from '../screens/AddPax';
 import DetailScreen from '../screens/DetailScreen';
 import CalendarView from '../components/CalendarView';
@@ -20,6 +20,8 @@ import PaxChoice from '../screens/PaxChoice';
 import BookingDetail from '../screens/BookingDetail';
 import Registration from '../screens/Registration';
 import BookedPageDetail from '../screens/BookedPageDetail';
+import AdvanceSearch from '../screens/AdvanceSearch';
+import LoginScreen from '../screens/LoginScreen';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -32,9 +34,9 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: ExploreScreen,
+      screen: DetailScreen
+      // screen: AdvanceSearch,
       // screen: LoginScreen,
-      screen: SearchResults,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
@@ -48,6 +50,7 @@ const RootStackNavigator = StackNavigator(
     BookingDetail: { screen: BookingDetail },
     Registration: { screen: Registration },
     BookedPageDetail: { screen: BookedPageDetail },
+    LoginScreen: { screen: LoginScreen },
   },
   {
     navigationOptions: () => ({

@@ -23,7 +23,7 @@ export default class SearchHeader extends Component {
 
   render() {
     return (
-      <View style={{ backgroundColor: '#fff', height:64 ,paddingTop:20}}>
+      <View style={{ backgroundColor: '#fff'}}>
         <View style={[styles.header,styles.flowRight]}>
           <View style={{flex:6}}>
             <TextInput
@@ -70,9 +70,18 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   header: {
-    paddingHorizontal:15,
-    paddingVertical:5,
     backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+        paddingHorizontal:15,
+        paddingTop:30,
+        paddingBottom:15
+      },
+      android: {
+        paddingHorizontal:15,
+        paddingVertical:20,
+      },
+    }),
   },
   searchInput: {
     height: 35,

@@ -7,7 +7,7 @@ import {
   Text, View, Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
-
+import { Icon } from 'react-native-elements'
 
 class ListItem extends React.PureComponent {
 
@@ -26,7 +26,8 @@ class ListItem extends React.PureComponent {
               flex: 1.8,
               resizeMode: 'cover',
               width: '100%',
-              height: 110,
+              height: 100,
+              borderRadius:5,
             }}/>
             <View style={{
               flex:3,
@@ -44,28 +45,36 @@ class ListItem extends React.PureComponent {
                 flexDirection:'row',
               }}>
                 <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <Image style={styles.icon}
-                    source={require('../assets/icons/person.png')}/>
-                  <Text style={styles.timeActivity}>
-                    {/*item.paxCount*/} peserta
-                  </Text>
+                  <View style={{}}>
+                    <Icon
+                    name='person'
+                    type='materialicons'
+                    size={16}
+                    color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:5}}>
+                    <Text style={{fontSize:12}}>
+                      6 orang
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ flexDirection:'row' }}>
-                  <Image style={styles.icon}
-                    source={require('../assets/icons/calendar.png')}/>
-                  <Text style={styles.timeActivity}>
-                    {/*item.duration.count +' '+ item.duration.unit*/}
+              </View>
+
+              <View style={{ flexDirection:'row', marginRight:10 }}>
+                <View style={{}}>
+                  <Icon
+                  name='event'
+                  type='materialicons'
+                  size={16}
+                  color='#454545'/>
+                </View>
+                <View style={{marginTop:1, marginLeft:5}}>
+                  <Text style={{fontSize:12}}>
+                    {item.date}
                   </Text>
                 </View>
               </View>
 
-              <View style={{ flexDirection:'row' }}>
-                <Image style={styles.icon}
-                  source={require('../assets/icons/calendar.png')}/>
-                <Text style={styles.timeActivity}>
-                  {item.date}
-                </Text>
-              </View>
             </View> 
           </View>
         </TouchableHighlight>
@@ -164,11 +173,17 @@ export default class MyBookingScreen extends Component {
 
 const styles = StyleSheet.create({
   containerBooking: {
-    padding:10,
+    padding:15,
     paddingTop:0,
     paddingBottom:0,
     flexDirection: 'row',
     flex:1
+  },
+  thumbnailMedium: {
+    resizeMode:'cover', 
+    width:'100%', 
+    height:100, 
+    borderRadius:5,
   },
   divider: {
     height: 1,
@@ -178,11 +193,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   activityTitle: {
-    fontSize:16,
-    marginBottom: 3,
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
   },
   status: {
-    color:'green',
+    color:'#01d4cb',
     fontSize:12,
   },
   icon: {
@@ -192,5 +208,6 @@ const styles = StyleSheet.create({
   },
   timeActivity: {
     fontSize:12,
+    color:'#676767',
   },
 });
