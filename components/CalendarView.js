@@ -5,6 +5,7 @@ import { StyleSheet, Platform, View, Text,
 import Modal from 'react-native-modal'
 import Button from 'react-native-button';
 import Moment from 'moment';
+import { CheckBox } from 'react-native-elements'
 import 'moment/locale/id';
 
 export default class CalendarView extends Component {
@@ -104,17 +105,78 @@ export default class CalendarView extends Component {
           isVisible={this.state.isModalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
         >
-          <View style={{flex:2}}/>
-          <View style={{flex:1, backgroundColor:'white', flexDirection: 'row'}}>
-            <View style={{flex:1}}/>
-            <Text style={{flex:3, textAlign:'center'}}>Pilih Sesi</Text>
-            <TouchableHighlight
-              style={{flex:1, alignItems: 'flex-end', marginRight:10}}
-              onPress={() => this._setModalVisible(false)}>
-              <Text>X</Text>
-            </TouchableHighlight>
+          <View style={{flex:1}}/>
+          <View style={{flex:1, backgroundColor:'white', padding:20,}}>
+            <View style={{}}/>
+              <TouchableHighlight
+                style={{alignItems: 'flex-end',}}
+                onPress={() => this._setModalVisible(false)}>
+                <Text>X</Text>
+              </TouchableHighlight>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Choose activity time
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.activityDesc}>
+                  1 November 2017
+                </Text>
+              </View>
 
-          </View>
+              <View style={{justifyContent: 'space-between', flexDirection:'row', borderBottomColor: '#efefef', borderBottomWidth:1, paddingTop:15, paddingBottom:15, }}>
+                <View style={{marginTop:5}}>
+                  <Text>
+                    10.00 am
+                  </Text>
+                </View>
+                <View>
+                  <CheckBox
+                    style={{backgroundColor: '#fff'}}
+                    checked={this.state.checked}
+                  />
+                </View>
+              </View>
+              <View style={{justifyContent: 'space-between', flexDirection:'row', borderBottomColor: '#efefef', borderBottomWidth:1, paddingTop:15, paddingBottom:15, }}>
+                <View style={{marginTop:5}}>
+                  <Text>
+                    12.00 am
+                  </Text>
+                </View>
+                <View>
+                  <CheckBox
+                    style={{backgroundColor: '#fff'}}
+                    checked={this.state.checked}
+                  />
+                </View>
+              </View>
+
+              <View style={{marginTop:20}}>
+                <Button
+                  containerStyle={{
+                    height: 40,
+                    width: '100%',
+                    paddingTop: 11,
+                    paddingBottom: 11,
+                    overflow: 'hidden',
+                    borderRadius:25,
+                    backgroundColor: '#01d4cb',
+                  }}
+                  style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                  onPress={() => {
+                    this.setState({isLoading: true})
+                    this.props.navigation.navigate('BookingDetail', {
+                      activityId: id,
+                      price, requiredPaxData,
+                    });
+                  }}
+                  styleDisabled={{color:'#aaa'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+
+            </View>
         </Modal>
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
@@ -146,6 +208,22 @@ export default class CalendarView extends Component {
    https://github.com/wix/react-native-calendars#customizing-look--feel
 */
 var styles = StyleSheet.create({
+  container: {
+    padding:20,
+    backgroundColor: '#fff',
+    flex:1
+  },
+  activityTitle: {
+    fontWeight:'bold',
+    fontSize:15,
+    color:'#454545',
+    marginBottom:5
+  },
+  activityDesc: {
+    fontSize:14,
+    color:'#454545',
+    lineHeight: 20,
+  },
   bottomBarContainer: {
     flexDirection: 'row',
     position: 'absolute',
