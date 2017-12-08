@@ -28,7 +28,7 @@ export default class DetailScreen extends Component {
         name: 'loading activity name...',
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
-        price: 'loading price...',
+        price: '...',
         mediaSrc: []
       }
     } else {
@@ -66,6 +66,11 @@ export default class DetailScreen extends Component {
     fetchTravoramaApi(request).then( response => {
       this.setState(response.activityDetail);
     }).catch(error => console.log(error));
+
+    request.path = `/${version}/activities/${id}/availabledates`;
+    fetchTravoramaApi(request).then( response => {
+      this.setState(response); //// = ({availableDateTimes})
+    }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
@@ -81,8 +86,8 @@ export default class DetailScreen extends Component {
   }
 
   render() {
-    const { requiredPaxData, isLoading, name, city, duration, price,
-      mediaSrc } = this.state;
+    const { requiredPaxData, isLoading, name, city, duration, price, id,
+      mediaSrc, availableDateTimes } = this.state;
     return (
       <View>
         <ScrollView

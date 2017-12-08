@@ -73,14 +73,23 @@ export default class BookingDetail extends Component {
     }).catch(error => {
       this.setState({isLoading:false});
       console.log(error);
-    });
+    }); 
+  }
 
-    
+  _goToCalendarSelection = () => {
+    let {navigation} = this.props;
+    let {price, availableDateTimes } = navigation.state.params;
+    let {date} = this.state;
+    navigation.navigate('CalendarView', {
+      price, availableDateTimes,
+      setSchedule: this.setSchedule,
+      selectedDate: date,
+    });
   }
 
   render() {
     let {navigation} = this.props;
-    let {price,requiredPaxData} = navigation.state.params;
+    let {price, requiredPaxData} = navigation.state.params;
     let {pax, date, paxListItemIndexes} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
@@ -98,13 +107,7 @@ export default class BookingDetail extends Component {
             backgroundColor: '#437ef7'
           }}
           style={{fontSize: 12, color: '#fff'}}
-          onPress={() => {
-            navigation.navigate('CalendarView', {
-              setSchedule: this.setSchedule,
-              selectedDate: date,
-              price,
-            });
-          }}
+          onPress={this._goToCalendarSelection}
         >
           Ubah Jadwal
         </Button>
@@ -121,15 +124,13 @@ export default class BookingDetail extends Component {
           backgroundColor: '#437ef7'
         }}
         style={{fontSize: 12, color: '#fff'}}
-        // disabled={this.state.isLoading}
-        // styleDisabled={{color:'#aaa'}}
-        onPress={() => {
-          // this.setState({isLoading:true});
-          navigation.navigate('CalendarView', {
-            setSchedule: this.setSchedule,
-            price,
-          });
-        }}
+        onPress={this._goToCalendarSelection}
+        // onPress={() => {
+        //   navigation.navigate('CalendarView', {
+        //     setSchedule: this.setSchedule,
+        //     price,
+        //   });
+        // }}
       >
         Pilih Jadwal
       </Button>
@@ -284,13 +285,7 @@ export default class BookingDetail extends Component {
                 backgroundColor: '#01d4cb',
               }}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => {
-                this.setState({isLoading: true})
-                this.props.navigation.navigate('BookingDetail', {
-                  activityId: id,
-                  price, requiredPaxData,
-                });
-              }}
+              onPress={this._book}
               styleDisabled={{color:'#aaa'}}
             >
               Pesan

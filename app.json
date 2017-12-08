@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "travorama",
+    "name": "Travorama",
     "description": "No description",
     "slug": "travorama",
     "privacy": "public",
@@ -22,6 +22,9 @@
     "ios": {
       "bundleIdentifier": "com.sk3vy.new-project-template",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.travorama"
     }
   }
 }
