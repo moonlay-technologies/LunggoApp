@@ -27,7 +27,7 @@ export default class DetailScreen extends Component {
         name: 'loading activity name...',
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
-        price: 'loading price...',
+        price: '...',
         mediaSrc: []
       }
     } else {
@@ -65,11 +65,16 @@ export default class DetailScreen extends Component {
     fetchTravoramaApi(request).then( response => {
       this.setState(response.activityDetail);
     }).catch(error => console.log(error));
+
+    request.path = `/${version}/activities/${id}/availabledates`;
+    fetchTravoramaApi(request).then( response => {
+      this.setState(response); //// = ({availableDateTimes})
+    }).catch(error => console.log(error));
   }
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc } = this.state;
+      mediaSrc, availableDateTimes } = this.state;
     return (
       <View>
         <ScrollView
@@ -489,8 +494,8 @@ export default class DetailScreen extends Component {
               onPress={() => {
                 this.setState({isLoading: true})
                 this.props.navigation.navigate('BookingDetail', {
+                  price, requiredPaxData, availableDateTimes,
                   activityId: id,
-                  price, requiredPaxData,
                 });
               }}
               disabled={!requiredPaxData || isLoading}

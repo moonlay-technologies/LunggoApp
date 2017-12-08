@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
-import { StyleSheet, Platform, View, Text,
+import { StyleSheet, Platform, View, Text, TouchableOpacity,
           TouchableHighlight } from 'react-native';
 import Modal from 'react-native-modal'
 import Button from 'react-native-button';
@@ -12,13 +12,28 @@ export default class CalendarView extends Component {
 
   constructor (props) {
     super(props)
-    let {selectedDate} = this.props.navigation.state.params;
+    let {selectedDate, selectedTime, availableDateTimes} =
+      this.props.navigation.state.params;
     this.state = {
-      selectedDate,
+      selectedDate, selectedTime, availableDateTimes,
+      // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
+      // minDate : Date(),
+      minDate : '2010-01-01',
+      /*  IMPORTANT!! By the time this feature was implemented,
+          react-native-calendars didn't have an option for disable
+          all dates by default, so we made a temporary workaround by
+          swapping 'disabled' property with the enabled one, so every
+          disabled date would behave as enabled date, vice versa.  */
       markedDates : {
         // '2017-11-20': {marked: true},
-        '2017-11-21': {disabled: true},
-        '2017-10-24': {disabled: true},
+        '2017-12-21': {disabled: true, availableTime: [
+          "1.00 - 2.00",
+          "3.00 - 4.00"
+        ]},
+        '2017-12-24': {disabled: true, availableTime: [
+          "12.00 - 18.00",
+          "9.00 - 10.00"
+        ]},
         
         //// for markingType = interactive
         // '2017-10-23': [{textColor: '#d9e1e8'}],
@@ -38,21 +53,22 @@ export default class CalendarView extends Component {
     title: 'Pilih Tanggal',
   };
 
+  _checkIsDateAvailable = dateString => {
+    //// if clicked date is available, return true
+    return !!this.state.markedDates[dateString];
+  }
+
   _selectDate = dateString => {
     let {markedDates, selectedDate} = this.state;
 
-    //// if clicked date is disabled, do nothing
-    if (markedDates[dateString] && markedDates[dateString].disabled)
-      return;
-
     //// set remove prev selectedDate from markedDates
-    if (selectedDate) markedDates[selectedDate] = {selected: false};
+    if (selectedDate) markedDates[selectedDate].selected = false;
     // if (selectedDate) delete markedDates[selectedDate].selected;
     // markedDates[selectedDate] = [{startingDay: true, color: 'blue'}]
     
     //// set selectedDate
     selectedDate = dateString;
-    markedDates[dateString] = {selected: true};
+    markedDates[dateString].selected = true;
     // markedDates[dateString] = [{startingDay: true, color: 'blue'}]
 
     this.setState({ markedDates, selectedDate });
@@ -73,27 +89,70 @@ export default class CalendarView extends Component {
   }
 
   _onDatePressed = dateString => {
+    if (this._checkIsDateAvailable(dateString) == false) return;
+
+    let {selectedDate, markedDates} = this.state;
     //// choose session, if any
-    this._setModalVisible(true);
+
+    // console.log('--')
+    // console.log(selectedDate && markedDates[selectedDate] &&
+    //           markedDates[selectedDate].availableTime );
+    console.log(!!selectedDate);
+    // console.log(markedDates[selectedDate]);
+    console.log(markedDates[selectedDate]? markedDates[selectedDate].availableTime : 'z');
 
     //// continue set date
     this._selectDate(dateString);
+    this._setModalVisible(true);
+  }
+
+  _onAvailableTimeClicked = index => {
+    let {markedDates, selectedDate} = this.state;
+    let selectedTime = markedDates[selectedDate].availableTime[index]
+    this.setState({selectedTime});
+    this._setModalVisible(false);
   }
 
   render() {
-    let {selectedDate} = this.state;
+    let {selectedDate, markedDates, selectedTime} = this.state;
     let date = (selectedDate)
       ? Moment(selectedDate).format('ddd, D MMM YYYY')
       : "Pilih Tanggal";
+
+    let availableTimeList = !!selectedDate ?
+        markedDates[selectedDate].availableTime.map(
+          (currValue, index) =>
+            <TouchableOpacity
+              key={index} style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                borderBottomColor: '#efefef',
+                borderBottomWidth: 1,
+                paddingTop: 15,
+                paddingBottom: 15,
+              }}
+              onPress={() => this._onAvailableTimeClicked(index)}
+            >
+              <View style={{marginTop:5}}
+                
+              >
+                <Text>{currValue}</Text>
+              </View>
+            </TouchableOpacity>
+        ) : '';
+
     return(
       <View>
         <CalendarList
-          minDate={Date()}
-          markedDates={this.state.markedDates}
+          minDate={this.state.minDate}
+          markedDates={markedDates}
           onDayPress={ day => this._onDatePressed(day.dateString)}
           pastScrollRange={0}
-          futureScrollRange={12}
-          // markingType={'interactive'}
+          futureScrollRange={6}
+          theme={{
+            dayTextColor: '#d9e1e8',
+            textDisabledColor: '#2d4150',
+          }}
         />
         <Modal
           style={{
@@ -105,83 +164,54 @@ export default class CalendarView extends Component {
           isVisible={this.state.isModalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
         >
-          <View style={{flex:1}}/>
+          <View style={{flex:1}}></View>
           <View style={{flex:1, backgroundColor:'white', padding:20,}}>
-            <View style={{}}/>
-              <TouchableHighlight
-                style={{alignItems: 'flex-end',}}
-                onPress={() => this._setModalVisible(false)}>
-                <Text>X</Text>
-              </TouchableHighlight>
-              <View>
-                <Text style={styles.activityTitle}>
-                  Choose activity time
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.activityDesc}>
-                  1 November 2017
-                </Text>
-              </View>
-
-              <View style={{justifyContent: 'space-between', flexDirection:'row', borderBottomColor: '#efefef', borderBottomWidth:1, paddingTop:15, paddingBottom:15, }}>
-                <View style={{marginTop:5}}>
-                  <Text>
-                    10.00 am
-                  </Text>
-                </View>
-                <View>
-                  <CheckBox
-                    style={{backgroundColor: '#fff'}}
-                    checked={this.state.checked}
-                  />
-                </View>
-              </View>
-              <View style={{justifyContent: 'space-between', flexDirection:'row', borderBottomColor: '#efefef', borderBottomWidth:1, paddingTop:15, paddingBottom:15, }}>
-                <View style={{marginTop:5}}>
-                  <Text>
-                    12.00 am
-                  </Text>
-                </View>
-                <View>
-                  <CheckBox
-                    style={{backgroundColor: '#fff'}}
-                    checked={this.state.checked}
-                  />
-                </View>
-              </View>
-
-              <View style={{marginTop:20}}>
-                <Button
-                  containerStyle={{
-                    height: 40,
-                    width: '100%',
-                    paddingTop: 11,
-                    paddingBottom: 11,
-                    overflow: 'hidden',
-                    borderRadius:25,
-                    backgroundColor: '#01d4cb',
-                  }}
-                  style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => {
-                    this.setState({isLoading: true})
-                    this.props.navigation.navigate('BookingDetail', {
-                      activityId: id,
-                      price, requiredPaxData,
-                    });
-                  }}
-                  styleDisabled={{color:'#aaa'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-
+            <TouchableHighlight
+              style={{alignItems: 'flex-end',}}
+              onPress={() => this._setModalVisible(false)}>
+              <Text>X</Text>
+            </TouchableHighlight>
+            <View>
+              <Text style={styles.activityTitle}>
+                Choose activity time
+              </Text>
             </View>
+            <View>
+              <Text style={styles.activityDesc}>
+                {Moment(selectedDate).format('dddd, D MMMM YYYY')}
+              </Text>
+            </View>
+            {availableTimeList}
+            <View style={{marginTop:20}}>
+              <Button
+                containerStyle={{
+                  height: 40,
+                  width: '100%',
+                  paddingTop: 11,
+                  paddingBottom: 11,
+                  overflow: 'hidden',
+                  borderRadius:25,
+                  backgroundColor: '#01d4cb',
+                }}
+                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                onPress={() => {
+                  this.setState({isLoading: true})
+                  this.props.navigation.navigate('BookingDetail', {
+                    activityId: id,
+                    price, requiredPaxData,
+                  });
+                }}
+                styleDisabled={{color:'#aaa'}}
+              >
+                Pilih
+              </Button>
+            </View>
+          </View>
         </Modal>
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
             <Text>{date}</Text>
-            <Text>12.00 - 15.00</Text>
+            <Text>{selectedTime}</Text>
           </View>
           <Button
             containerStyle={{
