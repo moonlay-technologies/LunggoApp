@@ -22,7 +22,7 @@ import Registration from '../screens/Registration';
 import BookedPageDetail from '../screens/BookedPageDetail';
 import AdvanceSearch from '../screens/AdvanceSearch';
 import LoginScreen from '../screens/LoginScreen';
-import HomeScreenOperator from '../screens/HomeScreenOperator'
+import WelcomePage from '../screens/WelcomePage'
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -35,7 +35,7 @@ import ExploreScreen from '../screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: HomeScreenOperator
+      screen: LoginScreen
       // screen: AdvanceSearch,
       // screen: LoginScreen,
       // screen: MainTabNavigator,
