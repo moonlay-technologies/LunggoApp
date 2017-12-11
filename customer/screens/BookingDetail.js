@@ -151,7 +151,7 @@ export default class BookingDetail extends Component {
               <View style={{flex:1, marginRight:20,}}>
                 <Image
                   style={styles.thumb}
-                  source={require('../assets/images/other-img1.jpg')}
+                  source={require('../../assets/images/other-img1.jpg')}
                 />
               </View>
               <View style={{flex:1.5}}>

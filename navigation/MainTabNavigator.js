@@ -5,11 +5,11 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../screens/HomeScreen';
-import ExploreScreen from '../screens/ExploreScreen';
-import MyBooking from '../screens/MyBooking';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import HomeScreen from '../customer/screens/HomeScreen';
+import ExploreScreen from '../customer/screens/ExploreScreen';
+import MyBooking from '../customer/screens/MyBooking';
+import LinksScreen from '../customer/screens/LinksScreen';
+import SettingsScreen from '../customer/screens/SettingsScreen';
 
 export default TabNavigator(
   {

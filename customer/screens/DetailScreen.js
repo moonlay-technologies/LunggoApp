@@ -211,7 +211,7 @@ export default class DetailScreen extends Component {
               <View style={{flexDirection:'row', flex:1}}>
                 <View style={{flex:2, flexDirection:'row'}}>
                   <View style={{marginRight:10}}>
-                    <Image style={styles.avatar} source={require('../assets/images/janedoe.jpg')}/>
+                    <Image style={styles.avatar} source={require('../../assets/images/janedoe.jpg')}/>
                   </View>
                   <View>
                     <Text style={styles.reviewTitle}>
@@ -365,7 +365,7 @@ export default class DetailScreen extends Component {
           <View style={{flex: 1, flexDirection: 'row',}}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={{width:140, marginLeft:15,}}>
-                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
+                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
                 <View style={{marginTop:8, flexDirection:'row'}}>
                   <View style={{flex:4,}}>
                     <Text style={styles.namaKota}>
@@ -400,7 +400,7 @@ export default class DetailScreen extends Component {
                 </View>
               </View>
               <View style={{width:140, marginLeft:15,}}>
-                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
+                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
                 <View style={{marginTop:8, flexDirection:'row'}}>
                   <View style={{flex:4,}}>
                     <Text style={styles.namaKota}>
@@ -435,7 +435,7 @@ export default class DetailScreen extends Component {
                 </View>
               </View>
               <View style={{width:140, marginLeft:15, marginRight:15}}>
-                <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
+                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
                 <View style={{marginTop:8, flexDirection:'row'}}>
                   <View style={{flex:4,}}>
                     <Text style={styles.namaKota}>

@@ -92,7 +92,7 @@ export default class ExploreScreen extends React.Component {
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:300, marginLeft:15,}}>
-              <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg2.jpg')}/>
+              <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.activityTitleBig}>
@@ -112,7 +112,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:300, marginLeft:15}}>
-              <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg3.jpg')}/>
+              <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.activityTitleBig}>
@@ -132,7 +132,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:300, marginLeft:15, marginRight:15}}>
-              <Image style={styles.thumbnailBig} source={require('../assets/images/detailimg.jpg')}/>
+              <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.activityTitleBig}>
@@ -170,7 +170,7 @@ export default class ExploreScreen extends React.Component {
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:140, marginLeft:15,}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -190,7 +190,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:140, marginLeft:15}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -210,7 +210,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:140, marginLeft:15, marginRight:15}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -248,7 +248,7 @@ export default class ExploreScreen extends React.Component {
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:140, marginLeft:15,}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img1.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -268,7 +268,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:140, marginLeft:15}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img2.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -288,7 +288,7 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
             <View style={{width:140, marginLeft:15, marginRight:15}}>
-              <Image style={styles.thumbnailMedium} source={require('../assets/images/other-img3.jpg')}/>
+              <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
                   <Text style={styles.activityTitle}>
@@ -327,7 +327,7 @@ export default class ExploreScreen extends React.Component {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
-                <Image style={styles.thumbnailPlaces} source={require('../assets/images/yogya.jpg')}/>
+                <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')}/>
               </View>
               <View style={styles.placeTitleContainer}>
                 <Text style={styles.placeTitle}>Jogja</Text>
@@ -335,7 +335,7 @@ export default class ExploreScreen extends React.Component {
             </View>
             <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
-                <Image style={styles.thumbnailPlaces} source={require('../assets/images/surabaya.jpg')}/>
+                <Image style={styles.thumbnailPlaces} source={require('../../assets/images/surabaya.jpg')}/>
               </View>
               <View style={styles.placeTitleContainer}>
                 <Text style={styles.placeTitle}>Surabaya</Text>
@@ -343,7 +343,7 @@ export default class ExploreScreen extends React.Component {
             </View>
             <View style={{width:140, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
-                <Image style={styles.thumbnailPlaces} source={require('../assets/images/bg.jpg')}/>
+                <Image style={styles.thumbnailPlaces} source={require('../../assets/images/bg.jpg')}/>
               </View>
               <View style={styles.placeTitleContainer}>
                 <Text style={styles.placeTitle}>Hawai</Text>
@@ -369,13 +369,13 @@ export default class ExploreScreen extends React.Component {
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:300, marginLeft:15,}}>
-              <Image style={styles.thumbnailPromo} source={require('../assets/images/promo2.jpg')}/>
+              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo2.jpg')}/>
             </View>
             <View style={{width:300, marginLeft:15}}>
-              <Image style={styles.thumbnailPromo} source={require('../assets/images/promo3.jpg')}/>
+              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo3.jpg')}/>
             </View>
             <View style={{width:300, marginLeft:15, marginRight:15}}>
-              <Image style={styles.thumbnailPromo} source={require('../assets/images/promo1.jpg')}/>
+              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo1.jpg')}/>
             </View>
           </ScrollView>
         </View>

@@ -7,8 +7,8 @@ export default class AccordionView extends Component {
   constructor(props) {
     super(props);
     this.icons = {   
-      'up'   : require('../assets/icons/right-arrow.png'),
-      'down' : require('../assets/icons/down-arrow.png')
+      'up'   : require('../../assets/icons/right-arrow.png'),
+      'down' : require('../../assets/icons/down-arrow.png')
     };
   }
 

@@ -10,19 +10,20 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-import SearchResults from '../screens/SearchResults';
-import MyBooking from '../screens/MyBooking';
-import AddPax from '../screens/AddPax';
-import DetailScreen from '../screens/DetailScreen';
-import CalendarView from '../components/CalendarView';
-import WebViewScreen from '../screens/WebViewScreen';
-import PaxChoice from '../screens/PaxChoice';
-import BookingDetail from '../screens/BookingDetail';
-import Registration from '../screens/Registration';
-import BookedPageDetail from '../screens/BookedPageDetail';
-import AdvanceSearch from '../screens/AdvanceSearch';
-import LoginScreen from '../screens/LoginScreen';
-import HomeScreenOperator from '../screens/HomeScreenOperator'
+const screenPath = '../customer/screens/';
+import SearchResults from '../customer/screens/SearchResults';
+import MyBooking from '../customer/screens/MyBooking';
+import AddPax from '../customer/screens/AddPax';
+import DetailScreen from '../customer/screens/DetailScreen';
+import CalendarView from '../customer/components/CalendarView';
+import WebViewScreen from '../customer/screens/WebViewScreen';
+import PaxChoice from '../customer/screens/PaxChoice';
+import BookingDetail from '../customer/screens/BookingDetail';
+import Registration from '../customer/screens/Registration';
+import BookedPageDetail from '../customer/screens/BookedPageDetail';
+import AdvanceSearch from '../customer/screens/AdvanceSearch';
+import LoginScreen from '../customer/screens/LoginScreen';
+import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -30,7 +31,8 @@ import HomeScreenOperator from '../screens/HomeScreenOperator'
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
-import ExploreScreen from '../screens/ExploreScreen';
+// for testing purpose
+import ExploreScreen from '../customer/screens/ExploreScreen';
 
 const RootStackNavigator = StackNavigator(
   {

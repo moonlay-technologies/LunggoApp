@@ -38,7 +38,7 @@ export default class ExploreScreen extends React.Component {
           >
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
-                <Image style={styles.avatarBig} source={require('../assets/images/janedoe.jpg')}/>
+                <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
               </View>
               <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
                 <Icon
