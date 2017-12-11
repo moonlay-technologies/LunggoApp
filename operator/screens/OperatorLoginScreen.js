@@ -25,7 +25,7 @@ export default class OperatorLoginScreen extends Component {
     .then(response => {
       this.setState({isLoading:false});
       if (response.status == 200)
-        this.props.navigation.navigate('MainTabNavigator');
+        this.props.navigation.navigate('Dashboard');
       else console.log(response);
     }).catch(error => {
       this.setState({isLoading:false});
@@ -38,13 +38,13 @@ export default class OperatorLoginScreen extends Component {
     let {isLoading, userName, password} = this.state;
     return (
       <Image blurRadius={6} style={styles.bgimage}
-        source={require('../assets/images/bg.jpg')}
+        source={require('../../assets/images/bg.jpg')}
       >
         <KeyboardAvoidingView behavior="position">
           <View style={{alignItems:'center',}}>
             <Image
               style={styles.logo}
-              source={require('../assets/images/logo.png')}
+              source={require('../../assets/images/logo.png')}
             />
           </View>
 

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
   TextInput, KeyboardAvoidingView, TouchableHighlight,TouchableOpacity,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../components/Common';
+import { fetchTravoramaLoginApi } from '../customer/components/Common';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 
@@ -33,7 +33,10 @@ export default class LoginScreen extends Component {
           navigation.navigate('BookingDetail',navigation.state.params);
         else
           navigation.navigate('MainTabNavigator');
-      else console.log(response);
+      else {
+        console.log(response);
+        this.setState({error: 'Invalid username or password!'})
+      }
     }).catch(error => {
       this.setState({isLoading:false});
       console.log("Login error!!");
@@ -43,6 +46,10 @@ export default class LoginScreen extends Component {
   
   render() {
     let {userName, password, showPassword, isLoading} = this.state;
+    let errorMessage = this.state.error ?
+      <View style={{alignItems:'center', marginTop:10}}>
+        <Text style={{color:'#fc2b4e'}}>{this.state.error}</Text>
+      </View> : null;
     return (
       <View style={styles.container}>
         {/*<KeyboardAvoidingView behavior="position">*/}
@@ -66,13 +73,13 @@ export default class LoginScreen extends Component {
           <View>
             <TextInput
               ref='passwordInput'
-              style={styles.searchInputFalse} 
+              style={this.state.error? styles.searchInputFalse : styles.searchInput } 
               underlineColorAndroid='transparent' 
               placeholder='Password'
               secureTextEntry={!showPassword}
               autoCapitalize={'none'}
               autoCorrect={false}
-              onChangeText={ password => this.setState({password}) }
+              onChangeText={ password => this.setState({password, error:null}) }
               onSubmitEditing={this._login}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
@@ -91,9 +98,7 @@ export default class LoginScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{alignItems:'center', marginTop:10}}>
-            <Text style={{color:'#fc2b4e'}}>Invalid username or password</Text>
-          </View>
+          {errorMessage}
           <Button
             containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
             style={{fontSize: 16, color: '#ffffff'}}
