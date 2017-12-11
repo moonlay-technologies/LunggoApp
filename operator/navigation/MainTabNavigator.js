@@ -5,20 +5,24 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../customer/screens/HomeScreen';
-import ExploreScreen from '../customer/screens/ExploreScreen';
-import MyBooking from '../customer/screens/MyBooking';
-import LinksScreen from '../customer/screens/LinksScreen';
-import SettingsScreen from '../customer/screens/SettingsScreen';
+import HomeScreen from '../screens/HomeScreen';
+import ExploreScreen from '../screens/ExploreScreen';
+import MyBooking from '../screens/MyBooking';
+import LinksScreen from '../screens/LinksScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import DetailScreen from '../screens/DetailScreen';
+import AppointmentRequest from '../screens/AppointmentRequest';
+import AppointmentDetail from '../screens/AppointmentDetail';
+import Dashboard from '../screens/Dashboard';
 
 export default TabNavigator(
   {
     Explore: {
-      screen: ExploreScreen,
+      screen: Dashboard,
     },
-    MyBooking: {
-      screen: MyBooking,
-    },
+    // MyBooking: {
+    //   screen: MyBooking,
+    // },
     Home: {
       screen: HomeScreen,
     },
@@ -36,17 +40,18 @@ export default TabNavigator(
           name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
           size={28}
           style={{ marginRight: 10}}
+          // color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
         />,
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'Home':
+          case 'Explore':
             iconName = Platform.OS === 'ios'
               ? `ios-information-circle${focused ? '' : '-outline'}`
               : 'md-information-circle';
             break;
-          case 'Explore':
+          case 'Home':
             iconName = Platform.OS === 'ios'
               ? `ios-search${focused ? '' : '-outline'}`
               : 'md-search';

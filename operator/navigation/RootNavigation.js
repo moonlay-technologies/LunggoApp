@@ -2,58 +2,38 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-const screenPath = '../customer/screens/';
-import SearchResults from '../customer/screens/SearchResults';
-import MyBooking from '../customer/screens/MyBooking';
-import AddPax from '../customer/screens/AddPax';
-import DetailScreen from '../customer/screens/DetailScreen';
-import CalendarView from '../customer/components/CalendarView';
-import WebViewScreen from '../customer/screens/WebViewScreen';
-import PaxChoice from '../customer/screens/PaxChoice';
-import BookingDetail from '../customer/screens/BookingDetail';
-import Registration from '../customer/screens/Registration';
-import BookedPageDetail from '../customer/screens/BookedPageDetail';
-import AdvanceSearch from '../customer/screens/AdvanceSearch';
-import LoginScreen from '../customer/screens/LoginScreen';
-import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
-
-//// unimplemented
-// import Filter from '../screens/Filter';
-// import ForgotPassword from '../screens/ForgotPassword'
-// import Verifikasi from '../screens/Verifikasi'
+import OperatorLoginScreen from '../screens/OperatorLoginScreen';
+// import LoginScreen from '../screens/LoginScreen';
+import AppointmentDetail from '../screens/AppointmentDetail';
+import AppointmentList from '../screens/AppointmentList';
+import AppointmentRequest from '../screens/AppointmentRequest';
+import DetailScreen from '../screens/DetailScreen';
+import ActivityList from '../screens/ActivityList';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
-// for testing purpose
-import ExploreScreen from '../customer/screens/ExploreScreen';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: HomeScreenOperator
-      // screen: AdvanceSearch,
-      // screen: LoginScreen,
+      // screen: AppointmentRequest,
+      // screen: AppointmentList,
+      screen: OperatorLoginScreen,
       // screen: MainTabNavigator,
     },
     // Profile: { screen: WelcomeScreen },
     MainTabNavigator: { screen: MainTabNavigator },
-    SearchResults: { screen: SearchResults },
+    AppointmentRequest: { screen: AppointmentRequest },
+    AppointmentList: { screen: AppointmentList },
+    AppointmentDetail: { screen: AppointmentDetail },
+    ActivityList: { screen: ActivityList },
     DetailScreen: { screen: DetailScreen },
-    CalendarView: { screen: CalendarView },
-    WebViewScreen: { screen: WebViewScreen },
-    PaxChoice: { screen: PaxChoice },
-    AddPax: { screen: AddPax },
-    BookingDetail: { screen: BookingDetail },
-    Registration: { screen: Registration },
-    BookedPageDetail: { screen: BookedPageDetail },
-    LoginScreen: { screen: LoginScreen },
   },
   {
     navigationOptions: () => ({
