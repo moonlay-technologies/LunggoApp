@@ -182,30 +182,6 @@ export default class CalendarView extends Component {
               </Text>
             </View>
             {availableTimeList}
-            <View style={{marginTop:20}}>
-              <Button
-                containerStyle={{
-                  height: 40,
-                  width: '100%',
-                  paddingTop: 11,
-                  paddingBottom: 11,
-                  overflow: 'hidden',
-                  borderRadius:25,
-                  backgroundColor: '#01d4cb',
-                }}
-                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                onPress={() => {
-                  this.setState({isLoading: true})
-                  this.props.navigation.navigate('BookingDetail', {
-                    activityId: id,
-                    price, requiredPaxData,
-                  });
-                }}
-                styleDisabled={{color:'#aaa'}}
-              >
-                Pilih
-              </Button>
-            </View>
           </View>
         </Modal>
         <View style={styles.bottomBarContainer}>
