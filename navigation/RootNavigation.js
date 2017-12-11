@@ -22,8 +22,13 @@ import BookingDetail from '../customer/screens/BookingDetail';
 import Registration from '../customer/screens/Registration';
 import BookedPageDetail from '../customer/screens/BookedPageDetail';
 import AdvanceSearch from '../customer/screens/AdvanceSearch';
-import LoginScreen from '../customer/screens/LoginScreen';
+import LoginScreen from '../commons/LoginScreen';
+import LoginScreenOperator from '../operator/screens/OperatorLoginScreen';
 import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
+import Dashboard from '../operator/screens/Dashboard';
+import AppointmentList from '../operator/screens/AppointmentList';
+import AppointmentDetail from '../operator/screens/AppointmentDetail';
+import AppointmentRequest from '../operator/screens/AppointmentRequest';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -37,7 +42,9 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: HomeScreenOperator
+      screen: LoginScreenOperator
+      // screen: LoginScreen
+      // screen: HomeScreenOperator
       // screen: AdvanceSearch,
       // screen: LoginScreen,
       // screen: MainTabNavigator,
@@ -54,6 +61,11 @@ const RootStackNavigator = StackNavigator(
     Registration: { screen: Registration },
     BookedPageDetail: { screen: BookedPageDetail },
     LoginScreen: { screen: LoginScreen },
+    Dashboard: { screen: Dashboard },
+    AppointmentList: { screen: AppointmentList },
+    Dashboard: { screen: Dashboard },
+    AppointmentDetail: { screen: AppointmentDetail },
+    AppointmentRequest: { screen: AppointmentRequest },
   },
   {
     navigationOptions: () => ({
