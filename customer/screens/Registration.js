@@ -133,7 +133,7 @@ export default class Registration extends Component {
             onPress={this._register}
             disabled={!userName || !email || !phone || !password ||
               !countryCode || isLoading}
-            styleDisabled={{color:'#aaa'}}
+            styleDisabled={{color:'#fff', opacity:0.7}}
           >
           Daftarkan
           </Button>

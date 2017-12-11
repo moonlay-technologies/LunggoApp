@@ -24,11 +24,13 @@ import BookedPageDetail from '../customer/screens/BookedPageDetail';
 import AdvanceSearch from '../customer/screens/AdvanceSearch';
 import LoginScreen from '../commons/LoginScreen';
 import OperatorLoginScreen from '../operator/screens/OperatorLoginScreen';
+import BeforeLoginScreen from '../customer/screens/BeforeLoginScreen';
 import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
 import Dashboard from '../operator/screens/Dashboard';
 import AppointmentList from '../operator/screens/AppointmentList';
 import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
+
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -37,7 +39,7 @@ import AppointmentRequest from '../operator/screens/AppointmentRequest';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 // for testing purpose
-import ExploreScreen from '../customer/screens/ExploreScreen';
+import ExploreScreen from '../operator/screens/ExploreScreen';
 
 const RootStackNavigator = StackNavigator(
   {
@@ -46,6 +48,7 @@ const RootStackNavigator = StackNavigator(
       screen: OperatorLoginScreen
       // screen: LoginScreen
       // screen: HomeScreenOperator
+      // screen: BeforeLoginScreen
       // screen: AdvanceSearch,
       // screen: LoginScreen,
       // screen: MainTabNavigator,
@@ -67,6 +70,7 @@ const RootStackNavigator = StackNavigator(
     Dashboard: { screen: Dashboard },
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
+    ExploreScreen: { screen: ExploreScreen },
   },
   {
     navigationOptions: () => ({

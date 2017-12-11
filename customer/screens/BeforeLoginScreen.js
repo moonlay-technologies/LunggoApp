@@ -16,8 +16,23 @@ export default class LoginScreen extends Component {
   }
 
   static navigationOptions = {
-    header: null,
-  }
+  //   // header: ({navigate}) => ({
+    header: null
+  //   //     right: (
+  //   //         <LikeShareHeaderButton navigate={navigate}/>
+  //   //     ),
+  //   // }),
+  //   // headerTitleStyle: {color:'white'},
+  //  // headerRight: <LikeShareHeaderButton/>,
+  //   headerStyle: {
+  //     backgroundColor: 'transparent',
+  //     position: 'absolute',
+  //     zIndex: 100,
+  //     top: 0,
+  //     left: 0,
+  //     right: 0
+  //   },
+  };
 
   _login = () => {
     this.setState({isLoading:true})
@@ -37,68 +52,66 @@ export default class LoginScreen extends Component {
       console.log(error);
     })
   }
+
+
   
   render() {
     let {userName, password, showPassword, isLoading} = this.state;
     return (
       <View style={styles.container}>
         {/*<KeyboardAvoidingView behavior="position">*/}
-          <View style={{alignItems:'center', backgroundColor:'transparent'}}>
-            <View style={{}}>
-              <Image style={{}} source={require('../assets/images/travorama.jpg')}></Image>
-            </View>
+          <View style={{marginVertical:20}}>
+            <Text style={{fontSize:46, color:'#fff', fontWeight:'bold'}}>Mulai liburanmu sekarang</Text>
           </View>
-          <View style={{}}>
-            <ImageSlider images={[
-              'http://placeimg.com/640/480/any',
-              'http://placeimg.com/640/480/any',
-              'http://placeimg.com/640/480/any'
-            ]}/>
-          </View>
+
           <Button
-            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
-            style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._login}
-            disabled={isLoading || !userName || !password}
+            containerStyle={{marginTop:30, height:45, paddingTop:11,overflow:'hidden', borderRadius:25, backgroundColor: '#fff',}}
+            style={{fontSize: 18, color: '#01d4cb'}}
+            onPress={() => this.props.navigation.navigate('Registration')}
+            // onPress={this._login}
+            // disabled={isLoading || !userName || !password}
           >
-            Create an account
+            Daftar
           </Button>
-          <View style={{marginTop:15, alignItems:'center'}}>
-            <Text style={{fontSize:14, color:'#000', fontWeight:'bold'}}>
-              Already have account? Log In
-            </Text>
-          </View>
-          <View style={{flexDirection:'row', marginTop:10, marginBottom:10}}>
-            <View style={{flex:1, backgroundColor:'#cdcdcd', height:1, marginTop:8}}></View>
-            <View style={{paddingLeft:10, paddingRight:10}}>
-              <Text>or</Text>
-            </View>
-            <View style={{flex:1, backgroundColor:'#cdcdcd', height:1,  marginTop:8}}></View>
-          </View>
-          <View style={{flexDirection:'row'}}>
-            <View style={{flex:1}}>
-              <Button
-                containerStyle={{height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#0080d4',}}
-                style={{fontSize: 16, color: '#ffffff'}}
+          <View style={{marginTop:24, alignItems:'center'}}>
+            <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('LoginScreen')}
+                activeOpacity={0.7}
               >
-                Facebook
-              </Button>
-            </View>
-            <View style={{flex:1, paddingLeft:5}}>
-              <Button
-                containerStyle={{height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#ff6364',}}
-                style={{fontSize: 16, color: '#ffffff'}}
-              >
-                Google+
-              </Button>
-            </View>
+              <Text style={{fontSize:16, color:'#fff', fontWeight:'bold'}}>
+                Sudah punya akun? Tap Disini
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View style={{marginTop:30, alignItems:'center'}}>
+          {/*<View style={{flexDirection:'row', marginVertical:11}}>
+            <View style={{flex:1, backgroundColor:'#fff', height:1, marginTop:8}}></View>
+            <View style={{paddingLeft:10, paddingRight:10,}}>
+              <Text style={{fontSize:14, color:'#fff'}}>atau masuk dengan</Text>
+            </View>
+            <View style={{flex:1, backgroundColor:'#fff', height:1,  marginTop:8}}></View>
+          </View>
+          <View style={{flexDirection:'row', marginTop:6}}>
+            <View style={{flex:1, paddingVertical:8, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
+              <Icon
+                name='sc-facebook'
+                type='evilicon'
+                size={28}
+                color='#fff'/>
+            </View>
+            <View style={{flex:1, marginLeft:10, paddingVertical:8, paddingLeft:4, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
+              <Icon
+                name='sc-google-plus'
+                type='evilicon'
+                size={28}
+                color='#fff'/>
+            </View>
+          </View>*/}
+          <View style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}>
             <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Registration')}
+              onPress={() => this.props.navigation.navigate('MainTabNavigator')}
             >
-              <Text style={{fontSize:14, color:'#000'}}>
-                Skip
+              <Text style={{fontSize:14, color:'#fff'}}>
+                Lewati
               </Text>
             </TouchableHighlight>
           </View>
@@ -113,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding:15,
     paddingTop:60,
-    backgroundColor: '#fff',
+    backgroundColor: '#01d4cb',
   },
   categoryTitle :{
     fontWeight:'bold',
