@@ -91,16 +91,20 @@ export default class ExploreScreen extends React.Component {
         </View>
 
         <View style={{flexDirection:'row', marginTop:10, padding:15,paddingTop:0,}}>
-          <View style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2}}>
+          <TouchableOpacity
+            style={{
+              flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2
+            }}
+          >
             <Text style={{color:'#676767', fontSize:11}}>You have</Text>
             <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>12</Text>
-            <Text style={{color:'#676767', fontSize:11}}>You have</Text>
-          </View>
-          <View style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2, marginLeft:6}}>
+            <Text style={{color:'#676767', fontSize:11}}>Pending Requests</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2, marginLeft:6}}>
             <Text style={{color:'#676767', fontSize:11}}>You have</Text>
             <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>3</Text>
             <Text style={{color:'#676767', fontSize:11}}>Appointments</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.container}>

@@ -23,7 +23,7 @@ import Registration from '../customer/screens/Registration';
 import BookedPageDetail from '../customer/screens/BookedPageDetail';
 import AdvanceSearch from '../customer/screens/AdvanceSearch';
 import LoginScreen from '../commons/LoginScreen';
-import LoginScreenOperator from '../operator/screens/OperatorLoginScreen';
+import OperatorLoginScreen from '../operator/screens/OperatorLoginScreen';
 import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
 import Dashboard from '../operator/screens/Dashboard';
 import AppointmentList from '../operator/screens/AppointmentList';
@@ -42,7 +42,8 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreenOperator
+      // screen: Dashboard
+      screen: OperatorLoginScreen
       // screen: LoginScreen
       // screen: HomeScreenOperator
       // screen: AdvanceSearch,
