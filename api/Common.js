@@ -1,5 +1,5 @@
 import {clientId, clientSecret, deviceId,
-  DOMAIN, AUTH_LEVEL } from '../../constants/env';
+  DOMAIN, AUTH_LEVEL } from '../constants/env';
 // function fetchWrapper(url, method, headers, data, then, error) {
 //   headers.Accept = headers["Content-Type"] = "application/json";
 //   fetch(url, {method, headers, body: JSON.stringify(data) })
@@ -8,7 +8,7 @@ import {clientId, clientSecret, deviceId,
 // }
 
 const {getItemAsync,setItemAsync,deleteItemAsync} = Expo.SecureStore;
-export {AUTH_LEVEL} from '../../constants/env';
+export {AUTH_LEVEL} from '../constants/env';
 
 
 async function fetchAuth(data) {

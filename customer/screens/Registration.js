@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import { Platform, StyleSheet, TouchableHighlight,TouchableOpacity,
+import { Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 
 export default class Registration extends Component {
   constructor(props, context) {
@@ -137,13 +137,13 @@ export default class Registration extends Component {
           >
           Daftarkan
           </Button>
-          <TouchableHighlight style={{marginTop:30, alignItems:'center'}}
+          <TouchableOpacity style={{marginTop:30, alignItems:'center'}}
             onPress={() => this.props.navigation.goBack()}
           >
             <Text style={{fontSize:12, color:'#000'}}>
               Already have an account ? Login here
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
     );

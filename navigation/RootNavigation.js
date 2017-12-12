@@ -39,7 +39,7 @@ import AppointmentRequest from '../operator/screens/AppointmentRequest';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 // for testing purpose
-import ExploreScreen from '../operator/screens/ExploreScreen';
+import ExploreScreen from '../customer/screens/ExploreScreen';
 
 const RootStackNavigator = StackNavigator(
   {
@@ -48,7 +48,6 @@ const RootStackNavigator = StackNavigator(
       // screen: OperatorLoginScreen
       screen: OperatorLoginScreen
       // screen: HomeScreenOperator
-      // screen: BeforeLoginScreen
       // screen: AdvanceSearch,
       // screen: LoginScreen,
       // screen: MainTabNavigator,

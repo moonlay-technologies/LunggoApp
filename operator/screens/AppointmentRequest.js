@@ -6,7 +6,7 @@ import {
   Platform, StyleSheet, FlatList,
   Text, View, Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 import Moment from 'moment';
 import 'moment/locale/id';
 

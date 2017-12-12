@@ -14,7 +14,7 @@ import {
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
-        removeAccessToken } from '../components/Common';
+        removeAccessToken } from '../../api/Common';
 
 export default class DetailScreen extends Component {
 

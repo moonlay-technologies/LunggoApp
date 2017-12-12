@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
   TextInput, KeyboardAvoidingView, TouchableHighlight,TouchableOpacity,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../components/Common';
+import { fetchTravoramaLoginApi } from '../../api/Common';
 import { Icon } from 'react-native-elements';
 import ImageSlider from 'react-native-image-slider';
 import Button from 'react-native-button';
