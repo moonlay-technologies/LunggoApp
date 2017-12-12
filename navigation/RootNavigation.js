@@ -46,7 +46,7 @@ const RootStackNavigator = StackNavigator(
     Main: {
       // screen: Dashboard
       // screen: OperatorLoginScreen
-      screen: LoginScreen
+      screen: OperatorLoginScreen
       // screen: HomeScreenOperator
       // screen: BeforeLoginScreen
       // screen: AdvanceSearch,
