@@ -20,7 +20,6 @@ class ListItem extends React.PureComponent {
     const {item} = this.props;
     return (
       <View key={item.rsvNo}>
-        <View style={styles.divider}></View>
         <TouchableHighlight
           onPress={this._onPressItem}
           underlayColor='#ddd'
@@ -28,9 +27,11 @@ class ListItem extends React.PureComponent {
           <View style={{flex:1},styles.containerListAppointment}>
 
             <View style={{flex:3}}>
-              <Text style={styles.activityGuest}>Ali Zainal</Text>
-              <Text style={styles.activityTitle}>{item.name}</Text>
-              <View style={{width:'100%',flexDirection:'row',}}>
+              <Text style={styles.activityTitle}>Ali Zainal</Text>
+              <View style={{marginTop:5,}}>
+                <Text style={styles.timeActivity}>{item.name}</Text>
+              </View>
+              <View style={{width:'100%',flexDirection:'row', marginTop:5}}>
                 <View style={{ flexDirection:'row', marginRight:10 }}>
                   <Text style={styles.timeActivity}>
                     {Moment(item.date).format('ddd, D MMM YYYY')}
@@ -48,41 +49,43 @@ class ListItem extends React.PureComponent {
               flex:1,
               flexDirection:'row',
               // justifyContent:'flex-end',
-              marginTop:5,
-              marginBottom:10,
+              marginTop:15,
             }}>
               <Button
                 containerStyle={{
-                  height:30,
+                  height:32,
                   width:100,
-                  paddingTop:5,
+                  paddingTop:6,
                   // overflow:'hidden',
                   borderRadius:4,
                   borderWidth: 1,
-                  borderColor: '#437ef7',
-                  backgroundColor: '#fff'
+                  borderColor: '#bfbfbf',
+                  backgroundColor: 'transparent'
                 }}
-                style={{fontSize: 14, color: '#437ef7'}}
+                style={{fontSize: 14, color: '#454545'}}
                 onPress={() => this._onPressDecline()}
-              >Decline</Button>
+              >Tolak</Button>
               <Button
                 containerStyle={{
-                  marginRight:3,
-                  height:30,
+                  marginLeft:10,
+                  height:32,
                   width:100,
-                  paddingTop:5,
+                  paddingTop:6,
                   overflow:'hidden',
                   borderRadius:4,
-                  backgroundColor: '#437ef7'
+                  backgroundColor: '#00c8be'
                 }}
                 style={{fontSize: 14, color: '#fff'}}
                 onPress={() => this._onPressAccept()}
               >
-                Accept
+                Terima
               </Button>
             </View>
           </View>
         </TouchableHighlight>
+
+        <View style={styles.divider}></View>
+
       </View>
     );
   }
@@ -142,6 +145,7 @@ export default class AppointmentRequests extends Component {
       <ScrollView style={{backgroundColor: '#fff',}}>
         <View style={{marginBottom:10}}>
           <FlatList
+            style={{paddingTop:15}}
             data={this.state.list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
@@ -154,22 +158,25 @@ export default class AppointmentRequests extends Component {
 
 const styles = StyleSheet.create({
   containerListAppointment: {
-    paddingLeft: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-    // flexDirection: 'row',
+    paddingVertical:10,
+    paddingHorizontal:15,
     flex:1
   },
   divider: {
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
-    // marginTop: 15,
-    // marginBottom: 15,
+    marginTop: 10,
+    marginBottom: 10,
   },
   activityTitle: {
-    fontSize:14,
-    marginBottom: 3,
+    fontWeight:'bold',
+    fontSize:16,
+    color:'#454545',
+  },
+  timeActivity: {
+    fontSize:13,
+    color:'#454545',
   },
   activityGuest: {
     fontSize:18,
@@ -184,9 +191,6 @@ const styles = StyleSheet.create({
     width:15,
     height:15,
     marginRight:3,
-  },
-  timeActivity: {
-    fontSize:11,
   },
   bottomBarContainer: {
     flexDirection: 'row',

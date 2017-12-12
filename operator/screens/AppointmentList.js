@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     fontStyle:'italic'
   },
   timeActivity: {
-    fontSize:13,
+    fontSize:14,
     color:'#454545',
   },
   bottomBarContainer: {

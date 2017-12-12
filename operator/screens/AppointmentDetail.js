@@ -49,34 +49,109 @@ export default class AppointmentDetail extends Component {
             <View style={{flex:1}}>
 
               <Text style={styles.activityTitle}>Banana Boat</Text>
-              <View style={{width:'100%',flexDirection:'row',}}>
+              <View style={{width:'100%',flexDirection:'row', marginTop:3}}>
                 <View style={{ marginRight:10 }}>
                   <Text style={styles.timeActivity}>
                     {Moment(date).format('ddd, D MMM YYYY')}
                   </Text>
                 </View>
-                <View>
+                <View >
                   <Text style={styles.timeActivity}>
                     {session}
                   </Text>
                 </View>
               </View>
 
-              <View style={{flexDirection:'row', marginTop:7}}>
+              <View style={{flexDirection:'row', marginTop:10}}>
                 <View style={{alignItems:'flex-start',}}>
                   <Icon
                     name='users'
                     type='entypo'
-                    color='#517fa4'
-                    size={15}
+                    color='#454545'
+                    size={20}
                   />
                 </View>
                 <View style={{marginLeft:8}}>
-                  <Text>{paxCount} guest</Text>
+                  <Text style={{fontSize:14, marginTop:3}}>{paxCount} guest</Text>
                 </View>
               </View>
 
-              <View style={{marginTop:25,}}>
+              <View style={{flexDirection:'row', marginTop:40,}}>
+
+                <View style={{flex:1}}>
+                  <View>
+                    <Text style={styles.activityTitle}>Guest 1</Text>
+                  </View>
+                  <View>
+                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
+                  </View>
+                </View>
+
+                <View style={{flex:1}}>
+                  <View style={{marginTop:10, alignItems:'flex-end'}}>
+                    <Icon
+                      name='chevron-thin-right'
+                      type='entypo'
+                      size={24}
+                      color='#707070'
+                    />
+                  </View>
+                </View> 
+
+              </View>
+
+              <View style={{flexDirection:'row', marginTop:30,}}>
+
+                <View style={{flex:1}}>
+                  <View>
+                    <Text style={styles.activityTitle}>Guest 2</Text>
+                  </View>
+                  <View>
+                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
+                  </View>
+                </View>
+
+                <View style={{flex:1}}>
+                  <View style={{marginTop:10, alignItems:'flex-end'}}>
+                    <Icon
+                      name='chevron-thin-right'
+                      type='entypo'
+                      size={24}
+                      color='#707070'
+                    />
+                  </View>
+                </View> 
+
+              </View>
+
+              <View style={{flexDirection:'row', marginTop:30,}}>
+
+                <View style={{flex:1}}>
+                  <View>
+                    <Text style={styles.activityTitle}>Guest 3</Text>
+                  </View>
+                  <View>
+                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
+                  </View>
+                </View>
+
+                <View style={{flex:1}}>
+                  <View style={{marginTop:10, alignItems:'flex-end'}}>
+                    <Icon
+                      name='chevron-thin-right'
+                      type='entypo'
+                      size={24}
+                      color='#707070'
+                    />
+                  </View>
+                </View> 
+
+              </View>
+
+              {/*<View style={{marginTop:25,}}>
                 <View style={{flexDirection:'row',}}>
                   <View style={{alignItems:'flex-start',}}>
                     <Icon
@@ -103,7 +178,7 @@ export default class AppointmentDetail extends Component {
                     <Text>Penguin North Verified 09182309</Text>
                   </View>
                 </View>
-              </View>
+              </View>*/}
 
             </View>
           </View>
@@ -112,36 +187,15 @@ export default class AppointmentDetail extends Component {
 
           <View style={styles.containerListAppointment}>
             <View style={{flex:1}}>
-
-              <View style={{flexDirection:'row', marginBottom:20,}}>
-                <View style={{alignItems:'flex-start',}}>
-                  <Icon
-                    name='users'
-                    type='entypo'
-                    color='#517fa4'
-                    size={15}
-                  />
-                </View>
-                <View style={{marginLeft:8,}}>
-                  <Text style={{fontWeight:'bold', fontSize:16}}>Guest Detail</Text>
-                </View>
-              </View>
-
-              <Text>Flamingo Bird</Text>
-              <Text>6 orang</Text>
-              <View style={{marginTop:7, marginBottom:3}}>
-                <Text style={{fontWeight:'bold'}}>Pesan Khusus:</Text>
-              </View>
-              <Text>Eat all the power cords give attitude, where is my slave? I'm getting hungry meow for food, then when human fills</Text>
               
-              <View style={{flexDirection:'row', marginTop:18}}>
+              <View style={{flexDirection:'row',}}>
                 <View style={{flex:3, paddingRight:10}}>
                   <TextInput
                     underlineColorAndroid= 'transparent'
                     style={styles.txtInput}
                     // onChangeText={ name => this.setState({name}) }
                     // value={this.state.name}
-                    placeholder="masukan kode verifikasi"
+                    placeholder="Masukan kode verifikasi"
                   />
                 </View>
                 <View style={{flex:1}}>
@@ -151,8 +205,8 @@ export default class AppointmentDetail extends Component {
                       paddingTop: 10,
                       paddingBottom :10,
                       overflow: 'hidden',
-                      borderRadius: 4,
-                      backgroundColor: '#437ef7',
+                      borderRadius: 20,
+                      backgroundColor: '#00d5cb',
                     }}
                     style={{fontSize: 14, color: '#ffffff'}}
                     >
@@ -182,9 +236,6 @@ export default class AppointmentDetail extends Component {
 
             </View>
           </View>
-
-          <View style={styles.divider}></View>
-
           
         </View>
       </ScrollView>
@@ -194,19 +245,22 @@ export default class AppointmentDetail extends Component {
 
 const styles = StyleSheet.create({
   containerListAppointment: {
-    padding:20,
+    padding:15,
     flexDirection: 'row',
     flex:1
   },
   txtInput: {
     height: 40, 
-    borderColor: '#cdcdcd', 
+    borderColor:'transparent',
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 20,
     paddingRight:10, 
     paddingLeft:10, 
     marginBottom:20,
-    fontSize:14
+    fontSize:14,
+    fontWeight:'bold',
+    backgroundColor:'#f5f5f5',
+    color:'#bdbdbd'
   },
   divider: {
     height: 1,
@@ -216,9 +270,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   activityTitle: {
+    fontWeight:'bold',
     fontSize:16,
-    marginBottom: 3,
-    fontWeight:'bold'
+    color:'#454545',
   },
   status: {
     color:'green',
@@ -230,7 +284,8 @@ const styles = StyleSheet.create({
     marginRight:3,
   },
   timeActivity: {
-    fontSize:12,
+    fontSize:13,
+    color:'#454545',
   },
   bottomBarContainer: {
     flexDirection: 'row',
