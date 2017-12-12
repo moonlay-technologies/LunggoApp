@@ -11,7 +11,7 @@ import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 export default class Registration extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {}
+    this.state = {countryCode:'+62'}
   }
 
   static navigationOptions = {
@@ -42,7 +42,7 @@ export default class Registration extends Component {
   }
 
   render() {
-    let { userName, email, phone, password, countryCode,
+    let { name, email, phone, password, countryCode,
       showPassword, isLoading } = this.state;
 
     return (
@@ -55,9 +55,9 @@ export default class Registration extends Component {
           <View style={{marginBottom:15}}>
             <TextInput style={styles.searchInput}
               underlineColorAndroid='transparent'
-              placeholder='User Name'
-              value={userName}
-              onChangeText={userName => this.setState({userName})}
+              placeholder='Full Name'
+              value={name}
+              onChangeText={name => this.setState({name})}
             />
           </View>
           <View style={{marginBottom:15}}>
@@ -65,19 +65,21 @@ export default class Registration extends Component {
               underlineColorAndroid='transparent'
               placeholder='Email'
               keyboardType='email-address'
+              autoCapitalize='none'
+              autoCorrect={false}
               value={email}
               onChangeText={email => this.setState({email})}
-              autoCapitalize='none'
             />
           </View>
           <View style={{marginBottom:15, flexDirection:'row'}}>
             <View style={{flex:1.4}}>
               <TextInput
                 style={styles.searchInput} 
-                underlineColorAndroid='transparent' 
-                placeholder='+62'
+                underlineColorAndroid='transparent'
+                placeholder='+ ....'
                 keyboardType='phone-pad'
                 value={countryCode}
+                selectTextOnFocus={true}
                 onChangeText={countryCode => this.setState({countryCode})}
               />
             </View>
@@ -131,7 +133,7 @@ export default class Registration extends Component {
             }}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._register}
-            disabled={!userName || !email || !phone || !password ||
+            disabled={!name || !email || !phone || !password ||
               !countryCode || isLoading}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
