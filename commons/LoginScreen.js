@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableHighlight,TouchableOpacity,
+  TextInput, KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../customer/components/Common';
+import { fetchTravoramaLoginApi } from '../api/Common';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 
@@ -45,10 +45,11 @@ export default class LoginScreen extends Component {
   }
   
   render() {
-    let {userName, password, showPassword, isLoading} = this.state;
-    let errorMessage = this.state.error ?
+    let {userName, password, showPassword, isLoading,
+          error} = this.state;
+    let errorMessage = error ?
       <View style={{alignItems:'center', marginTop:10}}>
-        <Text style={{color:'#fc2b4e'}}>{this.state.error}</Text>
+        <Text style={{color:'#fc2b4e'}}>{error}</Text>
       </View> : null;
     return (
       <View style={styles.container}>
@@ -58,13 +59,13 @@ export default class LoginScreen extends Component {
           </View>
           <View style={{marginBottom:10}}>
             <TextInput
-              style={styles.searchInput}
+              style={this.state.error? styles.searchInputFalse : styles.searchInput } 
               placeholder='Email / No. Handphone'
               keyboardType='email-address'
               underlineColorAndroid='transparent'
               autoCapitalize={'none'}
               autoCorrect={false}
-              onChangeText={ userName => this.setState({userName}) }
+              onChangeText={ userName => this.setState({userName, error:null}) }
               onSubmitEditing={(event) => { 
                 this.refs.passwordInput.focus(); 
               }}
@@ -103,7 +104,8 @@ export default class LoginScreen extends Component {
             containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._login}
-            disabled={isLoading || !userName || !password}
+            disabled={isLoading || !userName || !password || !!error}
+            styleDisabled={{opacity:.7}}
           >
             Sign in
           </Button>
@@ -127,13 +129,13 @@ export default class LoginScreen extends Component {
           Login With Facebook
           </Button>
           <View style={{marginTop:30, alignItems:'center'}}>
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={() => this.props.navigation.navigate('Registration')}
             >
               <Text style={{fontSize:12, color:'#000'}}>
                 Don't have account ? Register here
               </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         {/*</KeyboardAvoidingView>*/}
       </View>

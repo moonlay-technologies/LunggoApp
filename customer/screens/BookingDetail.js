@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
-import {AUTH_LEVEL, fetchTravoramaApi} from '../components/Common';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 
 export default class BookingDetail extends Component {
 
@@ -135,13 +135,13 @@ export default class BookingDetail extends Component {
         Pilih Jadwal
       </Button>
 
-    let schedule =
-      <View style={styles.container}>
-        <Text style={styles.activityTitle}>
-          Jadwal
-        </Text>
-        {calendar}
-      </View>
+    // let schedule =
+    //   <View style={styles.container}>
+    //     <Text style={styles.activityTitle}>
+    //       Jadwal
+    //     </Text>
+    //     {calendar}
+    //   </View>
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -175,10 +175,6 @@ export default class BookingDetail extends Component {
             </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
-
-          {schedule}
-          
-          <View style={styles.divider}/>
           <View style={styles.container}>
             <View>
               <View style={{marginBottom:10}}>
@@ -191,6 +187,7 @@ export default class BookingDetail extends Component {
                   <Text>Atur Jadwal</Text>
                 </View>
                 <View>
+                {calendar}
                   <Icon
                     name='plus'
                     type='entypo'

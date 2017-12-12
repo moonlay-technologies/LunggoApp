@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
   TextInput, Button, KeyboardAvoidingView, } from 'react-native';
-import { fetchTravoramaLoginApi } from '../components/Common';
+import { fetchTravoramaLoginApi } from '../../api/Common';
 
 export default class OperatorLoginScreen extends Component {
   constructor(props, context) {

@@ -17,8 +17,7 @@ import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
-import {AUTH_LEVEL} from '../constants/env';
-import {fetchTravoramaApi} from '../components/Common';
+import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 
 export default class Dashboard extends React.Component {
 

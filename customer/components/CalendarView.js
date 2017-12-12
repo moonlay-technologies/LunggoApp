@@ -210,9 +210,6 @@ export default class CalendarView extends Component {
   }
 }
 
-/* For calendar styling and themes, check out
-   https://github.com/wix/react-native-calendars#customizing-look--feel
-*/
 var styles = StyleSheet.create({
   container: {
     padding:20,
