@@ -29,6 +29,7 @@ class ListItem extends React.PureComponent {
               <Image style={styles.thumbnailMedium}  source={{ uri: item.mediaSrc }} />
               <View style={{flexDirection:'row'}}>
                 <View style={styles.textContainer}>
+                  <Text style={styles.namaKota}>Jepang</Text>
                   <Text style={styles.activityTitle}numberOfLines={1}>{item.name}</Text>
                   <Text style={styles.priceTitle}>
                     { Formatter.price(item.price) }
@@ -132,11 +133,17 @@ const styles = StyleSheet.create({
   containerItem2: {
     flex:1,
   },
+  namaKota: {
+    fontSize:12,
+    color:'#454545',
+    marginBottom:3
+  },  
   thumbnailMedium: {
     resizeMode:'cover', 
     width:'100%', 
     height:100, 
     borderRadius:5,
+    marginBottom:3
   },
   activityTitle: {
     fontWeight:'bold',

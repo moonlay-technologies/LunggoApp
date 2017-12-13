@@ -247,19 +247,37 @@ export default class DetailScreen extends Component {
 
             <View style={styles.divider}></View>
 
-            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row', justifyContent:'flex-end'}}>
-              <View style={{marginTop:3}}>
-                <Text style={{ color:'#454545', fontSize:16,}}>
-                  See all 20 reviews
-                </Text>
+            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
+
+              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+                <View>
+                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+                </View>
+                <View>
+                  <Icon
+                    name='star'
+                    type='fontawesome'
+                    size={20}
+                    color='#00c5bc'
+                    />
+                </View>
               </View>
-              <View style={{marginLeft:10,}}>
-                <Icon
-                name='chevron-right'
-                type='entypo'
-                size={24}
-                color='#00c5bc'/>
+
+              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
+                <View style={{marginBottom:5}}>
+                  <Text style={{ color:'#454545', fontSize:16,}}>
+                    See all 20 reviews
+                  </Text>
+                </View>
+                <View style={{marginLeft:10,}}>
+                  <Icon
+                  name='chevron-right'
+                  type='entypo'
+                  size={24}
+                  color='#00c5bc'/>
+                </View>
               </View>
+
             </View>
 
             <View style={styles.divider}></View>

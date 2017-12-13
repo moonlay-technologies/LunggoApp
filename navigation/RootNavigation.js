@@ -30,7 +30,7 @@ import Dashboard from '../operator/screens/Dashboard';
 import AppointmentList from '../operator/screens/AppointmentList';
 import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
-
+//import ExploreScreen from '../customer/screens/ExploreScreen';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -44,9 +44,10 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      screen: ExploreScreen
       // screen: Dashboard
       // screen: OperatorLoginScreen
-      screen: BeforeLoginScreen
+      // screen: BeforeLoginScreen
       // screen: HomeScreenOperator
       // screen: AdvanceSearch,
       // screen: LoginScreen,

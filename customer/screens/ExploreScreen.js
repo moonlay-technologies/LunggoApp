@@ -80,10 +80,10 @@ export default class ExploreScreen extends React.Component {
           >
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
-                <Text style={styles.categoryTitle}>Top View</Text>
+                <Text style={styles.categoryTitle}>Populer</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>See More</Text>
+                <Text style={styles.seeMore}>Lihat Semua</Text>
               </View>
             </View>
           </View>
@@ -95,6 +95,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
+                  <Text style={styles.namaKotaBig}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
@@ -115,6 +118,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
+                  <Text style={styles.namaKotaBig}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
@@ -135,6 +141,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
+                  <Text style={styles.namaKotaBig}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitleBig}>
                     Create your own Sushi with Chef Hanzo
                   </Text>
@@ -161,7 +170,7 @@ export default class ExploreScreen extends React.Component {
                 <Text style={styles.categoryTitle}>Water Sport</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>See More</Text>
+                <Text style={styles.seeMore}>Lihat Semua</Text>
               </View>
             </View>
           </View>
@@ -173,6 +182,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -193,6 +205,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -213,6 +228,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -239,7 +257,7 @@ export default class ExploreScreen extends React.Component {
                 <Text style={styles.categoryTitle}>City Tour</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>See More</Text>
+                <Text style={styles.seeMore}>Lihat Semua</Text>
               </View>
             </View>
           </View>
@@ -251,6 +269,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -271,6 +292,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -291,6 +315,9 @@ export default class ExploreScreen extends React.Component {
               <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
               <View style={{marginTop:5, flexDirection:'row'}}>
                 <View style={{flex:4}}>
+                  <Text style={styles.namaKota}>
+                    Jepang
+                  </Text>
                   <Text style={styles.activityTitle}>
                     Create your own Sushi
                   </Text>
@@ -313,11 +340,11 @@ export default class ExploreScreen extends React.Component {
         <View style={styles.container}>
           <View style={{marginTop:30}}>
             <View style={{flexDirection:'row'}}>
-              <View style={{flex:1}}>
-                <Text style={styles.categoryTitle}>Places</Text>
+              <View style={{flex:2}}>
+                <Text style={styles.categoryTitle}>Lokasi Populer</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end'}}>
-                <Text style={styles.seeMore}>See More</Text>
+                <Text style={styles.seeMore}>Lihat Semua</Text>
               </View>
             </View>
           </View>
@@ -360,7 +387,7 @@ export default class ExploreScreen extends React.Component {
                 <Text style={styles.categoryTitle}>Promo</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>See More</Text>
+                <Text style={styles.seeMore}>Lihat Semua</Text>
               </View>
             </View>
           </View>
@@ -401,6 +428,16 @@ const styles = StyleSheet.create({
     fontWeight:'bold', 
     fontSize:16
   },
+  namaKota: {
+    fontSize:12,
+    color:'#454545',
+    marginVertical:3
+  },
+  namaKotaBig: {
+    fontSize:14,
+    color:'#454545',
+    marginVertical:3
+  },
   thumbnailBig: {
     resizeMode:'cover', 
     width:300, 
@@ -432,17 +469,17 @@ const styles = StyleSheet.create({
     color:'#454545',
   },
   priceTitle: {
-    fontSize:12,
+    fontSize:13,
     color:'#676767',
     marginTop:2
   },
   activityTitleBig: {
     fontWeight:'bold',
-    fontSize:18,
+    fontSize:19,
     color:'#454545',
   },
   priceTitleBig: {
-    fontSize:14,
+    fontSize:15,
     color:'#676767',
     marginTop:2
   },
@@ -453,7 +490,8 @@ const styles = StyleSheet.create({
   },
   seeMore :{
     fontSize:14,
-    color:'#acacac'
+    color:'#acacac',
+    marginTop:3
   },
   container: {
     flex: 1,
