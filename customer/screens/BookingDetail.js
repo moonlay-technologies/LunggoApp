@@ -68,7 +68,7 @@ export default class BookingDetail extends Component {
     fetchTravoramaApi(request).then( response => {
       if(response.status == 200)
         this.props.navigation.navigate(
-          'WebViewScreen',/*{date:date}*/
+          'WebViewScreen',{rsvNo:response.rsvNo}
         );
     }).catch(error => {
       this.setState({isLoading:false});

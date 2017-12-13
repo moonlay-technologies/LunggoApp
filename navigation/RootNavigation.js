@@ -44,8 +44,8 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: BeforeLoginScreen
-      // screen: 
+      // screen: BeforeLoginScreen
+      screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },

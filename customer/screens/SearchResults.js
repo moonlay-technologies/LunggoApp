@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   StyleSheet, Image, View, Text,
   TouchableHighlight, FlatList,
@@ -9,7 +9,7 @@ import {
 import * as Formatter from '../components/Formatter';
 import search from '../components/searchController';
 import SearchHeader from '../components/SearchHeader';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 class ListItem extends React.PureComponent {
 
@@ -20,17 +20,23 @@ class ListItem extends React.PureComponent {
   render() {
     const {item} = this.props;
     return (
-      <View style={{backgroundColor:'#fff'}}>
+      <View style={{backgroundColor:'#fff', flex:1}}>
         <TouchableHighlight
           onPress={this._onPress}
-          underlayColor='#dddddd'>
+          underlayColor='#ddd'>
           <View style={styles.rowContainer}>
+
             <View style={styles.containerItem}>
-              <Image style={styles.thumbnailMedium}  source={{ uri: item.mediaSrc }} />
+              <Image
+                style={styles.thumbnailMedium}
+                source={{ uri: item.mediaSrc }}
+              />
               <View style={{flexDirection:'row'}}>
                 <View style={styles.textContainer}>
-                  <Text style={styles.namaKota}>Jepang</Text>
-                  <Text style={styles.activityTitle}numberOfLines={1}>{item.name}</Text>
+                  <Text style={styles.namaKota}>{item.city}</Text>
+                  {<Text style={styles.activityTitle} numberOfLines={1}>
+                    {item.name}
+                  </Text>}
                   <Text style={styles.priceTitle}>
                     { Formatter.price(item.price) }
                   </Text>
@@ -44,15 +50,19 @@ class ListItem extends React.PureComponent {
                 </View>
               </View>
             </View>
-            <View style={styles.containerItem2}>
-              <Image style={styles.thumbnailMedium} source={{ uri: item.mediaSrc }} />
+            {/*<View style={styles.containerItem2}>
+              <Image style={styles.thumbnailMedium}
+                source={{ uri: item.mediaSrc }}
+              />
               <View style={styles.textContainer}>
-                <Text style={styles.activityTitle}numberOfLines={1}>{item.name}</Text>
+                <Text style={styles.activityTitle} numberOfLines={1}>
+                  {item.name}
+                </Text>
                 <Text style={styles.priceTitle}>
                   {Formatter.price(item.price)}
                 </Text>
               </View>
-            </View>
+            </View>*/}
 
           </View>
         </TouchableHighlight>
@@ -66,7 +76,7 @@ export default class SearchResults extends Component {
 
   constructor (props) {
     super(props)
-    let {searchString} = this.props.navigation.params || {};
+    let {searchString} = this.props.navigation.state.params || {};
     this.state = {
       searchString: searchString || '',
       placeholder: 'Try "snorkeling"...',
@@ -106,6 +116,8 @@ export default class SearchResults extends Component {
       <View>
         {/*<Text>{this.state.list.length}</Text>*/}
         <FlatList
+          numColumns={2}
+          // contentContainerStyle={styles.list}
           data={this.state.list}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
@@ -118,32 +130,31 @@ export default class SearchResults extends Component {
 
 const styles = StyleSheet.create({
   rowContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     paddingTop: 15,
-    paddingLeft:15,
-    paddingRight:15,
+    paddingHorizontal:15,
     paddingBottom:7.5,
-
-    flex:1,
+    // flex:1,
   }, 
   containerItem: {
     paddingRight:15,
-    flex:1,
+    flex:.2,
   },
   containerItem2: {
-    flex:1,
+    // flex:1,
   },
   namaKota: {
     fontSize:12,
     color:'#454545',
-    marginBottom:3
+    marginBottom:3,
   },  
   thumbnailMedium: {
     resizeMode:'cover', 
     width:'100%', 
     height:100, 
     borderRadius:5,
-    marginBottom:3
+    marginBottom:3,
+    // flex:1,
   },
   activityTitle: {
     fontWeight:'bold',
@@ -157,10 +168,16 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginTop:5,
-    flex:4
+    // flex:4,
   },
   separator: {
     height: 1,
-    backgroundColor: '#dddddd'
+    backgroundColor: '#ddd'
+  },
+  list: {
+    // justifyContent: 'center',
+    // flexDirection: 'row',
+    // flex:1,
+    // flexWrap: 'wrap',
   },
 });
