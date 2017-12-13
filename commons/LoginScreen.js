@@ -5,13 +5,14 @@ import { Platform, StyleSheet, Text, View, Image,
   TextInput, KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../api/Common';
+import { validateEmail, validatePassword } from './FormValidation';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {error:[]};
   }
 
   static navigationOptions = {
@@ -26,10 +27,18 @@ export default class LoginScreen extends Component {
     },
   }
 
+  _onLoginPressed = () => {
+    let {userName, password} = this.state;
+    let errorUserName = validateEmail(userName);
+    let errorPassword = validatePassword(password);
+    this.setState({errorUserName, errorPassword});
+    if (!errorUserName && !errorPassword) this._login();
+  }
+
   _login = () => {
     this.setState({isLoading:true})
-    let {state, navigate} = this.props.navigation;
-    let {params} = state;
+    let {navigate} = this.props.navigation;
+    let {params} = this.props.navigation.state;
     // //// validation
     //TODO
 
@@ -47,7 +56,18 @@ export default class LoginScreen extends Component {
         } else navigate('MainTabNavigator');
       } else {
         console.log(response);
-        this.setState({error: 'Invalid username or password!'})
+        let error;
+        switch (response.error) {
+          case 'ERR_NOT_REGISTERED':
+            error = 'Akun ' + this.state.userName + ' tidak ditemukan'
+            break;
+          case 'ERR_INVALID_PASSWORD':
+            error = 'Password salah';
+            break;
+          default:
+            error = 'Terjadi kesalahan pada server';
+        }
+        this.setState({error});
       }
     }).catch(error => {
       this.setState({isLoading:false});
@@ -58,16 +78,33 @@ export default class LoginScreen extends Component {
   
   render() {
     let {userName, password, showPassword, isLoading,
-          error} = this.state;
+        errorUserName, errorPassword, error} = this.state;
     let {params} = this.props.navigation.state;
+
+    let errorMessageUserName = errorUserName ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorUserName}</Text>
+      </View> : null;
+
+    let errorMessagePassword = errorPassword ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorPassword}</Text>
+      </View> : null;
+
     let errorMessage = error ?
       <View style={{alignItems:'center', marginTop:10}}>
         <Text style={{color:'#fc2b4e'}}>{error}</Text>
       </View> : null;
-    let registerHereButton = (params && params.appType == 'OPERATOR') ?
-      null :
+
+    let registerHereButton =
+      (params && params.appType == 'OPERATOR') ? null :
       <TouchableOpacity
-        style={{position:'absolute', bottom:20, alignItems:'center', width:'111%'}}
+        style={{
+          position:'absolute',
+          bottom:20,
+          alignItems:'center',
+          width:'111%'
+        }}
         onPress={() => this.props.navigation.navigate('Registration')}
       >
         <Text style={{fontSize:12, color:'#000'}}>
@@ -82,36 +119,49 @@ export default class LoginScreen extends Component {
           </View>
           <View style={{marginBottom:10}}>
             <TextInput
-              style={this.state.error? styles.searchInputFalse : styles.searchInput } 
+              style={ this.state.errorUserName ?
+                styles.searchInputFalse : styles.searchInput
+              }
               placeholder='Email / No. Handphone'
               keyboardType='email-address'
               underlineColorAndroid='transparent'
-              autoCapitalize={'none'}
+              autoCapitalize='none'
               autoCorrect={false}
-              onChangeText={ userName => this.setState({userName, error:null}) }
-              returnKeyType={ "next" }
-              onSubmitEditing={(event) => { 
-                this.refs.passwordInput.focus(); 
+              returnKeyType='next'
+              onSubmitEditing={(event) => {
+                this.refs.passwordInput.focus();
               }}
+              blurOnSubmit={false}
+              onChangeText={ userName => this.setState({
+                userName, errorUserName:null, error:null
+              })}
             />
           </View>
+
+          {errorMessageUserName}
           <View>
             <TextInput
               ref='passwordInput'
-              style={this.state.error? styles.searchInputFalse : styles.searchInput } 
+              style={ this.state.errorPassword ?
+                styles.searchInputFalse : styles.searchInput
+              }
               underlineColorAndroid='transparent' 
               placeholder='Password'
               secureTextEntry={!showPassword}
-              autoCapitalize={'none'}
+              autoCapitalize='none'
               autoCorrect={false}
-              onChangeText={ password => this.setState({password, error:null}) }
-              returnKeyType={ "done" }
+              blurOnSubmit={true}
+              onChangeText={ password => this.setState({
+                password, errorPassword:null, error:null
+              })}
               onSubmitEditing={this._login}
+              returnKeyType='done'
             />
             <View style={{position:'absolute', right:20, top:11,}}>
               <TouchableOpacity
-                onPress={() =>
-                  this.setState({showPassword:!showPassword})}
+                onPress={() =>this.setState({
+                  showPassword:!showPassword
+                })}
               >
                 <View>
                   <Icon
@@ -122,12 +172,21 @@ export default class LoginScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
+          {errorMessagePassword}
           {errorMessage}
           <Button
-            containerStyle={{marginTop:30, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            containerStyle={{
+              marginTop:30,
+              height:45,
+              paddingTop:13,
+              paddingBottom:10,
+              overflow:'hidden',
+              borderRadius:25,
+              backgroundColor: '#01d4cb',
+            }}
             style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._login}
-            disabled={isLoading || !userName || !password || !!error}
+            onPress={this._onLoginPressed}
+            disabled={isLoading}
             styleDisabled={{opacity:.7}}
           >
             Login

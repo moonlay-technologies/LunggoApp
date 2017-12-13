@@ -7,8 +7,10 @@ import { Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { KeyboardAwareScrollView }
+  from 'react-native-keyboard-aware-scroll-view';
+import { validateEmail, validatePassword, validateRequiredField }
+  from '../../commons/FormValidation';
 
 export default class Registration extends Component {
   constructor(props, context) {
@@ -17,7 +19,6 @@ export default class Registration extends Component {
   }
 
   static navigationOptions = {
-    //header: null,
     headerStyle: {
       backgroundColor: 'transparent',
       position: 'absolute',
@@ -26,6 +27,21 @@ export default class Registration extends Component {
       left: 0,
       right: 0,
     },
+  }
+
+  _onRegisterPressed = () => {
+    let {name, password, email, countryCode, phone} = this.state;
+    let errorName = validateRequiredField(name);
+    let errorEmail = validateEmail(email);
+    let errorPassword = validatePassword(password);
+    let errorCountryCode = validateRequiredField(countryCode);
+    let errorPhone = validateRequiredField(phone);
+    this.setState({errorName, errorEmail, errorPassword,
+      errorCountryCode, errorPhone});
+    if (!errorName && !errorEmail && !errorPassword &&
+        !errorCountryCode && !errorPhone) {
+      this._login();
+    }
   }
 
   _register = () => {
@@ -41,19 +57,64 @@ export default class Registration extends Component {
       requiredAuthLevel: AUTH_LEVEL.Guest,
     }
     fetchTravoramaApi(request).then( response => {
-      if (response.status == 200)
+      if (response.status == 200) {
         this.props.navigation.navigate('MainTabNavigator');
+        this.setState({isLoading:false})
+      }
       else {
         this.setState({isLoading:false});
-        console.log(request)
-        console.log(response)
+        console.log(request);
+        console.log(response);
+        let error;
+        switch (response.error) {
+          case 'ERR_ALREADY_EXIST':
+            error = 'Akun sudah pernah terdaftar';
+            break;
+          case 'ERR_INVALID_REQUEST':
+            error = 'Terjadi kesalahan pada pengisian formulir';
+            break;
+          default:
+            error = 'Terjadi kesalahan pada server';
+        }
+        this.setState({error});
       }
     }).catch(error => console.log(error));
   }
 
   render() {
-    let { name, email, phone, password, countryCode,
-      showPassword, isLoading } = this.state;
+    let { name, email, phone, password, countryCode, showPassword,
+        isLoading, errorName, errorPassword, errorEmail, errorPhone,
+        errorCountryCode, error } = this.state;
+
+    let errorMessageName = errorName ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorName}</Text>
+      </View> : null;
+
+    let errorMessageEmail = errorEmail ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorEmail}</Text>
+      </View> : null;
+
+    let errorMessagePassword = errorPassword ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorPassword}</Text>
+      </View> : null;
+
+    let errorMessageCountryCode = errorCountryCode ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorCountryCode}</Text>
+      </View> : null;
+
+    let errorMessagePhone = errorPhone ?
+      <View style={{alignItems:'center', marginBottom:10}}>
+        <Text style={{color:'#fc2b4e'}}>{errorPhone}</Text>
+      </View> : null;
+
+    let errorMessage = error ?
+      <View style={{alignItems:'center', marginTop:10}}>
+        <Text style={{color:'#fc2b4e'}}>{error}</Text>
+      </View> : null;
 
     return (
       <View style={styles.container}>
@@ -67,19 +128,28 @@ export default class Registration extends Component {
           </View>
           
           <View style={{marginBottom:15}}>
-            <TextInput style={styles.searchInput}
+            <TextInput
+              style={ this.state.errorName ?
+                styles.searchInputFalse : styles.searchInput
+              }
               underlineColorAndroid='transparent'
               placeholder='Nama Lengkap'
               value={name}
-              onChangeText={userName => this.setState({name})}
+              onChangeText={name => this.setState({
+                name, errorName:null, error:null
+              })}
               returnKeyType={ "next" }
               onSubmitEditing={(event) => { 
                 this.refs.email.focus(); 
               }}
             />
           </View>
+          {errorMessageName}
           <View style={{marginBottom:15}}>
-            <TextInput style={styles.searchInput}
+            <TextInput
+              style={ this.state.errorEmail ?
+                styles.searchInputFalse : styles.searchInput
+              }
               ref='email'
               underlineColorAndroid='transparent'
               placeholder='Email'
@@ -87,24 +157,31 @@ export default class Registration extends Component {
               autoCapitalize='none'
               autoCorrect={false}
               value={email}
-              onChangeText={email => this.setState({email})}
+              onChangeText={email => this.setState({
+                email, errorEmail:null, error:null
+              })}
               returnKeyType={ "next" }
               onSubmitEditing={(event) => { 
                 this.refs.countryCode.focus(); 
               }}
             />
           </View>
+          {errorMessageEmail}
           <View style={{marginBottom:15, flexDirection:'row'}}>
             <View style={{flex:1.4}}>
               <TextInput
+                style={ this.state.errorCountryCode ?
+                  styles.searchInputFalse : styles.searchInput
+                }
                 ref='countryCode'
-                style={styles.searchInput} 
                 underlineColorAndroid='transparent'
                 placeholder='+ ....'
                 keyboardType='phone-pad'
                 value={countryCode}
                 selectTextOnFocus={true}
-                onChangeText={countryCode => this.setState({countryCode})}
+                onChangeText={countryCode => this.setState({
+                  countryCode, errorCountryCode:null, error:null
+                })}
                 returnKeyType={ "next" }
                 onSubmitEditing={(event) => { 
                 this.refs.phone.focus(); 
@@ -113,13 +190,17 @@ export default class Registration extends Component {
             </View>
             <View style={{flex:4}}>
               <TextInput
+                style={ this.state.errorPhone ?
+                  styles.searchInputFalse : styles.searchInput
+                }
                 ref='phone'
-                style={styles.searchInput} 
                 underlineColorAndroid='transparent' 
                 placeholder='No. Handphone'
                 keyboardType='numeric'
                 value={phone}
-                onChangeText={phone => this.setState({phone})}
+                onChangeText={phone => this.setState({
+                  phone, errorPhone:null, error:null
+                })}
                 returnKeyType={ "next" }
                 onSubmitEditing={(event) => { 
                 this.refs.password.focus(); 
@@ -127,19 +208,28 @@ export default class Registration extends Component {
               />
             </View>
           </View>
+
+          {errorMessageCountryCode}
+          {errorMessagePhone}
           <View style={{marginBottom:15}}>
             <TextInput
+              style={ this.state.errorPassword ?
+                styles.searchInputFalse : styles.searchInput
+              }
               ref='password'
-              style={styles.searchInput} 
               underlineColorAndroid='transparent' 
               placeholder='Password'
               value={password}
-              onChangeText={password => this.setState({password})}
+              onChangeText={password => this.setState({
+                password, errorPassword:null, error:null
+              })}
               autoCapitalize='none'
               autoCorrect={false}
               secureTextEntry={!showPassword}
               returnKeyType={ "done" }
             />
+            {errorMessagePassword}
+            {errorMessage}
             <View style={{position:'absolute', right:20, top:11,}}>
               <TouchableOpacity
                 onPress={() =>
@@ -167,15 +257,19 @@ export default class Registration extends Component {
               backgroundColor: '#01d4cb',
             }}
             style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._register}
-            disabled={!name || !email || !phone || !password ||
-              !countryCode || isLoading}
+            onPress={this._onRegisterPressed}
+            disabled={isLoading}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
           Daftarkan
           </Button>
-          <TouchableOpacity style={{marginTop:30, alignItems:'center'}}
-            onPress={() => this.props.navigation.navigate('LoginScreen')}
+          <TouchableOpacity
+            style={{
+              marginTop:30, alignItems:'center'
+            }}
+            onPress={() =>
+              this.props.navigation.navigate('LoginScreen')
+            }
           >
             <Text style={{fontSize:12, color:'#000'}}>
               Sudah punya akun? Login di sini
@@ -225,6 +319,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: 'transparent',
+    borderRadius: 25,
+    color: '#acacac',
+    backgroundColor:'#f5f5f5',
+  },
+  searchInputFalse: {
+    height: 45,
+    paddingLeft:15,
+    paddingTop:10,
+    paddingBottom:10,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#fc2b4e',
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',

@@ -44,7 +44,7 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: LoginScreen
+      screen: BeforeLoginScreen
       // screen: 
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -66,7 +66,7 @@ const RootStackNavigator = StackNavigator(
     ExploreScreen: { screen: ExploreScreen },
   },
   {
-    initialRouteParams: {appType: 'OPERATOR'},
+    // initialRouteParams: {appType: 'OPERATOR'},
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
