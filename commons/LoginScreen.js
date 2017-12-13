@@ -28,7 +28,8 @@ export default class LoginScreen extends Component {
 
   _login = () => {
     this.setState({isLoading:true})
-    let {navigation} = this.props;
+    let {state, navigate} = this.props.navigation;
+    let {params} = state;
     // //// validation
     //TODO
 
@@ -36,12 +37,15 @@ export default class LoginScreen extends Component {
     fetchTravoramaLoginApi(this.state.userName, this.state.password)
     .then(response => {
       this.setState({isLoading:false});
-      if (response.status == 200)
-        if (navigation.state.params)
-          navigation.navigate('BookingDetail',navigation.state.params);
-        else
-          navigation.navigate('MainTabNavigator');
-      else {
+      if (response.status == 200) {
+        if (params) {
+          if (params.appType == 'OPERATOR'){
+            navigate('Dashboard');
+          } else {
+            navigate('BookingDetail',params);
+          }
+        } else navigate('MainTabNavigator');
+      } else {
         console.log(response);
         this.setState({error: 'Invalid username or password!'})
       }
@@ -55,10 +59,21 @@ export default class LoginScreen extends Component {
   render() {
     let {userName, password, showPassword, isLoading,
           error} = this.state;
+    let {params} = this.props.navigation.state;
     let errorMessage = error ?
       <View style={{alignItems:'center', marginTop:10}}>
         <Text style={{color:'#fc2b4e'}}>{error}</Text>
       </View> : null;
+    let registerHereButton = (params && params.appType == 'OPERATOR') ?
+      null :
+      <TouchableOpacity
+        style={{position:'absolute', bottom:20, alignItems:'center', width:'111%'}}
+        onPress={() => this.props.navigation.navigate('Registration')}
+      >
+        <Text style={{fontSize:12, color:'#000'}}>
+          Belum punya akun? Daftar di sini
+        </Text>
+      </TouchableOpacity>
     return (
       <View style={styles.container}>
         {/*<KeyboardAvoidingView behavior="position">*/}
@@ -101,9 +116,7 @@ export default class LoginScreen extends Component {
                 <View>
                   <Icon
                     name={showPassword ? 'eye' : 'eye-with-line'}
-                    type='entypo'
-                    size={22}
-                    color='#acacac'
+                    type='entypo' size={22} color='#acacac'
                   />
                 </View>
               </TouchableOpacity>
@@ -124,29 +137,7 @@ export default class LoginScreen extends Component {
               Lupa Password ?
             </Text>
           </View>
-          {/*<Button
-            containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#0080d4',}}
-            style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._handlePress}
-          >
-          Login With Facebook
-          </Button>
-          <Button
-            containerStyle={{marginTop:15, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#24bf49',}}
-            style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._handlePress}
-          >
-          Login With Facebook
-          </Button>*/}
-          <View style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Registration')}
-            >
-              <Text style={{fontSize:12, color:'#000'}}>
-                Belum punya akun? Daftar di sini
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {registerHereButton}
         {/*</KeyboardAvoidingView>*/}
       </View>
     );

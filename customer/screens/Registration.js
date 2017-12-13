@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default class Registration extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {}
+    this.state = {countryCode:'+62'}
   }
 
   static navigationOptions = {
@@ -52,7 +52,7 @@ export default class Registration extends Component {
   }
 
   render() {
-    let { userName, email, phone, password, countryCode,
+    let { name, email, phone, password, countryCode,
       showPassword, isLoading } = this.state;
 
     return (
@@ -70,8 +70,8 @@ export default class Registration extends Component {
             <TextInput style={styles.searchInput}
               underlineColorAndroid='transparent'
               placeholder='Nama Lengkap'
-              value={userName}
-              onChangeText={userName => this.setState({userName})}
+              value={name}
+              onChangeText={userName => this.setState({name})}
               returnKeyType={ "next" }
               onSubmitEditing={(event) => { 
                 this.refs.email.focus(); 
@@ -84,14 +84,14 @@ export default class Registration extends Component {
               underlineColorAndroid='transparent'
               placeholder='Email'
               keyboardType='email-address'
+              autoCapitalize='none'
+              autoCorrect={false}
               value={email}
               onChangeText={email => this.setState({email})}
-              autoCapitalize='none'
               returnKeyType={ "next" }
               onSubmitEditing={(event) => { 
                 this.refs.countryCode.focus(); 
               }}
-
             />
           </View>
           <View style={{marginBottom:15, flexDirection:'row'}}>
@@ -99,10 +99,11 @@ export default class Registration extends Component {
               <TextInput
                 ref='countryCode'
                 style={styles.searchInput} 
-                underlineColorAndroid='transparent' 
-                placeholder='+62'
-                keyboardType='numeric'
+                underlineColorAndroid='transparent'
+                placeholder='+ ....'
+                keyboardType='phone-pad'
                 value={countryCode}
+                selectTextOnFocus={true}
                 onChangeText={countryCode => this.setState({countryCode})}
                 returnKeyType={ "next" }
                 onSubmitEditing={(event) => { 
@@ -167,7 +168,7 @@ export default class Registration extends Component {
             }}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._register}
-            disabled={!userName || !email || !phone || !password ||
+            disabled={!name || !email || !phone || !password ||
               !countryCode || isLoading}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
