@@ -15,7 +15,15 @@ export default class LoginScreen extends Component {
   }
 
   static navigationOptions = {
-    header: null,
+    //header: null,
+    headerStyle: {
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      right: 0,
+    },
   }
 
   _login = () => {
@@ -55,7 +63,7 @@ export default class LoginScreen extends Component {
       <View style={styles.container}>
         {/*<KeyboardAvoidingView behavior="position">*/}
           <View style={{marginBottom:40}}>
-            <Text style={styles.categoryTitle}>Sign In</Text>
+            <Text style={styles.categoryTitle}>Login</Text>
           </View>
           <View style={{marginBottom:10}}>
             <TextInput
@@ -66,6 +74,7 @@ export default class LoginScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={ userName => this.setState({userName, error:null}) }
+              returnKeyType={ "next" }
               onSubmitEditing={(event) => { 
                 this.refs.passwordInput.focus(); 
               }}
@@ -81,6 +90,7 @@ export default class LoginScreen extends Component {
               autoCapitalize={'none'}
               autoCorrect={false}
               onChangeText={ password => this.setState({password, error:null}) }
+              returnKeyType={ "done" }
               onSubmitEditing={this._login}
             />
             <View style={{position:'absolute', right:20, top:11,}}>
@@ -107,14 +117,14 @@ export default class LoginScreen extends Component {
             disabled={isLoading || !userName || !password || !!error}
             styleDisabled={{opacity:.7}}
           >
-            Sign in
+            Login
           </Button>
           <View style={{marginTop:15, alignItems:'flex-end'}}>
             <Text style={{fontSize:12, color:'#464646'}}>
-              Forgot Password ?
+              Lupa Password ?
             </Text>
           </View>
-          <Button
+          {/*<Button
             containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#0080d4',}}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._handlePress}
@@ -127,13 +137,13 @@ export default class LoginScreen extends Component {
             onPress={this._handlePress}
           >
           Login With Facebook
-          </Button>
-          <View style={{marginTop:30, alignItems:'center'}}>
+          </Button>*/}
+          <View style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}>
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('Registration')}
             >
               <Text style={{fontSize:12, color:'#000'}}>
-                Don't have account ? Register here
+                Belum punya akun? Daftar di sini
               </Text>
             </TouchableOpacity>
           </View>
@@ -147,7 +157,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding:15,
-    paddingTop:60,
+    paddingTop:90,
     backgroundColor: '#fff',
   },
   categoryTitle :{
