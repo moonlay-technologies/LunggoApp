@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
-  Platform, StyleSheet,
+  Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 import Moment from 'moment';
@@ -93,26 +93,11 @@ export default class BookingDetail extends Component {
     let {pax, date, paxListItemIndexes} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let calendar = (date) ?
-      <View>
-        <Text>{Moment(date).format('ddd, D MMM YYYY')}</Text>
-        <Button
-          containerStyle={{
-            height:35,
-            width:'100%',
-            paddingTop:10,
-            paddingBottom:10,
-            overflow:'hidden',
-            borderRadius:4,
-            backgroundColor: '#437ef7'
-          }}
-          style={{fontSize: 12, color: '#fff'}}
-          onPress={this._goToCalendarSelection}
-        >
-          Ubah Jadwal
-        </Button>
-      </View>
-      :
+    let selectedDate =
+      <Text>
+        {date? Moment(date).format('ddd, D MMM YYYY') : 'Atur Jadwal'}
+      </Text>
+    let setDateButton = (date) ?
       <Button
         containerStyle={{
           height:35,
@@ -125,15 +110,30 @@ export default class BookingDetail extends Component {
         }}
         style={{fontSize: 12, color: '#fff'}}
         onPress={this._goToCalendarSelection}
-        // onPress={() => {
-        //   navigation.navigate('CalendarView', {
-        //     setSchedule: this.setSchedule,
-        //     price,
-        //   });
-        // }}
       >
-        Pilih Jadwal
+        Ubah Jadwal
       </Button>
+      :
+      <TouchableOpacity
+        containerStyle={{
+          height:35,
+          width:'100%',
+          paddingTop:10,
+          paddingBottom:10,
+          overflow:'hidden',
+          borderRadius:4,
+          backgroundColor: '#437ef7'
+        }}
+        // style={{fontSize: 12, color: '#fff'}}
+        onPress={this._goToCalendarSelection}
+      >
+        <Icon
+          name='plus'
+          type='entypo'
+          size={20}
+          color='#01d4cb'
+        />
+      </TouchableOpacity>
 
     // let schedule =
     //   <View style={styles.container}>
@@ -184,15 +184,10 @@ export default class BookingDetail extends Component {
               </View>
               <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
                 <View>
-                  <Text>Atur Jadwal</Text>
+                  {<Text>{selectedDate}</Text>}
                 </View>
                 <View>
-                {calendar}
-                  <Icon
-                    name='plus'
-                    type='entypo'
-                    size={20}
-                    color='#01d4cb'/>
+                {setDateButton}
                 </View>
               </View>
             </View>
@@ -202,56 +197,48 @@ export default class BookingDetail extends Component {
                   Peserta
                 </Text>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
+
+                {pax && pax.map(
+                  item => <Text key={item.key}>- {item.name}</Text>
+                )}
+              <View style={{
+                flexDirection:'row',
+                justifyContent: 'space-between',
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginTop:20
+              }}>
                 <View>
-                  <Text>Add Guest</Text>
+                  <Text>Tambah Peserta</Text>
                 </View>
-                <View>
+                <TouchableOpacity
+                  containerStyle={{
+                    height:35,
+                    width:'100%',
+                    paddingTop:10,
+                    paddingBottom:10,
+                    overflow:'hidden',
+                    borderRadius:4,
+                    backgroundColor: '#437ef7'
+                  }}
+                  onPress={() => navigation.navigate('PaxChoice', {
+                    setPax: this.setPax,
+                    setPaxListItemIndexes: this.setPaxListItemIndexes,
+                    paxListItemIndexes: paxListItemIndexes.slice(),
+                    price, requiredPaxData,
+                  })}
+                >
                   <Icon
                     name='plus'
                     type='entypo'
                     size={20}
-                    color='#01d4cb'/>
-                </View>
+                    color='#01d4cb'
+                  />
+                </TouchableOpacity>
               </View>
             </View>
-            <Text style={styles.activityTitle}>
-              Peserta
-            </Text>
-            {pax && pax.map(
-              item => <Text key={item.key}>- {item.name}</Text>
-            )}
-            <View style={{flexDirection: 'row'}}>
-              <View>
-                <Icon
-                name='plus'
-                size={10}
-                style={{marginTop:5, marginRight:7}}
-                type='font-awesome'
-                color='blue' />
-              </View>
-              <Text>Tambah Peserta</Text>
-            </View>
-            <Button
-              containerStyle={{
-                height:35,
-                width:'100%',
-                paddingTop:10,
-                paddingBottom:10,
-                overflow:'hidden',
-                borderRadius:4,
-                backgroundColor: '#437ef7'
-              }}
-              style={{fontSize: 12, color: '#fff'}}
-              onPress={() => navigation.navigate('PaxChoice', {
-                setPax: this.setPax,
-                setPaxListItemIndexes: this.setPaxListItemIndexes,
-                paxListItemIndexes: paxListItemIndexes.slice(),
-                price, requiredPaxData,
-              })}
-            >
-              Tambah Peserta
-            </Button>
+            
           </View>{/* end container */}
         </ScrollView>
 

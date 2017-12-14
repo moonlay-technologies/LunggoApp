@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native';
 import {SHA1} from 'crypto-js';
+import Base64 from 'crypto-js/enc-base64';
 
 export default class WebViewScreen extends Component {
   
@@ -10,7 +11,7 @@ export default class WebViewScreen extends Component {
     super(props)
     this.state = {
     };
-    console.log(window.btoa(this.props.navigation.state.params.rsvNo).SHA1());
+    console.log(Base64.stringify(SHA1('36537782')));
   }
 
   static navigationOptions = {
@@ -38,12 +39,13 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    let {rsvNo} = this.props.navigation.state.params;
+    // let {rsvNo} = this.props.navigation.state.params;
+    let rsvNo = 36537782;
     return (
       <WebView
         source={{
           // uri: 'http://www.qa.travorama.com/id/Payment/Thankyou?rsvNo=16541081&regId=489730162140681929135436187',
-          uri: 'http://travorama-local-cw.azurewebsites.net/id/payment/payment?rsvno='+rsvNo+'&regid='+window.btoa(rsvNo).SHA1(),
+          // uri: 'http://travorama-local-cw.azurewebsites.net/id/payment/payment?rsvno='+rsvNo+'&regid='+window.btoa(rsvNo).SHA1(),
           headers: {
             "X-Client-ID": "V1ZoQ2RXTjZiM2xNYWtGMVRVUnZlVTVFUm14T1JFVTBXbGRWZVU5RWJHcE9WRUY2VGpKYWFsbDZVVFZhYlVVeVQxUk5NVmxxVlhwUFYwcHNXVzFWZUZwcVozbz0=",
             "X-Client-Secret": "V1RKSk1sa3lUWGxOUkdOM1dYcEdhMDB5VW1wT2VrMDFUWHBPYTA5RVNUVlBWRmsxVGtkYWEwMVViRzFhYlVsNVdWUkNhZz09",

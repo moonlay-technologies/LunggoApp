@@ -94,9 +94,6 @@ async function getAuthAccess() {
       case '400':
       case '500':
       default:
-        console.error(
-          'GET AUTH error: status other than 200 returned!'
-        );
         await removeAccessToken();
         return getAuthAccess();
         // console.log(response);
