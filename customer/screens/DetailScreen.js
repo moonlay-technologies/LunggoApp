@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements'
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,
+  Text, View, Image, TextInput, ScrollView,TouchableOpacity,
 } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
         removeAccessToken } from '../../api/Common';
@@ -247,8 +247,12 @@ export default class DetailScreen extends Component {
 
             <View style={styles.divider}></View>
 
+            <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('Review')
+                }
+              >
             <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-
               <View style={{marginTop:3, flexDirection:'row', flex:1}}>
                 <View>
                   <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
@@ -277,8 +281,8 @@ export default class DetailScreen extends Component {
                   color='#00c5bc'/>
                 </View>
               </View>
-
             </View>
+            </TouchableOpacity>
 
             <View style={styles.divider}></View>
 

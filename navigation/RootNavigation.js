@@ -30,6 +30,7 @@ import Dashboard from '../operator/screens/Dashboard';
 import AppointmentList from '../operator/screens/AppointmentList';
 import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
+import Review from '../customer/screens/Review';
 //import ExploreScreen from '../customer/screens/ExploreScreen';
 
 //// unimplemented
@@ -64,6 +65,7 @@ const RootStackNavigator = StackNavigator(
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
     ExploreScreen: { screen: ExploreScreen },
+    Review: { screen: Review },
   },
   {
     // initialRouteParams: {appType: 'OPERATOR'},
