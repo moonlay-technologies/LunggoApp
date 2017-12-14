@@ -98,7 +98,7 @@ export default class BookingDetail extends Component {
         {date? Moment(date).format('ddd, D MMM YYYY') : 'Atur Jadwal'}
       </Text>
     let setDateButton = (date) ?
-      <Button
+      <TouchableOpacity
         containerStyle={{
           height:35,
           width:'100%',
@@ -108,11 +108,10 @@ export default class BookingDetail extends Component {
           borderRadius:4,
           backgroundColor: '#437ef7'
         }}
-        style={{fontSize: 12, color: '#fff'}}
         onPress={this._goToCalendarSelection}
       >
-        Ubah Jadwal
-      </Button>
+        <Text style={{fontSize: 12, color: '#01d4cb'}}>Ubah</Text>
+      </TouchableOpacity>
       :
       <TouchableOpacity
         containerStyle={{
@@ -199,7 +198,9 @@ export default class BookingDetail extends Component {
               </View>
 
                 {pax && pax.map(
-                  item => <Text key={item.key}>- {item.name}</Text>
+                  item => <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
+                    <Text>{item.name}</Text>
+                    </View>
                 )}
               <View style={{
                 flexDirection:'row',
