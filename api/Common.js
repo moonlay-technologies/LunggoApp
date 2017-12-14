@@ -142,15 +142,13 @@ export async function fetchTravoramaApi (request) {
       throw 'invalid JSON format :' + JSON.stringify(request.data);
     }
     response = await response.json();
-    // if (response.status != 200) {
-              if (__DEV__){
-                  console.log('accessToken: '+accessToken)
-                  console.log('authLevel: '+authLevel)
-                  console.log('response from '+ url +' :') ///
-                  console.log(response) ///
-              }
-      // throw response;
-    // }
+
+                  console.log('response from '+ url +' :')
+                  console.log(response)
+    if (response.status != 200) {
+      console.log('status is not 200! \n data:')
+      console.log(request.data)
+    }
     return response;
   } catch (err) {
     console.log('error while fetching this request :')
