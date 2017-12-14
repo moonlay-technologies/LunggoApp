@@ -129,8 +129,8 @@ export default class BookingDetail extends Component {
       >
         <Icon
           name='plus'
-          type='entypo'
-          size={20}
+          type='evilicon'
+          size={26}
           color='#01d4cb'
         />
       </TouchableOpacity>
@@ -145,7 +145,7 @@ export default class BookingDetail extends Component {
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView style={{marginBottom:60}}>
+        <ScrollView style={{marginBottom:80}}>
           <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
               <View style={{flex:1, marginRight:20,}}>
@@ -177,12 +177,12 @@ export default class BookingDetail extends Component {
           <View style={styles.divider}/>
           <View style={styles.container}>
             <View>
-              <View style={{marginBottom:10}}>
+              <View>
                 <Text style={styles.activityTitle}>
                   Jadwal
                 </Text>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
+              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginVertical:20}}>
                 <View>
                   {<Text>{selectedDate}</Text>}
                 </View>
@@ -192,7 +192,7 @@ export default class BookingDetail extends Component {
               </View>
             </View>
             <View>
-              <View style={{marginBottom:10}}>
+              <View>
                 <Text style={styles.activityTitle}>
                   Peserta
                 </Text>
@@ -204,8 +204,6 @@ export default class BookingDetail extends Component {
               <View style={{
                 flexDirection:'row',
                 justifyContent: 'space-between',
-                borderBottomColor: '#efefef',
-                borderBottomWidth:1,
                 paddingBottom:20,
                 marginTop:20
               }}>
@@ -231,8 +229,8 @@ export default class BookingDetail extends Component {
                 >
                   <Icon
                     name='plus'
-                    type='entypo'
-                    size={20}
+                    type='evilicon'
+                    size={26}
                     color='#01d4cb'
                   />
                 </TouchableOpacity>
