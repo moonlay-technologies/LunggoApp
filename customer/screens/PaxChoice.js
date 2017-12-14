@@ -86,18 +86,18 @@ export default class PaxChoice extends Component {
           style={{ marginBottom: 60, flex:1}}
           data={this.state.pax}
           renderItem={ ({item}) => this._renderItem(item) }
-        />
+        />          
         <Button
           containerStyle={{
-            height: 35,
-            flex: .2,
-            paddingTop: 10,
-            paddingBottom: 10,
+            height: 45,
+            width: '100%',
+            paddingTop: 13,
+            paddingBottom: 13,
             overflow: 'hidden',
-            borderRadius: 4,
-            backgroundColor: '#437ef7',
+            borderRadius:25,
+            backgroundColor: '#01d4cb',
           }}
-          style={{fontSize: 12, color: '#fff'}}
+          style={{fontSize: 14, fontWeight:'bold', color: '#fff'}}
           onPress={ () => navigation.navigate( "AddPax", {
             addPaxListItem: this.addPaxListItem,
             requiredPaxData,
@@ -105,7 +105,7 @@ export default class PaxChoice extends Component {
         >
           Tambah Peserta Baru
         </Button>
-
+        <View style={{flex:.25}}/>
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex: 1}}>
@@ -113,10 +113,9 @@ export default class PaxChoice extends Component {
               1 Peserta
             </Text>
             <Text style={{
-              color: 'green',
-              marginRight: 3,
-              fontWeight: 'bold',
-              fontSize: 15,
+              color:'#000',
+                fontWeight: 'bold',
+                fontSize:20,
             }}>
               {Formatter.price(price)}
             </Text> 
@@ -124,15 +123,15 @@ export default class PaxChoice extends Component {
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
               containerStyle={{
-                height: 35,
-                width: 120,
-                paddingTop: 10,
-                paddingBottom: 10,
+                height: 45,
+                width: '100%',
+                paddingTop: 13,
+                paddingBottom: 13,
                 overflow: 'hidden',
-                borderRadius: 4,
-                backgroundColor: '#437ef7',
+                borderRadius:25,
+                backgroundColor: '#01d4cb',
               }}
-              style={{fontSize: 12, color: '#fff'}}
+              style={{fontSize: 13, fontWeight:'bold', color: '#fff'}}
               onPress={this._return}
             >
               Daftarkan Peserta
