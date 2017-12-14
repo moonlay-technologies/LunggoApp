@@ -205,8 +205,26 @@ export default class Dashboard extends React.Component {
           <View style={{}}>
             <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
           </View>
-          <View style={{flexDirection:'row', marginTop:10}}>
-            <View>
+          <View style={{flexDirection:'row', marginTop:8}}>
+            <View style={{flex:1}}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('Mutasi')
+                }
+              >
+                <View style={{flexDirection:'row'}}>
+                  <View>
+                     <Icon
+                    name='wallet'
+                    type='entypo'
+                    size={23}
+                    color='#454545'/>
+                  </View>
+                  <Text style={styles.credit}>Rp 1.000.000</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{flex:1, alignItems:'flex-end'}}>
               <Button
                 containerStyle={{
                   height: 25,
@@ -233,7 +251,7 @@ export default class Dashboard extends React.Component {
           </View>
         </View>
 
-        <View style={{flexDirection:'row', marginTop:10, padding:15,paddingTop:0,}}>
+        <View style={{flexDirection:'row', marginTop:15, padding:15,paddingTop:0,}}>
           <TouchableOpacity
             style={{
               flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2
@@ -344,6 +362,13 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
+  },
+    credit: {
+    fontSize:14,
+    marginTop:3,
+    marginLeft:5,
+    color:'#454545',
+
   },
   notification: {
     backgroundColor:'#01d4c7', 

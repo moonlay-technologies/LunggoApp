@@ -25,7 +25,6 @@ class ListItem extends React.PureComponent {
           onPress={this._onPress}
           underlayColor='#ddd'>
           <View style={styles.rowContainer}>
-
             <View style={styles.containerItem}>
               <Image
                 style={styles.thumbnailMedium}
@@ -34,7 +33,7 @@ class ListItem extends React.PureComponent {
               <View style={{flexDirection:'row'}}>
                 <View style={styles.textContainer}>
                   <Text style={styles.namaKota}>{item.city}</Text>
-                  {<Text style={styles.activityTitle} numberOfLines={1}>
+                  {<Text style={styles.activityTitle} numberOfLines={2}>
                     {item.name}
                   </Text>}
                   <Text style={styles.priceTitle}>
@@ -117,7 +116,7 @@ export default class SearchResults extends Component {
         {/*<Text>{this.state.list.length}</Text>*/}
         <FlatList
           numColumns={2}
-          // contentContainerStyle={styles.list}
+          contentContainerStyle={styles.list}
           data={this.state.list}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
@@ -131,13 +130,12 @@ export default class SearchResults extends Component {
 const styles = StyleSheet.create({
   rowContainer: {
     // flexDirection: 'row',
-    paddingTop: 15,
-    paddingHorizontal:15,
-    paddingBottom:7.5,
+    //paddingTop: 15,
+    padding:7.5,
+    // paddingRight:7.5,
     // flex:1,
   }, 
   containerItem: {
-    paddingRight:15,
     flex:.2,
   },
   containerItem2: {
@@ -168,7 +166,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginTop:5,
-    // flex:4,
+    flex:3,
   },
   separator: {
     height: 1,
@@ -179,5 +177,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // flex:1,
     // flexWrap: 'wrap',
+    backgroundColor:'#fff',
+    padding:7.5
   },
 });
