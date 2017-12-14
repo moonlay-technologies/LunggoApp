@@ -10,7 +10,7 @@ import {
   TextInput,
   ScrollView, FlatList, TouchableHighlight
 } from 'react-native';
-import * as Formatter from '../components/Formatter';
+import * as Formatter from '../../customer/components/Formatter';
 
 
 class ListItem extends React.PureComponent {
@@ -74,6 +74,7 @@ export default class ActivityList extends Component {
       <ScrollView style={{backgroundColor: '#fff',}}>
         <View style={styles.containerListAppointment}>
           <FlatList
+            // numColumns={2}
             data={this.state.list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}

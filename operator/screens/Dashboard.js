@@ -288,10 +288,12 @@ export default class Dashboard extends React.Component {
         <View style={styles.container}>
           <View style={{marginTop:0}}>
             <View style={{flexDirection:'row'}}>
-              <View style={{flex:1, alignItems:'center'}}>
+              <TouchableOpacity style={{flex:1, alignItems:'center'}}
+                onPress={this._onActivityListPressed}
+              >
                 <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>2</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Activities</Text>
-              </View>
+              </TouchableOpacity>
               <View style={{flex:1, alignItems:'center'}}>
                 <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>13</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Deals</Text>

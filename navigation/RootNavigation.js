@@ -31,6 +31,7 @@ import Mutasi from '../operator/screens/Mutasi';
 import AppointmentList from '../operator/screens/AppointmentList';
 import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
+import ActivityList from '../operator/screens/ActivityList';
 import Review from '../customer/screens/Review';
 //import ExploreScreen from '../customer/screens/ExploreScreen';
 
@@ -47,7 +48,7 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       // screen: BeforeLoginScreen
-      screen: MainTabNavigator
+      screen: Dashboard
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
@@ -65,12 +66,13 @@ const RootStackNavigator = StackNavigator(
     Dashboard: { screen: Dashboard },
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
+    ActivityList: { screen: ActivityList },
     ExploreScreen: { screen: ExploreScreen },
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
   },
   {
-    // initialRouteParams: {appType: 'OPERATOR'},
+    initialRouteParams: {appType: 'OPERATOR'},
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
