@@ -63,10 +63,10 @@ async function getAuthAccess() {
           getItemAsync('expTime'), getItemAsync('authLevel')
         ]);
     let data = {clientId, clientSecret, deviceId};
-    console.log('accessToken: '+accessToken);
-    console.log('refreshToken: '+refreshToken);
-    console.log('expTime    : '+expTime+ '; authLevel: '+authLevel);
-    console.log('new Date() : '+new Date().toISOString())
+    // console.log('accessToken: '+accessToken);
+    // console.log('refreshToken: '+refreshToken);
+    // console.log('expTime    : '+expTime+ '; authLevel: '+authLevel);
+    // console.log('new Date() : '+new Date().toISOString())
     if( new Date(expTime) > new Date() ) { //// token not expired
       console.log(
         'session not expired, continue the request...'

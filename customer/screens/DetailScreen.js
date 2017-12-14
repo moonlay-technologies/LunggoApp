@@ -57,8 +57,7 @@ export default class DetailScreen extends Component {
 
   componentDidMount() {
     const version = 'v1';
-    const id = 1;
-    // const {id} = this.state;
+    const {id} = this.state;
     let request = {
       path: `/${version}/activities/${id}`,
       requiredAuthLevel: AUTH_LEVEL.Guest,

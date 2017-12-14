@@ -40,7 +40,7 @@ export default class Registration extends Component {
       errorCountryCode, errorPhone});
     if (!errorName && !errorEmail && !errorPassword &&
         !errorCountryCode && !errorPhone) {
-      this._login();
+      this._register();
     }
   }
 

@@ -66,6 +66,7 @@ export default class BookingDetail extends Component {
       }
     };
     fetchTravoramaApi(request).then( response => {
+      this.setState({isLoading:false});
       if(response.status == 200)
         this.props.navigation.navigate(
           'WebViewScreen',{rsvNo:response.rsvNo}
@@ -269,6 +270,7 @@ export default class BookingDetail extends Component {
               }}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={this._book}
+              disabled={this.state.isLoading}
               styleDisabled={{color:'#aaa'}}
             >
               Pesan
