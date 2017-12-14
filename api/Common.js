@@ -13,9 +13,6 @@ export {AUTH_LEVEL} from '../constants/env';
 
 async function fetchAuth(data) {
   let url = DOMAIN + '/v1/login';
-
-  console.log('AUTH request data:');
-  console.log(data);
   let response = await fetch(url, {
     method: 'POST',
     headers: {

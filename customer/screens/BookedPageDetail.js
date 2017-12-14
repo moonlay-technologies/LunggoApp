@@ -1,13 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView, { Marker } from 'react-native-maps';
+import Moment from 'moment';
+import 'moment/locale/id';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import { Rating } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,
@@ -20,25 +18,36 @@ export default class BookedPageDetail extends Component {
     // const { details } = this.props.navigation.state.params;
     // this.state = details;
     this.state = this.props.navigation.state.params.details;
+    this.state.timeLeft = Moment(this.state.timeLimit).toNow();
   }
 
   // static navigationOptions = {
   //   headerRight: <LikeShareHeaderButton/>,
   // };
 
+  _onContinuePaymentPressed = () => {
+    this.props.navigation.navigate(
+      'WebViewScreen',{rsvNo:this.state.rsvNo}
+    );
+  }
+
   render() {
+    let {name, mediaSrc, date, bookingStatus, price, timeLeft, city,
+          } = this.state;
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{}}>
           <View style={styles.container}>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
+                <Image style={styles.thumbnailMedium}
+                  source={{uri: mediaSrc}}
+                />
               </View>
               <View style={{flex:2, paddingLeft:10}}>
                 <View style={{marginBottom:15}}>
                   <Text style={styles.activityTitle}>
-                    {this.state.name}
+                    {name}
                   </Text>
                 </View>
                 <View style={{flexDirection: 'row', marginBottom:5}}>
@@ -51,7 +60,7 @@ export default class BookedPageDetail extends Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      20 May 2018
+                      {Moment(date).format('dddd, D MMM YYYY')}
                     </Text>
                   </View>
                 </View>
@@ -65,7 +74,7 @@ export default class BookedPageDetail extends Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      10am - 12am
+                      10am - 12am --dummy
                     </Text>
                   </View>
                 </View>
@@ -79,13 +88,15 @@ export default class BookedPageDetail extends Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      Sentul, Bogor
+                      {city} --city blom ada di api
                     </Text>
                   </View>
                 </View>
               </View>
               <View style={{flex:0.5, alignItems:'flex-end'}}>
-                <Text style={{fontSize:12, color:'#676767',}}>Detail</Text>
+                <Text style={{fontSize:12, color:'#676767',}}>
+                  Detail
+                </Text>
               </View>
             </View>
           </View>{/* end container */}
@@ -120,13 +131,14 @@ export default class BookedPageDetail extends Component {
                   Status
                 </Text>
                 <Text style={styles.status}>
-                  Menunggu Pembayaran
+                  {bookingStatus}
                 </Text>
               </View>
               <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
                 <Button
                   containerStyle={{height:35, width:'70%', paddingTop:10, paddingBottom:10, borderRadius:4, backgroundColor: '#00c8be'}}
                   style={{fontSize: 12, color: '#fff', fontWeight:'bold'}}
+                  onPress={this._onContinuePaymentPressed}
                 >
                 Lanjut Bayar
                 </Button>
@@ -137,7 +149,9 @@ export default class BookedPageDetail extends Component {
                 <Text style={{fontSize:12, color:'#454545',}}>Total yang harus dibayar</Text>
               </View>
               <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
-                <Text style={{fontSize:12}}>IDR 2.350.000</Text>
+                <Text style={{fontSize:12}}>
+                  IDR {Formatter.price(price)}
+                </Text>
               </View>
             </View>
             <View style={{flex:1, flexDirection:'row', marginTop:5}}>
@@ -145,7 +159,9 @@ export default class BookedPageDetail extends Component {
                 <Text style={{fontSize:12, color:'#454545',}}>Sisa waktu pembayaran</Text>
               </View>
               <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
-                <Text style={{fontSize:12, color:'#00c8be'}}>4 jam 29 menit</Text>
+                <Text style={{fontSize:12, color:'#00c8be'}}>
+                  {timeLeft}
+                </Text>
               </View>
             </View>
           </View>{/* end container */}

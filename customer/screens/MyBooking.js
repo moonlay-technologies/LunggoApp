@@ -3,11 +3,13 @@
 import React, { Component } from 'react';
 import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, FlatList,
+  Platform, StyleSheet, FlatList, RefreshControl,
   Text, View, Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+import Moment from 'moment';
+import 'moment/locale/id';
 
 class ListItem extends React.PureComponent {
 
@@ -37,7 +39,9 @@ class ListItem extends React.PureComponent {
               <Text style={styles.activityTitle}>
                 {item.name}
               </Text>
-              <Text style={styles.status}>{item.bookingStatus}</Text>
+              <Text style={styles.status}>
+                {item.bookingStatus}
+              </Text>
               <View style={{
                 marginTop: 10,
                 marginBottom: 5,
@@ -54,7 +58,7 @@ class ListItem extends React.PureComponent {
                   </View>
                   <View style={{marginTop:1, marginLeft:5}}>
                     <Text style={{fontSize:12}}>
-                      6 orang
+                      x orang
                     </Text>
                   </View>
                 </View>
@@ -70,7 +74,7 @@ class ListItem extends React.PureComponent {
                 </View>
                 <View style={{marginTop:1, marginLeft:5}}>
                   <Text style={{fontSize:12}}>
-                    {item.date}
+                    {Moment(item.date).format('ddd, D MMM YYYY')}
                   </Text>
                 </View>
               </View>
@@ -91,10 +95,10 @@ export default class MyBookingScreen extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {bookingList: []};
+    this.state = {bookingList: [], isRefreshing:false};
   }
 
-  componentDidMount() {
+  _fetchBookingListApi = async () => {
     const version = 'v1';
     let request = {
       path: `/${version}/activities/mybooking`,
@@ -103,6 +107,11 @@ export default class MyBookingScreen extends Component {
     fetchTravoramaApi(request).then( response => {
       this.setState({bookingList: response.myBookings});
     }).catch(error => console.log(error));
+    return;
+  }
+
+  componentDidMount() {
+    this._fetchBookingListApi();
   }
 
   _keyExtractor = (item, index) => index;
@@ -118,11 +127,24 @@ export default class MyBookingScreen extends Component {
       'BookedPageDetail',{details: item}
     );
   };
-  
+  _onRefresh = () => {
+    this.setState({isRefreshing: true});
+    this._fetchBookingListApi().then( () => {
+      this.setState({isRefreshing: false});
+    });
+  }
   render() {
 
     return (
-      <ScrollView style={{flex:1, backgroundColor: '#fff',}}>
+      <ScrollView
+        style={{flex:1, backgroundColor: '#fff',}}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+      >
 
       {/* Tab Button
 
