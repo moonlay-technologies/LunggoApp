@@ -20,10 +20,11 @@ export default class DetailScreen extends Component {
 
   constructor (props) {
     super(props)
-    const {details} = this.props.navigation.state.params || {};
+    const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
-        // isLoading, id
+        // isLoading, 
+        id,
         requiredPaxData: '',
         name: 'loading activity name...',
         city: 'loading address...',

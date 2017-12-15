@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet, Image, View, Text,
+  StyleSheet, Image, View, Text, ActivityIndicator,
   TouchableHighlight, FlatList,
 } from 'react-native';
 // import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
@@ -78,8 +78,9 @@ export default class SearchResults extends Component {
     let {searchString} = this.props.navigation.state.params || {};
     this.state = {
       searchString: searchString || '',
-      placeholder: 'Try "snorkeling"...',
-      list:{}
+      // placeholder: 'Try "snorkeling"...',
+      list:{},
+      isLoading: true,
     };
   }
 
@@ -90,8 +91,8 @@ export default class SearchResults extends Component {
   componentDidMount() {
     search(this.state.searchString)
       .then(response => {
-        this.setState({list: response});
-        // forceUpdate();
+        this.setState({list: response, isLoading: false});
+        this.forceUpdate();
       }).catch(error=>console.log(error));
   }
 
@@ -111,7 +112,8 @@ export default class SearchResults extends Component {
 
   render() {
     this.props.navigation.state.key = 'SearchResults';
-    return (
+    return this.state.isLoading ?
+      <ActivityIndicator size='large'/> : (
       <View>
         {/*<Text>{this.state.list.length}</Text>*/}
         <FlatList

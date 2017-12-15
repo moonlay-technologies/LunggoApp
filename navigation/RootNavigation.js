@@ -23,9 +23,7 @@ import Registration from '../customer/screens/Registration';
 import BookedPageDetail from '../customer/screens/BookedPageDetail';
 import AdvanceSearch from '../customer/screens/AdvanceSearch';
 import LoginScreen from '../commons/LoginScreen';
-import OperatorLoginScreen from '../operator/screens/OperatorLoginScreen';
 import BeforeLoginScreen from '../customer/screens/BeforeLoginScreen';
-import HomeScreenOperator from '../customer/screens/HomeScreenOperator';
 import Dashboard from '../operator/screens/Dashboard';
 import Mutasi from '../operator/screens/Mutasi';
 import AppointmentList from '../operator/screens/AppointmentList';
@@ -33,7 +31,6 @@ import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
 import ActivityList from '../operator/screens/ActivityList';
 import Review from '../customer/screens/Review';
-//import ExploreScreen from '../customer/screens/ExploreScreen';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -47,8 +44,8 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: BeforeLoginScreen
-      screen: Dashboard
+      screen: BeforeLoginScreen
+      // screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
