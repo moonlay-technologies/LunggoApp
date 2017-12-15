@@ -10,27 +10,15 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-const screenPath = '../customer/screens/';
-import SearchResults from '../customer/screens/SearchResults';
-import MyBooking from '../customer/screens/MyBooking';
-import AddPax from '../customer/screens/AddPax';
-import DetailScreen from '../customer/screens/DetailScreen';
-import CalendarView from '../customer/components/CalendarView';
-import WebViewScreen from '../customer/screens/WebViewScreen';
-import PaxChoice from '../customer/screens/PaxChoice';
-import BookingDetail from '../customer/screens/BookingDetail';
-import Registration from '../customer/screens/Registration';
-import BookedPageDetail from '../customer/screens/BookedPageDetail';
-import AdvanceSearch from '../customer/screens/AdvanceSearch';
-import LoginScreen from '../commons/LoginScreen';
-import BeforeLoginScreen from '../customer/screens/BeforeLoginScreen';
-import Dashboard from '../operator/screens/Dashboard';
-import Mutasi from '../operator/screens/Mutasi';
-import AppointmentList from '../operator/screens/AppointmentList';
-import AppointmentDetail from '../operator/screens/AppointmentDetail';
-import AppointmentRequest from '../operator/screens/AppointmentRequest';
-import ActivityList from '../operator/screens/ActivityList';
-import Review from '../customer/screens/Review';
+import { SearchResults, MyBooking, AddPax, DetailScreen,
+  CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
+  Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
+  Review } from '../customer/screens/Screens';
+
+import { LoginScreen } from '../commons/Screens';
+
+import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
+  AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -44,16 +32,16 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: LoginScreen
-      screen: MainTabNavigator
+      // screen: Dashboard
+      // screen: MainTabNavigator
       // screen: ExploreScreen
-      // screen: BeforeLoginScreen
+      screen: BeforeLoginScreen
       // screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
     DetailScreen: { screen: DetailScreen },
-    CalendarView: { screen: CalendarView },
+    CalendarPicker: { screen: CalendarPicker },
     WebViewScreen: { screen: WebViewScreen },
     PaxChoice: { screen: PaxChoice },
     AddPax: { screen: AddPax },
@@ -61,7 +49,6 @@ const RootStackNavigator = StackNavigator(
     Registration: { screen: Registration },
     BookedPageDetail: { screen: BookedPageDetail },
     LoginScreen: { screen: LoginScreen },
-    Dashboard: { screen: Dashboard },
     AppointmentList: { screen: AppointmentList },
     Dashboard: { screen: Dashboard },
     AppointmentDetail: { screen: AppointmentDetail },
@@ -72,7 +59,7 @@ const RootStackNavigator = StackNavigator(
     Mutasi: { screen: Mutasi },
   },
   {
-    // initialRouteParams: {appType: 'OPERATOR'},
+    initialRouteParams: {appType: 'OPERATOR'},
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',

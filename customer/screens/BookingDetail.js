@@ -81,7 +81,7 @@ export default class BookingDetail extends Component {
     let {navigation} = this.props;
     let {price, availableDateTimes } = navigation.state.params;
     let {date} = this.state;
-    navigation.navigate('CalendarView', {
+    navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
       selectedDate: date,

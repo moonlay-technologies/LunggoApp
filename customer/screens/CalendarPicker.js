@@ -8,7 +8,7 @@ import Moment from 'moment';
 import { CheckBox } from 'react-native-elements'
 import 'moment/locale/id';
 
-export default class CalendarView extends Component {
+export default class CalendarPicker extends Component {
 
   constructor (props) {
     super(props)
