@@ -220,13 +220,14 @@ export default class BookingDetail extends Component {
                     paddingBottom:10,
                     overflow:'hidden',
                     borderRadius:4,
-                    backgroundColor: '#437ef7'
+                    backgroundColor: '#437ef7',
                   }}
                   onPress={() => navigation.navigate('PaxChoice', {
+                    price, requiredPaxData,
                     setPax: this.setPax,
                     setPaxListItemIndexes: this.setPaxListItemIndexes,
                     paxListItemIndexes: paxListItemIndexes.slice(),
-                    price, requiredPaxData,
+                    paxCount: pax? pax.length : 0,
                   })}
                 >
                   <Icon
@@ -246,14 +247,16 @@ export default class BookingDetail extends Component {
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1.5}}>
             <View >
-              <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
+              <Text style={{fontSize:12, color:'#676767',}}>
+                { pax && pax.length>0 ? pax.length+' orang' : 'Start from'}
+              </Text> 
             </View>
             <View>
               <Text style={{
                 color:'#000',
                 fontWeight: 'bold',
                 fontSize:20,
-              }}>{ Formatter.price(price) }</Text>
+              }}>{ Formatter.price( pax && pax.length>0 ? pax.length*price : price) }</Text>
             </View> 
             
           </View>

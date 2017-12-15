@@ -44,7 +44,10 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: BeforeLoginScreen
+      // screen: LoginScreen
+      screen: MainTabNavigator
+      // screen: ExploreScreen
+      // screen: BeforeLoginScreen
       // screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -69,7 +72,7 @@ const RootStackNavigator = StackNavigator(
     Mutasi: { screen: Mutasi },
   },
   {
-    initialRouteParams: {appType: 'OPERATOR'},
+    // initialRouteParams: {appType: 'OPERATOR'},
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',

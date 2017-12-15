@@ -46,7 +46,7 @@ export default class CalendarView extends Component {
       },
       isModalVisible: false,
     };
-    if (selectedDate) this.state.markedDates[selectedDate] = {selected: true};
+    if (selectedDate) this.state.markedDates[selectedDate].selected= true;
   }
 
   static navigationOptions = {
@@ -60,7 +60,6 @@ export default class CalendarView extends Component {
 
   _selectDate = dateString => {
     let {markedDates, selectedDate} = this.state;
-
     //// set remove prev selectedDate from markedDates
     if (selectedDate) markedDates[selectedDate].selected = false;
     // if (selectedDate) delete markedDates[selectedDate].selected;
@@ -118,7 +117,8 @@ export default class CalendarView extends Component {
     let date = (selectedDate)
       ? Moment(selectedDate).format('ddd, D MMM YYYY')
       : "Pilih Tanggal";
-
+      console.log('markedDates')
+      console.log(markedDates)
     let availableTimeList = !!selectedDate ?
         markedDates[selectedDate].availableTime.map(
           (currValue, index) =>
@@ -143,6 +143,7 @@ export default class CalendarView extends Component {
 
     return(
       <View>
+          {/*this.state.selectedDate*/}
         <CalendarList
           minDate={this.state.minDate}
           markedDates={markedDates}
