@@ -7,7 +7,7 @@ import Button from 'react-native-button';
 import * as Formatter from '../components/Formatter';
 import { Icon } from 'react-native-elements';
 import {
-  Platform, StyleSheet,
+  Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 
@@ -27,13 +27,16 @@ export default class BookedPageDetail extends Component {
 
   _onContinuePaymentPressed = () => {
     this.props.navigation.navigate(
-      'WebViewScreen',{rsvNo:this.state.rsvNo}
+      'WebViewScreen', {rsvNo:this.state.rsvNo}
     );
   }
 
   render() {
     let {name, mediaSrc, date, bookingStatus, price, timeLeft, city,
-          } = this.state;
+          selectedSession } = this.state;
+    switch (bookingStatus) {
+      case 'PROC': bookingStatus = 'dalam progres'; break;
+    }
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{}}>
@@ -51,7 +54,7 @@ export default class BookedPageDetail extends Component {
                   </Text>
                 </View>
                 <View style={{flexDirection: 'row', marginBottom:5}}>
-                  <View style={{}}>
+                  <View>
                     <Icon
                     name='event'
                     type='materialicons'
@@ -74,7 +77,7 @@ export default class BookedPageDetail extends Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      10am - 12am --dummy
+                      {selectedSession}
                     </Text>
                   </View>
                 </View>
@@ -88,7 +91,7 @@ export default class BookedPageDetail extends Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      {city} --city blom ada di api
+                      {city}
                     </Text>
                   </View>
                 </View>
@@ -109,9 +112,13 @@ export default class BookedPageDetail extends Component {
                 </Text>
               </View>
               <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
-                <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../assets/images/phone.png')}/>
-                <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../assets/images/sms.png')}/>
-              </View>
+                <TouchableOpacity>
+                  <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../assets/images/phone.png')}/>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../assets/images/sms.png')}/>
+                </TouchableOpacity>
+                </View>
             </View>
             <View style={{flex:1, flexDirection:'row'}}>
               <View style={{marginRight:10}}>
@@ -150,7 +157,7 @@ export default class BookedPageDetail extends Component {
               </View>
               <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
                 <Text style={{fontSize:12}}>
-                  IDR {Formatter.price(price)}
+                  {Formatter.price(price)}
                 </Text>
               </View>
             </View>

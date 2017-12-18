@@ -100,7 +100,7 @@ export default class DetailScreen extends Component<{}> {
               style={{fontSize: 12, color: '#ffffff'}}
               // onPress={() => this._handlePress()}
               onPress={() => this.props.navigation.navigate(
-                'CalendarView'//, { list: response.activityList}
+                'CalendarPicker'//, { list: response.activityList}
               )}
             >
               Filter

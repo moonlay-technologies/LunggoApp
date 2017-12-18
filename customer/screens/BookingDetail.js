@@ -81,7 +81,7 @@ export default class BookingDetail extends Component {
     let {navigation} = this.props;
     let {price, availableDateTimes } = navigation.state.params;
     let {date} = this.state;
-    navigation.navigate('CalendarView', {
+    navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
       selectedDate: date,
@@ -281,13 +281,14 @@ export default class BookingDetail extends Component {
                     paddingBottom:10,
                     overflow:'hidden',
                     borderRadius:4,
-                    backgroundColor: '#437ef7'
+                    backgroundColor: '#437ef7',
                   }}
                   onPress={() => navigation.navigate('PaxChoice', {
+                    price, requiredPaxData,
                     setPax: this.setPax,
                     setPaxListItemIndexes: this.setPaxListItemIndexes,
                     paxListItemIndexes: paxListItemIndexes.slice(),
-                    price, requiredPaxData,
+                    paxCount: pax? pax.length : 0,
                   })}
                 >
                   <Icon
@@ -313,14 +314,17 @@ export default class BookingDetail extends Component {
           >
             <View style={{alignItems: 'flex-start'}}>
               <View >
-                <Text style={{fontSize:12, color:'#676767',}}>Kamis, 21 Jan 2017 (09.00)</Text> 
+                <Text style={{fontSize:12, color:'#676767',}}>
+                  Kamis, 21 Jan 2017 (09.00)
+                  {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+                </Text> 
               </View>
               <View style={{}}>
                 <Text style={{
                   color:'#000',
                   fontWeight: 'bold',
                   fontSize:20,
-                }}>{ Formatter.price(price) }</Text>
+                }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
                 {/*<Text>/ 2 orang</Text>*/}
               </View>
               <View style={{marginTop:4}} >

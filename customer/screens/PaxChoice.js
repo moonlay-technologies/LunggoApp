@@ -20,12 +20,12 @@ export default class PaxChoice extends Component {
     this.state = {
       paxListItemIndexes:
         this.props.navigation.state.params.paxListItemIndexes || [],
+      paxCount: this.props.navigation.state.params.paxCount,
       pax: [
         { key:0, name: "John Doe (me)" },
         { key:1,id:1, name: "Ali Zainal" },
       ]
     };
-    console.log(this.state.paxListItemIndexes);
   }
 
   _return = () => {
@@ -53,9 +53,10 @@ export default class PaxChoice extends Component {
   }
 
   _checkPax = index => {
-    let {paxListItemIndexes} = this.state;
+    let {paxListItemIndexes, paxCount} = this.state;
     paxListItemIndexes[index] = !paxListItemIndexes[index];
-    this.setState({ paxListItemIndexes })
+    if (paxListItemIndexes[index]) paxCount++; else paxCount--;
+    this.setState({ paxListItemIndexes, paxCount })
   }
 
   _renderItem = pax =>
@@ -80,6 +81,7 @@ export default class PaxChoice extends Component {
   render() {
     let {navigation} = this.props;
     let {requiredPaxData, price} = navigation.state.params;
+    let {paxCount} = this.state;
     return (
       <View style={styles.container}>
         <FlatList
@@ -137,14 +139,14 @@ export default class PaxChoice extends Component {
         <View style={styles.bottomBarContainer}>
           <View style={{alignItems: 'flex-start', flex: 1}}>
             <Text style={{marginRight: 5, fontSize: 12,}}>
-              1 Peserta
+              {paxCount} orang
             </Text>
             <Text style={{
               color:'#000',
                 fontWeight: 'bold',
                 fontSize:20,
             }}>
-              {Formatter.price(price)}
+              { Formatter.price(paxCount*price) }
             </Text> 
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>

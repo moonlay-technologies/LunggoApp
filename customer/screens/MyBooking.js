@@ -58,7 +58,7 @@ class ListItem extends React.PureComponent {
                   </View>
                   <View style={{marginTop:1, marginLeft:5}}>
                     <Text style={{fontSize:12}}>
-                      x orang
+                      {item.paxCount} orang
                     </Text>
                   </View>
                 </View>
