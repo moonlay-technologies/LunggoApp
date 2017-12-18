@@ -1,21 +1,20 @@
 'use strict';
 
 import React, { Component } from 'react';
-import Button from 'react-native-button';
-import { Rating, Icon } from 'react-native-elements';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
-import {
-  Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView,
-} from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
-import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
+import globalStyles from '../../commons/globalStyles';
+import Button from 'react-native-button';
+import { Rating, Icon } from 'react-native-elements';
+import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
+  ScrollView, } from 'react-native';
 
 export default class BookingDetail extends Component {
 
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       // date : null,
       // shift: null,
@@ -24,8 +23,7 @@ export default class BookingDetail extends Component {
   }
 
   static navigationOptions = {
-    title: 'Detail Pesanan',
-    // headerRight: <LikeShareHeaderButton/>,
+    title: 'Detail Pesanan'
   };
 
   setPaxListItemIndexes = indexes =>
@@ -94,54 +92,15 @@ export default class BookingDetail extends Component {
     let {pax, date, paxListItemIndexes} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let selectedDate =
-      <Text>
-        {date? Moment(date).format('ddd, D MMM YYYY') : 'Atur Jadwal'}
-      </Text>
-    let setDateButton = (date) ?
-      <TouchableOpacity
-        containerStyle={{
-          height:35,
-          width:'100%',
-          paddingTop:10,
-          paddingBottom:10,
-          overflow:'hidden',
-          borderRadius:4,
-          backgroundColor: '#437ef7'
-        }}
-        onPress={this._goToCalendarSelection}
-      >
-        <Text style={{fontSize: 12, color: '#01d4cb'}}>Ubah</Text>
-      </TouchableOpacity>
+    let selectedDate = date ?
+      <Text>{ Moment(date).format('ddd, D MMM YYYY') }</Text>
       :
-      <TouchableOpacity
-        containerStyle={{
-          height:35,
-          width:'100%',
-          paddingTop:10,
-          paddingBottom:10,
-          overflow:'hidden',
-          borderRadius:4,
-          backgroundColor: '#437ef7'
-        }}
-        // style={{fontSize: 12, color: '#fff'}}
-        onPress={this._goToCalendarSelection}
-      >
-        <Icon
-          name='plus'
-          type='evilicon'
-          size={26}
-          color='#01d4cb'
-        />
-      </TouchableOpacity>
+      <Text>Atur Jadwal</Text>
 
-    // let schedule =
-    //   <View style={styles.container}>
-    //     <Text style={styles.activityTitle}>
-    //       Jadwal
-    //     </Text>
-    //     {calendar}
-    //   </View>
+    let setDateButton = date ?
+      <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
+      :
+      <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -174,13 +133,7 @@ export default class BookingDetail extends Component {
               </View>
             </View>*/}
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <View style={{}}>
-                <Icon
-                name='location'
-                type='entypo'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='location' type='entypo' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Jepang
@@ -188,13 +141,7 @@ export default class BookingDetail extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='person'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='person' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Maksimum 6 orang
@@ -238,12 +185,20 @@ export default class BookingDetail extends Component {
                   Jadwal
                 </Text>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginVertical:20}}>
+              <View style={{
+                flexDirection:'row',
+                justifyContent: 'space-between',
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginVertical:20,
+              }}>
+                {selectedDate}
                 <View>
-                  {<Text>{selectedDate}</Text>}
-                </View>
-                <View>
-                {setDateButton}
+                  <TouchableOpacity
+                    containerStyle={styles.addButton}
+                    onPress={this._goToCalendarSelection}
+                  > {setDateButton} </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -270,19 +225,9 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <View>
-                  <Text>Tambah Peserta</Text>
-                </View>
+                <Text>Tambah Peserta</Text>
                 <TouchableOpacity
-                  containerStyle={{
-                    height:35,
-                    width:'100%',
-                    paddingTop:10,
-                    paddingBottom:10,
-                    overflow:'hidden',
-                    borderRadius:4,
-                    backgroundColor: '#437ef7',
-                  }}
+                  containerStyle={styles.addButton}
                   onPress={() => navigation.navigate('PaxChoice', {
                     price, requiredPaxData,
                     setPax: this.setPax,
@@ -291,12 +236,7 @@ export default class BookingDetail extends Component {
                     paxCount: pax? pax.length : 0,
                   })}
                 >
-                  <Icon
-                    name='plus'
-                    type='evilicon'
-                    size={26}
-                    color='#01d4cb'
-                  />
+                  <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -305,45 +245,27 @@ export default class BookingDetail extends Component {
         </ScrollView>
 
         {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
-          <View style={{flex:1.5}}>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('RincianHarga')
-            }
-          >
+        <View style={globalStyles.bottomCtaBarContainer}>
+          <TouchableOpacity style={{flex:1.5}} onPress={
+            () => this.props.navigation.navigate('RincianHarga')
+          }>
             <View style={{alignItems: 'flex-start'}}>
-              <View >
-                <Text style={{fontSize:12, color:'#676767',}}>
+              <Text style={{fontSize:12, color:'#676767',}}>
                   Kamis, 21 Jan 2017 (09.00)
                   {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-                </Text> 
-              </View>
-              <View style={{}}>
-                <Text style={{
-                  color:'#000',
-                  fontWeight: 'bold',
-                  fontSize:20,
-                }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
+              </Text> 
+              <Text style={{color:'#000', fontWeight: 'bold', fontSize:20}}>
+                { Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}
+              </Text>
                 {/*<Text>/ 2 orang</Text>*/}
-              </View>
-              <View style={{marginTop:4}} >
-                <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
-              </View>
+              <Text style={{marginTop:4, fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>
+                Lihat Rincian Harga
+              </Text>
             </View>
           </TouchableOpacity>
-          </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{
-                height: 45,
-                width: '100%',
-                paddingTop: 13,
-                paddingBottom: 13,
-                overflow: 'hidden',
-                borderRadius:25,
-                backgroundColor: '#01d4cb',
-              }}
+              containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={this._book}
               disabled={this.state.isLoading}
@@ -365,13 +287,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex:1
   },
-    thumb: {
+  addButton: {
+    height:35,
+    width:'100%',
+    paddingTop:10,
+    paddingBottom:10,
+    overflow:'hidden',
+    borderRadius:4,
+    backgroundColor: '#437ef7',
+  },
+  thumb: {
     resizeMode:'cover', 
     width:'100%', 
     height:170,
     borderRadius:5
   },
-  seeMore :{
+  seeMore: {
     fontSize:14,
     color:'#676767',
     marginTop:3
@@ -399,27 +330,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });

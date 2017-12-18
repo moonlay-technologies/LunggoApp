@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-export default class LoginScreen extends Component<{}> {
+export default class RincianHarga extends Component {
   
   static navigationOptions = {
     title: 'Rincian',

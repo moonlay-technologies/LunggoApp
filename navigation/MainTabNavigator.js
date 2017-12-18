@@ -13,21 +13,11 @@ import SettingsScreen from '../customer/screens/SettingsScreen';
 
 export default TabNavigator(
   {
-    Explore: {
-      screen: ExploreScreen,
-    },
-    MyBooking: {
-      screen: MyBooking,
-    },
-    Home: {
-      screen: HomeScreen,
-    },
-    Links: {
-      screen: LinksScreen,
-    },
-    Settings: {
-      screen: SettingsScreen,
-    },
+    Explore:  { screen: ExploreScreen },
+    MyBooking:{ screen: MyBooking },
+    Home:     { screen: HomeScreen },
+    Links:    { screen: LinksScreen },
+    Settings: { screen: SettingsScreen },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -71,7 +61,7 @@ export default TabNavigator(
             name={iconName}
             size={28}
             style={{ marginBottom: -3 }}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
           />
         );
       },
@@ -80,5 +70,6 @@ export default TabNavigator(
     tabBarPosition: 'bottom',
     animationEnabled: false,
     swipeEnabled: false,
+    tabBarOptions: { activeTintColor: Colors.bottomTabSelected },
   }
 );

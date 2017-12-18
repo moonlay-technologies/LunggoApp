@@ -300,33 +300,11 @@ const styles = StyleSheet.create({
     height:130, 
     resizeMode:'cover',
   },
-   divider: {
+  divider: {
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });

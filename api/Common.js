@@ -131,7 +131,7 @@ export async function fetchTravoramaApi (request) {
       },
       body: JSON.stringify(request.data),
     }).catch(console.error);
-    if (response==null) {
+    if (response==null || response==' ') {
       console.log('response null, please check your connection!')
       return {message: 'response null, please check your connection!'}
     } 

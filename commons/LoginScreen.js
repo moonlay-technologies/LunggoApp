@@ -1,30 +1,18 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableOpacity, Keyboard, TouchableWithoutFeedback
+import { StyleSheet, Text, View, Image, TextInput,
+  TouchableOpacity, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../api/Common';
 import { validateEmail, validatePassword } from './FormValidation';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {error:[]};
-  }
-
-  static navigationOptions = {
-    //header: null,
-    headerStyle: {
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0,
-    },
   }
 
   _onLoginPressed = () => {
@@ -99,11 +87,8 @@ export default class LoginScreen extends Component {
     let registerHereButton =
       (params && params.appType == 'OPERATOR') ? null :
       <TouchableOpacity
-        style={{
-          position:'absolute',
-          bottom:20,
-          alignItems:'center',
-          width:'111%'
+        style={{ position:'absolute', bottom:20,
+          alignItems:'center', width:'111%'
         }}
         onPress={() => this.props.navigation.navigate('Registration')}
       >
@@ -111,95 +96,95 @@ export default class LoginScreen extends Component {
           Belum punya akun? Daftar di sini
         </Text>
       </TouchableOpacity>
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        {/*<KeyboardAvoidingView behavior="position">*/}
-          <View style={{marginBottom:40}}>
-            <Text style={styles.categoryTitle}>Login</Text>
-          </View>
-          <View style={{marginBottom:10}}>
-            <TextInput
-              style={ this.state.errorUserName ?
-                styles.searchInputFalse : styles.searchInput
-              }
-              placeholder='Email / No. Handphone'
-              keyboardType='email-address'
-              underlineColorAndroid='transparent'
-              autoCapitalize='none'
-              autoCorrect={false}
-              returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
-              blurOnSubmit={false}
-              onChangeText={ userName => this.setState({
-                userName, errorUserName:null, error:null
-              })}
-            />
-          </View>
-
-          {errorMessageUserName}
-          <View>
-            <TextInput
-              ref='passwordInput'
-              style={ this.state.errorPassword ?
-                styles.searchInputFalse : styles.searchInput
-              }
-              underlineColorAndroid='transparent' 
-              placeholder='Password'
-              secureTextEntry={!showPassword}
-              autoCapitalize='none'
-              autoCorrect={false}
-              blurOnSubmit={true}
-              onChangeText={ password => this.setState({
-                password, errorPassword:null, error:null
-              })}
-              onSubmitEditing={this._login}
-              returnKeyType='done'
-            />
-            <View style={{position:'absolute', right:20, top:11,}}>
-              <TouchableOpacity
-                onPress={() =>this.setState({
-                  showPassword:!showPassword
-                })}
-              >
-                <View>
-                  <Icon
-                    name={showPassword ? 'eye' : 'eye-with-line'}
-                    type='entypo' size={22} color='#acacac'
-                  />
-                </View>
-              </TouchableOpacity>
+        <View style={styles.container}>
+            <View style={{marginBottom:40}}>
+              <Text style={styles.categoryTitle}>Login</Text>
             </View>
-          </View>
-          {errorMessagePassword}
-          {errorMessage}
-          <Button
-            containerStyle={{
-              marginTop:30,
-              height:45,
-              paddingTop:13,
-              paddingBottom:10,
-              overflow:'hidden',
-              borderRadius:25,
-              backgroundColor: '#01d4cb',
-            }}
-            style={{fontSize: 16, color: '#ffffff'}}
-            onPress={this._onLoginPressed}
-            disabled={isLoading}
-            styleDisabled={{opacity:.7}}
-          >
-            Login
-          </Button>
-          <View style={{marginTop:15, alignItems:'flex-end'}}>
-            <Text style={{fontSize:12, color:'#464646'}}>
-              Lupa Password ?
-            </Text>
-          </View>
-          {registerHereButton}
-        {/*</KeyboardAvoidingView>*/}
-      </View>
+            <View style={{marginBottom:10}}>
+              <TextInput
+                style={ this.state.errorUserName ?
+                  styles.searchInputFalse : styles.searchInput
+                }
+                placeholder='Email / No. Handphone'
+                keyboardType='email-address'
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+                autoCorrect={false}
+                returnKeyType='next'
+                onSubmitEditing={(event) => {
+                  this.refs.passwordInput.focus();
+                }}
+                blurOnSubmit={false}
+                onChangeText={ userName => this.setState({
+                  userName, errorUserName:null, error:null
+                })}
+              />
+            </View>
+
+            {errorMessageUserName}
+            <View>
+              <TextInput
+                ref='passwordInput'
+                style={ this.state.errorPassword ?
+                  styles.searchInputFalse : styles.searchInput
+                }
+                underlineColorAndroid='transparent' 
+                placeholder='Password'
+                secureTextEntry={!showPassword}
+                autoCapitalize='none'
+                autoCorrect={false}
+                blurOnSubmit={true}
+                onChangeText={ password => this.setState({
+                  password, errorPassword:null, error:null
+                })}
+                onSubmitEditing={this._onLoginPressed}
+                returnKeyType='done'
+              />
+              <View style={{position:'absolute', right:20, top:11,}}>
+                <TouchableOpacity
+                  onPress={() =>this.setState({
+                    showPassword:!showPassword
+                  })}
+                >
+                  <View>
+                    <Icon
+                      name={showPassword ? 'eye' : 'eye-with-line'}
+                      type='entypo' size={22} color='#acacac'
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            {errorMessagePassword}
+            {errorMessage}
+            <Button
+              containerStyle={{
+                marginTop:30,
+                height:45,
+                paddingTop:13,
+                paddingBottom:10,
+                overflow:'hidden',
+                borderRadius:25,
+                backgroundColor: '#01d4cb',
+              }}
+              style={{fontSize: 16, color: '#ffffff'}}
+              onPress={this._onLoginPressed}
+              disabled={isLoading}
+              styleDisabled={{opacity:.7}}
+            >
+              Login
+            </Button>
+            <TouchableOpacity style={{marginTop:15, alignItems:'flex-end'}}
+            onPress={()=>this.props.navigation.navigate('ForgotPassword')}>
+              <Text style={{fontSize:12, color:'#464646'}}>
+                Lupa Password ?
+              </Text>
+            </TouchableOpacity>
+            {registerHereButton}
+        </View>
       </TouchableWithoutFeedback>
     );
   }
