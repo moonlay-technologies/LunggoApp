@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 import { Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView,
+  Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 import { KeyboardAwareScrollView }
@@ -117,12 +117,13 @@ export default class Registration extends Component {
       </View> : null;
 
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <KeyboardAwareScrollView
+        {/*<KeyboardAwareScrollView
           style={{ backgroundColor: 'transparent' }}
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
-        >
+        >*/}
           <View style={{marginBottom:40}}>
             <Text style={styles.categoryTitle}>Daftar Akun Baru</Text>
           </View>
@@ -275,8 +276,9 @@ export default class Registration extends Component {
               Sudah punya akun? Login di sini
             </Text>
           </TouchableOpacity>
-        </KeyboardAwareScrollView>
+        {/*</KeyboardAwareScrollView>*/}
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

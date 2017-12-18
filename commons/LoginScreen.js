@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableOpacity,
+  TextInput, KeyboardAvoidingView, TouchableOpacity, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../api/Common';
 import { validateEmail, validatePassword } from './FormValidation';
@@ -112,6 +112,7 @@ export default class LoginScreen extends Component {
         </Text>
       </TouchableOpacity>
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         {/*<KeyboardAvoidingView behavior="position">*/}
           <View style={{marginBottom:40}}>
@@ -199,6 +200,7 @@ export default class LoginScreen extends Component {
           {registerHereButton}
         {/*</KeyboardAvoidingView>*/}
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
