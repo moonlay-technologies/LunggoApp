@@ -2,11 +2,11 @@
 
 import React, { Component } from 'react';
 import Button from 'react-native-button';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
 import {
   Platform, StyleSheet,
-  Text, View, Image, TextInput, FlatList,
+  Text, View, Image, TextInput, FlatList, TouchableOpacity
 } from 'react-native';
 
 export default class PaxChoice extends Component {
@@ -86,8 +86,35 @@ export default class PaxChoice extends Component {
           style={{ marginBottom: 60, flex:1}}
           data={this.state.pax}
           renderItem={ ({item}) => this._renderItem(item) }
-        />          
-        <Button
+        />
+        <View style={{flexDirection:'row', justifyContent: 'space-between', paddingBottom:20, marginTop:20}}>
+          <View>
+            <Text>Tambah Peserta</Text>
+          </View>
+          <TouchableOpacity
+            containerStyle={{
+              height:35,
+              width:'100%',
+              paddingTop:10,
+              paddingBottom:10,
+              overflow:'hidden',
+              borderRadius:4,
+              backgroundColor: '#437ef7'
+            }}
+            oonPress={ () => navigation.navigate( "AddPax", {
+              addPaxListItem: this.addPaxListItem,
+              requiredPaxData,
+              })}
+          >
+            <Icon
+              name='plus'
+              type='evilicon'
+              size={26}
+              color='#01d4cb'
+            />
+          </TouchableOpacity>
+        </View>         
+        {/*<Button
           containerStyle={{
             height: 45,
             width: '100%',
@@ -104,7 +131,7 @@ export default class PaxChoice extends Component {
           })}
         >
           Tambah Peserta Baru
-        </Button>
+        </Button>*/}
         <View style={{flex:.25}}/>
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
@@ -131,10 +158,10 @@ export default class PaxChoice extends Component {
                 borderRadius:25,
                 backgroundColor: '#01d4cb',
               }}
-              style={{fontSize: 13, fontWeight:'bold', color: '#fff'}}
+              style={{fontSize: 16, fontWeight:'bold', color: '#fff'}}
               onPress={this._return}
             >
-              Daftarkan Peserta
+              Daftarkan
             </Button>
           </View>
         </View>

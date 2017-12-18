@@ -131,6 +131,10 @@ export async function fetchTravoramaApi (request) {
       },
       body: JSON.stringify(request.data),
     }).catch(console.error);
+    if (response==null) {
+      console.log('response null, please check your connection!')
+      return {message: 'response null, please check your connection!'}
+    } 
     if (response.status == 401) {
       await deleteItemAsync('expTime');
       return fetchTravoramaApi(request);

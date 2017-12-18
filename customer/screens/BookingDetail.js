@@ -147,7 +147,7 @@ export default class BookingDetail extends Component {
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{marginBottom:80}}>
           <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
+            {/*<View style={{flexDirection: 'row'}}>
               <View style={{flex:1, marginRight:20,}}>
                 <Image
                   style={styles.thumb}
@@ -172,6 +172,62 @@ export default class BookingDetail extends Component {
                   dolore magna aliqua. Ut enim ad minim veniam.
                 </Text>
               </View>
+            </View>*/}
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{}}>
+                <Icon
+                name='location'
+                type='entypo'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Jepang
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='person'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Maksimum 6 orang
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='event'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Khusus hari minggu
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <View style={{}}>
+                <Icon
+                name='receipt'
+                type='materialicons'
+                size={16}
+                color='#454545'/>
+              </View>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={{fontSize:14}}>
+                  Untuk usia diatas 10 tahun
+                </Text>
+              </View>
             </View>
           </View>{/* end container */}
           <View style={styles.divider}/>
@@ -192,10 +248,15 @@ export default class BookingDetail extends Component {
               </View>
             </View>
             <View>
-              <View>
-                <Text style={styles.activityTitle}>
-                  Peserta
-                </Text>
+              <View style={{flexDirection:'row'}}>
+                <View>
+                  <Text style={styles.activityTitle}>
+                    Peserta
+                  </Text>
+                </View>
+                <View style={{flex:1,alignItems:'flex-end',}}>
+                  <Text style={styles.seeMore}>5 orang</Text>
+                </View>
               </View>
 
                 {pax && pax.map(
@@ -244,18 +305,29 @@ export default class BookingDetail extends Component {
 
         {/*bottom CTA button*/}
         <View style={styles.bottomBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1.5}}>
-            <View >
-              <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
+          <View style={{flex:1.5}}>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('RincianHarga')
+            }
+          >
+            <View style={{alignItems: 'flex-start'}}>
+              <View >
+                <Text style={{fontSize:12, color:'#676767',}}>Kamis, 21 Jan 2017 (09.00)</Text> 
+              </View>
+              <View style={{}}>
+                <Text style={{
+                  color:'#000',
+                  fontWeight: 'bold',
+                  fontSize:20,
+                }}>{ Formatter.price(price) }</Text>
+                {/*<Text>/ 2 orang</Text>*/}
+              </View>
+              <View style={{marginTop:4}} >
+                <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
+              </View>
             </View>
-            <View>
-              <Text style={{
-                color:'#000',
-                fontWeight: 'bold',
-                fontSize:20,
-              }}>{ Formatter.price(price) }</Text>
-            </View> 
-            
+          </TouchableOpacity>
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
@@ -294,6 +366,11 @@ const styles = StyleSheet.create({
     width:'100%', 
     height:170,
     borderRadius:5
+  },
+  seeMore :{
+    fontSize:14,
+    color:'#676767',
+    marginTop:3
   },
   activityTitle: {
     fontWeight:'bold',

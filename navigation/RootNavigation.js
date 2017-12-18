@@ -31,6 +31,7 @@ import AppointmentDetail from '../operator/screens/AppointmentDetail';
 import AppointmentRequest from '../operator/screens/AppointmentRequest';
 import ActivityList from '../operator/screens/ActivityList';
 import Review from '../customer/screens/Review';
+import RincianHarga from '../customer/screens/RincianHarga';
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -44,7 +45,7 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: BeforeLoginScreen
+      screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
@@ -66,6 +67,7 @@ const RootStackNavigator = StackNavigator(
     ExploreScreen: { screen: ExploreScreen },
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
+    RincianHarga: { screen: RincianHarga },
   },
   {
     initialRouteParams: {appType: 'OPERATOR'},
