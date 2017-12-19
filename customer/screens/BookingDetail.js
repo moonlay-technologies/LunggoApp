@@ -93,9 +93,9 @@ export default class BookingDetail extends Component {
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
     let selectedDate = date ?
-      <Text>{ Moment(date).format('ddd, D MMM YYYY') }</Text>
+      Moment(date).format('ddd, D MMM YYYY')
       :
-      <Text>Atur Jadwal</Text>
+      'Atur Jadwal'
 
     let setDateButton = date ?
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
@@ -176,7 +176,7 @@ export default class BookingDetail extends Component {
                 </Text>
               </View>
             </View>
-          </View>{/* end container */}
+          </View>
           <View style={styles.divider}/>
           <View style={styles.container}>
             <View>
@@ -193,13 +193,11 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginVertical:20,
               }}>
-                {selectedDate}
-                <View>
-                  <TouchableOpacity
-                    containerStyle={styles.addButton}
-                    onPress={this._goToCalendarSelection}
-                  > {setDateButton} </TouchableOpacity>
-                </View>
+                <Text>{selectedDate}</Text>
+                <TouchableOpacity containerStyle={styles.addButton}
+                  onPress={this._goToCalendarSelection} >
+                  {setDateButton}
+                </TouchableOpacity>
               </View>
             </View>
             <View>
@@ -213,7 +211,6 @@ export default class BookingDetail extends Component {
                   <Text style={styles.seeMore}>5 orang</Text>
                 </View>
               </View>
-
                 {pax && pax.map(
                   item => <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                     <Text>{item.name}</Text>
@@ -241,7 +238,7 @@ export default class BookingDetail extends Component {
               </View>
             </View>
             
-          </View>{/* end container */}
+          </View>
         </ScrollView>
 
         {/*bottom CTA button*/}
@@ -251,13 +248,16 @@ export default class BookingDetail extends Component {
           }>
             <View style={{alignItems: 'flex-start'}}>
               <Text style={{fontSize:12, color:'#676767',}}>
-                  Kamis, 21 Jan 2017 (09.00)
-                  {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+                  {selectedDate} (09.00)
+                  {
+                  // pax && pax.length>0 ? pax.length+' orang' : 'Start from'
+                  }
               </Text> 
               <Text style={{color:'#000', fontWeight: 'bold', fontSize:20}}>
-                { Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}
+                { Formatter.price(price) // Formatter.price( pax && pax.length>0 ? pax.length*price : price)
+                //<Text>/ 2 orang</Text>
+                }
               </Text>
-                {/*<Text>/ 2 orang</Text>*/}
               <Text style={{marginTop:4, fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>
                 Lihat Rincian Harga
               </Text>
