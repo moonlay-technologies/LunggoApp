@@ -13,3 +13,4 @@ export BookedPageDetail from './BookedPageDetail';
 export AdvanceSearch from './AdvanceSearch';
 export BeforeLoginScreen from './BeforeLoginScreen';
 export Review from './Review';
+export RincianHarga from './RincianHarga';

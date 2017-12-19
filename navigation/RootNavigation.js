@@ -35,7 +35,7 @@ const RootStackNavigator = StackNavigator(
       // screen: Dashboard
       // screen: MainTabNavigator
       // screen: ExploreScreen
-      screen: BeforeLoginScreen
+      screen: ExploreScreen
       // screen: ExploreScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
