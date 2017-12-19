@@ -67,6 +67,7 @@ export default class BookedPageDetail extends Component {
                     </Text>
                   </View>
                 </View>
+          { (selectedSession) ?
                 <View style={{flexDirection: 'row', marginBottom:5}}>
                   <View style={{}}>
                     <Icon
@@ -81,6 +82,9 @@ export default class BookedPageDetail extends Component {
                     </Text>
                   </View>
                 </View>
+            :
+            null
+          }
                 <View style={{flexDirection: 'row', marginBottom:5}}>
                   <View style={{}}>
                     <Icon
