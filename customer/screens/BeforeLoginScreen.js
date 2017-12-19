@@ -1,12 +1,10 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image,
-  TextInput, KeyboardAvoidingView, TouchableHighlight,TouchableOpacity,
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+    TouchableHighlight,TouchableOpacity, } from 'react-native';
 import { fetchTravoramaLoginApi } from '../../api/Common';
 import { Icon } from 'react-native-elements';
-import ImageSlider from 'react-native-image-slider';
 import Button from 'react-native-button';
 
 export default class LoginScreen extends Component {
@@ -59,63 +57,63 @@ export default class LoginScreen extends Component {
     let {userName, password, showPassword, isLoading} = this.state;
     return (
       <View style={styles.container}>
-        {/*<KeyboardAvoidingView behavior="position">*/}
-          <View style={{marginVertical:20}}>
-            <Text style={{fontSize:46, color:'#fff', fontWeight:'bold'}}>Mulai liburanmu sekarang</Text>
-          </View>
+        <View style={{marginVertical:20}}>
+          <Text style={{fontSize:46, color:'#fff', fontWeight:'bold', /*fontFamily: 'opensans-bold'*/}}>
+            Mulai liburanmu sekarang
+          </Text>
+        </View>
 
-          <Button
-            containerStyle={{marginTop:30, height:45, paddingTop:11,overflow:'hidden', borderRadius:25, backgroundColor: '#fff',}}
-            style={{fontSize: 18, color: '#01d4cb'}}
-            onPress={() => this.props.navigation.navigate('Registration')}
-            // onPress={this._login}
-            // disabled={isLoading || !userName || !password}
-          >
-            Daftar
-          </Button>
-          <View style={{marginTop:24, alignItems:'center'}}>
-            <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('LoginScreen')}
-                activeOpacity={0.7}
-              >
-              <Text style={{fontSize:16, color:'#fff', fontWeight:'bold'}}>
-                Sudah punya akun? Tap Disini
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/*<View style={{flexDirection:'row', marginVertical:11}}>
-            <View style={{flex:1, backgroundColor:'#fff', height:1, marginTop:8}}></View>
-            <View style={{paddingLeft:10, paddingRight:10,}}>
-              <Text style={{fontSize:14, color:'#fff'}}>atau masuk dengan</Text>
-            </View>
-            <View style={{flex:1, backgroundColor:'#fff', height:1,  marginTop:8}}></View>
-          </View>
-          <View style={{flexDirection:'row', marginTop:6}}>
-            <View style={{flex:1, paddingVertical:8, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
-              <Icon
-                name='sc-facebook'
-                type='evilicon'
-                size={28}
-                color='#fff'/>
-            </View>
-            <View style={{flex:1, marginLeft:10, paddingVertical:8, paddingLeft:4, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
-              <Icon
-                name='sc-google-plus'
-                type='evilicon'
-                size={28}
-                color='#fff'/>
-            </View>
-          </View>*/}
-          <View style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('MainTabNavigator')}
+        <Button
+          containerStyle={{marginTop:30, height:45, paddingTop:11,overflow:'hidden', borderRadius:25, backgroundColor: '#fff',}}
+          style={{fontSize: 18, color: '#01d4cb'}}
+          onPress={() => this.props.navigation.navigate('Registration')}
+          // onPress={this._login}
+          // disabled={isLoading || !userName || !password}
+        >
+          Daftar
+        </Button>
+        <View style={{marginTop:24, alignItems:'center'}}>
+          <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('LoginScreen')}
+              activeOpacity={0.7}
             >
-              <Text style={{fontSize:14, color:'#fff'}}>
-                Lewati
-              </Text>
-            </TouchableHighlight>
+            <Text style={{fontSize:16, color:'#fff', fontWeight:'bold'}}>
+              Sudah punya akun? Tap Disini
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/*<View style={{flexDirection:'row', marginVertical:11}}>
+          <View style={{flex:1, backgroundColor:'#fff', height:1, marginTop:8}}></View>
+          <View style={{paddingLeft:10, paddingRight:10,}}>
+            <Text style={{fontSize:14, color:'#fff'}}>atau masuk dengan</Text>
           </View>
-        {/*</KeyboardAvoidingView>*/}
+          <View style={{flex:1, backgroundColor:'#fff', height:1,  marginTop:8}}></View>
+        </View>
+        <View style={{flexDirection:'row', marginTop:6}}>
+          <View style={{flex:1, paddingVertical:8, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
+            <Icon
+              name='sc-facebook'
+              type='evilicon'
+              size={28}
+              color='#fff'/>
+          </View>
+          <View style={{flex:1, marginLeft:10, paddingVertical:8, paddingLeft:4, backgroundColor:'transparent', borderWidth:1, borderRadius:25, borderColor:'#fff'}}>
+            <Icon
+              name='sc-google-plus'
+              type='evilicon'
+              size={28}
+              color='#fff'/>
+          </View>
+        </View>*/}
+        <View style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}>
+          <TouchableHighlight
+            onPress={() => this.props.navigation.navigate('MainTabNavigator')}
+          >
+            <Text style={{fontSize:14, color:'#fff'}}>
+              Lewati
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }

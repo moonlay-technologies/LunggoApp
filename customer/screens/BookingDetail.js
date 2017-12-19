@@ -1,21 +1,20 @@
 'use strict';
 
 import React, { Component } from 'react';
-import Button from 'react-native-button';
-import { Rating, Icon } from 'react-native-elements';
+import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
-import {
-  Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView,
-} from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
-import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
+import globalStyles from '../../commons/globalStyles';
+import Button from 'react-native-button';
+import { Rating, Icon } from 'react-native-elements';
+import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
+  ScrollView, } from 'react-native';
 
 export default class BookingDetail extends Component {
 
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       // date : null,
       // shift: null,
@@ -24,8 +23,7 @@ export default class BookingDetail extends Component {
   }
 
   static navigationOptions = {
-    title: 'Detail Pesanan',
-    // headerRight: <LikeShareHeaderButton/>,
+    title: 'Detail Pesanan'
   };
 
   setPaxListItemIndexes = indexes =>
@@ -94,54 +92,15 @@ export default class BookingDetail extends Component {
     let {pax, date, paxListItemIndexes} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let selectedDate =
-      <Text>
-        {date? Moment(date).format('ddd, D MMM YYYY') : 'Atur Jadwal'}
-      </Text>
-    let setDateButton = (date) ?
-      <TouchableOpacity
-        containerStyle={{
-          height:35,
-          width:'100%',
-          paddingTop:10,
-          paddingBottom:10,
-          overflow:'hidden',
-          borderRadius:4,
-          backgroundColor: '#437ef7'
-        }}
-        onPress={this._goToCalendarSelection}
-      >
-        <Text style={{fontSize: 12, color: '#01d4cb'}}>Ubah</Text>
-      </TouchableOpacity>
+    let selectedDate = date ?
+      Moment(date).format('ddd, D MMM YYYY')
       :
-      <TouchableOpacity
-        containerStyle={{
-          height:35,
-          width:'100%',
-          paddingTop:10,
-          paddingBottom:10,
-          overflow:'hidden',
-          borderRadius:4,
-          backgroundColor: '#437ef7'
-        }}
-        // style={{fontSize: 12, color: '#fff'}}
-        onPress={this._goToCalendarSelection}
-      >
-        <Icon
-          name='plus'
-          type='evilicon'
-          size={26}
-          color='#01d4cb'
-        />
-      </TouchableOpacity>
+      'Atur Jadwal'
 
-    // let schedule =
-    //   <View style={styles.container}>
-    //     <Text style={styles.activityTitle}>
-    //       Jadwal
-    //     </Text>
-    //     {calendar}
-    //   </View>
+    let setDateButton = date ?
+      <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
+      :
+      <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -234,7 +193,7 @@ export default class BookingDetail extends Component {
                 </View>
               </View>
             </View>
-          </View>{/* end container */}
+          </View>
           <View style={styles.divider}/>
           <View style={styles.container}>
             <View>
@@ -243,13 +202,19 @@ export default class BookingDetail extends Component {
                   Jadwal
                 </Text>
               </View>
-              <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginVertical:20}}>
-                <View>
-                  {<Text>{selectedDate}</Text>}
-                </View>
-                <View>
-                {setDateButton}
-                </View>
+              <View style={{
+                flexDirection:'row',
+                justifyContent: 'space-between',
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginVertical:20,
+              }}>
+                <Text>{selectedDate}</Text>
+                <TouchableOpacity containerStyle={styles.addButton}
+                  onPress={this._goToCalendarSelection} >
+                  {setDateButton}
+                </TouchableOpacity>
               </View>
             </View>
             <View>
@@ -263,7 +228,6 @@ export default class BookingDetail extends Component {
                   <Text style={styles.seeMore}>5 orang</Text>
                 </View>
               </View>
-
                 {pax && pax.map(
                   item => <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                     <Text>{item.name}</Text>
@@ -275,19 +239,9 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <View>
-                  <Text>Tambah Peserta</Text>
-                </View>
+                <Text>Tambah Peserta</Text>
                 <TouchableOpacity
-                  containerStyle={{
-                    height:35,
-                    width:'100%',
-                    paddingTop:10,
-                    paddingBottom:10,
-                    overflow:'hidden',
-                    borderRadius:4,
-                    backgroundColor: '#437ef7',
-                  }}
+                  containerStyle={styles.addButton}
                   onPress={() => navigation.navigate('PaxChoice', {
                     price, requiredPaxData,
                     setPax: this.setPax,
@@ -296,29 +250,21 @@ export default class BookingDetail extends Component {
                     paxCount: pax? pax.length : 0,
                   })}
                 >
-                  <Icon
-                    name='plus'
-                    type='evilicon'
-                    size={26}
-                    color='#01d4cb'
-                  />
+                  <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                 </TouchableOpacity>
               </View>
             </View>
             
-          </View>{/* end container */}
+          </View>
         </ScrollView>
 
         {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
-          <View style={{flex:1.5}}>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('RincianHarga')
-            }
-          >
+        <View style={globalStyles.bottomCtaBarContainer}>
+          <TouchableOpacity style={{flex:1.5}} onPress={
+            () => this.props.navigation.navigate('RincianHarga')
+          }>
             <View style={{alignItems: 'flex-start'}}>
-              <View >
+              <View>
                 <Text style={{fontSize:15, color:'#000',}}>
                   Total
                   {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
@@ -337,18 +283,9 @@ export default class BookingDetail extends Component {
               </View>
             </View>
           </TouchableOpacity>
-          </View>
           <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
             <Button
-              containerStyle={{
-                height: 45,
-                width: '100%',
-                paddingTop: 13,
-                paddingBottom: 13,
-                overflow: 'hidden',
-                borderRadius:25,
-                backgroundColor: '#01d4cb',
-              }}
+              containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={this._book}
               disabled={this.state.isLoading}
@@ -358,7 +295,6 @@ export default class BookingDetail extends Component {
             </Button>
           </View>
         </View>
-        
       </View>
     );
   }
@@ -370,13 +306,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex:1
   },
-    thumb: {
+  addButton: {
+    height:35,
+    width:'100%',
+    paddingTop:10,
+    paddingBottom:10,
+    overflow:'hidden',
+    borderRadius:4,
+    backgroundColor: '#437ef7',
+  },
+  thumb: {
     resizeMode:'cover', 
     width:'100%', 
     height:170,
     borderRadius:5
   },
-  seeMore :{
+  seeMore: {
     fontSize:14,
     color:'#676767',
     marginTop:3
@@ -404,27 +349,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });

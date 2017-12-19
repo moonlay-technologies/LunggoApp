@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { CheckBox, Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
+import globalStyles from '../../commons/globalStyles';
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, FlatList, TouchableOpacity
@@ -136,7 +137,7 @@ export default class PaxChoice extends Component {
         </Button>*/}
         <View style={{flex:.25}}/>
         {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
+        <View style={globalStyles.bottomCtaBarContainer}>
           <View style={{alignItems: 'flex-start', flex: 1}}>
             <Text style={{marginRight: 5, fontSize: 12,}}>
               {paxCount} orang
@@ -179,28 +180,6 @@ const styles = StyleSheet.create({
     paddingBottom:40,
     backgroundColor: '#fff',
     flex:1,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
   divider: {
     height: 1,

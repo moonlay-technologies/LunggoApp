@@ -19,10 +19,12 @@ import { LoginScreen } from '../commons/Screens';
 
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
-  
+
+
+import ForgotPassword from '../customer/screens/ForgotPassword'
+
 //// unimplemented
 // import Filter from '../screens/Filter';
-// import ForgotPassword from '../screens/ForgotPassword'
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
@@ -35,8 +37,8 @@ const RootStackNavigator = StackNavigator(
       // screen: Dashboard
       // screen: MainTabNavigator
       // screen: ExploreScreen
-      screen: ExploreScreen
-      // screen: ExploreScreen
+      screen: BeforeLoginScreen
+      // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchResults: { screen: SearchResults },
@@ -58,6 +60,7 @@ const RootStackNavigator = StackNavigator(
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
     RincianHarga: { screen: RincianHarga },
+    ForgotPassword: { screen: ForgotPassword },
   },
   {
     initialRouteParams: {appType: 'OPERATOR'},

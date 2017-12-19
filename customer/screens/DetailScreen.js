@@ -1,14 +1,15 @@
 'use strict';
 
 import React, { Component } from 'react';
+import * as Formatter from '../components/Formatter';
+import globalStyles from '../../commons/globalStyles';
 import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import { Rating } from 'react-native-elements';
-import { Icon } from 'react-native-elements'
-import * as Formatter from '../components/Formatter';
+import { Rating, Icon } from 'react-native-elements';
+
 import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, ScrollView,TouchableOpacity,
@@ -499,7 +500,7 @@ export default class DetailScreen extends Component {
         </ScrollView>
 
         {/*bottom CTA button*/}
-        <View style={styles.bottomBarContainer}>
+        <View style={globalStyles.bottomCtaBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1.5}}>
             <View >
               <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
@@ -515,21 +516,9 @@ export default class DetailScreen extends Component {
           </View>
           <View style={{alignItems: 'flex-end', flex:1}}>
             <Button
-              containerStyle={{
-                height: 45,
-                width: '100%',
-                paddingTop: 13,
-                paddingBottom: 13,
-                overflow: 'hidden',
-                borderRadius:25,
-                backgroundColor: '#01d4cb',
-              }}
+              containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={() => this._goToBookingDetail()}
-              // onPress={() => {
-              //   removeAccessToken();
-              //   this.props.navigation.navigate('LoginScreen')
-              // }}
               disabled={!requiredPaxData || isLoading}
               styleDisabled={{color:'#aaa'}}
             >
@@ -619,28 +608,6 @@ const styles = StyleSheet.create({
     fontSize:12,
     color:'#cecece'
 
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
   hyperlink: {
     fontSize:11,

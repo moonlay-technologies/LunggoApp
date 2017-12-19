@@ -7,7 +7,7 @@
     "sdkVersion": "21.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
+    "primaryColor": "#01d4cb",
     "icon": "./assets/icons/app-icon.png",
     "notification": {
       "icon": "./assets/icons/notification-icon.png",

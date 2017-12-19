@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
 import { StyleSheet, Platform, View, Text, TouchableOpacity,
           TouchableHighlight } from 'react-native';
-import Modal from 'react-native-modal'
+import globalStyles from '../../commons/globalStyles';
+import Modal from 'react-native-modal';
 import Button from 'react-native-button';
 import Moment from 'moment';
-import { CheckBox } from 'react-native-elements'
 import 'moment/locale/id';
 
 export default class CalendarPicker extends Component {
@@ -26,11 +26,11 @@ export default class CalendarPicker extends Component {
           disabled date would behave as enabled date, vice versa.  */
       markedDates : {
         // '2017-11-20': {marked: true},
-        '2017-12-21': {disabled: true, availableTime: [
+        '2017-12-24': {availableTime: [
           "1.00 - 2.00",
           "3.00 - 4.00"
         ]},
-        '2017-12-24': {disabled: true, availableTime: [
+        '2017-12-25': {availableTime: [
           "12.00 - 18.00",
           "9.00 - 10.00"
         ]},
@@ -151,8 +151,8 @@ export default class CalendarPicker extends Component {
           pastScrollRange={0}
           futureScrollRange={6}
           theme={{
-            dayTextColor: '#d9e1e8',
-            textDisabledColor: '#2d4150',
+            // dayTextColor: '#d9e1e8',
+            // textDisabledColor: '#2d4150',
           }}
         />
         <Modal
@@ -185,7 +185,7 @@ export default class CalendarPicker extends Component {
             {availableTimeList}
           </View>
         </Modal>
-        <View style={styles.bottomBarContainer}>
+        <View style={globalStyles.bottomCtaBarContainer}>
           <View style={{alignItems: 'flex-start', flex:1}}>
             <Text>{date}</Text>
             <Text>{selectedTime}</Text>
@@ -200,7 +200,7 @@ export default class CalendarPicker extends Component {
               borderRadius: 4,
               backgroundColor: '#437ef7',
             }}
-            style={{fontSize: 12, color: '#ffffff'}}
+            style={{fontSize: 12, color: '#fff'}}
             onPress={this._return}
           >
             Pilih Tanggal
@@ -227,27 +227,5 @@ var styles = StyleSheet.create({
     fontSize:14,
     color:'#454545',
     lineHeight: 20,
-  },
-  bottomBarContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#fbfbfb',
-    padding: 20,
-    borderTopColor: "#efefef",
-    borderTopWidth: 2,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
   },
 });

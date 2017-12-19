@@ -1,26 +1,19 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Icon } from 'react-native-elements'
+import Colors from '../../constants/Colors';
+import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, ScrollView,
+  KeyboardAvoidingView } from 'react-native';
 
-export default class LoginScreen extends Component<{}> {
+export default class ForgotPassword extends Component {
   constructor(props, context) {
     super(props, context);
   }
 
   static navigationOptions = {
-    header: null,
+    title: 'Forgot Password',
   }
 
   _handlePress = () => {
@@ -36,19 +29,27 @@ export default class LoginScreen extends Component<{}> {
           <View style={{marginBottom:25}}>
             <Text style={styles.mediumText}>Enter your email to reset your password</Text>
           </View>
-          <View style={{}}>
-            <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
-          </View>
+          <TextInput style={styles.searchInput} underlineColorAndroid='transparent' placeholder='Email'/>
           <Button
-            containerStyle={{marginTop:40, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
-            style={{fontSize: 16, color: '#ffffff'}}
+            containerStyle={{
+              marginTop:40,
+              height:45,
+              paddingTop:13,
+              paddingBottom:10,
+              overflow:'hidden',
+              borderRadius:25,
+              backgroundColor: Colors.primaryColor,
+            }}
+            style={{fontSize: 16, color: '#fff'}}
             onPress={this._handlePress}
           >
-          Kirim
+            Kirim
           </Button>
           <View style={{alignItems:'center', marginTop:15, }}>
-            <Text style={styles.smallText}>Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
-            be the most annoying cat that you can.</Text>
+            <Text style={styles.smallText}>
+              Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
+              be the most annoying cat that you can.
+            </Text>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -66,20 +67,20 @@ const styles = StyleSheet.create({
   categoryTitle :{
     fontWeight:'bold',
     fontSize:26,
-    color:'#454545'
+    color:'#454545',
   },
   mediumText: {
     fontSize:15,
-    color:'#454545'
+    color:'#454545',
   },
   smallText: {
     fontSize:13,
     color:'#afafaf',
-    textAlign:'justify'
+    textAlign:'justify',
   },
   loginemail: {
     backgroundColor: 'transparent',
-    color: '#ffffff',
+    color: '#fff',
     marginTop: 50,
   },
   description: {
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     padding: 40,
-    color: '#ffffff'
+    color: '#fff',
   },
   searchInput: {
     height: 45,
