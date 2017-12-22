@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput,
-  TouchableOpacity, Keyboard, TouchableWithoutFeedback,
+  TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../api/Common';
 import { validateUserName, validatePassword } from './FormValidation';
@@ -92,7 +92,7 @@ export default class LoginScreen extends Component {
         }}
         onPress={() => this.props.navigation.navigate('Registration')}
       >
-        <Text style={{fontSize:12, color:'#000'}}>
+        <Text style={{fontSize:12, color:'#000', fontFamily:'Hind'}}>
           Belum punya akun? Daftar di sini
         </Text>
       </TouchableOpacity>
@@ -164,13 +164,13 @@ export default class LoginScreen extends Component {
               containerStyle={{
                 marginTop:30,
                 height:45,
-                paddingTop:13,
+                paddingTop:11,
                 paddingBottom:10,
                 overflow:'hidden',
                 borderRadius:25,
                 backgroundColor: '#01d4cb',
               }}
-              style={{fontSize: 16, color: '#ffffff'}}
+              style={{fontSize: 16, color: '#ffffff', fontFamily:'Hind-Bold'}}
               onPress={this._onLoginPressed}
               disabled={isLoading}
               styleDisabled={{opacity:.7}}
@@ -179,7 +179,7 @@ export default class LoginScreen extends Component {
             </Button>
             <TouchableOpacity style={{marginTop:15, alignItems:'flex-end'}}
             onPress={()=>this.props.navigation.navigate('ForgotPassword')}>
-              <Text style={{fontSize:12, color:'#464646'}}>
+              <Text style={{fontSize:12, color:'#464646', fontFamily:'Hind'}}>
                 Lupa Password ?
               </Text>
             </TouchableOpacity>
@@ -194,13 +194,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding:15,
-    paddingTop:90,
+    paddingTop:30,
     backgroundColor: '#fff',
   },
-  categoryTitle :{
+  /*categoryTitle :{
     fontWeight:'bold',
     fontSize:26,
     color:'#454545'
+  },*/
+  categoryTitle :{
+    fontFamily:'Hind-Bold',
+    fontSize:30,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        // lineHeight:20,
+        // paddingTop: 30 - (30 * 0.2),
+        // height:40
+        //backgroundColor:'red'
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+        backgroundColor:'red'
+
+      },
+    }),
   },
   normaltext: {
     backgroundColor: 'transparent',
@@ -222,7 +241,7 @@ const styles = StyleSheet.create({
     height: 45,
     paddingLeft:15,
     paddingTop:10,
-    paddingBottom:10,
+    paddingBottom:7,
     marginRight: 5,
     flexGrow: 1,
     fontSize: 16,
@@ -231,12 +250,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',
+    fontFamily:'Hind',
   },
   searchInputFalse: {
     height: 45,
     paddingLeft:15,
     paddingTop:10,
-    paddingBottom:10,
+    paddingBottom:7,
     marginRight: 5,
     flexGrow: 1,
     fontSize: 16,
@@ -245,5 +265,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',
+    fontFamily:'Hind',
   },
 });

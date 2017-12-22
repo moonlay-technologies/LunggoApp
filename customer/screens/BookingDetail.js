@@ -1,5 +1,5 @@
 'use strict';
-
+                    
 import React, { Component } from 'react';
 import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
@@ -104,7 +104,7 @@ export default class BookingDetail extends Component {
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView style={{marginBottom:80}}>
+        <ScrollView style={{}}>
           <View style={styles.container}>
             <View style={{}}>
               <View style={{flex:1, marginBottom:15}}>
@@ -215,6 +215,7 @@ export default class BookingDetail extends Component {
                   onPress={this._goToCalendarSelection} >
                   {setDateButton}
                 </TouchableOpacity>
+                <Text style={styles.validation}>isi jadwal</Text>
               </View>
             </View>
             <View>
@@ -250,51 +251,78 @@ export default class BookingDetail extends Component {
                     paxCount: pax? pax.length : 0,
                   })}
                 >
-                  <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
+                  <View style={{flexDirection:'row'}}>
+                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
+                    <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
+                      <Text style={styles.validation}>isi peserta</Text>
+                    </View>
+                  </View>
+                  
                 </TouchableOpacity>
               </View>
             </View>
             
           </View>
+          {/*bottom CTA button*/}
+          <View style={globalStyles.bottomCtaBarContainer1}>
+            <TouchableOpacity style={{flex:1.5}} onPress={
+              () => this.props.navigation.navigate('RincianHarga')
+            }>
+              <View style={{alignItems: 'flex-start'}}>
+                <View>
+                  <Text style={{fontSize:15, color:'#000',}}>
+                    Total
+                    {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+                  </Text> 
+                </View>
+                <View style={{marginTop:3}}>
+                  <Text style={{
+                    color:'#000',
+                    fontWeight: 'bold',
+                    fontSize:17,
+                  }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
+                  {/*<Text>/ 2 orang</Text>*/}
+                </View>
+                <View style={{marginTop:4}} >
+                  <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
+                </View>
+              </View>
+            </TouchableOpacity>
+            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
+              <Button
+                containerStyle={globalStyles.ctaButton}
+                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                onPress={this._book}
+                disabled={this.state.isLoading}
+                styleDisabled={{color:'#aaa'}}
+              >
+                Pesan
+              </Button>
+            </View>
+          </View>
+          {/*bottom CTA button*/}
+
+          {/*bottom CTA button jika blm pilih guest dan tanggal */}
+          <View style={globalStyles.bottomCtaBarContainer1}>
+            <View style={{flex:1.5, justifyContent:'center'}}>
+              
+            </View>
+            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
+              <Button
+                containerStyle={globalStyles.ctaButton}
+                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                onPress={this._book}
+                disabled={this.state.isLoading}
+                styleDisabled={{color:'#aaa'}}
+              >
+                Pesan
+              </Button>
+            </View>
+          </View>
+          {/*bottom CTA button jika blm pilih guest dan tanggal*/}
         </ScrollView>
 
-        {/*bottom CTA button*/}
-        <View style={globalStyles.bottomCtaBarContainer}>
-          <TouchableOpacity style={{flex:1.5}} onPress={
-            () => this.props.navigation.navigate('RincianHarga')
-          }>
-            <View style={{alignItems: 'flex-start'}}>
-              <View>
-                <Text style={{fontSize:15, color:'#000',}}>
-                  Total
-                  {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-                </Text> 
-              </View>
-              <View style={{marginTop:3}}>
-                <Text style={{
-                  color:'#000',
-                  fontWeight: 'bold',
-                  fontSize:17,
-                }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
-                {/*<Text>/ 2 orang</Text>*/}
-              </View>
-              <View style={{marginTop:4}} >
-                <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
-              </View>
-            </View>
-          </TouchableOpacity>
-          <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
-            <Button
-              containerStyle={globalStyles.ctaButton}
-              style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={this._book}
-              disabled={this.state.isLoading}
-              styleDisabled={{color:'#aaa'}}
-            >
-              Pesan
-            </Button>
-          </View>
-        </View>
+
       </View>
     );
   }
@@ -350,4 +378,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
+  validation:{
+    color:'#fc2b4e',
+    fontSize:12
+  }
 });

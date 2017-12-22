@@ -185,26 +185,38 @@ export default class CalendarPicker extends Component {
             {availableTimeList}
           </View>
         </Modal>
-        <View style={globalStyles.bottomCtaBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1}}>
+        <View style={globalStyles.bottomCtaBarContainer2}>
+          <View style={{borderBottomWidth:1, borderBottomColor:'#cdcdcd', paddingBottom:10, marginBottom:20}}>
             <Text>{date}</Text>
             <Text>{selectedTime}</Text>
           </View>
-          <Button
-            containerStyle={{
-              height: 35,
-              width: 100,
-              paddingTop: 10,
-              paddingBottom: 10,
-              overflow: 'hidden',
-              borderRadius: 4,
-              backgroundColor: '#437ef7',
-            }}
-            style={{fontSize: 12, color: '#fff'}}
-            onPress={this._return}
-          >
-            Pilih Tanggal
-          </Button>
+          <View style={{flexDirection:'row'}}>
+            <View style={{alignItems: 'flex-start', flex:1.5}}>
+              <View style={{marginTop:3}}>
+                <Text style={{
+                  color:'#000',
+                  fontWeight: 'bold',
+                  fontSize:17,
+                }}>Rp 500.000</Text>
+                {/*<Text>/ 2 orang</Text>*/}
+              </View>
+              <View>
+                <Text style={{fontSize:15, color:'#000',}}>
+                  per orang
+                  {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+                </Text> 
+              </View>
+            </View>
+            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
+              <Button
+                containerStyle={globalStyles.ctaButton}
+                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                onPress={this._return}
+              >
+              Pilih
+              </Button>
+            </View>
+            </View>
         </View>
       </View>
     );

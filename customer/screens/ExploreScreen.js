@@ -91,7 +91,7 @@ export default class ExploreScreen extends React.Component {
                   source={require('../../assets/images/detailimg2.jpg')}
                 />
               </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
+              <View style={{marginTop:10, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.namaKotaBig}>
                     Jepang
@@ -119,7 +119,7 @@ export default class ExploreScreen extends React.Component {
               >
                 <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg3.jpg')}/>
               </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
+              <View style={{marginTop:10, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.namaKotaBig}>
                     Jepang
@@ -147,7 +147,7 @@ export default class ExploreScreen extends React.Component {
               >
                 <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg.jpg')}/>
               </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
+              <View style={{marginTop:10, flexDirection:'row'}}>
                 <View style={{flex:4.5}}>
                   <Text style={styles.namaKotaBig}>
                     Jepang
@@ -462,7 +462,39 @@ const styles = StyleSheet.create({
   namaKotaBig: {
     fontSize:14,
     color:'#454545',
-    marginVertical:3
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight:6,
+        paddingTop: 14,
+        height:22,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:18,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityTitleBig: {
+    fontFamily: 'Hind-Bold',
+    fontSize:19,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 20 - (19 * 0.4),
+        height:42,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+
   },
   thumbnailBig: {
     resizeMode:'cover', 
@@ -499,25 +531,32 @@ const styles = StyleSheet.create({
     color:'#676767',
     marginTop:2
   },
-  activityTitleBig: {
-    fontWeight:'bold',
-    fontSize:19,
-    color:'#454545',
-  },
   priceTitleBig: {
     fontSize:15,
     color:'#676767',
-    marginTop:2
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+      //backgroundColor:'red'
+      },
+      android: {
+        marginTop:3
+
+      },
+    }),
   },
   categoryTitle :{
-    fontWeight:'bold',
+    fontFamily: 'Hind-Bold',
     fontSize:22,
     color:'#454545'
   },
   seeMore :{
     fontSize:14,
     color:'#acacac',
-    marginTop:3
+    marginTop:3,
+    fontFamily: 'Hind'
   },
   container: {
     flex: 1,
