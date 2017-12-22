@@ -519,7 +519,7 @@ export default class DetailScreen extends Component {
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={() => this._goToBookingDetail()}
-              disabled={!requiredPaxData || isLoading}
+              disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
               Pesan

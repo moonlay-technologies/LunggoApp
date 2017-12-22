@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image, TextInput,
   TouchableOpacity, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../api/Common';
-import { validateEmail, validatePassword } from './FormValidation';
+import { validateUserName, validatePassword } from './FormValidation';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 
@@ -17,7 +17,7 @@ export default class LoginScreen extends Component {
 
   _onLoginPressed = () => {
     let {userName, password} = this.state;
-    let errorUserName = validateEmail(userName);
+    let errorUserName = validateUserName(userName);
     let errorPassword = validatePassword(password);
     this.setState({errorUserName, errorPassword});
     if (!errorUserName && !errorPassword) this._login();
@@ -117,7 +117,7 @@ export default class LoginScreen extends Component {
                 onSubmitEditing={(event) => {
                   this.refs.passwordInput.focus();
                 }}
-                blurOnSubmit={false}
+                // blurOnSubmit={false}
                 onChangeText={ userName => this.setState({
                   userName, errorUserName:null, error:null
                 })}

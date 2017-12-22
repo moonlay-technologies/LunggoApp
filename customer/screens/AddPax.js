@@ -51,7 +51,7 @@ export default class AddPax extends Component {
         </View>
       )
 
-    let birthDate = (requiredPaxData.indexOf('Date of Birth') >= 0) ?
+    let birthDate = (requiredPaxData.indexOf('dateOfBirth') >= 0) ?
       <View>
         <Text style={styles.label}>
           Tanggal Lahir
@@ -66,7 +66,7 @@ export default class AddPax extends Component {
       </View>
       : null;
 
-    let idCardNo = (requiredPaxData.indexOf('ID Card No') >= 0) ?
+    let idCardNo = (requiredPaxData.indexOf('idCardNo') >= 0) ?
       <View>
         <Text style={styles.label}>
           No. KTP / Passport
@@ -81,7 +81,7 @@ export default class AddPax extends Component {
       </View>
       : null;
 
-    let passportNumber = (requiredPaxData.indexOf('Passport Number') >= 0) ?
+    let passportNumber = (requiredPaxData.indexOf('passport') >= 0) ?
       <View>
         <Text style={styles.label}>
           No. Passport
