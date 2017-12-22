@@ -11,6 +11,8 @@ import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
   from '../../commons/FormValidation';
+  import globalStyles from '../../commons/globalStyles';
+
 
 export default class Registration extends Component {
   constructor(props, context) {
@@ -125,7 +127,7 @@ export default class Registration extends Component {
           scrollEnabled={true}
         >*/}
           <View style={{marginBottom:30}}>
-            <Text style={styles.categoryTitle}>Daftar Akun Baru</Text>
+            <Text style={globalStyles.categoryTitle}>Daftar Akun Baru</Text>
           </View>
           
           <View style={{marginBottom:15}}>
@@ -289,24 +291,6 @@ const styles = StyleSheet.create({
     padding:15,
     paddingTop:90,
     backgroundColor: '#fff',
-  },
-  categoryTitle :{
-    fontFamily:'Hind-Bold',
-    fontSize:30,
-    color:'#454545',
-    ...Platform.select({
-      ios: {
-        lineHeight:20,
-        paddingTop: 30 - (30 * 0.2),
-        height:40
-        //backgroundColor:'red'
-      },
-      android: {
-        //lineHeight:24
-        //paddingTop: 23 - (23* 1),
-
-      },
-    }),
   },
   normaltext: {
     backgroundColor: 'transparent',

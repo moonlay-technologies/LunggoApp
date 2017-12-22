@@ -76,5 +76,24 @@ export default StyleSheet.create({
       },
     }),
   },
+  categoryTitle :{
+    fontFamily:'Hind-Bold',
+    fontSize:30,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:20,
+        paddingTop: 30 - (30 * 0.2),
+        height:40
+        //backgroundColor:'red'
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+        //backgroundColor:'red'
+
+      },
+    }),
+  },
 
 });

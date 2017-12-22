@@ -13,7 +13,7 @@ import registerForPushNotificationsAsync
 import { SearchResults, MyBooking, AddPax, DetailScreen,
   CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
   Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga } from '../customer/screens/Screens';
+  Review, RincianHarga,  } from '../customer/screens/Screens';
 
 import { LoginScreen } from '../commons/Screens';
 
@@ -30,6 +30,7 @@ import ForgotPassword from '../customer/screens/ForgotPassword'
 
 // for testing purpose
 import ExploreScreen from '../customer/screens/ExploreScreen';
+import Swiper from '../customer/screens/Swiper';
 
 const RootStackNavigator = StackNavigator(
   {
@@ -37,7 +38,7 @@ const RootStackNavigator = StackNavigator(
       // screen: Dashboard
       // screen: MainTabNavigator
       // screen: ExploreScreen
-      screen: BeforeLoginScreen
+      screen: Swiper
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -61,6 +62,7 @@ const RootStackNavigator = StackNavigator(
     Mutasi: { screen: Mutasi },
     RincianHarga: { screen: RincianHarga },
     ForgotPassword: { screen: ForgotPassword },
+
   },
   {
     initialRouteParams: {appType: 'OPERATOR'},
