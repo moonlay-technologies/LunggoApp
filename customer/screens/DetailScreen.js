@@ -322,7 +322,7 @@ export default class DetailScreen extends Component {
                 </Text>
               </View>{/* end containerdescriptionActivity */}
 
-              <View style={styles.divider}></View>
+              {/*<View style={styles.divider}></View>*/}
 
             </View>
 
@@ -371,7 +371,7 @@ export default class DetailScreen extends Component {
                 content: 'Lorem ipsum...',
               },
             ]}/>*/}
-            <View style={{marginTop:0}}>
+            {/*<View style={{marginTop:0}}>
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:1}}>
                   <Text style={styles.sectionTitle}>Similiar Activities</Text>
@@ -380,12 +380,12 @@ export default class DetailScreen extends Component {
                   <Text style={styles.seeMore}>See More</Text>
                 </View>
               </View>
-            </View>
+            </View>*/}
             
           </View>{/* end container */}
 
           
-          <View style={{flex: 1, flexDirection: 'row',}}>
+          {/*<View style={{flex: 1, flexDirection: 'row',}}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={{width:140, marginLeft:15,}}>
                 <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
@@ -493,9 +493,9 @@ export default class DetailScreen extends Component {
                 </View>
               </View>
             </ScrollView>
-          </View>
+          </View>*/}
 
-          <View style={{paddingBottom:100}}></View>
+          <View style={{paddingBottom:65}}></View>
 
         </ScrollView>
 
@@ -559,14 +559,41 @@ const styles = StyleSheet.create({
     borderRadius:20
   },
   activityTitle: {
-    fontWeight:'bold',
+    fontFamily: 'Hind-Bold',
     fontSize:15,
     color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 20 - (19 * 0.4),
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+
   },
   activitydetailTitle: {
-    fontWeight:'bold',
-    fontSize:18,
+    fontFamily: 'Hind-Bold',
+    fontSize:19,
     color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 20 - (19 * 0.4),
+        height:22,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+
   },
   priceTitle: {
     fontSize:12,
@@ -580,7 +607,19 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize:14,
     color:'#454545',
-    lineHeight: 20,
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 10,
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+
   },
   containerdescriptionActivity: {
     marginBottom: 30,

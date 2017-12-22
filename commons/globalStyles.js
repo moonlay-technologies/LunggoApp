@@ -34,5 +34,47 @@ export default StyleSheet.create({
       },
     }),
   },
+  bottomCtaBarContainer1: {
+    flexDirection: 'row',
+    backgroundColor: '#fbfbfb',
+    padding: 20,
+    borderTopColor: "#efefef",
+    borderTopWidth: 1,
+  },
+    bottomCtaBarContainer2: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fbfbfb',
+    padding: 20,
+    borderTopColor: "#efefef",
+    borderTopWidth: 2,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  openingText: {
+    fontSize:56, color:'#fff', 
+    fontFamily: 'Hind-Bold',
+    ...Platform.select({
+      ios: {
+        lineHeight:56*0.4,
+        paddingTop: 76 - (56 * 0.4)
+      },
+      android: {
+        lineHeight:56*0.9,
+        paddingBottom: 100 - (56 * 0.9)
+      },
+    }),
+  },
 
 });
