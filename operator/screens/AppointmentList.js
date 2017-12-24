@@ -34,8 +34,8 @@ class ListItem extends React.PureComponent {
           </View>
 
           <View style={{flex:3}}>
+            <Text style={styles.activityTitle}>{item.name}</Text>
             <Text style={styles.activityTitle}>{item.paxCount} Guest</Text>
-            {/*<Text style={styles.activityTitle}>{item.name}</Text>*/}
             <View style={{width:'100%', marginTop:5, flexDirection:'row',}}>
               <View style={{ flexDirection:'row', marginRight:10 }}>
                 <Text style={styles.timeActivity}>
@@ -49,7 +49,9 @@ class ListItem extends React.PureComponent {
               </View>
             </View>
             <View style={{marginTop:5,}}>
-              <Text style={styles.status}>3 days remaining</Text>
+              <Text style={styles.status}>
+                {Moment(item.date).fromNow()}
+              </Text>
             </View>
           </View>
 

@@ -103,7 +103,7 @@ export default class AppointmentRequests extends Component {
   componentDidMount() {
     const version = 'v1';
     let request = {
-      path: `/${version}/operator/request`,
+      path: `/${version}/operator/appointments/request`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     }
     fetchTravoramaApi(request).then( response => {

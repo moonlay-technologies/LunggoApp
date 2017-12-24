@@ -37,7 +37,7 @@ const RootStackNavigator = StackNavigator(
       // screen: Dashboard
       // screen: MainTabNavigator
       // screen: ExploreScreen
-      screen: BeforeLoginScreen
+      screen: LoginScreen
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -63,7 +63,7 @@ const RootStackNavigator = StackNavigator(
     ForgotPassword: { screen: ForgotPassword },
   },
   {
-    // initialRouteParams: {appType: 'OPERATOR'},
+    initialRouteParams: {appType: 'OPERATOR'},
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',

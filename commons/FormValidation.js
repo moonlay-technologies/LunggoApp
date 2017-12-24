@@ -14,7 +14,7 @@ export function validateUserName (userNameString) {
 
 export function validateEmail (emailString) {
   if (!emailString) return 'Wajib diisi';
-  if (!emailString.match(Regex.email)) return 'Alamat email belum benar';
+  if (!emailString.match(Regex.email)) return 'Email/nomor telepon belum benar';
   return null;
 }
 
@@ -22,7 +22,7 @@ export function validatePhone (phoneNumber) {
   //// blom bisa validasi + (+62...)
 	if ( !isNaN(phoneNumber) && phoneNumber!='' && phoneNumber!=false
     && phoneNumber >= 1000000 ) return null;
-  return 'Nomor belum benar';
+  return 'Email/nomor telepon belum benar';
 }
 
 export function validatePassword (passwordString) {
