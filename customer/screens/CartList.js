@@ -38,23 +38,33 @@ export default class LoginScreen extends Component<{}> {
                 </View>
                 <View style={{marginTop:5}}>
                   <Text style={styles.infoActivity}>
-                    Jepang - 20/08/2018 - 4 orang
+                    Jepang
                   </Text>
-                </View>
-                <View style={{marginTop:10}}>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
+                  <Text style={styles.infoActivity}>
+                    20 Aug 2018 - 19.00
+                  </Text>
+                  <Text style={styles.infoActivity}>
+                    4 orang
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={{paddingVertical:10, paddingRight:10, borderTopWidth:1, borderTopColor:'#ececec', alignItems:'flex-end', justifyContent:'flex-end', flexDirection:'row'}}>
-              <View style={{marginRight:20}}>
-                <Text style={styles.actionText}>Edit</Text>
+            <View style={{paddingVertical:15, paddingHorizontal:10, borderTopWidth:1, borderTopColor:'#ececec',flexDirection:'row'}}>
+
+              <View style={{flex:1}}>
+                <Text style={styles.priceTitle}>
+                  IDR 300.000
+                </Text>
               </View>
-              <View>
-                <Text style={styles.actionText}>Delete</Text>
+              <View style={{flex:1, alignItems:'flex-end', flexDirection:'row', justifyContent:'flex-end' }}>
+                <View style={{marginRight:20}}>
+                  <Text style={styles.actionText}>Edit</Text>
+                </View>
+                <View>
+                  <Text style={styles.actionText}>Delete</Text>
+                </View>
               </View>
+              
             </View>
           </View>
 
@@ -71,23 +81,33 @@ export default class LoginScreen extends Component<{}> {
                 </View>
                 <View style={{marginTop:5}}>
                   <Text style={styles.infoActivity}>
-                    Jepang - 20/08/2018 - 4 orang
+                    Jepang
                   </Text>
-                </View>
-                <View style={{marginTop:10}}>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
+                  <Text style={styles.infoActivity}>
+                    20 Aug 2018 - 19.00
+                  </Text>
+                  <Text style={styles.infoActivity}>
+                    4 orang
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={{paddingVertical:10, paddingRight:10, borderTopWidth:1, borderTopColor:'#ececec', alignItems:'flex-end', justifyContent:'flex-end', flexDirection:'row'}}>
-              <View style={{marginRight:20}}>
-                <Text style={styles.actionText}>Edit</Text>
+            <View style={{paddingVertical:15, paddingHorizontal:10, borderTopWidth:1, borderTopColor:'#ececec',flexDirection:'row'}}>
+
+              <View style={{flex:1}}>
+                <Text style={styles.priceTitle}>
+                  IDR 300.000
+                </Text>
               </View>
-              <View>
-                <Text style={styles.actionText}>Delete</Text>
+              <View style={{flex:1, alignItems:'flex-end', flexDirection:'row', justifyContent:'flex-end' }}>
+                <View style={{marginRight:20}}>
+                  <Text style={styles.actionText}>Edit</Text>
+                </View>
+                <View>
+                  <Text style={styles.actionText}>Delete</Text>
+                </View>
               </View>
+              
             </View>
           </View>
 
@@ -104,23 +124,33 @@ export default class LoginScreen extends Component<{}> {
                 </View>
                 <View style={{marginTop:5}}>
                   <Text style={styles.infoActivity}>
-                    Jepang - 20/08/2018 - 4 orang
+                    Jepang
                   </Text>
-                </View>
-                <View style={{marginTop:10}}>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
+                  <Text style={styles.infoActivity}>
+                    20 Aug 2018 - 19.00
+                  </Text>
+                  <Text style={styles.infoActivity}>
+                    4 orang
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={{paddingVertical:10, paddingRight:10, borderTopWidth:1, borderTopColor:'#ececec', alignItems:'flex-end', justifyContent:'flex-end', flexDirection:'row'}}>
-              <View style={{marginRight:20}}>
-                <Text style={styles.actionText}>Edit</Text>
+            <View style={{paddingVertical:15, paddingHorizontal:10, borderTopWidth:1, borderTopColor:'#ececec',flexDirection:'row'}}>
+
+              <View style={{flex:1}}>
+                <Text style={styles.priceTitle}>
+                  IDR 300.000
+                </Text>
               </View>
-              <View>
-                <Text style={styles.actionText}>Delete</Text>
+              <View style={{flex:1, alignItems:'flex-end', flexDirection:'row', justifyContent:'flex-end' }}>
+                <View style={{marginRight:20}}>
+                  <Text style={styles.actionText}>Edit</Text>
+                </View>
+                <View>
+                  <Text style={styles.actionText}>Delete</Text>
+                </View>
               </View>
+              
             </View>
           </View>
 
@@ -195,7 +225,7 @@ const styles = StyleSheet.create({
         lineHeight:5,
         paddingTop: 14,
        // backgroundColor:'red',
-        marginBottom:-10
+        marginBottom:-5
       },
       android: {
         //lineHeight:24
