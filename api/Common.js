@@ -171,3 +171,20 @@ export async function removeAccessToken () {
   ]);
   return;
 }
+
+export async function fetchWishlist (activityId = null, isAddingToWishlist = true) => {
+  const version = 'v1';
+  let request = {
+    path: `/${version}/activities/wishlist`,
+    requiredAuthLevel: AUTH_LEVEL.Users,
+  }
+  if (activityId===null) request.method = 'GET';
+  else {
+    request.path += `/${activityId}`
+    request.method = (isAddingToWishlist)? 'PUT' : 'DELETE';
+  }
+  fetchTravoramaApi(request).then( response => {
+    // this.setState({bookingList: response.myBookings});
+  }).catch(error => console.log(error));
+  return;
+}

@@ -34,9 +34,10 @@ export default class BookedPageDetail extends Component {
   render() {
     let {name, mediaSrc, date, bookingStatus, price, timeLeft, city,
           selectedSession } = this.state;
-    switch (bookingStatus) {
-      case 'PROC': bookingStatus = 'dalam progres'; break;
-    }
+    let bookingStatusText = 'booking status';
+    // switch (bookingStatus) {
+    //   case 'PROC': bookingStatusText = 'dalam progres'; break;
+    // }
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{}}>
@@ -142,7 +143,7 @@ export default class BookedPageDetail extends Component {
                   Status
                 </Text>
                 <Text style={styles.status}>
-                  {bookingStatus}
+                  {bookingStatusText}
                 </Text>
               </View>
               <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>

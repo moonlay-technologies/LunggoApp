@@ -3,11 +3,11 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, ActivityIndicator, FlatList,
   TouchableHighlight, TouchableOpacity } from 'react-native';
-// import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import * as Formatter from '../components/Formatter';
 import search from '../components/searchController';
 import SearchHeader from '../components/SearchHeader';
 import { Icon } from 'react-native-elements';
+import {fetchWishlist} from '../../api/Common';
 
 class ListItem extends React.PureComponent {
 
@@ -16,10 +16,10 @@ class ListItem extends React.PureComponent {
 
   _onPressWish = () => {
     let {item} = this.props;
-    item.wished = !item.wished;
+    item.wishlisted = !item.wishlisted;
     this.forceUpdate();
-    if (item.wished) {} //wish
-    else {} //unwish
+    if (item.wishlisted) fetchWishlist(item.activityId, true)
+    else fetchWishlist(item.activityId, false)
   };
 
   render() {
@@ -28,8 +28,8 @@ class ListItem extends React.PureComponent {
       <TouchableOpacity onPress={this._onPressWish}
         style={{flex:1, alignItems:'flex-end',}} >
         <Icon type='materialicons' size={24}
-          name={item.wished? 'favorite' : 'favorite-border'}
-          color={item.wished? 'red' : '#cdcdcd'}
+          name={item.wishlisted? 'favorite' : 'favorite-border'}
+          color={item.wishlisted? 'red' : '#cdcdcd'}
         />
       </TouchableOpacity>
     );
@@ -105,14 +105,6 @@ export default class SearchResults extends React.Component {
   _onPressItem = item => {
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
-
-  // _onPressLike = item => {
-  //   // console.log("WISHed");
-  //   // item.wished = true;
-  //   // console.log(this.state.list);
-  //   // this.setState({list:this.state.list});
-  //   // this.forceUpdate();
-  // }
 
   render() {
     this.props.navigation.state.key = 'SearchResults';

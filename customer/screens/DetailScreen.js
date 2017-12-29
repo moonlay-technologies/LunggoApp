@@ -295,7 +295,7 @@ export default class DetailScreen extends Component {
               <TouchableOpacity onPress={this._enlargeMapView}>
                 <MapView
                   style={{width:"100%", height:150}}
-                  initialRegion={{
+                  region={{
                     latitude: 37.78825,
                     longitude: -122.4324,
                     latitudeDelta: 0.0922,

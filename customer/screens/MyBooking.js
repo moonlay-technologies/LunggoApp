@@ -16,6 +16,10 @@ class ListItem extends React.PureComponent {
   _onPress = () => this.props.onPressItem(this.props.item);
   render() {
     const {item} = this.props;
+    let bookingStatusText = 'booking status';
+    switch (item.bookingStatus) {
+      case 'PROC' : bookingStatusText = 'On Progress'; break;
+    }
     return (
       <View key={item.rsvNo}>
         <View style={styles.divider}></View>
@@ -40,7 +44,7 @@ class ListItem extends React.PureComponent {
                 {item.name}
               </Text>
               <Text style={styles.status}>
-                {item.bookingStatus}
+                {bookingStatus}
               </Text>
               <View style={{
                 marginTop: 10,
