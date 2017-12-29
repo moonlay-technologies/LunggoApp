@@ -21,7 +21,7 @@ export default class LoginScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <View style={{justifyContent:'center', alignItems:'center', flex:1}}>
-          <Image style={{width:150, height:150, resizeMode:'contain'}} source={require('../assets/images/cart.jpg')}/>
+          <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../assets/images/cart1.jpg')}/>
           <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
             <Text style={styles.textCartBesar}>Keranjang kamu kosong</Text>
             <View>

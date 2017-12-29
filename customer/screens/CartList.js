@@ -170,7 +170,7 @@ export default class LoginScreen extends Component<{}> {
               color:'#000',
               fontWeight: 'bold',
               fontSize:20,
-            }}>IDR 300.000</Text>
+            }}>Rp 300.000</Text>
           </View> 
           
         </View>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         marginBottom:-10,
       },
       android: {
-        lineHeight:24
+        lineHeight:20
         //paddingTop: 23 - (23* 1),
 
       },
