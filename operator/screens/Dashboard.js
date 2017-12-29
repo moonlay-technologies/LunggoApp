@@ -80,7 +80,7 @@ export default class Dashboard extends React.Component {
 
   _getAppointmentRequest = () => {
     const version = 'v1';
-    const path = `/${version}/operator/request`;
+    const path = `/${version}/operator/appointments/request`;
     // this.setState({ isLoading: true });
     let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
     fetchTravoramaApi(request).then(response => {

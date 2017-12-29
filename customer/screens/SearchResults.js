@@ -1,10 +1,8 @@
 'use strict';
 
-import React, { Component } from 'react';
-import {
-  StyleSheet, Image, View, Text, ActivityIndicator,
-  TouchableHighlight, FlatList,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Image, View, Text, ActivityIndicator, FlatList,
+  TouchableHighlight, TouchableOpacity } from 'react-native';
 // import {fetchTravoramaApi, AUTH_LEVEL} from '../components/Common';
 import * as Formatter from '../components/Formatter';
 import search from '../components/searchController';
@@ -13,14 +11,31 @@ import { Icon } from 'react-native-elements';
 
 class ListItem extends React.PureComponent {
 
-  _onPress = () => {
-    this.props.onPressItem(this.props.item);
-  }
+  _onPress = () => this.props.onPressItem(this.props.item);
+  // _onPressLike = item => this.props.onPressLike(item);
+
+  _onPressWish = () => {
+    let {item} = this.props;
+    item.wished = !item.wished;
+    this.forceUpdate();
+    if (item.wished) {} //wish
+    else {} //unwish
+  };
 
   render() {
     const {item} = this.props;
+    let wishButton = (
+      <TouchableOpacity onPress={this._onPressWish}
+        style={{flex:1, alignItems:'flex-end',}} >
+        <Icon type='materialicons' size={24}
+          name={item.wished? 'favorite' : 'favorite-border'}
+          color={item.wished? 'red' : '#cdcdcd'}
+        />
+      </TouchableOpacity>
+    );
+
     return (
-      <View style={{backgroundColor:'#fff', flex:1}}>
+      <View style={{backgroundColor:'#fff', width:'50%'}}>
         <TouchableHighlight
           onPress={this._onPress}
           underlayColor='#ddd'>
@@ -40,29 +55,9 @@ class ListItem extends React.PureComponent {
                     { Formatter.price(item.price) }
                   </Text>
                 </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
+                {wishButton}
               </View>
             </View>
-            {/*<View style={styles.containerItem2}>
-              <Image style={styles.thumbnailMedium}
-                source={{ uri: item.mediaSrc }}
-              />
-              <View style={styles.textContainer}>
-                <Text style={styles.activityTitle} numberOfLines={1}>
-                  {item.name}
-                </Text>
-                <Text style={styles.priceTitle}>
-                  {Formatter.price(item.price)}
-                </Text>
-              </View>
-            </View>*/}
-
           </View>
         </TouchableHighlight>
       </View>
@@ -71,7 +66,7 @@ class ListItem extends React.PureComponent {
 
 }
 
-export default class SearchResults extends Component {
+export default class SearchResults extends React.Component {
 
   constructor (props) {
     super(props)
@@ -92,7 +87,7 @@ export default class SearchResults extends Component {
     search(this.state.searchString)
       .then(response => {
         this.setState({list: response, isLoading: false});
-        this.forceUpdate();
+        // this.forceUpdate();
       }).catch(error=>console.log(error));
   }
 
@@ -103,12 +98,21 @@ export default class SearchResults extends Component {
       item={item}
       index={index}
       onPressItem={this._onPressItem}
+      // onPressLike={this._onPressLike}
     />
   );
 
-  _onPressItem = (item) => {
+  _onPressItem = item => {
     this.props.navigation.navigate('DetailScreen', {details: item})
   };
+
+  // _onPressLike = item => {
+  //   // console.log("WISHed");
+  //   // item.wished = true;
+  //   // console.log(this.state.list);
+  //   // this.setState({list:this.state.list});
+  //   // this.forceUpdate();
+  // }
 
   render() {
     this.props.navigation.state.key = 'SearchResults';
@@ -139,9 +143,6 @@ const styles = StyleSheet.create({
   }, 
   containerItem: {
     flex:.2,
-  },
-  containerItem2: {
-    // flex:1,
   },
   namaKota: {
     fontSize:12,

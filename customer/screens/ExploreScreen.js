@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
   Button, TextInput, StyleSheet } from 'react-native';
 import SearchHeader from '../components/SearchHeader';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 export default class ExploreScreen extends React.Component {
 
@@ -12,7 +12,7 @@ export default class ExploreScreen extends React.Component {
     super(props)
     this.state = {
       isLoading: false,
-      message: ''
+      message: '',
     };
   }
 
@@ -20,10 +20,26 @@ export default class ExploreScreen extends React.Component {
     header: (props) => <SearchHeader {...props}/>
   };
 
-  _onPressProduct = id => this.props.navigation.navigate('DetailScreen', {id});
-  _onPressCategory = str => this.props.navigation.navigate('SearchResults', {searchString: str});
+  _goTo = (screen, params) =>
+    this.props.navigation.navigate(screen, params);
+
+  _onPressProduct = id => this._goTo('DetailScreen', {id});
+  _onPressCategory = str => this._goTo('SearchResults', {searchString: str});
 
   render() {
+
+    let categoryHeader = ({title,searchUrl}) =>
+      <View style={[styles.container,{marginTop:30,flexDirection:'row'}]}>
+        <View style={{flex:2}}>
+          <Text style={styles.categoryTitle}>{title}</Text>
+        </View>
+        <TouchableOpacity style={{flex:1,alignItems:'flex-end'}}
+          onPress={() => this._onPressCategory(searchUrl)} >
+          <Text style={styles.seeMore}>Lihat Semua</Text>
+        </TouchableOpacity>
+      </View>
+
+
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
 
@@ -66,18 +82,7 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */} 
 
-        <View style={styles.container}>
-          <View>
-            <View style={{flexDirection:'row'}}>
-              <View style={{flex:1}}>
-                <Text style={styles.categoryTitle}>Populer</Text>
-              </View>
-              <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>Lihat Semua</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+        {categoryHeader({title:'Tiket', searchUrl:'tiket'})}
 
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -171,18 +176,7 @@ export default class ExploreScreen extends React.Component {
           </ScrollView>
         </View>
 
-        <View style={styles.container}>
-          <View style={{marginTop:30}}>
-            <View style={{flexDirection:'row'}}>
-              <View style={{flex:1}}>
-                <Text style={styles.categoryTitle}>Water Sport</Text>
-              </View>
-              <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>Lihat Semua</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+        {categoryHeader({title:'Paket', searchUrl:'paket'})}
 
         <View style={{flexDirection:'row', marginTop:10}}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -264,98 +258,10 @@ export default class ExploreScreen extends React.Component {
           </ScrollView>
         </View>
 
-        <View style={styles.container}>
-          <View style={{marginTop:30}}>
-            <View style={{flexDirection:'row'}}>
-              <View style={{flex:1}}>
-                <Text style={styles.categoryTitle}>City Tour</Text>
-              </View>
-              <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>Lihat Semua</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+        {categoryHeader({title:'Trip', searchUrl:'trip'})}
 
-        <View style={{flexDirection:'row', marginTop:10}}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:140, marginLeft:15,}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:140, marginLeft:15}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1,}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:140, marginLeft:15, marginRight:15}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
+
+        {categoryHeader({title:'Tur Keliling Kota', searchUrl:'tur'})}
 
         <View style={styles.container}>
           <View style={{marginTop:30}}>

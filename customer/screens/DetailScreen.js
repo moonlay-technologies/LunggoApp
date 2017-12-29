@@ -86,6 +86,10 @@ export default class DetailScreen extends Component {
     this.setState({isLoading: false})
   }
 
+  _enlargeMapView = () => {
+    this.props.navigation.navigate('MapScreen');
+  }
+
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, availableDateTimes } = this.state;
@@ -288,23 +292,25 @@ export default class DetailScreen extends Component {
             <View style={styles.divider}></View>
 
             <View style={styles.containerdescriptionActivity}>
-              <MapView
-                style={{width:"100%", height:150}}
-                initialRegion={{
-                  latitude: 37.78825,
-                  longitude: -122.4324,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                zoomEnabled={false}
-                rotateEnabled={false}
-                scrollEnabled={false}
-                pitchEnabled={false}
-              >
-                <Marker
-                  coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-                />
-              </MapView>
+              <TouchableOpacity onPress={this._enlargeMapView}>
+                <MapView
+                  style={{width:"100%", height:150}}
+                  initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                  zoomEnabled={false}
+                  rotateEnabled={false}
+                  scrollEnabled={false}
+                  pitchEnabled={false}
+                >
+                  <Marker
+                    coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                  />
+                </MapView>
+              </TouchableOpacity>
               <View style={{marginTop:10}}>
                 <Text>
                   Jl. Sisingamangaraja 22{"\n"}
@@ -519,7 +525,7 @@ export default class DetailScreen extends Component {
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
               onPress={() => this._goToBookingDetail()}
-              disabled={!requiredPaxData || isLoading}
+              disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
               Pesan
