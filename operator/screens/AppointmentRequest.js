@@ -100,15 +100,19 @@ export default class AppointmentRequests extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  _fetchAppointmentRequests = () => {
     const version = 'v1';
     let request = {
       path: `/${version}/operator/appointments/request`,
-      requiredAuthLevel: AUTH_LEVEL.Guest,
+      requiredAuthLevel: AUTH_LEVEL.User,
     }
     fetchTravoramaApi(request).then( response => {
       this.setState({list: response.appointmentRequests});
     }).catch(error => console.log(error));
+  }
+
+  componentDidMount() {
+    this._fetchAppointmentRequests();
   }
 
   _keyExtractor = (item, index) => index;
@@ -126,17 +130,22 @@ export default class AppointmentRequests extends Component {
     this.props.navigation.navigate(
       'BookedPageDetail',{details: item}
     );
-  };  
-  _acceptRequest = (item) => {
-    this.props.navigation.navigate(
-      'BookedPageDetail',{details: item}
-    );
-  };  
-  _declineRequest = (item) => {
-    this.props.navigation.navigate(
-      'BookedPageDetail',{details: item}
-    );
-  };  
+  }
+
+  _respondRequest = (rsvNo, action) => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/operator/appointments/${action}/${rsvNo}`,
+      method: 'POST',
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then( response => {
+      this._fetchAppointmentRequests();
+    }).catch(error => console.log(error));
+  }
+
+  _acceptRequest = ({rsvNo}) => this._respondRequest(rsvNo,'confirm')
+  _declineRequest = ({rsvNo}) => this._respondRequest(rsvNo, 'decline')
 
   render() {
     return (

@@ -1,65 +1,51 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ImageSlider from 'react-native-image-slider';
-import MapView, { Marker } from 'react-native-maps';
-import Panel from '../components/Panel';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
-import { Rating } from 'react-native-elements';
 import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements'
-import Swipeout from 'react-native-swipeout';
+import { Icon } from 'react-native-elements';
 import {
-  Platform, StyleSheet,
+  Platform, StyleSheet, FlatList,
   Text, View, Image, TextInput, ScrollView, TouchableHighlight, ListView
 } from 'react-native';
 
-export default class BookingDetail extends Component {
 
+class ListItem extends React.PureComponent {
+
+  render() {
+    const {item} = this.props;
+    return (
+      <TouchableHighlight key={item.rsvNo}
+        underlayColor='rgba(192,192,192,1,0.6)'
+        // onPress={this.viewNote.bind(this, rowData)}
+      >
+        <View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.note}> rowData </Text>
+          </View>
+          <View style={styles.divider} />
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
+}
+
+export default class Cart extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      dataSource: [
-        { name: "Ali Zainal" },
-        { name: "John Doe (me)" },
+      list: [
+        { rsvNo: "Ali Zainal" },
+        { rsvNo: "John Doe (me)" },
       ]
     };
   }
 
   static navigationOptions = {
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      // backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
   };
 
-renderRow(rowData) {
-    return (
-    <TouchableHighlight
-      underlayColor='rgba(192,192,192,1,0.6)'
-      onPress={this.viewNote.bind(this, rowData)} >
-      <View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.note}> {rowData} </Text>
-        </View>
-        <Separator />
-      </View>
-    </TouchableHighlight>
-    )
-  }
   viewNote(rowData) {
     this.props.navigator.push({
       title: 'The Note',
@@ -71,20 +57,35 @@ renderRow(rowData) {
     });
   }
 
+  _viewDetails = (item) => {
+    this.props.navigation.navigate(
+      'BookedPageDetail',{details: item}
+    );
+  }
+
+  _keyExtractor = (item, index) => index;
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+      onPressItem={this._viewDetails}
+    />
+  );
+
   render() {
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
-      <View style={{flex:1, backgroundColor:'#ffffff'}}>
+      <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{marginBottom:60,marginTop:60}}>
           <View style={styles.container}>
             <View style={styles.container}>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow.bind(this)} />
-        </View>
-          </View>{/* end container */}
+              <FlatList
+                data={this.state.list}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+              />
+            </View>
+          </View>
         </ScrollView>
-
       </View>
     );
   }

@@ -71,7 +71,7 @@ export default class Registration extends Component {
             error = 'Akun sudah pernah terdaftar';
             break;
           case 'ERR_INVALID_REQUEST':
-            error = 'Terjadi kesalahan pada pengisian formulir';
+            error = 'Ada kesalahan pengisian data';
             break;
           default:
             error = 'Terjadi kesalahan pada server';

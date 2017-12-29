@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
   Button, TextInput, StyleSheet } from 'react-native';
 import SearchHeader from '../components/SearchHeader';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 export default class ExploreScreen extends React.Component {
 
@@ -12,7 +12,7 @@ export default class ExploreScreen extends React.Component {
     super(props)
     this.state = {
       isLoading: false,
-      message: ''
+      message: '',
     };
   }
 

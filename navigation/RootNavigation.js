@@ -22,6 +22,7 @@ import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
 
 
 import ForgotPassword from '../customer/screens/ForgotPassword'
+import Cart from '../customer/screens/Cart'
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -35,9 +36,11 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       // screen: Dashboard
-      // screen: MainTabNavigator
+      screen: MainTabNavigator
+      // screen: Cart
       // screen: ExploreScreen
-      screen: LoginScreen
+      // screen: LoginScreen
+      // screen: Dashboard
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
