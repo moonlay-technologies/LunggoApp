@@ -10,12 +10,13 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking';
 import LinksScreen from '../customer/screens/LinksScreen';
 import SettingsScreen from '../customer/screens/SettingsScreen';
+import CartBlank from '../customer/screens/CartBlank';
 
 export default TabNavigator(
   {
-    Explore:  { screen: ExploreScreen },
+    Explore:  { screen: ExploreScreen,  },
     MyBooking:{ screen: MyBooking },
-    Home:     { screen: HomeScreen },
+    Home:     { screen: CartBlank },
     Links:    { screen: LinksScreen },
     Settings: { screen: SettingsScreen },
   },

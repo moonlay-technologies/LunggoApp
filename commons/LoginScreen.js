@@ -101,7 +101,7 @@ export default class LoginScreen extends Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
             <View style={{marginBottom:40}}>
-              <Text style={styles.categoryTitle}>Login</Text>
+              <Text style={globalStyles.categoryTitle}>Login</Text>
             </View>
             <View style={{marginBottom:10}}>
               <TextInput
@@ -202,25 +202,6 @@ const styles = StyleSheet.create({
     fontSize:26,
     color:'#454545'
   },*/
-  categoryTitle :{
-    fontFamily:'Hind-Bold',
-    fontSize:30,
-    color:'#454545',
-    ...Platform.select({
-      ios: {
-        // lineHeight:20,
-        // paddingTop: 30 - (30 * 0.2),
-        // height:40
-        //backgroundColor:'red'
-      },
-      android: {
-        //lineHeight:24
-        //paddingTop: 23 - (23* 1),
-        backgroundColor:'red'
-
-      },
-    }),
-  },
   normaltext: {
     backgroundColor: 'transparent',
     color: '#ffffff',
