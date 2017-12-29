@@ -32,14 +32,15 @@ import ForgotPassword from '../customer/screens/ForgotPassword'
 import ExploreScreen from '../customer/screens/ExploreScreen';
 import Swiper from '../customer/screens/Swiper';
 import CartBlank from '../customer/screens/CartBlank';
+import CartList from '../customer/screens/CartList';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
       // screen: Dashboard
-      screen: MainTabNavigator
+      //screen: MainTabNavigator
       // screen: ExploreScreen
-      //screen: CartBlank
+      screen: CartList
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
