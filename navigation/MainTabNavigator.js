@@ -32,36 +32,36 @@ export default TabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case 'Home':
-            iconName = Platform.OS === 'ios'
-              ? `ios-information-circle${focused ? '' : '-outline'}`
-              : 'md-information-circle';
-            break;
           case 'Explore':
             iconName = Platform.OS === 'ios'
               ? `ios-search${focused ? '' : '-outline'}`
               : 'md-search';
             break;
-          case 'MyBooking':
+            case 'MyBooking':
             iconName = Platform.OS === 'ios'
-              ? `ios-search${focused ? '' : '-outline'}`
-              : 'md-search';
+              ? `ios-paper${focused ? '' : '-outline'}`
+              : 'md-paper';
+            break;
+          case 'Home':
+            iconName = Platform.OS === 'ios'
+              ? `ios-heart${focused ? '' : '-outline'}`
+              : 'md-heart';
             break;
           case 'Links':
             iconName = Platform.OS === 'ios'
-              ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-link';
+              ? `ios-mail-open${focused ? '' : '-outline'}`
+              : 'md-mail-open';
             break;
           case 'Settings':
             iconName = Platform.OS === 'ios'
-              ? `ios-options${focused ? '' : '-outline'}`
-              : 'md-options';
+              ? `ios-person${focused ? '' : '-outline'}`
+              : 'md-person';
         }
         return (
           <Ionicons
             name={iconName}
             size={28}
-            style={{ marginBottom: -3 }}
+            style={{ marginBottom: -3, }}
             color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
           />
         );
@@ -69,8 +69,9 @@ export default TabNavigator(
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
+    //initialLayout: {width:100, height:300},
     animationEnabled: false,
     swipeEnabled: false,
-    tabBarOptions: { activeTintColor: Colors.bottomTabSelected },
+    tabBarOptions: { activeTintColor: Colors.bottomTabSelected, style:{paddingBottom:5, height:55, backgroundColor:'#fbfbfb', borderTopColor:'#ececec'} },
   }
 );
