@@ -172,7 +172,7 @@ export async function removeAccessToken () {
   return;
 }
 
-export async function fetchWishlist (activityId = null, isAddingToWishlist = true) => {
+export async function fetchWishlist (activityId = null, isAddingToWishlist = true) {
   const version = 'v1';
   let request = {
     path: `/${version}/activities/wishlist`,
