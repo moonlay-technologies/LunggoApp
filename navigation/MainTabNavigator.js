@@ -61,7 +61,7 @@ export default TabNavigator(
           <Ionicons
             name={iconName}
             size={28}
-            style={{ marginBottom: -3, }}
+            style={{ marginBottom: -4, }}
             color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
           />
         );
@@ -72,6 +72,9 @@ export default TabNavigator(
     //initialLayout: {width:100, height:300},
     animationEnabled: false,
     swipeEnabled: false,
-    tabBarOptions: { activeTintColor: Colors.bottomTabSelected, style:{paddingBottom:5, height:55, backgroundColor:'#fbfbfb', borderTopColor:'#ececec'} },
+    tabBarOptions: { 
+      activeTintColor: Colors.bottomTabSelected, 
+      style:{paddingBottom:5, height:60, backgroundColor:'#fbfbfb', borderTopColor:'#ececec'} 
+    },
   }
 );

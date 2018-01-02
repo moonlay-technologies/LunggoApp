@@ -3,7 +3,7 @@ const primaryColor = '#ff5f5f';
 export default {
   primaryColor,
   bottomTabBlurred: '#ccc',
-  bottomTabSelected: "#01d4cb"
+  bottomTabSelected: "#23d3c3"
   // tabBar: '#fefefe',
   // errorBackground: 'red',
   // errorText: '#fff',
