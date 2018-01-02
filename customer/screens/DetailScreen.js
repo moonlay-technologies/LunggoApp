@@ -305,19 +305,17 @@ export default class DetailScreen extends Component {
                   rotateEnabled={false}
                   scrollEnabled={false}
                   pitchEnabled={false}
+                  onRegionChangeComplete={()=>this.marker.showCallout()}
                 >
                   <Marker
                     coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                    title="Jl. Sisingamangaraja 22"
+                    description="Selong"
+                    ref={marker => (this.marker = marker)}
                   />
                 </MapView>
               </TouchableOpacity>
-              <View style={{marginTop:10}}>
-                <Text>
-                  Jl. Sisingamangaraja 22{"\n"}
-                  Selong
-                </Text>
-              </View>
-
+              
               <View style={{marginTop:30, marginBottom:30}}>
                 <Text style={styles.sectionTitle}>
                   Hal yang Perlu Dibawa
