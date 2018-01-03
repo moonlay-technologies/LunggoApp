@@ -31,7 +31,7 @@ export default class DetailScreen extends Component {
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
-        mediaSrc: []
+        mediaSrc: [],
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
@@ -40,6 +40,7 @@ export default class DetailScreen extends Component {
   }
 
   static navigationOptions = {
+    title: this.state.name,
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>

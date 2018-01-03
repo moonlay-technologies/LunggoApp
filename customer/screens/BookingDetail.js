@@ -62,10 +62,15 @@ export default class BookingDetail extends React.Component {
   }
 
   _book = async () => {
-    if (!pax) {this.setState({isPaxFilled:false}); return}
-    if (!selectedDate) {this.setState({isDateSelected:false}); return}
-    this.setState({isLoading:true});
     let {pax, date} = this.state;
+
+    //// validation
+    if (!pax) this.setState({isPaxFilled:false});
+    if (!date) this.setState({isDateSelected:false});
+    if (!pax || !date) return;
+
+    //// prepare fetching book
+    this.setState({isLoading:true});
     let data = {
       date, pax,
       activityId: this.props.navigation.state.params.activityId,
@@ -140,6 +145,33 @@ export default class BookingDetail extends React.Component {
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
       :
       <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
+
+    let rincianHarga = (pax && date) ?
+      <TouchableOpacity style={{flex:1.5}} onPress={
+        () => this.props.navigation.navigate('RincianHarga')
+      }>
+        <View style={{alignItems: 'flex-start'}}>
+          <View>
+            <Text style={{fontSize:15, color:'#000',}}>
+              Total
+              {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+            </Text> 
+          </View>
+          <View style={{marginTop:3}}>
+            <Text style={{
+              color:'#000',
+              fontWeight: 'bold',
+              fontSize:17,
+            }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
+            {/*<Text>/ 2 orang</Text>*/}
+          </View>
+          <View style={{marginTop:4}} >
+            <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
+          </View>
+        </View>
+      </TouchableOpacity>
+      :
+      <View style={{flex:1.5, justifyContent:'center'}} />
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -263,7 +295,7 @@ export default class BookingDetail extends React.Component {
             <View>
               <View>
                 <Text style={styles.activityTitle}>
-                  Select Pax
+                  Peserta
                 </Text>
               </View>
               <View style={{
@@ -367,31 +399,9 @@ export default class BookingDetail extends React.Component {
             </View>
             
           </View>
-          {/*bottom CTA button*/}
+
           <View style={globalStyles.bottomCtaBarContainer1}>
-            <TouchableOpacity style={{flex:1.5}} onPress={
-              () => this.props.navigation.navigate('RincianHarga')
-            }>
-              <View style={{alignItems: 'flex-start'}}>
-                <View>
-                  <Text style={{fontSize:15, color:'#000',}}>
-                    Total
-                    {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-                  </Text> 
-                </View>
-                <View style={{marginTop:3}}>
-                  <Text style={{
-                    color:'#000',
-                    fontWeight: 'bold',
-                    fontSize:17,
-                  }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
-                  {/*<Text>/ 2 orang</Text>*/}
-                </View>
-                <View style={{marginTop:4}} >
-                  <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
-                </View>
-              </View>
-            </TouchableOpacity>
+            {rincianHarga}
             <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
               <Button
                 containerStyle={globalStyles.ctaButton}
@@ -406,24 +416,6 @@ export default class BookingDetail extends React.Component {
           </View>
           {/*bottom CTA button*/}
 
-          {/*bottom CTA button jika blm pilih guest dan tanggal */}
-          <View style={globalStyles.bottomCtaBarContainer1}>
-            <View style={{flex:1.5, justifyContent:'center'}}>
-              
-            </View>
-            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
-              <Button
-                containerStyle={globalStyles.ctaButton}
-                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                onPress={this._book}
-                disabled={this.state.isLoading}
-                styleDisabled={{color:'#aaa'}}
-              >
-                Pesan
-              </Button>
-            </View>
-          </View>
-          {/*bottom CTA button jika blm pilih guest dan tanggal*/}
         </ScrollView>
 
 
