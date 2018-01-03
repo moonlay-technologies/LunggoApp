@@ -38,9 +38,8 @@ export default class BookingDetail extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      // date : null,
-      // shift: null,
-      // pax: null,
+      isDateSelected: true,
+      isPaxFilled: true,
     };
   }
 
@@ -50,10 +49,21 @@ export default class BookingDetail extends React.Component {
 
   setPaxListItemIndexes = indexes =>
     this.setState({paxListItemIndexes: indexes});
-  setPax = pax => this.setState({pax});
-  setSchedule = scheduleObj => this.setState(scheduleObj);
+
+  setPax = pax => {
+    let changes = {pax}
+    if (pax.length>0) changes.isPaxFilled = true;
+    this.setState(changes);
+  }
+
+  setSchedule = scheduleObj => {
+    scheduleObj.isDateSelected = true;
+    this.setState(scheduleObj);
+  }
 
   _book = async () => {
+    if (!pax) {this.setState({isPaxFilled:false}); return}
+    if (!selectedDate) {this.setState({isDateSelected:false}); return}
     this.setState({isLoading:true});
     let {pax, date} = this.state;
     let data = {
@@ -121,7 +131,7 @@ export default class BookingDetail extends React.Component {
     let {pax, date, paxListItemIndexes} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let selectedDate = date ?
+    let selectedDateText = date ?
       Moment(date).format('ddd, D MMM YYYY')
       :
       'Atur Jadwal'
@@ -239,12 +249,74 @@ export default class BookingDetail extends React.Component {
                 paddingBottom:20,
                 marginVertical:20,
               }}>
-                <Text>{selectedDate}</Text>
+                <Text style={this.state.isDateSelected ?
+                  styles.normalText : styles.warningText} >
+                  {selectedDateText}
+                </Text>
                 <TouchableOpacity containerStyle={styles.addButton}
                   onPress={this._goToCalendarPicker} >
                   {setDateButton}
                 </TouchableOpacity>
-                <Text style={styles.validation}>isi jadwal</Text>
+                {/*<Text style={styles.validation}>isi jadwal</Text>*/}
+              </View>
+            </View>
+            <View>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Select Pax
+                </Text>
+              </View>
+              <View style={{
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginVertical:20,
+              }}>
+                <View style={{flexDirection:'row',}}>
+                  <View style={{flex:1}}>
+                    <Text>Dewasa</Text>
+                  </View>
+                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+                    <Text>1</Text>
+                     <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='minus'
+                      type='entypo'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='plus'
+                      type='octicon'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                  </View>
+                </View>
+                <View style={{marginTop:20, flexDirection:'row',}}>
+                  <View style={{flex:1}}>
+                    <Text>Anak-anak</Text>
+                  </View>
+                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+                    <Text>1</Text>
+                     <View style={{borderWidth:1, borderRadius:2, marginRight:5, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='minus'
+                      type='entypo'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='plus'
+                      type='octicon'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                  </View>
+                </View>
+
               </View>
             </View>
             <View>
@@ -269,7 +341,10 @@ export default class BookingDetail extends React.Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text>Atur Peserta</Text>
+                <Text style={this.state.isPaxFilled ?
+                  styles.normalText : styles.warningText} >
+                  Atur Peserta
+                </Text>
                 <TouchableOpacity
                   containerStyle={styles.addButton}
                   onPress={() => navigation.navigate('PaxChoice', {
@@ -283,7 +358,7 @@ export default class BookingDetail extends React.Component {
                   <View style={{flexDirection:'row'}}>
                     <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                     <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
-                      <Text style={styles.validation}>isi peserta</Text>
+                      {/*<Text style={styles.validation}>isi peserta</Text>*/}
                     </View>
                   </View>
                   
@@ -410,5 +485,8 @@ const styles = StyleSheet.create({
   validation:{
     color:'#fc2b4e',
     fontSize:12
+  },
+  warningText: {
+    color: 'red',
   }
 });

@@ -87,7 +87,7 @@ export default class CalendarPicker extends Component {
   _return = () => {
     this.props.navigation.state.params.setSchedule({
       date:this.state.selectedDate,
-      shift:'1'
+      shift:'1',
     })
     this.props.navigation.goBack()
   }

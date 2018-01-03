@@ -8,7 +8,7 @@ import { fetchTravoramaLoginApi } from '../api/Common';
 import { validateUserName, validatePassword } from './FormValidation';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
-import globalStyles from '../commons/globalStyles';
+import globalStyles from './globalStyles';
 
 export default class LoginScreen extends Component {
   constructor(props) {
