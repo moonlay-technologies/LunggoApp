@@ -70,24 +70,18 @@ export default class DetailScreen extends Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      this.setState(response, () => {
-        // this.marker.props.title = this.state.address;
-        // this.marker.props.description = this.state.city;
-        // console.log(this.state.address +' '+this.state.city)
-        this.forceUpdate();
-        this.marker.showCallout();
-      });
-      //// = ({availableDateTimes})
+      this.setState(response);
+      this.forceUpdate( () => this.marker.showCallout() );
     }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
-    const { requiredPaxData, price, id } = this.state;
+    const { requiredPaxData, price, id, availableDateTimes } = this.state;
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
-      price, requiredPaxData,
+      price, requiredPaxData, availableDateTimes,
       activityId: id,
     });
     this.setState({isLoading: false})
@@ -100,7 +94,7 @@ export default class DetailScreen extends Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, availableDateTimes, address } = this.state;
+      mediaSrc, address } = this.state;
     return (
       <View>
         <ScrollView
@@ -319,10 +313,8 @@ export default class DetailScreen extends Component {
                     title={address}
                     description={city}
                     ref={marker => (this.marker = marker)}
-                    // centerOffset={{x:.5000, y:.100000}}
                   />
                 </MapView>
-                <Text>{this.state.address}</Text>
               </TouchableOpacity>
               
               <View style={{marginTop:30, marginBottom:30}}>

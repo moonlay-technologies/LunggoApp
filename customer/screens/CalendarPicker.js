@@ -15,17 +15,13 @@ export default class CalendarPicker extends Component {
     let {selectedDate, selectedTime, availableDateTimes} =
       this.props.navigation.state.params;
     this.state = {
-      selectedDate, selectedTime, availableDateTimes,
+      selectedDate, selectedTime,
       // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
-      // minDate : Date(),
-      minDate : '2010-01-01',
-      /*  IMPORTANT!! By the time this feature was implemented,
-          react-native-calendars didn't have an option for disable
-          all dates by default, so we made a temporary workaround by
-          swapping 'disabled' property with the enabled one, so every
-          disabled date would behave as enabled date, vice versa.  */
-      markedDates : {
-        // '2017-11-20': {marked: true},
+      minDate : Date(),
+      isModalVisible: false,
+      markedDates : {},
+      /*markedDates : {
+        '2018-01-20': {marked: true},
         '2018-01-24': {
           disabled: false,
           availableTime: [
@@ -49,10 +45,16 @@ export default class CalendarPicker extends Component {
         // '2017-11-23': [{color: 'green', textColor: 'gray'}],
         // '2017-11-24': [{endingDay: true, color: 'green', textColor: 'gray'}],
         // '2017-11-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
-      },
-      isModalVisible: false,
+      },*/ 
     };
-    if (selectedDate) this.state.markedDates[selectedDate].selected= true;
+    let {markedDates} = this.state;
+    availableDateTimes.map( item => {
+      markedDates[item.date] = {disabled: false};
+      if (item.availableTime) {
+        markedDates[item.date].availableTime = item.availableTime;
+      }
+    });
+    if (selectedDate) markedDates[selectedDate].selected = true;
   }
 
   static navigationOptions = {
