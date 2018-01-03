@@ -26,14 +26,20 @@ export default class CalendarPicker extends Component {
           disabled date would behave as enabled date, vice versa.  */
       markedDates : {
         // '2017-11-20': {marked: true},
-        '2017-12-24': {availableTime: [
-          "1.00 - 2.00",
-          "3.00 - 4.00"
-        ]},
-        '2017-12-25': {availableTime: [
-          "12.00 - 18.00",
-          "9.00 - 10.00"
-        ]},
+        '2018-01-24': {
+          disabled: false,
+          availableTime: [
+            "1.00 - 2.00",
+            "3.00 - 4.00"
+          ],
+        },
+        '2018-01-25': {
+          disabled: false,
+          availableTime: [
+            "12.00 - 18.00",
+            "9.00 - 10.00"
+          ],
+        },
         
         //// for markingType = interactive
         // '2017-10-23': [{textColor: '#d9e1e8'}],
@@ -147,6 +153,7 @@ export default class CalendarPicker extends Component {
         <CalendarList
           minDate={this.state.minDate}
           markedDates={markedDates}
+          disabledByDefault={true}
           onDayPress={ day => this._onDatePressed(day.dateString)}
           pastScrollRange={0}
           futureScrollRange={6}

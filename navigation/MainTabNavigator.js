@@ -14,7 +14,7 @@ import CartBlank from '../customer/screens/CartBlank';
 
 export default TabNavigator(
   {
-    Explore:  { screen: ExploreScreen,  },
+    Explore:  { screen: ExploreScreen },
     MyBooking:{ screen: MyBooking },
     Home:     { screen: CartBlank },
     Links:    { screen: LinksScreen },
@@ -24,9 +24,10 @@ export default TabNavigator(
     navigationOptions: ({ navigation }) => ({
       headerRight:
         <Ionicons
-          name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
+          name={'md-cart'}
+          // name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
           size={28}
-          style={{ marginRight: 10}}
+          style={{marginRight: 10}}
         />,
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
