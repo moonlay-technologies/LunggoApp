@@ -25,7 +25,7 @@ export default class DetailScreen extends Component {
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         // isLoading, 
-        id,
+        id:1,
         requiredPaxData: '',
         name: 'loading activity name...',
         city: 'loading address...',
@@ -70,7 +70,14 @@ export default class DetailScreen extends Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      this.setState(response); //// = ({availableDateTimes})
+      this.setState(response, () => {
+        // this.marker.props.title = this.state.address;
+        // this.marker.props.description = this.state.city;
+        // console.log(this.state.address +' '+this.state.city)
+        this.forceUpdate();
+        this.marker.showCallout();
+      });
+      //// = ({availableDateTimes})
     }).catch(error => console.log(error));
   }
 
@@ -87,12 +94,13 @@ export default class DetailScreen extends Component {
   }
 
   _enlargeMapView = () => {
-    this.props.navigation.navigate('MapScreen');
+    let {name, address, city} = this.state;
+    this.props.navigation.navigate('MapScreen',{name,address,city});
   }
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, availableDateTimes } = this.state;
+      mediaSrc, availableDateTimes, address } = this.state;
     return (
       <View>
         <ScrollView
@@ -305,15 +313,16 @@ export default class DetailScreen extends Component {
                   rotateEnabled={false}
                   scrollEnabled={false}
                   pitchEnabled={false}
-                  onRegionChangeComplete={()=>this.marker.showCallout()}
                 >
                   <Marker
                     coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-                    title="Jl. Sisingamangaraja 22"
-                    description="Selong"
+                    title={address}
+                    description={city}
                     ref={marker => (this.marker = marker)}
+                    // centerOffset={{x:.5000, y:.100000}}
                   />
                 </MapView>
+                <Text>{this.state.address}</Text>
               </TouchableOpacity>
               
               <View style={{marginTop:30, marginBottom:30}}>
