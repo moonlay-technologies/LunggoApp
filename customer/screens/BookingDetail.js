@@ -1,6 +1,6 @@
 'use strict';
                     
-import React, { Component } from 'react';
+import React from 'react';
 import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import Moment from 'moment';
@@ -33,7 +33,7 @@ async function fetchTravoramaBookApi(data) {
   return response;
 }
 
-export default class BookingDetail extends Component {
+export default class BookingDetail extends React.Component {
 
   constructor (props) {
     super(props);
@@ -258,10 +258,10 @@ export default class BookingDetail extends Component {
                   <Text style={styles.seeMore}>5 orang</Text>
                 </View>
               </View>
-                {pax && pax.map(
-                  item => <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
+                {pax && pax.map( item =>
+                  <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                     <Text>{item.name}</Text>
-                    </View>
+                  </View>
                 )}
               <View style={{
                 flexDirection:'row',
@@ -269,7 +269,7 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text>Tambah Peserta</Text>
+                <Text>Atur Peserta</Text>
                 <TouchableOpacity
                   containerStyle={styles.addButton}
                   onPress={() => navigation.navigate('PaxChoice', {

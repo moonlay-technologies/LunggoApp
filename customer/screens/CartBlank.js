@@ -17,7 +17,7 @@ export default class LoginScreen extends Component<{}> {
   
   static navigationOptions = {
     title: 'Cart',
-  };;
+  };
   state = {open: false};
 
   render() {
@@ -36,13 +36,18 @@ export default class LoginScreen extends Component<{}> {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.setState({open: true})}
+                  onPress={() => this.props.navigation.navigate('ExploreScreen')}
+                  // onPress={() => this.setState({open: true})}
                 >
                   Jelajah Sekarang
               </Button>
             </View>
           </View>
         </View>
+
+
+
+
         <Modal
           offset={this.state.offset}
           open={this.state.open}
@@ -76,6 +81,9 @@ export default class LoginScreen extends Component<{}> {
             </TouchableOpacity>*/}
           </View>
         </Modal>
+
+
+
       </View>
     );
   }

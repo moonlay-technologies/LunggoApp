@@ -48,7 +48,7 @@ export default class CalendarPicker extends Component {
       },*/ 
     };
     let {markedDates} = this.state;
-    availableDateTimes.map( item => {
+    availableDateTimes && availableDateTimes.map( item => {
       markedDates[item.date] = {disabled: false};
       if (item.availableTime) {
         markedDates[item.date].availableTime = item.availableTime;
@@ -81,6 +81,7 @@ export default class CalendarPicker extends Component {
     this.setState({ markedDates, selectedDate });
     //// TODO: sometimes all state has already changed but the ui only partly updated
     //// (only text is updated, CalendarList's marked date isn't)
+    this.forceUpdate();
   };
 
   _return = () => {
@@ -101,16 +102,19 @@ export default class CalendarPicker extends Component {
     let {selectedDate, markedDates} = this.state;
     //// choose session, if any
 
-    // console.log('--')
-    // console.log(selectedDate && markedDates[selectedDate] &&
-    //           markedDates[selectedDate].availableTime );
-    console.log(!!selectedDate);
-    // console.log(markedDates[selectedDate]);
-    console.log(markedDates[selectedDate]? markedDates[selectedDate].availableTime : 'z');
+    // // console.log('--')
+    // // console.log(selectedDate && markedDates[selectedDate] &&
+    // //           markedDates[selectedDate].availableTime );
+    // console.log(!!selectedDate);
+    // // console.log(markedDates[selectedDate]);
+    // console.log(markedDates[selectedDate]? markedDates[selectedDate].availableTime : 'z');
 
     //// continue set date
-    this._selectDate(dateString);
-    this._setModalVisible(true);
+    this._selectDate(dateString, () => {
+      if (!!markedDates[selectedDate].availableTime) {
+        this._setModalVisible(true);
+      }
+    });
   }
 
   _onAvailableTimeClicked = index => {
@@ -127,7 +131,8 @@ export default class CalendarPicker extends Component {
       : "Pilih Tanggal";
       console.log('markedDates')
       console.log(markedDates)
-    let availableTimeList = !!selectedDate ?
+    let availableTimeList =
+      (!!selectedDate && !!markedDates[selectedDate].availableTime) ?
         markedDates[selectedDate].availableTime.map(
           (currValue, index) =>
             <TouchableOpacity
@@ -141,17 +146,12 @@ export default class CalendarPicker extends Component {
               }}
               onPress={() => this._onAvailableTimeClicked(index)}
             >
-              <View style={{marginTop:5}}
-                
-              >
-                <Text>{currValue}</Text>
-              </View>
+              <Text style={{marginTop:5}}>{currValue}</Text>
             </TouchableOpacity>
         ) : '';
 
     return(
       <View>
-          {/*this.state.selectedDate*/}
         <CalendarList
           minDate={this.state.minDate}
           markedDates={markedDates}
@@ -176,11 +176,6 @@ export default class CalendarPicker extends Component {
         >
           <View style={{flex:1}}></View>
           <View style={{flex:1, backgroundColor:'white', padding:20,}}>
-            <TouchableHighlight
-              style={{alignItems: 'flex-end',}}
-              onPress={() => this._setModalVisible(false)}>
-              <Text>X</Text>
-            </TouchableHighlight>
             <View>
               <Text style={styles.activityTitle}>
                 Choose activity time
