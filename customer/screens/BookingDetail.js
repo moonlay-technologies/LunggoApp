@@ -11,6 +11,28 @@ import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, } from 'react-native';
 
+
+async function fetchTravoramaCartAddApi(rsvNo) {
+  const version = 'v1';
+  let response = await fetchTravoramaApi({
+    method: 'PUT',
+    path: `/${version}/cart/${rsvNo}`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+  });
+  return response;
+}
+
+async function fetchTravoramaBookApi(data) {
+  const version = 'v1';
+  let response = await fetchTravoramaApi({
+    method: 'POST',
+    path: `/${version}/activities/book`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+    data,
+  });
+  return response;
+}
+
 export default class BookingDetail extends Component {
 
   constructor (props) {
@@ -31,58 +53,65 @@ export default class BookingDetail extends Component {
   setPax = pax => this.setState({pax});
   setSchedule = scheduleObj => this.setState(scheduleObj);
 
-  _book = () => {
+  _book = async () => {
     this.setState({isLoading:true});
-    const version = 'v1';
     let {pax, date} = this.state;
-    let request = {
-      method: 'POST',
-      path: `/${version}/activities/book`,
-      requiredAuthLevel: AUTH_LEVEL.User,
-      data: {
-        activityId: this.props.navigation.state.params.activityId,
-        contact: {
-          title: 1,
-          name: "Testing",
-          countryCallCd: 62,
-          phone : 1234567890,
-          email: "developer@travelmadezy.com"
-        }, date, pax,
-        // "ticketCount" : 2
-        // pax: [
-        //   {
-        //     type : 1,
-        //     title : 1,
-        //     name : "guest 1",
-        //     dob : "02-18-1997",
-        //     nationality : "ID",
-        //     passportNo : "1234567",
-        //     passportExp : "02-18-2022",
-        //     passportCountry : "en",
-        //   }
-        // ],
-      }
+    let data = {
+      date, pax,
+      activityId: this.props.navigation.state.params.activityId,
+      contact: {
+        title: 1,
+        name: "Testing",
+        countryCallCd: 62,
+        phone : 1234567890,
+        email: "developer@travelmadezy.com"
+      },
+      // "ticketCount" : 2
+      // pax: [
+      //   {
+      //     type : 1,
+      //     title : 1,
+      //     name : "guest 1",
+      //     dob : "02-18-1997",
+      //     nationality : "ID",
+      //     passportNo : "1234567",
+      //     passportExp : "02-18-2022",
+      //     passportCountry : "en",
+      //   }
+      // ],
     };
-    fetchTravoramaApi(request).then( response => {
+    try {
       this.setState({isLoading:false});
-      if(response.status == 200)
-        this.props.navigation.navigate(
-          'WebViewScreen',{rsvNo:response.rsvNo}
-        );
-    }).catch(error => {
+      let response = await fetchTravoramaBookApi(data);
+      if(response.status != 200) {
+        console.error("Book API: status other than 200 returned!");
+        console.log(response);
+        return;
+        // this.props.navigation.navigate(
+        //   'WebViewScreen',{rsvNo:response.rsvNo}
+        // );
+      }
+      response = await fetchTravoramaCartAddApi(response.rsvNo);
+      if (response.status != 200) {
+        console.error("Cart API: status other than 200 returned!");
+        console.log(response);
+        return;
+      } else console.log(response);
+      //// TODO : DO SOMETHING HERE
+
+    } catch (error) {
       this.setState({isLoading:false});
       console.log(error);
-    }); 
+    }
   }
 
-  _goToCalendarSelection = () => {
+  _goToCalendarPicker = () => {
     let {navigation} = this.props;
     let {price, availableDateTimes } = navigation.state.params;
-    let {date} = this.state;
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
-      selectedDate: date,
+      selectedDate: this.state.date,
     });
   }
 
@@ -212,7 +241,7 @@ export default class BookingDetail extends Component {
               }}>
                 <Text>{selectedDate}</Text>
                 <TouchableOpacity containerStyle={styles.addButton}
-                  onPress={this._goToCalendarSelection} >
+                  onPress={this._goToCalendarPicker} >
                   {setDateButton}
                 </TouchableOpacity>
                 <Text style={styles.validation}>isi jadwal</Text>
