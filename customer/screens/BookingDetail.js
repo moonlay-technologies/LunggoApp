@@ -219,6 +219,65 @@ export default class BookingDetail extends Component {
               </View>
             </View>
             <View>
+              <View>
+                <Text style={styles.activityTitle}>
+                  Select Pax
+                </Text>
+              </View>
+              <View style={{
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginVertical:20,
+              }}>
+                <View style={{flexDirection:'row',}}>
+                  <View style={{flex:1}}>
+                    <Text>Dewasa</Text>
+                  </View>
+                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+                    <Text>1</Text>
+                     <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='minus'
+                      type='entypo'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='plus'
+                      type='octicon'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                  </View>
+                </View>
+                <View style={{marginTop:20, flexDirection:'row',}}>
+                  <View style={{flex:1}}>
+                    <Text>Anak-anak</Text>
+                  </View>
+                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+                    <Text>1</Text>
+                     <View style={{borderWidth:1, borderRadius:2, marginRight:5, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='minus'
+                      type='entypo'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                      <Icon
+                      name='plus'
+                      type='octicon'
+                      size={10}
+                      color='#ff5f5f'/>
+                    </View>
+                  </View>
+                </View>
+
+              </View>
+            </View>
+            <View>
               <View style={{flexDirection:'row'}}>
                 <View>
                   <Text style={styles.activityTitle}>
