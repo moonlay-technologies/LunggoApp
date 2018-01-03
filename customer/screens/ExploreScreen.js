@@ -113,7 +113,7 @@ export default class ExploreScreen extends React.Component {
                   name='favorite'
                   type='materialicons'
                   size={30}
-                  color='#ff0d4a'/>
+                  color='#ff5f5f'/>
                 </View>
               </View>
             </View>
@@ -363,7 +363,21 @@ const styles = StyleSheet.create({
   namaKota: {
     fontSize:12,
     color:'#454545',
-    marginVertical:3
+    marginVertical:3,
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight:6,
+        paddingTop: 14,
+        marginBottom:-4,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:18,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   namaKotaBig: {
     fontSize:14,
@@ -373,7 +387,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight:6,
         paddingTop: 14,
-        height:22,
+        marginBottom:-4,
         //backgroundColor:'red'
       },
       android: {
@@ -389,9 +403,9 @@ const styles = StyleSheet.create({
     color:'#454545',
     ...Platform.select({
       ios: {
-        lineHeight:15*0.8,
-        paddingTop: 20 - (19 * 0.4),
-        height:42,
+        lineHeight:12,
+        paddingTop: 14,
+        marginBottom:-13,
         //backgroundColor:'red'
       },
       android: {
@@ -401,6 +415,25 @@ const styles = StyleSheet.create({
       },
     }),
 
+  },
+  activityTitle: {
+    fontFamily: 'Hind-Bold',
+    fontSize:15,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:10,
+        paddingTop: 10,
+        marginBottom:-12,
+       //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:20,
+        //paddingTop: 23 - (23* 1),
+        
+
+      },
+    }),
   },
   thumbnailBig: {
     resizeMode:'cover', 
@@ -427,15 +460,21 @@ const styles = StyleSheet.create({
     borderRadius:5,
     opacity: 0.7
   },
-  activityTitle: {
-    fontWeight:'bold',
-    fontSize:15,
-    color:'#454545',
-  },
   priceTitle: {
     fontSize:13,
     color:'#676767',
-    marginTop:2
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+      //backgroundColor:'red'
+      },
+      android: {
+        marginTop:1
+
+      },
+    }),
   },
   priceTitleBig: {
     fontSize:15,

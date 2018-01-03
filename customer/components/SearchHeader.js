@@ -44,7 +44,7 @@ export default class SearchHeader extends Component {
                   name='magnifying-glass'
                   type='entypo'
                   size={22}
-                  color='#acacac'/>
+                  color='#cccccc'/>
               </View>
             </TouchableOpacity>
           </View>
@@ -53,8 +53,8 @@ export default class SearchHeader extends Component {
             <Icon
               name='shopping-cart'
               type='feather'
-              size={30}
-              color='#acacac'/>
+              size={26}
+              color='#23d3c3'/>
           </View>
         </View>
       </View>
@@ -75,11 +75,19 @@ const styles = StyleSheet.create({
       ios: {
         paddingHorizontal:15,
         paddingTop:30,
-        paddingBottom:15
+        paddingBottom:15,
+        shadowColor: '#cdcdcd',
+        shadowOffset: { height: 3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        // paddingVertical:15,
       },
       android: {
         paddingHorizontal:15,
-        paddingVertical:20,
+        paddingVertical:15,
+        elevation: 20,        
+        borderBottomColor: "#ececec",
+        borderBottomWidth: 1,
       },
     }),
   },
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderWidth: 1,
     borderColor: 'transparent',
-    borderRadius: 25,
+    borderRadius: 3,
     color: '#acacac',
     backgroundColor:'#f5f5f5',
   },
