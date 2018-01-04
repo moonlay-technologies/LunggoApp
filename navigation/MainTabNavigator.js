@@ -13,7 +13,7 @@ import SettingsScreen from '../customer/screens/SettingsScreen';
 import CartBlank from '../customer/screens/CartBlank';
 import WhishlistBlank from '../customer/screens/WhishlistBlank';
 import MyBookingBlank from '../customer/screens/MyBookingBlank';
-import MessageBlank from '../customer/screens/MyBookingBlank';
+import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
 
 export default TabNavigator(
