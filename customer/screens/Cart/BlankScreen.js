@@ -1,19 +1,13 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
-import globalStyles from '../../commons/globalStyles';
+import globalStyles from '../../../commons/globalStyles';
 import Modal from 'react-native-simple-modal';
 
-export default class LoginScreen extends Component<{}> {
+export default class BlankScreen extends React.Component {
   
   static navigationOptions = {
     title: 'Cart',
@@ -25,7 +19,7 @@ export default class LoginScreen extends Component<{}> {
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <View style={styles.container}>
           <View style={{justifyContent:'center', alignItems:'center', flex:1}}>
-            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../assets/images/cart1.jpg')}/>
+            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../../assets/images/cart1.jpg')}/>
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
               <Text style={styles.textCartBesar}>Keranjang kamu kosong</Text>
               <View>
@@ -36,7 +30,7 @@ export default class LoginScreen extends Component<{}> {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.navigate('ExploreScreen')}
+                  onPress={() => this.props.navigation.navigate('Main')}
                   // onPress={() => this.setState({open: true})}
                 >
                   Jelajah Sekarang

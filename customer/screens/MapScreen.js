@@ -18,19 +18,21 @@ export default class MapScreen extends React.Component {
   }}
 
   render() {
-    let {address,city} = this.props.navigation.state.params;
+    let {address, city, lat, long} = this.props.navigation.state.params;
+    console.log(lat)
+    console.log(long)
     return (
       <MapView
         style={{width:"100%", height:"100%"}}
         region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: lat,
+          longitude: long,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
       >
         <Marker
-          coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+          coordinate={{ latitude: lat, longitude: long }}
           title={address}
           description={city}
         />

@@ -10,12 +10,10 @@ import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 
-import {
-  Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,TouchableOpacity,
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, TouchableOpacity, } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
-        removeAccessToken } from '../../api/Common';
+} from '../../api/Common';
 
 export default class DetailScreen extends Component {
 
@@ -32,6 +30,7 @@ export default class DetailScreen extends Component {
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
         mediaSrc: [],
+        lat:0, long:0,
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
@@ -39,8 +38,8 @@ export default class DetailScreen extends Component {
     }
   }
 
-  static navigationOptions = {
-    title: this.state.name,
+  static navigationOptions = props => {return {
+    title: props.navigation.state.params.name,
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
@@ -56,7 +55,7 @@ export default class DetailScreen extends Component {
       left: 0,
       right: 0
     },
-  };
+  }}
 
   componentDidMount() {
     const version = 'v1';
@@ -89,13 +88,15 @@ export default class DetailScreen extends Component {
   }
 
   _enlargeMapView = () => {
-    let {name, address, city} = this.state;
-    this.props.navigation.navigate('MapScreen',{name,address,city});
+    let {name, address, city, lat, long} = this.state;
+    this.props.navigation.navigate('MapScreen',
+      {name, address, city, lat, long}
+    );
   }
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, address } = this.state;
+      mediaSrc, address, lat, long } = this.state;
     return (
       <View>
         <ScrollView
@@ -299,8 +300,8 @@ export default class DetailScreen extends Component {
                 <MapView
                   style={{width:"100%", height:150}}
                   region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: lat,
+                    longitude: long,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
@@ -310,7 +311,7 @@ export default class DetailScreen extends Component {
                   pitchEnabled={false}
                 >
                   <Marker
-                    coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                    coordinate={{ latitude: lat, longitude: long }}
                     title={address}
                     description={city}
                     ref={marker => (this.marker = marker)}

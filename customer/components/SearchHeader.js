@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import {
-  Platform, StyleSheet, FlatList,
-  Text, View, Image, TextInput, TouchableOpacity,
-} from 'react-native';
-import { Icon } from 'react-native-elements'
+import React from 'react';
+import { Platform, StyleSheet, FlatList, Text, View, Image,
+  TextInput, TouchableOpacity, } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-export default class SearchHeader extends Component {
+export default class SearchHeader extends React.Component {
 
   constructor (props) {
     super(props)
@@ -21,6 +19,8 @@ export default class SearchHeader extends Component {
     );
   };
 
+  _goToCart = () => this.props.navigation.navigate('Cart');
+
   render() {
     return (
       <View style={{ backgroundColor: '#fff'}}>
@@ -35,27 +35,20 @@ export default class SearchHeader extends Component {
               underlineColorAndroid='transparent'
               selectTextOnFocus={true}
             />
-            <TouchableOpacity
-              onPress={this._goToSearchResult}
+            <TouchableOpacity onPress={this._goToSearchResult}
               style={{position:'absolute', right:5, top:-3, padding:9}}
             >
-              <View>
-                <Icon
-                  name='magnifying-glass'
-                  type='entypo'
-                  size={22}
-                  color='#cccccc'/>
-              </View>
+              <Icon name='magnifying-glass' type='entypo' size={22}
+                color='#ccc' />
             </TouchableOpacity>
           </View>
-
-          <View style={{flex:1, justifyContent:'flex-end', alignItems:'flex-end'}}>
-            <Icon
-              name='shopping-cart'
-              type='feather'
-              size={26}
-              color='#23d3c3'/>
-          </View>
+          <TouchableOpacity onPress={this._goToCart}
+            style={{
+            flex:1, justifyContent:'flex-end', alignItems:'flex-end'
+          }}>
+            <Icon name='shopping-cart' type='feather' size={26}
+              color='#23d3c3' />
+          </TouchableOpacity>
         </View>
       </View>
     );

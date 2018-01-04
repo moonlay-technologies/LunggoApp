@@ -106,6 +106,8 @@ export default class BookingDetail extends React.Component {
         //   'WebViewScreen',{rsvNo:response.rsvNo}
         // );
       }
+
+      //// after done booking and get RsvNo, add item to cart
       response = await fetchTravoramaCartAddApi(response.rsvNo);
       if (response.status != 200) {
         console.error("Cart API: status other than 200 returned!");

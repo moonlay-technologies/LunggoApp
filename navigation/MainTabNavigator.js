@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
@@ -10,7 +10,6 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking';
 import LinksScreen from '../customer/screens/LinksScreen';
 import SettingsScreen from '../customer/screens/SettingsScreen';
-import CartBlank from '../customer/screens/CartBlank';
 
 export default TabNavigator(
   {
@@ -23,12 +22,9 @@ export default TabNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerRight:
-        <Ionicons
-          name={'md-cart'}
-          // name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
-          size={28}
-          style={{marginRight: 10}}
-        />,
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />
+        </TouchableOpacity> ,
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconName;

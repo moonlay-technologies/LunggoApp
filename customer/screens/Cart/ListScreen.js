@@ -1,19 +1,13 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView
+import { Platform, StyleSheet, Text, View, Image, ScrollView
 } from 'react-native';
-import globalStyles from '../../commons/globalStyles';
+import globalStyles from '../../../commons/globalStyles';
 import { Rating, Icon } from 'react-native-elements';
 
-export default class LoginScreen extends Component<{}> {
+export default class ListScreen extends React.Component {
   
   static navigationOptions = {
     title: 'Cart',
@@ -28,7 +22,7 @@ export default class LoginScreen extends Component<{}> {
           <View style={{borderWidth:1, borderRadius:5, borderColor:'#ececec', marginBottom:15}}>
             <View style={{flexDirection:'row', padding:10}}>
               <View style={{flex:1}}>
-                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../assets/images/detailimg2.jpg')}/>
+                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../../assets/images/detailimg2.jpg')}/>
               </View>
               <View style={{flex:3, paddingLeft:15}}>
                 <View>
@@ -71,7 +65,7 @@ export default class LoginScreen extends Component<{}> {
           <View style={{borderWidth:1, borderRadius:5, borderColor:'#ececec', marginBottom:15}}>
             <View style={{flexDirection:'row', padding:10}}>
               <View style={{flex:1}}>
-                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../assets/images/detailimg3.jpg')}/>
+                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../../assets/images/detailimg3.jpg')}/>
               </View>
               <View style={{flex:3, paddingLeft:15}}>
                 <View>
@@ -114,7 +108,7 @@ export default class LoginScreen extends Component<{}> {
           <View style={{borderWidth:1, borderRadius:5, borderColor:'#ececec', marginBottom:15}}>
             <View style={{flexDirection:'row', padding:10}}>
               <View style={{flex:1}}>
-                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../assets/images/detailimg.jpg')}/>
+                <Image style={{width:70, height:70, resizeMode:'cover'}} source={require('../../assets/images/detailimg.jpg')}/>
               </View>
               <View style={{flex:3, paddingLeft:15}}>
                 <View>

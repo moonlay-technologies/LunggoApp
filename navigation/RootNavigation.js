@@ -22,7 +22,7 @@ import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
 
 
 import ForgotPassword from '../customer/screens/ForgotPassword'
-import Cart from '../customer/screens/Cart'
+import Cart from '../customer/screens/Cart/CartScreen'
 
 //// unimplemented
 // import Filter from '../screens/Filter';
@@ -33,8 +33,8 @@ import Cart from '../customer/screens/Cart'
 import ExploreScreen from '../customer/screens/ExploreScreen';
 import Swiper from '../customer/screens/Swiper';
 import MapScreen from '../customer/screens/MapScreen';
-import CartBlank from '../customer/screens/CartBlank';
-import CartList from '../customer/screens/CartList';
+import CartBlank from '../customer/screens/Cart/BlankScreen';
+import CartList from '../customer/screens/Cart/ListScreen';
 
 const RootStackNavigator = StackNavigator(
   {
@@ -46,7 +46,7 @@ const RootStackNavigator = StackNavigator(
       // screen: LoginScreen
       // screen: Dashboard
       //screen: BeforeLoginScreen
-      screen: ExploreScreen
+      screen: MainTabNavigator
       //screen: CartBlank
       // screen: DetailScreen
     },
@@ -72,6 +72,7 @@ const RootStackNavigator = StackNavigator(
     RincianHarga: { screen: RincianHarga },
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
+    Cart: { screen: Cart },
 
   },
   {
