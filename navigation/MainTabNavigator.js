@@ -11,14 +11,18 @@ import MyBooking from '../customer/screens/MyBooking';
 import LinksScreen from '../customer/screens/LinksScreen';
 import SettingsScreen from '../customer/screens/SettingsScreen';
 import CartBlank from '../customer/screens/CartBlank';
+import WhishlistBlank from '../customer/screens/WhishlistBlank';
+import MyBookingBlank from '../customer/screens/MyBookingBlank';
+import MessageBlank from '../customer/screens/MyBookingBlank';
+import AccountPage from '../customer/screens/AccountPage';
 
 export default TabNavigator(
   {
     Explore:  { screen: ExploreScreen,  },
-    MyBooking:{ screen: MyBooking },
-    Home:     { screen: CartBlank },
-    Links:    { screen: LinksScreen },
-    Settings: { screen: SettingsScreen },
+    MyBookingBlank:{ screen: MyBookingBlank },
+    WhishlistBlank: { screen: WhishlistBlank },
+    MessageBlank:    { screen: MessageBlank },
+    AccountPage: { screen: AccountPage },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -35,27 +39,27 @@ export default TabNavigator(
           case 'Explore':
             iconName = Platform.OS === 'ios'
               ? `ios-search${focused ? '' : '-outline'}`
-              : 'md-search';
+              : 'ios-search-outline';
             break;
-            case 'MyBooking':
+            case 'MyBookingBlank':
             iconName = Platform.OS === 'ios'
               ? `ios-paper${focused ? '' : '-outline'}`
-              : 'md-paper';
+              : 'ios-paper-outline';
             break;
-          case 'Home':
+          case 'WhishlistBlank':
             iconName = Platform.OS === 'ios'
               ? `ios-heart${focused ? '' : '-outline'}`
-              : 'md-heart';
+              : 'ios-heart-outline';
             break;
-          case 'Links':
+          case 'MessageBlank':
             iconName = Platform.OS === 'ios'
               ? `ios-mail-open${focused ? '' : '-outline'}`
-              : 'md-mail-open';
+              : 'ios-mail-open-outline';
             break;
-          case 'Settings':
+          case 'AccountPage':
             iconName = Platform.OS === 'ios'
               ? `ios-person${focused ? '' : '-outline'}`
-              : 'md-person';
+              : 'ios-person-outline';
         }
         return (
           <Ionicons

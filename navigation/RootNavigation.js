@@ -13,7 +13,7 @@ import registerForPushNotificationsAsync
 import { SearchResults, MyBooking, AddPax, DetailScreen,
   CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
   Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga,  } from '../customer/screens/Screens';
+  Review, RincianHarga, } from '../customer/screens/Screens';
 
 import { LoginScreen } from '../commons/Screens';
 
@@ -35,19 +35,20 @@ import Swiper from '../customer/screens/Swiper';
 import MapScreen from '../customer/screens/MapScreen';
 import CartBlank from '../customer/screens/CartBlank';
 import CartList from '../customer/screens/CartList';
+import AccountPage from '../customer/screens/AccountPage';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
       // screen: Dashboard
-      //screen: MainTabNavigator
+      screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
       // screen: LoginScreen
       // screen: Dashboard
       //screen: BeforeLoginScreen
-      screen: ExploreScreen
-      //screen: CartBlank
+      //screen: ExploreScreen
+      //screen: AccountPage
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },

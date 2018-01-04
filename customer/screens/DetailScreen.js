@@ -580,7 +580,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   activitydetailTitle: {
     fontFamily: 'Hind-Bold',
@@ -599,7 +598,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   priceTitle: {
     fontSize:12,

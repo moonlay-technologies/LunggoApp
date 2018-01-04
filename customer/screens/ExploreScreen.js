@@ -414,7 +414,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   activityTitle: {
     fontFamily: 'Hind-Bold',
