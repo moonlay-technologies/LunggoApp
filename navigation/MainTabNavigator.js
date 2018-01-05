@@ -18,7 +18,8 @@ import AccountPage from '../customer/screens/AccountPage';
 export default TabNavigator(
   {
     Explore: { screen: ExploreScreen },
-    MyBookingBlank: { screen: MyBookingBlank },
+    MyBooking: { screen: MyBooking },
+    // MyBookingBlank: { screen: MyBookingBlank },
     WhishlistBlank: { screen: WhishlistBlank },
     MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
@@ -38,7 +39,7 @@ export default TabNavigator(
               ? `ios-search${focused ? '' : '-outline'}`
               : 'ios-search-outline';
             break;
-            case 'MyBookingBlank':
+            case 'MyBooking':
             iconName = Platform.OS === 'ios'
               ? `ios-paper${focused ? '' : '-outline'}`
               : 'ios-paper-outline';

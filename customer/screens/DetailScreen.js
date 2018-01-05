@@ -30,7 +30,7 @@ export default class DetailScreen extends Component {
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
         mediaSrc: [],
-        lat:0, long:0,
+        // lat:0, long:0,
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
@@ -111,13 +111,9 @@ export default class DetailScreen extends Component {
               right:20,
               flexDirection:'row'
             }}>
-              <View style={{}}>
-                <Icon name='share' type='materialicons'
-                  size={30} color='#fff'/>
-              </View>
+              <Icon name='share' type='materialicons' size={30} color='#fff'/>
               <View style={{marginLeft:10}}>
-                <Icon name='favorite-border' type='materialicons'
-                  size={30} color='#fff'/>
+                <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
               </View>
             </View>
           </View>
@@ -134,13 +130,7 @@ export default class DetailScreen extends Component {
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <View style={{}}>
-                <Icon
-                name='location'
-                type='entypo'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='location' type='entypo' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   { city }
@@ -148,13 +138,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='person'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='person' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Maksimum 6 orang
@@ -162,13 +146,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='event'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='event' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Khusus hari minggu
@@ -176,13 +154,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='receipt'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='receipt' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Untuk usia diatas 10 tahun
@@ -267,14 +239,7 @@ export default class DetailScreen extends Component {
                 <View>
                   <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
                 </View>
-                <View>
-                  <Icon
-                    name='star'
-                    type='fontawesome'
-                    size={20}
-                    color='#00c5bc'
-                    />
-                </View>
+                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
               </View>
 
               <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
@@ -301,8 +266,8 @@ export default class DetailScreen extends Component {
                 <MapView
                   style={{width:"100%", height:150}}
                   region={{
-                    latitude: lat,
-                    longitude: long,
+                    latitude: -6.230295, //lat,
+                    longitude: 106.799057, //long,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
@@ -318,6 +283,7 @@ export default class DetailScreen extends Component {
                     ref={marker => (this.marker = marker)}
                   />
                 </MapView>
+                <Text>LatLong: {lat} , {long} </Text>
               </TouchableOpacity>
               
               <View style={{marginTop:30, marginBottom:30}}>
