@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Platform, StyleSheet, View, Text } from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Colors from '../constants/Colors';
@@ -27,11 +27,44 @@ export default TabNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerRight:
-        <Ionicons
-          name={Platform.OS === 'ios' ? 'ios-cart-outline' : 'md-cart'}
-          size={28}
+      <View style={{}}>
+        <Entypo
+          name={Platform.OS === 'ios' ? 'shopping-basket' : 'shopping-basket'}
+          size={26}
+          color='#23d3c3'
           style={{ marginRight: 10}}
-        />,
+        />
+        <View style={styles.notification}>
+          <Text style={styles.txtNotification}>5</Text>
+        </View>
+      </View>,
+
+      headerStyle: {
+        backgroundColor: '#fff',
+        ...Platform.select({
+          ios: {
+           /* paddingHorizontal:15,
+            paddingTop:30,
+            paddingBottom:10,
+            shadowColor: '#cdcdcd',
+            shadowOffset: { height: 3 },
+            shadowOpacity: 0.2,
+            shadowRadius: 2,
+            // paddingVertical:15,*/
+            paddingHorizontal:3,
+            paddingVertical:15,
+            borderBottomColor: "#ececec",
+            borderBottomWidth: 1,
+          },
+          android: {
+            paddingHorizontal:15,
+            paddingVertical:15,
+            elevation: 0,        
+            borderBottomColor: "#ececec",
+            borderBottomWidth: 1,
+          },
+        }),
+      },
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconName;
@@ -82,3 +115,53 @@ export default TabNavigator(
     },
   }
 );
+
+
+const styles = StyleSheet.create({
+
+  notification: {
+    backgroundColor:'#ffc943',
+    height:18,
+    width:19,
+    position:'absolute',
+    right:10,
+    top:-4,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:9,
+  },
+  txtNotification: {
+    color:'#fff',
+    fontFamily:'Hind-Bold',
+    fontSize:12,
+    ...Platform.select({
+      ios: {
+        //backgroundColor:'red',
+        height:12,
+        lineHeight:16,
+      },
+    })
+  },
+  header: {
+    backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+        paddingHorizontal:15,
+        paddingTop:30,
+        paddingBottom:15,
+        shadowColor: '#cdcdcd',
+        shadowOffset: { height: 3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        // paddingVertical:15,
+      },
+      android: {
+        paddingHorizontal:15,
+        paddingVertical:15,
+        elevation: 20,        
+        borderBottomColor: "#ececec",
+        borderBottomWidth: 1,
+      },
+    }),
+  },
+});

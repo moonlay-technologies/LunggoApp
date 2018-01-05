@@ -20,6 +20,7 @@ export default class LoginScreen extends Component<{}> {
   };;
   state = {open: false};
 
+
   render() {
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
