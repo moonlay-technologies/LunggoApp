@@ -22,7 +22,7 @@ export default class DetailScreen extends Component {
     const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
-        // isLoading, 
+        isLoading: true, 
         id:1,
         requiredPaxData: '',
         name: 'loading activity name...',
@@ -70,6 +70,7 @@ export default class DetailScreen extends Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
+      response.isLoading = false;
       this.setState(response);
       this.forceUpdate( () => this.marker.showCallout() );
     }).catch(error => console.log(error));

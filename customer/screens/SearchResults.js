@@ -87,7 +87,7 @@ export default class SearchResults extends React.Component {
     search(this.state.searchString)
       .then(response => {
         this.setState({list: response, isLoading: false});
-        // this.forceUpdate();
+        this.forceUpdate();
       }).catch(error=>console.log(error));
   }
 
@@ -111,7 +111,6 @@ export default class SearchResults extends React.Component {
     return this.state.isLoading ?
       <ActivityIndicator size='large'/> : (
       <View>
-        {/*<Text>{this.state.list.length}</Text>*/}
         <FlatList
           numColumns={2}
           contentContainerStyle={styles.list}

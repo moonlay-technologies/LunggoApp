@@ -20,32 +20,27 @@ import { LoginScreen } from '../commons/Screens';
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
-
-import ForgotPassword from '../customer/screens/ForgotPassword'
 import Cart from '../customer/screens/Cart/CartScreen'
+import MapScreen from '../customer/screens/MapScreen';
+import AccountPage from '../customer/screens/AccountPage';
 
 //// unimplemented
+import ForgotPassword from '../customer/screens/ForgotPassword'
 // import Filter from '../screens/Filter';
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
-// for testing purpose
-import ExploreScreen from '../customer/screens/ExploreScreen';
 import Swiper from '../customer/screens/Swiper';
-import MapScreen from '../customer/screens/MapScreen';
-import CartBlank from '../customer/screens/Cart/BlankScreen';
-import CartList from '../customer/screens/Cart/ListScreen';
-import AccountPage from '../customer/screens/AccountPage';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: MainTabNavigator
+      // screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
       // screen: LoginScreen
       // screen: Dashboard
-      //screen: BeforeLoginScreen
+      screen: BeforeLoginScreen
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -64,7 +59,6 @@ const RootStackNavigator = StackNavigator(
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
     ActivityList: { screen: ActivityList },
-    ExploreScreen: { screen: ExploreScreen },
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
     RincianHarga: { screen: RincianHarga },

@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform,
@@ -13,7 +13,7 @@ import {
 import globalStyles from '../../commons/globalStyles';
 import Modal from 'react-native-simple-modal';
 
-export default class LoginScreen extends Component<{}> {
+export default class WishlistBlank extends React.Component {
   
   static navigationOptions = {
     title: 'Favorit',

@@ -39,7 +39,7 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    let {rsvNo} = this.props.navigation.state.params;
+    // let {rsvNo} = this.props.navigation.state.params;
     console.log(clientId);
     console.log(clientSecret);
     return (

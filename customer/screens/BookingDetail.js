@@ -96,15 +96,12 @@ export default class BookingDetail extends React.Component {
       // ],
     };
     try {
-      this.setState({isLoading:false});
       let response = await fetchTravoramaBookApi(data);
       if(response.status != 200) {
         console.error("Book API: status other than 200 returned!");
         console.log(response);
+        this.setState({isLoading:false});
         return;
-        // this.props.navigation.navigate(
-        //   'WebViewScreen',{rsvNo:response.rsvNo}
-        // );
       }
 
       //// after done booking and get RsvNo, add item to cart
@@ -112,10 +109,10 @@ export default class BookingDetail extends React.Component {
       if (response.status != 200) {
         console.error("Cart API: status other than 200 returned!");
         console.log(response);
+        this.setState({isLoading:false});
         return;
-      } else console.log(response);
-      //// TODO : DO SOMETHING HERE
-
+      } else this.props.navigation.navigate('Cart');
+      this.setState({isLoading:false});
     } catch (error) {
       this.setState({isLoading:false});
       console.log(error);
@@ -135,7 +132,7 @@ export default class BookingDetail extends React.Component {
   render() {
     let {navigation} = this.props;
     let {price, requiredPaxData} = navigation.state.params;
-    let {pax, date, paxListItemIndexes} = this.state;
+    let {pax, date, paxListItemIndexes, isDateSelected, isPaxFilled} = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
     let selectedDateText = date ?
@@ -287,11 +284,11 @@ export default class BookingDetail extends React.Component {
                   styles.normalText : styles.warningText} >
                   {selectedDateText}
                 </Text>
+                {isDateSelected ? null:<Text style={styles.validation}>mohon isi jadwal</Text>}
                 <TouchableOpacity containerStyle={styles.addButton}
                   onPress={this._goToCalendarPicker} >
                   {setDateButton}
                 </TouchableOpacity>
-                {/*<Text style={styles.validation}>isi jadwal</Text>*/}
               </View>
             </View>
             <View>
@@ -375,8 +372,7 @@ export default class BookingDetail extends React.Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text style={this.state.isPaxFilled ?
-                  styles.normalText : styles.warningText} >
+                <Text>
                   Atur Peserta
                 </Text>
                 <TouchableOpacity
@@ -390,10 +386,10 @@ export default class BookingDetail extends React.Component {
                   })}
                 >
                   <View style={{flexDirection:'row'}}>
-                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                     <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
-                      {/*<Text style={styles.validation}>isi peserta</Text>*/}
+                      {isPaxFilled ? null:<Text style={styles.validation}>Mohon isi peserta</Text>}
                     </View>
+                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                   </View>
                   
                 </TouchableOpacity>
