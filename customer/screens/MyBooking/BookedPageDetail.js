@@ -1,15 +1,13 @@
 'use strict';
 
 import React from 'react';
+import Button from 'react-native-button';
+import * as Formatter from '../../components/Formatter';
+import { Icon } from 'react-native-elements';
+import { Platform, StyleSheet, TouchableOpacity, Text, View, Image,
+  TextInput, ScrollView, } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
-import Button from 'react-native-button';
-import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements';
-import {
-  Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView,
-} from 'react-native';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -64,7 +62,7 @@ export default class BookedPageDetail extends React.Component {
                   </View>
                   <View style={{marginTop:1, marginLeft:10}}>
                     <Text style={{fontSize:12}}>
-                      {Moment(date).format('dddd, D MMM YYYY')}
+                      {Formatter.dateFullLong(date)}
                     </Text>
                   </View>
                 </View>
@@ -118,16 +116,16 @@ export default class BookedPageDetail extends React.Component {
               </View>
               <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
                 <TouchableOpacity>
-                  <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../assets/images/phone.png')}/>
+                  <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../../assets/images/phone.png')}/>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../assets/images/sms.png')}/>
+                  <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../../assets/images/sms.png')}/>
                 </TouchableOpacity>
                 </View>
             </View>
             <View style={{flex:1, flexDirection:'row'}}>
               <View style={{marginRight:10}}>
-                <Image style={styles.avatar} source={require('../../assets/images/janedoe.jpg')}/>
+                <Image style={styles.avatar} source={require('../../../assets/images/janedoe.jpg')}/>
               </View>
               <View>
                 <Text style={{fontWeight:'bold', fontSize:16, color:'#454545'}}>Jane Doe</Text>
@@ -187,7 +185,7 @@ export default class BookedPageDetail extends React.Component {
               </View>
               <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
                 <View style={{marginTop:30, marginBottom:10}}>
-                  <Image style={styles.barcode} source={require('../../assets/images/barcode.jpg')}/>
+                  <Image style={styles.barcode} source={require('../../../assets/images/barcode.jpg')}/>
                 </View>
                 <View>
                   <Text style={{fontWeight:'bold', fontSize:16}}>AJ20090189</Text>

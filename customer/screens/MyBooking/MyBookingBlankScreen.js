@@ -1,41 +1,37 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
-import globalStyles from '../../commons/globalStyles';
-import Modal from 'react-native-simple-modal';
+import globalStyles from '../../../commons/globalStyles';
 
-export default class LoginScreen extends Component<{}> {
+export default class MyBookingBlankScreen extends React.Component {
   
   static navigationOptions = {
     title: 'Pesananku',
-  };;
-  state = {open: false};
+  };
 
   render() {
     return (
         <View style={styles.container}>
           <View style={{justifyContent:'center', alignItems:'center', flex:1}}>
-            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../assets/images/pesanan.jpg')}/>
+            <Image style={{width:180, height:180, resizeMode:'contain'}}
+              source={require('../../assets/images/pesanan.jpg')} />
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
               <Text style={styles.textCartBesar}>Belum ada pesanan</Text>
               <View>
-                <Text style={styles.textCart}>Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya.</Text>
+                <Text style={styles.textCart}>
+                  Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}
+                  Ayo mulai mencari dan rasakan kemudahannya.
+                </Text>
               </View>
             </View>
             <View style={{width:'100%', marginTop:30}}>
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.setState({open: true})}
+                  onPress={() => console.log('TODO')}
                 >
                   Jelajah Sekarang
               </Button>

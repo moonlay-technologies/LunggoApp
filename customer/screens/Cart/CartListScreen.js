@@ -7,21 +7,7 @@ import { Platform, StyleSheet, Text, View, Image, ScrollView,
 import globalStyles from '../../../commons/globalStyles';
 import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../../components/Formatter';
-import { AUTH_LEVEL, fetchTravoramaApi } from '../../../api/Common';
-import Moment from 'moment';
-import 'moment/locale/id';
-
-async function deleteCart(rsvNo) {
-  const version = 'v1';
-  const path = `/${version}/cart/${rsvNo}`;
-  const method = 'DELETE';
-  let request = {path, method, requiredAuthLevel: AUTH_LEVEL.User}
-  try {
-    return await fetchTravoramaApi(request);
-  } catch(error) {
-    console.log(error);
-  }
-}
+import { deleteCart } from './CartController';
 
 class ListItem extends React.PureComponent {
 
@@ -33,7 +19,8 @@ class ListItem extends React.PureComponent {
     const { date, time } = item.selectedDateTime;
     let timeText = (!!time) ? ' - ' + time : '';
     const selectedDateTimeText =
-      Moment(date).format('ddd, D MMM YYYY') + timeText;
+      Formatter.dateFullShort(date) + timeText;
+      // Moment(date).format('ddd, D MMM YYYY') + timeText;
 
     return (
       <View style={{borderWidth:1, borderRadius:5, borderColor:'#ececec', marginBottom:15}}>
