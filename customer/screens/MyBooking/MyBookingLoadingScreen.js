@@ -22,6 +22,9 @@ export default class MyBookingLoadingScreen extends React.Component {
   };
 
   componentDidMount() {
+    if (this.props.navigation.state.params && !this.props.navigation.state.params.loggedIn) {
+      return this.setState({isLoading:false});
+    }
     getBookingList().then( ({ list, status }) => {
       this.setState({list, status, isLoading: false});
     });

@@ -68,7 +68,7 @@ _registerForPushNotifications() {
 
   _login = () => {
     this.setState({isLoading:true})
-    let {navigate} = this.props.navigation;
+    let {navigate, goBack} = this.props.navigation;
     let {params} = this.props.navigation.state;
     // //// validation
     //TODO
@@ -87,8 +87,10 @@ _registerForPushNotifications() {
     
 
         if (params) {
-          if (params.appType == 'OPERATOR'){
+          if (params.appType == 'OPERATOR') {
             navigate('Dashboard');
+          } else if (params.back == true) {
+            goBack();
           } else {
             navigate('BookingDetail',params);
           }

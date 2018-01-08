@@ -28,6 +28,7 @@ export default class ExploreScreen extends React.Component {
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
+    let {props} = this;
     let categoryHeader = ({title,searchUrl}) =>
       <View style={[styles.container,{marginTop:30,flexDirection:'row'}]}>
         <View style={{flex:2}}>
@@ -108,8 +109,8 @@ export default class ExploreScreen extends React.Component {
                   </Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end',}}>
-                  {/*<WishButton wishlisted={item.wishlisted} id={item.id} />*/}
-                  <WishButton wishlisted={true} id={1} />
+                  {/*<WishButton wishlisted={item.wishlisted} id={item.id} {...props}/>*/}
+                  <WishButton wishlisted={true} id={1} {...props}/>
                 </View>
               </View>
             </View>
@@ -218,7 +219,7 @@ export default class ExploreScreen extends React.Component {
                   </Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end',}}>
-                  <WishButton wishlisted={true} id={1} />
+                  <WishButton wishlisted={true} id={1} {...props}/>
                 </View>
               </View>
             </View>

@@ -155,7 +155,6 @@ export async function fetchTravoramaApi (request) {
 
 export async function checkUserLoggedIn (request) {
   let {authLevel} = await getAuthAccess();
-  console.log(authLevel);
   return (authLevel >= AUTH_LEVEL.User);
 }
 

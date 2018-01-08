@@ -39,12 +39,7 @@ export default class AccountScreen extends React.Component {
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
       <Modal
-        style={{
-          // justifyContent: 'flex-end',
-          // margin: 0,
-        }}
-        animationType="fade"
-        transparent={true}
+        style={{}}
         // isVisible={true}
         isVisible={this.state.isModalVisible}
       >

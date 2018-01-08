@@ -8,11 +8,14 @@ import WishButton from '../../components/WishButton';
 
 class ListItem extends React.PureComponent {
 
-  _onPressItem = () => this.props.onPressItem(this.props.item);
-
+  // _onPressItem = () => this.props.onPressItem(this.props.item);
+  _onPressItem = () => this.props.navigation.navigate(
+    'DetailScreen', {details: this.props.item}
+  );
 
   render() {
-    const {item} = this.props;
+    const {props} = this;
+    const {item} = props;
     return (
       <View style={{backgroundColor:'#fff', width:'50%'}}>
         <TouchableHighlight
@@ -34,7 +37,8 @@ class ListItem extends React.PureComponent {
                     { Formatter.price(item.price) }
                   </Text>
                 </View>
-                <WishButton wishlisted={item.wishlisted} id={item.id} />
+                <WishButton wishlisted={item.wishlisted}
+                  id={item.id} {...props} />
               </View>
             </View>
           </View>
@@ -62,12 +66,13 @@ export default class ActivityResultScreen extends React.Component {
       item={item}
       index={index}
       onPressItem={this._onPressItem}
+      {...this.props}
     />
   );
 
-  _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', {details: item})
-  };
+  // _onPressItem = item => {
+  //   this.props.navigation.navigate('DetailScreen', {details: item})
+  // };
 
   render() {
     return (
