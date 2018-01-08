@@ -9,7 +9,7 @@ import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
-  ScrollView, } from 'react-native';
+  ScrollView, Platform } from 'react-native';
 
 
 async function fetchTravoramaCartAddApi(rsvNo) {
@@ -178,89 +178,70 @@ export default class BookingDetail extends React.Component {
         <ScrollView style={{}}>
           <View style={styles.container}>
             <View style={{}}>
-              <View style={{flex:1, marginBottom:15}}>
+              {/*<View style={{flex:1, marginBottom:15}}>
                 <Image
                   style={styles.thumb}
                   source={require('../../assets/images/detailimg3.jpg')}
                 />
-              </View>
+              </View>*/}
               <View style={{flex:1.5}}>
                 <Text style={styles.activitydetailTitle}>
                   Trip to Sahara Desert
                 </Text>
-                <View style={{flexDirection: 'row', marginBottom:5}}>
-                  <Rating
-                    // startingValue={3.6}
-                    readonly
-                    imageSize={12}
-                    // onFinishRating={this.ratingCompleted}
-                  />
+              </View>
+              {/*<View style={{flexDirection: 'row', marginBottom:5}}>
+                <Rating
+                  // startingValue={3.6}
+                  readonly
+                  imageSize={12}
+                  // onFinishRating={this.ratingCompleted}
+                />
+              </View>
+              <Text style={styles.activityDesc}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing
+                elit, sed do eiusmod tempor incididunt ut labore et 
+                dolore magna aliqua. Ut enim ad minim veniam.
+              </Text>*/}
+              <View style={{marginTop:15}}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <View style={{}}>
+                    <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={styles.activityDesc}>
+                      Jepang
+                    </Text>
+                  </View>
                 </View>
-                {/*<Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>*/}
-
-                <View style={{marginTop:20}}>
-
-                  <View style={{flex: 1, flexDirection: 'row'}}>
-                    <View style={{}}>
-                      <Icon
-                      name='location'
-                      type='entypo'
-                      size={16}
-                      color='#454545'/>
-                    </View>
-                    <View style={{marginTop:1, marginLeft:10}}>
-                      <Text style={{fontSize:14}}>
-                        Jepang
-                      </Text>
-                    </View>
+                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+                  <View style={{}}>
+                    <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
                   </View>
-                  <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                    <View style={{}}>
-                      <Icon
-                      name='person'
-                      type='materialicons'
-                      size={16}
-                      color='#454545'/>
-                    </View>
-                    <View style={{marginTop:1, marginLeft:10}}>
-                      <Text style={{fontSize:14}}>
-                        Maksimum 6 orang
-                      </Text>
-                    </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={styles.activityDesc}>
+                      Maksimum 6 orang
+                    </Text>
                   </View>
-                  <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                    <View style={{}}>
-                      <Icon
-                      name='event'
-                      type='materialicons'
-                      size={16}
-                      color='#454545'/>
-                    </View>
-                    <View style={{marginTop:1, marginLeft:10}}>
-                      <Text style={{fontSize:14}}>
-                        Khusus hari minggu
-                      </Text>
-                    </View>
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+                  <View style={{}}>
+                   <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
                   </View>
-                  <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                    <View style={{}}>
-                      <Icon
-                      name='receipt'
-                      type='materialicons'
-                      size={16}
-                      color='#454545'/>
-                    </View>
-                    <View style={{marginTop:1, marginLeft:10}}>
-                      <Text style={{fontSize:14}}>
-                        Untuk usia diatas 10 tahun
-                      </Text>
-                    </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={styles.activityDesc}>
+                      Khusus hari minggu
+                    </Text>
                   </View>
-
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+                  <View style={{}}>
+                    <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
+                  </View>
+                  <View style={{marginTop:1, marginLeft:10}}>
+                    <Text style={styles.activityDesc}>
+                      Untuk usia diatas 10 tahun
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -306,10 +287,10 @@ export default class BookingDetail extends React.Component {
               }}>
                 <View style={{flexDirection:'row',}}>
                   <View style={{flex:1}}>
-                    <Text>Dewasa</Text>
+                    <Text style={styles.activityDesc}>Dewasa</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <Text>1</Text>
+                    <Text style={styles.activityDesc}>1</Text>
                      <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
                       <Icon
                       name='minus'
@@ -328,11 +309,11 @@ export default class BookingDetail extends React.Component {
                 </View>
                 <View style={{marginTop:20, flexDirection:'row',}}>
                   <View style={{flex:1}}>
-                    <Text>Anak-anak</Text>
+                    <Text style={styles.activityDesc}>Anak-anak</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <Text>1</Text>
-                     <View style={{borderWidth:1, borderRadius:2, marginRight:5, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                    <Text style={styles.activityDesc}>1</Text>
+                     <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
                       <Icon
                       name='minus'
                       type='entypo'
@@ -373,7 +354,7 @@ export default class BookingDetail extends React.Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text>
+                <Text style={styles.activityDesc}>
                   Atur Peserta
                 </Text>
                 <TouchableOpacity
@@ -450,21 +431,56 @@ const styles = StyleSheet.create({
     marginTop:3
   },
   activityTitle: {
-    fontWeight:'bold',
+    fontFamily: 'Hind-Bold',
     fontSize:15,
     color:'#454545',
-    marginBottom:5
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 20 - (19 * 0.4),
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   activitydetailTitle: {
-    fontWeight:'bold',
-    fontSize:18,
+    fontFamily: 'Hind-Bold',
+    fontSize:19,
     color:'#454545',
-    marginBottom:5
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom:-15,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   activityDesc: {
     fontSize:14,
     color:'#454545',
-    lineHeight: 20,
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 10,
+        marginBottom:-10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
    divider: {
     height: 1,

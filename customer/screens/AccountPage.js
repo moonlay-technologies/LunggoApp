@@ -90,6 +90,18 @@ export default class LoginScreen extends Component<{}> {
             color='#454545'/>
           </View>
         </View>
+        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+          <View style={{justifyContent:'center', flex:1}}>
+            <Text style={styles.optionProfile}>Log Out</Text>
+          </View>
+          <View style={{alignItems:'flex-end', flex:1}}>
+            <Icon
+            name='ios-log-out'
+            type='ionicon'
+            size={30}
+            color='#454545'/>
+          </View>
+        </View>
       </View>
       </ScrollView>
     );

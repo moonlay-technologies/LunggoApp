@@ -86,8 +86,8 @@ export default StyleSheet.create({
         paddingTop: 76 - (56 * 0.4)
       },
       android: {
-        lineHeight:56*0.9,
-        paddingBottom: 100 - (56 * 0.9)
+        lineHeight:56,
+        paddingBottom: 30
       },
     }),
   },

@@ -125,33 +125,33 @@ export default class DetailScreen extends Component {
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Icon name='location' type='entypo' size={16} color='#454545'/>
+              <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   { city }
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='person' type='materialicons' size={16} color='#454545'/>
+              <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Maksimum 6 orang
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='event' type='materialicons' size={16} color='#454545'/>
+              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Khusus hari minggu
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='receipt' type='materialicons' size={16} color='#454545'/>
+              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Untuk usia diatas 10 tahun
                 </Text>
               </View>
@@ -552,7 +552,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight:15*0.8,
         paddingTop: 20 - (19 * 0.4),
-        height:22,
+        marginBottom:-15,
         //backgroundColor:'red'
       },
       android: {
@@ -579,6 +579,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight:15*0.8,
         paddingTop: 10,
+        marginBottom:-10
       },
       android: {
         //lineHeight:24
@@ -586,7 +587,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   containerdescriptionActivity: {
     marginBottom: 30,
