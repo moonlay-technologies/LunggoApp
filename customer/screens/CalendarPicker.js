@@ -5,8 +5,7 @@ import { StyleSheet, Platform, View, Text, TouchableOpacity,
 import globalStyles from '../../commons/globalStyles';
 import Modal from 'react-native-modal';
 import Button from 'react-native-button';
-import Moment from 'moment';
-import 'moment/locale/id';
+import * as Formatter from '../components/Formatter';
 
 export default class CalendarPicker extends Component {
 
@@ -175,7 +174,7 @@ export default class CalendarPicker extends Component {
             </View>
             <View>
               <Text style={styles.activityDesc}>
-                {Moment(selectedDate).format('dddd, D MMMM YYYY')}
+                {Formatter.dateFullLong(selectedDate)}
               </Text>
             </View>
             {availableHoursList}

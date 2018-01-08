@@ -2,14 +2,12 @@
 
 import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform, StyleSheet, FlatList, RefreshControl,
-  Text, View, Image, TextInput, ScrollView, TouchableHighlight,
+import { Platform, StyleSheet, FlatList, RefreshControl, Text, View,
+  Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import { getBookingList } from './MyBookingController';
 import { Icon } from 'react-native-elements';
-import Moment from 'moment';
-import 'moment/locale/id';
+import * as Formatter from '../../components/Formatter';
 
 class ListItem extends React.PureComponent {
 
@@ -44,7 +42,7 @@ class ListItem extends React.PureComponent {
                 {item.name}
               </Text>
               <Text style={styles.status}>
-                {bookingStatus}
+                {bookingStatusText}
               </Text>
               <View style={{
                 marginTop: 10,
@@ -76,7 +74,7 @@ class ListItem extends React.PureComponent {
                 />
                 <View style={{marginTop:1, marginLeft:5}}>
                   <Text style={{fontSize:12}}>
-                    {Moment(item.date).format('ddd, D MMM YYYY')}
+                    {Formatter.dateFullShort(item.date)}
                   </Text>
                 </View>
               </View>
@@ -89,7 +87,7 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class MyBooking extends React.Component {
+export default class MyBookingListScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Pesananku',
@@ -97,23 +95,10 @@ export default class MyBooking extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = {bookingList: [], isRefreshing:false};
-  }
-
-  _fetchBookingListApi = async () => {
-    const version = 'v1';
-    let request = {
-      path: `/${version}/activities/mybooking`,
-      requiredAuthLevel: AUTH_LEVEL.Guest,
-    }
-    fetchTravoramaApi(request).then( response => {
-      this.setState({bookingList: response.myBookings});
-    }).catch(error => console.log(error));
-    return;
-  }
-
-  componentDidMount() {
-    this._fetchBookingListApi();
+    this.state = {
+      bookingList: props.list,
+      isRefreshing:false
+    };
   }
 
   _keyExtractor = (item, index) => index;
@@ -131,12 +116,12 @@ export default class MyBooking extends React.Component {
   };
   _onRefresh = () => {
     this.setState({isRefreshing: true});
-    this._fetchBookingListApi().then( () => {
+    this.getBookingList().then( () => {
       this.setState({isRefreshing: false});
     });
   }
-  render() {
 
+  render() {
     return (
       <ScrollView
         style={{flex:1, backgroundColor: '#fff',}}

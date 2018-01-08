@@ -7,11 +7,10 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../customer/screens/HomeScreen';
 import ExploreScreen from '../customer/screens/ExploreScreen';
-import MyBooking from '../customer/screens/MyBooking';
+import MyBooking from '../customer/screens/MyBooking/MyBookingLoadingScreen';
 // import LinksScreen from '../customer/screens/LinksScreen';
 // import SettingsScreen from '../customer/screens/SettingsScreen';
 import WhishlistBlank from '../customer/screens/WhishlistBlank';
-import MyBookingBlank from '../customer/screens/MyBookingBlank';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
 
@@ -19,7 +18,6 @@ export default TabNavigator(
   {
     Explore: { screen: ExploreScreen },
     MyBooking: { screen: MyBooking },
-    // MyBookingBlank: { screen: MyBookingBlank },
     WhishlistBlank: { screen: WhishlistBlank },
     MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
