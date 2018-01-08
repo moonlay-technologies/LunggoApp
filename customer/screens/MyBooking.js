@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, FlatList, RefreshControl,
@@ -53,13 +53,12 @@ class ListItem extends React.PureComponent {
                 flexDirection:'row',
               }}>
                 <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <View style={{}}>
-                    <Icon
+                  <Icon
                     name='person'
                     type='materialicons'
                     size={16}
-                    color='#454545'/>
-                  </View>
+                    color='#454545'
+                  />
                   <View style={{marginTop:1, marginLeft:5}}>
                     <Text style={{fontSize:12}}>
                       {item.paxCount} orang
@@ -69,13 +68,12 @@ class ListItem extends React.PureComponent {
               </View>
 
               <View style={{ flexDirection:'row', marginRight:10 }}>
-                <View style={{}}>
-                  <Icon
+                <Icon
                   name='event'
                   type='materialicons'
                   size={16}
-                  color='#454545'/>
-                </View>
+                  color='#454545'
+                />
                 <View style={{marginTop:1, marginLeft:5}}>
                   <Text style={{fontSize:12}}>
                     {Moment(item.date).format('ddd, D MMM YYYY')}
@@ -91,7 +89,7 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class MyBookingScreen extends Component {
+export default class MyBooking extends React.Component {
 
   static navigationOptions = {
     title: 'Pesananku',

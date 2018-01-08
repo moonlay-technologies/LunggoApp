@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, View, Text } from 'react-native';
+import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
@@ -8,9 +8,8 @@ import Colors from '../constants/Colors';
 import HomeScreen from '../customer/screens/HomeScreen';
 import ExploreScreen from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking';
-import LinksScreen from '../customer/screens/LinksScreen';
-import SettingsScreen from '../customer/screens/SettingsScreen';
-import CartBlank from '../customer/screens/CartBlank';
+// import LinksScreen from '../customer/screens/LinksScreen';
+// import SettingsScreen from '../customer/screens/SettingsScreen';
 import WhishlistBlank from '../customer/screens/WhishlistBlank';
 import MyBookingBlank from '../customer/screens/MyBookingBlank';
 import MessageBlank from '../customer/screens/MessageBlank';
@@ -18,26 +17,24 @@ import AccountPage from '../customer/screens/AccountPage';
 
 export default TabNavigator(
   {
-    Explore:  { screen: ExploreScreen,  },
-    MyBookingBlank:{ screen: MyBookingBlank },
+    Explore: { screen: ExploreScreen },
+    MyBooking: { screen: MyBooking },
+    // MyBookingBlank: { screen: MyBookingBlank },
     WhishlistBlank: { screen: WhishlistBlank },
-    MessageBlank:    { screen: MessageBlank },
+    MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
   },
   {
     navigationOptions: ({ navigation }) => ({
       headerRight:
-      <View style={{}}>
-        <Entypo
-          name={Platform.OS === 'ios' ? 'shopping-basket' : 'shopping-basket'}
-          size={26}
-          color='#23d3c3'
-          style={{ marginRight: 10}}
-        />
+      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+        {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
+        <Entypo name={'shopping-basket'} size={26} color='#23d3c3'
+          style={{ marginRight: 10}} />
         <View style={styles.notification}>
           <Text style={styles.txtNotification}>5</Text>
         </View>
-      </View>,
+      </TouchableOpacity>,
 
       headerStyle: {
         backgroundColor: '#fff',
@@ -74,7 +71,7 @@ export default TabNavigator(
               ? `ios-search${focused ? '' : '-outline'}`
               : 'ios-search-outline';
             break;
-            case 'MyBookingBlank':
+            case 'MyBooking':
             iconName = Platform.OS === 'ios'
               ? `ios-paper${focused ? '' : '-outline'}`
               : 'ios-paper-outline';

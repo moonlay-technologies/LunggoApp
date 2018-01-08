@@ -10,12 +10,10 @@ import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 
-import {
-  Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,TouchableOpacity,
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, TouchableOpacity, } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
-        removeAccessToken } from '../../api/Common';
+} from '../../api/Common';
 
 export default class DetailScreen extends Component {
 
@@ -24,14 +22,15 @@ export default class DetailScreen extends Component {
     const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
-        // isLoading, 
-        id,
+        isLoading: true, 
+        id:1,
         requiredPaxData: '',
         name: 'loading activity name...',
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
-        mediaSrc: []
+        mediaSrc: [],
+        // lat:0, long:0,
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
@@ -39,7 +38,8 @@ export default class DetailScreen extends Component {
     }
   }
 
-  static navigationOptions = {
+  static navigationOptions = props => {return {
+    title: props.navigation.state.params.name,
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
@@ -55,7 +55,7 @@ export default class DetailScreen extends Component {
       left: 0,
       right: 0
     },
-  };
+  }}
 
   componentDidMount() {
     const version = 'v1';
@@ -70,29 +70,34 @@ export default class DetailScreen extends Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      this.setState(response); //// = ({availableDateTimes})
+      response.isLoading = false;
+      this.setState(response);
+      this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
-    const { requiredPaxData, price, id } = this.state;
+    const { requiredPaxData, price, id, availableDateTimes } = this.state;
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
-      price, requiredPaxData,
+      price, requiredPaxData, availableDateTimes,
       activityId: id,
     });
     this.setState({isLoading: false})
   }
 
   _enlargeMapView = () => {
-    this.props.navigation.navigate('MapScreen');
+    let {name, address, city, lat, long} = this.state;
+    this.props.navigation.navigate('MapScreen',
+      {name, address, city, lat, long}
+    );
   }
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, availableDateTimes } = this.state;
+      mediaSrc, address, lat, long } = this.state;
     return (
       <View>
         <ScrollView
@@ -106,13 +111,9 @@ export default class DetailScreen extends Component {
               right:20,
               flexDirection:'row'
             }}>
-              <View style={{}}>
-                <Icon name='share' type='materialicons'
-                  size={30} color='#fff'/>
-              </View>
+              <Icon name='share' type='materialicons' size={30} color='#fff'/>
               <View style={{marginLeft:10}}>
-                <Icon name='favorite-border' type='materialicons'
-                  size={30} color='#fff'/>
+                <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
               </View>
             </View>
           </View>
@@ -129,13 +130,7 @@ export default class DetailScreen extends Component {
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <View style={{}}>
-                <Icon
-                name='location'
-                type='entypo'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='location' type='entypo' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   { city }
@@ -143,13 +138,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='person'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='person' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Maksimum 6 orang
@@ -157,13 +146,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='event'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='event' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Khusus hari minggu
@@ -171,13 +154,7 @@ export default class DetailScreen extends Component {
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='receipt'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='receipt' type='materialicons' size={16} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
                 <Text style={{fontSize:14}}>
                   Untuk usia diatas 10 tahun
@@ -262,14 +239,7 @@ export default class DetailScreen extends Component {
                 <View>
                   <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
                 </View>
-                <View>
-                  <Icon
-                    name='star'
-                    type='fontawesome'
-                    size={20}
-                    color='#00c5bc'
-                    />
-                </View>
+                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
               </View>
 
               <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
@@ -296,8 +266,8 @@ export default class DetailScreen extends Component {
                 <MapView
                   style={{width:"100%", height:150}}
                   region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: -6.230295, //lat,
+                    longitude: 106.799057, //long,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
@@ -307,17 +277,15 @@ export default class DetailScreen extends Component {
                   pitchEnabled={false}
                 >
                   <Marker
-                    coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                    coordinate={{ latitude: -6.230295, longitude: 106.799057 }}
+                    title={address}
+                    description={city}
+                    ref={marker => (this.marker = marker)}
                   />
                 </MapView>
+                <Text>LatLong: {lat} , {long} </Text>
               </TouchableOpacity>
-              <View style={{marginTop:10}}>
-                <Text>
-                  Jl. Sisingamangaraja 22{"\n"}
-                  Selong
-                </Text>
-              </View>
-
+              
               <View style={{marginTop:30, marginBottom:30}}>
                 <Text style={styles.sectionTitle}>
                   Hal yang Perlu Dibawa

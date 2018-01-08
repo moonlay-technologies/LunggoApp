@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Moment from 'moment';
 import 'moment/locale/id';
 import Button from 'react-native-button';
@@ -11,7 +11,7 @@ import {
   Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 
-export default class BookedPageDetail extends Component {
+export default class BookedPageDetail extends React.Component {
 
   constructor (props) {
     super(props)

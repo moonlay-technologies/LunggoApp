@@ -1,6 +1,6 @@
 'use strict';
                     
-import React, { Component } from 'react';
+import React from 'react';
 import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import Moment from 'moment';
@@ -11,14 +11,35 @@ import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, } from 'react-native';
 
-export default class BookingDetail extends Component {
+
+async function fetchTravoramaCartAddApi(rsvNo) {
+  const version = 'v1';
+  let response = await fetchTravoramaApi({
+    method: 'PUT',
+    path: `/${version}/cart/${rsvNo}`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+  });
+  return response;
+}
+
+async function fetchTravoramaBookApi(data) {
+  const version = 'v1';
+  let response = await fetchTravoramaApi({
+    method: 'POST',
+    path: `/${version}/activities/book`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+    data,
+  });
+  return response;
+}
+
+export default class BookingDetail extends React.Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      // date : null,
-      // shift: null,
-      // pax: null,
+      isDateSelected: true,
+      isPaxFilled: true,
     };
   }
 
@@ -28,72 +49,95 @@ export default class BookingDetail extends Component {
 
   setPaxListItemIndexes = indexes =>
     this.setState({paxListItemIndexes: indexes});
-  setPax = pax => this.setState({pax});
-  setSchedule = scheduleObj => this.setState(scheduleObj);
 
-  _book = () => {
-    this.setState({isLoading:true});
-    const version = 'v1';
-    let {pax, date} = this.state;
-    let request = {
-      method: 'POST',
-      path: `/${version}/activities/book`,
-      requiredAuthLevel: AUTH_LEVEL.User,
-      data: {
-        activityId: this.props.navigation.state.params.activityId,
-        contact: {
-          title: 1,
-          name: "Testing",
-          countryCallCd: 62,
-          phone : 1234567890,
-          email: "developer@travelmadezy.com"
-        }, date, pax,
-        // "ticketCount" : 2
-        // pax: [
-        //   {
-        //     type : 1,
-        //     title : 1,
-        //     name : "guest 1",
-        //     dob : "02-18-1997",
-        //     nationality : "ID",
-        //     passportNo : "1234567",
-        //     passportExp : "02-18-2022",
-        //     passportCountry : "en",
-        //   }
-        // ],
-      }
-    };
-    fetchTravoramaApi(request).then( response => {
-      this.setState({isLoading:false});
-      if(response.status == 200)
-        this.props.navigation.navigate(
-          'WebViewScreen',{rsvNo:response.rsvNo}
-        );
-    }).catch(error => {
-      this.setState({isLoading:false});
-      console.log(error);
-    }); 
+  setPax = pax => {
+    let changes = {pax}
+    if (pax.length>0) changes.isPaxFilled = true;
+    this.setState(changes);
   }
 
-  _goToCalendarSelection = () => {
+  setSchedule = scheduleObj => {
+    scheduleObj.isDateSelected = true;
+    this.setState(scheduleObj);
+  }
+
+  _book = async () => {
+    let {pax, date} = this.state;
+
+    //// validation
+    if (!pax) this.setState({isPaxFilled:false});
+    if (!date) this.setState({isDateSelected:false});
+    if (!pax || !date) return;
+
+    //// prepare fetching book
+    this.setState({isLoading:true});
+    let data = {
+      date, pax,
+      activityId: this.props.navigation.state.params.activityId,
+      contact: {
+        title: 1,
+        name: "Testing",
+        countryCallCd: 62,
+        phone : 1234567890,
+        email: "developer@travelmadezy.com"
+      },
+      // "ticketCount" : 2
+      // pax: [
+      //   {
+      //     type : 1,
+      //     title : 1,
+      //     name : "guest 1",
+      //     dob : "02-18-1997",
+      //     nationality : "ID",
+      //     passportNo : "1234567",
+      //     passportExp : "02-18-2022",
+      //     passportCountry : "en",
+      //   }
+      // ],
+    };
+    try {
+      let response = await fetchTravoramaBookApi(data);
+      if(response.status != 200) {
+        console.log("Book API: status other than 200 returned!");
+        console.log(response);
+        this.setState({isLoading:false});
+        return;
+      }
+
+      //// after done booking and get RsvNo, add item to cart
+      response = await fetchTravoramaCartAddApi(response.rsvNo);
+      if (response.status != 200) {
+        console.error("Cart API: status other than 200 returned!");
+        console.log(response);
+        this.setState({isLoading:false});
+        return;
+      } else this.props.navigation.navigate('Cart');
+      this.setState({isLoading:false});
+    } catch (error) {
+      this.setState({isLoading:false});
+      console.log(error);
+    }
+  }
+
+  _goToCalendarPicker = () => {
     let {navigation} = this.props;
     let {price, availableDateTimes } = navigation.state.params;
-    let {date} = this.state;
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
-      selectedDate: date,
+      selectedDate: this.state.date,
     });
   }
 
   render() {
     let {navigation} = this.props;
     let {price, requiredPaxData} = navigation.state.params;
-    let {pax, date, paxListItemIndexes} = this.state;
+    let {pax, date, time, paxListItemIndexes, isDateSelected,
+      isPaxFilled } = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
-    let selectedDate = date ?
-      Moment(date).format('ddd, D MMM YYYY')
+    let selectedDateText = date ?
+      Moment(date).format('ddd, D MMM YYYY') +' '+ time
       :
       'Atur Jadwal'
 
@@ -101,6 +145,33 @@ export default class BookingDetail extends Component {
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
       :
       <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
+
+    let rincianHarga = (pax && date) ?
+      <TouchableOpacity style={{flex:1.5}} onPress={
+        () => this.props.navigation.navigate('RincianHarga')
+      }>
+        <View style={{alignItems: 'flex-start'}}>
+          <View>
+            <Text style={{fontSize:15, color:'#000',}}>
+              Total
+              {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
+            </Text> 
+          </View>
+          <View style={{marginTop:3}}>
+            <Text style={{
+              color:'#000',
+              fontWeight: 'bold',
+              fontSize:17,
+            }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
+            {/*<Text>/ 2 orang</Text>*/}
+          </View>
+          <View style={{marginTop:4}} >
+            <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
+          </View>
+        </View>
+      </TouchableOpacity>
+      :
+      <View style={{flex:1.5, justifyContent:'center'}} />
 
     return (
       <View style={{flex:1, backgroundColor:'#fff'}}>
@@ -210,18 +281,21 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginVertical:20,
               }}>
-                <Text>{selectedDate}</Text>
+                <Text style={this.state.isDateSelected ?
+                  styles.normalText : styles.warningText} >
+                  {selectedDateText}
+                </Text>
+                {isDateSelected ? null:<Text style={styles.validation}>mohon isi jadwal</Text>}
                 <TouchableOpacity containerStyle={styles.addButton}
-                  onPress={this._goToCalendarSelection} >
+                  onPress={this._goToCalendarPicker} >
                   {setDateButton}
                 </TouchableOpacity>
-                <Text style={styles.validation}>isi jadwal</Text>
               </View>
             </View>
             <View>
               <View>
                 <Text style={styles.activityTitle}>
-                  Select Pax
+                  Peserta
                 </Text>
               </View>
               <View style={{
@@ -288,10 +362,10 @@ export default class BookingDetail extends Component {
                   <Text style={styles.seeMore}>5 orang</Text>
                 </View>
               </View>
-                {pax && pax.map(
-                  item => <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
+                {pax && pax.map( item =>
+                  <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                     <Text>{item.name}</Text>
-                    </View>
+                  </View>
                 )}
               <View style={{
                 flexDirection:'row',
@@ -299,7 +373,9 @@ export default class BookingDetail extends Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text>Tambah Peserta</Text>
+                <Text>
+                  Atur Peserta
+                </Text>
                 <TouchableOpacity
                   containerStyle={styles.addButton}
                   onPress={() => navigation.navigate('PaxChoice', {
@@ -311,10 +387,10 @@ export default class BookingDetail extends Component {
                   })}
                 >
                   <View style={{flexDirection:'row'}}>
-                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                     <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
-                      <Text style={styles.validation}>isi peserta</Text>
+                      {isPaxFilled ? null:<Text style={styles.validation}>Mohon isi peserta</Text>}
                     </View>
+                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
                   </View>
                   
                 </TouchableOpacity>
@@ -322,31 +398,9 @@ export default class BookingDetail extends Component {
             </View>
             
           </View>
-          {/*bottom CTA button*/}
+
           <View style={globalStyles.bottomCtaBarContainer1}>
-            <TouchableOpacity style={{flex:1.5}} onPress={
-              () => this.props.navigation.navigate('RincianHarga')
-            }>
-              <View style={{alignItems: 'flex-start'}}>
-                <View>
-                  <Text style={{fontSize:15, color:'#000',}}>
-                    Total
-                    {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-                  </Text> 
-                </View>
-                <View style={{marginTop:3}}>
-                  <Text style={{
-                    color:'#000',
-                    fontWeight: 'bold',
-                    fontSize:17,
-                  }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
-                  {/*<Text>/ 2 orang</Text>*/}
-                </View>
-                <View style={{marginTop:4}} >
-                  <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
-                </View>
-              </View>
-            </TouchableOpacity>
+            {rincianHarga}
             <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
               <Button
                 containerStyle={globalStyles.ctaButton}
@@ -361,24 +415,6 @@ export default class BookingDetail extends Component {
           </View>
           {/*bottom CTA button*/}
 
-          {/*bottom CTA button jika blm pilih guest dan tanggal */}
-          <View style={globalStyles.bottomCtaBarContainer1}>
-            <View style={{flex:1.5, justifyContent:'center'}}>
-              
-            </View>
-            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
-              <Button
-                containerStyle={globalStyles.ctaButton}
-                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                onPress={this._book}
-                disabled={this.state.isLoading}
-                styleDisabled={{color:'#aaa'}}
-              >
-                Pesan
-              </Button>
-            </View>
-          </View>
-          {/*bottom CTA button jika blm pilih guest dan tanggal*/}
         </ScrollView>
 
 
@@ -440,5 +476,8 @@ const styles = StyleSheet.create({
   validation:{
     color:'#fc2b4e',
     fontSize:12
+  },
+  warningText: {
+    color: 'red',
   }
 });

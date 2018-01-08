@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import {
-  Platform, StyleSheet, FlatList,
-  Text, View, Image, TextInput, TouchableOpacity,
-} from 'react-native';
-import { Icon } from 'react-native-elements'
+import React from 'react';
+import { Platform, StyleSheet, FlatList, Text, View, Image,
+  TextInput, TouchableOpacity, } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-export default class SearchHeader extends Component {
+export default class SearchHeader extends React.Component {
 
   constructor (props) {
     super(props)
@@ -20,6 +18,8 @@ export default class SearchHeader extends Component {
       'SearchResults', {searchString: this.state.searchString}
     );
   };
+
+  _goToCart = () => this.props.navigation.navigate('Cart');
 
   render() {
     let {navigate} = this.props.navigation;
@@ -36,30 +36,17 @@ export default class SearchHeader extends Component {
               underlineColorAndroid='transparent'
               selectTextOnFocus={true}
             />
-            <TouchableOpacity
-              onPress={this._goToSearchResult}
+            <TouchableOpacity onPress={this._goToSearchResult}
               style={{position:'absolute', right:5, top:-5, padding:9}}
             >
-              <View>
-                <Icon
-                  name='magnifying-glass'
-                  type='entypo'
-                  size={20}
-                  color='#cccccc'/>
-              </View>
+              <Icon name='magnifying-glass' type='entypo' size={20}
+                color='#ccc' />
             </TouchableOpacity>
           </View>
-
           <View style={{flex:1,alignItems:'center',}}>
-             <TouchableOpacity
-              onPress={() => navigate('CartBlank')}
-              activeOpacity={0.8}
-             >
-              <Icon
-                name='shopping-basket'
-                type='entypo'
-                size={26}
-                color='#23d3c3'/> 
+            <TouchableOpacity onPress={this._goToCart} activeOpacity={0.8} >
+              <Icon name='shopping-basket' type='entypo' size={26}
+                color='#23d3c3' />
             </TouchableOpacity>
             <View style={styles.notification}>
               <Text style={styles.txtNotification}>5</Text>

@@ -15,25 +15,27 @@ export default class CalendarPicker extends Component {
     let {selectedDate, selectedTime, availableDateTimes} =
       this.props.navigation.state.params;
     this.state = {
-      selectedDate, selectedTime, availableDateTimes,
+      selectedDate, selectedTime,
       // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
-      // minDate : Date(),
-      minDate : '2010-01-01',
-      /*  IMPORTANT!! By the time this feature was implemented,
-          react-native-calendars didn't have an option for disable
-          all dates by default, so we made a temporary workaround by
-          swapping 'disabled' property with the enabled one, so every
-          disabled date would behave as enabled date, vice versa.  */
-      markedDates : {
-        // '2017-11-20': {marked: true},
-        '2017-12-24': {availableTime: [
-          "1.00 - 2.00",
-          "3.00 - 4.00"
-        ]},
-        '2017-12-25': {availableTime: [
-          "12.00 - 18.00",
-          "9.00 - 10.00"
-        ]},
+      minDate : Date(),
+      isModalVisible: false,
+      markedDates : {},
+      /*markedDates : {
+        '2018-01-20': {marked: true},
+        '2018-01-24': {
+          disabled: false,
+          availableHours: [
+            "1.00 - 2.00",
+            "3.00 - 4.00"
+          ],
+        },
+        '2018-01-25': {
+          disabled: false,
+          availableHours: [
+            "12.00 - 18.00",
+            "9.00 - 10.00"
+          ],
+        },
         
         //// for markingType = interactive
         // '2017-10-23': [{textColor: '#d9e1e8'}],
@@ -41,12 +43,18 @@ export default class CalendarPicker extends Component {
         // '2017-11-20': [{textColor: 'green'}],
         // '2017-11-22': [{startingDay: true, color: 'green'}],
         // '2017-11-23': [{color: 'green', textColor: 'gray'}],
-        // '2017-11-24': [{endingDay: true, color: 'green', textColor: 'gray'}],
+        // '2017-11-24': [{endingDay: true, color: 'green', textColor˙: 'gray'}],
         // '2017-11-04': [{startingDay: true, color: 'green'}, {endingDay: true, color: 'green'}]
-      },
-      isModalVisible: false,
+      },*/ 
     };
-    if (selectedDate) this.state.markedDates[selectedDate].selected= true;
+    let {markedDates} = this.state;
+    availableDateTimes && availableDateTimes.map( item => {
+      markedDates[item.date] = {disabled: false};
+      if (item.availableHours) {
+        markedDates[item.date].availableHours = item.availableHours;
+      }
+    });
+    if (selectedDate) markedDates[selectedDate].selected = true;
   }
 
   static navigationOptions = {
@@ -73,12 +81,13 @@ export default class CalendarPicker extends Component {
     this.setState({ markedDates, selectedDate });
     //// TODO: sometimes all state has already changed but the ui only partly updated
     //// (only text is updated, CalendarList's marked date isn't)
+    return;
   };
 
   _return = () => {
     this.props.navigation.state.params.setSchedule({
-      date:this.state.selectedDate,
-      shift:'1'
+      date: this.state.selectedDate,
+      time: this.state.selectedTime || '',
     })
     this.props.navigation.goBack()
   }
@@ -87,27 +96,22 @@ export default class CalendarPicker extends Component {
     this.setState({isModalVisible: visible});
   }
 
-  _onDatePressed = dateString => {
-    if (this._checkIsDateAvailable(dateString) == false) return;
+  _onDatePressed = chosenDate => {
+    if (this._checkIsDateAvailable(chosenDate) == false) return;
 
-    let {selectedDate, markedDates} = this.state;
+    //// change marked date
+    this._selectDate(chosenDate);
+
     //// choose session, if any
-
-    // console.log('--')
-    // console.log(selectedDate && markedDates[selectedDate] &&
-    //           markedDates[selectedDate].availableTime );
-    console.log(!!selectedDate);
-    // console.log(markedDates[selectedDate]);
-    console.log(markedDates[selectedDate]? markedDates[selectedDate].availableTime : 'z');
-
-    //// continue set date
-    this._selectDate(dateString);
-    this._setModalVisible(true);
+    if (!!this.state.markedDates[chosenDate].availableHours) {
+      this._setModalVisible(true);
+    }
+    this.forceUpdate();
   }
 
-  _onAvailableTimeClicked = index => {
+  _onAvailableHoursClicked = index => {
     let {markedDates, selectedDate} = this.state;
-    let selectedTime = markedDates[selectedDate].availableTime[index]
+    let selectedTime = markedDates[selectedDate].availableHours[index]
     this.setState({selectedTime});
     this._setModalVisible(false);
   }
@@ -119,8 +123,9 @@ export default class CalendarPicker extends Component {
       : "Pilih Tanggal";
       console.log('markedDates')
       console.log(markedDates)
-    let availableTimeList = !!selectedDate ?
-        markedDates[selectedDate].availableTime.map(
+    let availableHoursList =
+      (!!selectedDate && !!markedDates[selectedDate].availableHours) ?
+        markedDates[selectedDate].availableHours.map(
           (currValue, index) =>
             <TouchableOpacity
               key={index} style={{
@@ -131,22 +136,18 @@ export default class CalendarPicker extends Component {
                 paddingTop: 15,
                 paddingBottom: 15,
               }}
-              onPress={() => this._onAvailableTimeClicked(index)}
+              onPress={() => this._onAvailableHoursClicked(index)}
             >
-              <View style={{marginTop:5}}
-                
-              >
-                <Text>{currValue}</Text>
-              </View>
+              <Text style={{marginTop:5}}>{currValue}</Text>
             </TouchableOpacity>
         ) : '';
 
     return(
       <View>
-          {/*this.state.selectedDate*/}
         <CalendarList
           minDate={this.state.minDate}
           markedDates={markedDates}
+          disabledByDefault={true}
           onDayPress={ day => this._onDatePressed(day.dateString)}
           pastScrollRange={0}
           futureScrollRange={6}
@@ -167,11 +168,6 @@ export default class CalendarPicker extends Component {
         >
           <View style={{flex:1}}></View>
           <View style={{flex:1, backgroundColor:'white', padding:20,}}>
-            <TouchableHighlight
-              style={{alignItems: 'flex-end',}}
-              onPress={() => this._setModalVisible(false)}>
-              <Text>X</Text>
-            </TouchableHighlight>
             <View>
               <Text style={styles.activityTitle}>
                 Choose activity time
@@ -182,7 +178,7 @@ export default class CalendarPicker extends Component {
                 {Moment(selectedDate).format('dddd, D MMMM YYYY')}
               </Text>
             </View>
-            {availableTimeList}
+            {availableHoursList}
           </View>
         </Modal>
         <View style={globalStyles.bottomCtaBarContainer2}>

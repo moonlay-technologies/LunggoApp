@@ -39,19 +39,16 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    let {rsvNo} = this.props.navigation.state.params;
-    console.log('http://travorama-local-cw.azurewebsites.net' +
-               '/id/payment/payment?rsvno=' + rsvNo +
-               '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) ) )
-    );
+    // let {rsvNo} = this.props.navigation.state.params;
     console.log(clientId);
     console.log(clientSecret);
     return (
       <WebView
         source={{
           uri: 'http://travorama-local-cw.azurewebsites.net' +
-               '/id/payment/payment?rsvno=' + rsvNo +
-               '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
+               '/id/payment/cartcheckout',
+               // '/id/payment/payment?rsvno=' + rsvNo +
+               // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
           headers: {
             "X-Client-ID": clientId,
             "X-Client-Secret": clientSecret

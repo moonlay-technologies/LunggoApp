@@ -20,35 +20,27 @@ import { LoginScreen } from '../commons/Screens';
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
-
-import ForgotPassword from '../customer/screens/ForgotPassword'
-import Cart from '../customer/screens/Cart'
+import Cart from '../customer/screens/Cart/CartScreen'
+import MapScreen from '../customer/screens/MapScreen';
+import AccountPage from '../customer/screens/AccountPage';
 
 //// unimplemented
+import ForgotPassword from '../customer/screens/ForgotPassword'
 // import Filter from '../screens/Filter';
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
-// for testing purpose
-import ExploreScreen from '../customer/screens/ExploreScreen';
 import Swiper from '../customer/screens/Swiper';
-import MapScreen from '../customer/screens/MapScreen';
-import CartBlank from '../customer/screens/CartBlank';
-import CartList from '../customer/screens/CartList';
-import AccountPage from '../customer/screens/AccountPage';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: Dashboard
-      screen: MainTabNavigator
+      // screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
       // screen: LoginScreen
       // screen: Dashboard
-      //screen: BeforeLoginScreen
-      //screen: ExploreScreen
-      //screen: AccountPage
+      screen: BeforeLoginScreen
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
@@ -67,12 +59,12 @@ const RootStackNavigator = StackNavigator(
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
     ActivityList: { screen: ActivityList },
-    ExploreScreen: { screen: ExploreScreen },
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
     RincianHarga: { screen: RincianHarga },
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
+    Cart: { screen: Cart },
 
   },
   {
@@ -80,7 +72,7 @@ const RootStackNavigator = StackNavigator(
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
-         alignSelf: 'center'
+        alignSelf: 'center',
       },
     }),
   }
@@ -88,7 +80,7 @@ const RootStackNavigator = StackNavigator(
 
 export default class RootNavigator extends React.Component {
   componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
+    // this._notificationSubscription = this._registerForPushNotifications();
   }
 
   componentWillUnmount() {
