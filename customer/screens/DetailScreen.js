@@ -72,7 +72,7 @@ export default class DetailScreen extends Component {
     fetchTravoramaApi(request).then( response => {
       response.isLoading = false;
       this.setState(response);
-      this.forceUpdate( () => this.marker.showCallout() );
+      this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
@@ -277,7 +277,7 @@ export default class DetailScreen extends Component {
                   pitchEnabled={false}
                 >
                   <Marker
-                    coordinate={{ latitude: lat, longitude: long }}
+                    coordinate={{ latitude: -6.230295, longitude: 106.799057 }}
                     title={address}
                     description={city}
                     ref={marker => (this.marker = marker)}

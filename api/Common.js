@@ -101,8 +101,9 @@ async function getAuthAccess() {
 export async function fetchTravoramaApi (request) {
   try{
     let {path, method, data, requiredAuthLevel} = request;
+    method = method || 'GET';
     let url = DOMAIN + (path || request);
-    console.log('fetching from '+url+' ...')
+    console.log('fetching '+ method +' from '+url+' ...')
     if (!requiredAuthLevel)
       throw 'ERROR fetch: requiredAuthLevel needed!';
 
@@ -113,12 +114,12 @@ export async function fetchTravoramaApi (request) {
     authLevel = parseInt(authLevel);
     requiredAuthLevel = parseInt(requiredAuthLevel);
     if (authLevel < requiredAuthLevel) return {
-      status: 400, message:'Not Authorized: Not enough auth level!',
-      requiredAuthLevel
+      status: 401, message:'Not Authorized: Not enough auth level!',
+      requiredAuthLevel,
     }
     //// Execute request
     let response = await fetch(url, {
-      method: method || 'GET',
+      method,
       headers: {
         "Authorization": 'Bearer ' + accessToken,
         "Accept": "application/json",
@@ -127,29 +128,28 @@ export async function fetchTravoramaApi (request) {
       body: JSON.stringify(request.data),
     }).catch(console.error);
     if (response==null || response==' ') {
-      console.log('response null, please check your connection!')
+      console.log('response null, please check your connection!');
       return {message: 'response null, please check your connection!'}
     } 
     if (response.status == 401) {
       await deleteItemAsync('expTime');
       return fetchTravoramaApi(request);
     } else if (response.error == "ERRGEN98") { //invalid JSON format
-      console.log(JSON.stringify(request.data))
+      console.log(JSON.stringify(request.data));
       throw 'invalid JSON format :' + JSON.stringify(request.data);
     }
     response = await response.json();
-
-                  console.log('response from '+ url +' :')
-                  console.log(response)
+                  console.log('response from '+ url +' :');
+                  console.log(response);
     if (response.status != 200) {
-      console.log('status is not 200! \n data:')
-      console.log(request.data)
+      console.log('status is not 200! \n data:');
+      console.log(request.data);
     }
     return response;
   } catch (err) {
-    console.log('error while fetching this request :')
-    console.log(request)
-    console.log(err)
+    console.log('error while fetching this request :');
+    console.log(request);
+    console.log(err);
   }
 }
 
@@ -171,7 +171,7 @@ export async function fetchWishlist (activityId = null, isAddingToWishlist = tru
   const version = 'v1';
   let request = {
     path: `/${version}/activities/wishlist`,
-    requiredAuthLevel: AUTH_LEVEL.Users,
+    requiredAuthLevel: AUTH_LEVEL.User,
   }
   if (activityId===null) request.method = 'GET';
   else {
@@ -179,7 +179,7 @@ export async function fetchWishlist (activityId = null, isAddingToWishlist = tru
     request.method = (isAddingToWishlist)? 'PUT' : 'DELETE';
   }
   fetchTravoramaApi(request).then( response => {
-    // this.setState({bookingList: response.myBookings});
+    if (response.status == 401) throw 'blom login!! nanti munculin modal';
   }).catch(error => console.log(error));
   return;
 }

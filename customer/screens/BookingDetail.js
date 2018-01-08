@@ -98,7 +98,7 @@ export default class BookingDetail extends React.Component {
     try {
       let response = await fetchTravoramaBookApi(data);
       if(response.status != 200) {
-        console.error("Book API: status other than 200 returned!");
+        console.log("Book API: status other than 200 returned!");
         console.log(response);
         this.setState({isLoading:false});
         return;
@@ -132,11 +132,12 @@ export default class BookingDetail extends React.Component {
   render() {
     let {navigation} = this.props;
     let {price, requiredPaxData} = navigation.state.params;
-    let {pax, date, paxListItemIndexes, isDateSelected, isPaxFilled} = this.state;
+    let {pax, date, time, paxListItemIndexes, isDateSelected,
+      isPaxFilled } = this.state;
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
     let selectedDateText = date ?
-      Moment(date).format('ddd, D MMM YYYY')
+      Moment(date).format('ddd, D MMM YYYY') +' '+ time
       :
       'Atur Jadwal'
 

@@ -72,6 +72,7 @@ const RootStackNavigator = StackNavigator(
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
+        alignSelf: 'center',
       },
     }),
   }
