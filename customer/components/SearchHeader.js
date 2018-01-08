@@ -47,9 +47,9 @@ export default class SearchHeader extends React.Component {
             <TouchableOpacity onPress={this._goToCart} activeOpacity={0.8} >
               <Icon name='shopping-basket' type='entypo' size={26} color='#23d3c3' />
             </TouchableOpacity>
-            <View style={styles.notification}>
+            {/*<View style={styles.notification}>
               <Text style={styles.txtNotification}>5</Text>
-            </View>
+            </View>*/}
           </View>
         </View>
       </View>

@@ -31,9 +31,9 @@ export default TabNavigator(
         {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
         <View style={styles.containerCart}>
           <Entypo name={'shopping-basket'} size={26} color='#23d3c3'style={{/* marginRight:0*/}} />
-          <View style={styles.notification}>
+          {/*<View style={styles.notification}>
             <Text style={styles.txtNotification}>5</Text>
-          </View>
+          </View>*/}
         </View>
       </TouchableOpacity>,
 
