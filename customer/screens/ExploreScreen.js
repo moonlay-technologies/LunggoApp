@@ -6,20 +6,35 @@ import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
 import SearchHeader from './SearchActivity/SearchHeader';
 import { Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
+import search from './SearchActivity/SearchController';
+import * as Formatter from '../components/Formatter';
 
 export default class ExploreScreen extends React.Component {
 
   constructor (props) {
     super(props)
     this.state = {
-      isLoading: false,
-      message: '',
+      tiketList: [],
+      paketList: [],
+      tripList: [],
+      turList: [],
     };
   }
 
   static navigationOptions = {
     header: (props) => <SearchHeader {...props}/>
   };
+
+  async componentDidMount() {
+    let tiketList = await search('tiket');
+    this.setState({tiketList});
+    let paketList = await search('paket');
+    this.setState({paketList});
+    let tripList = await search('trip');
+    this.setState({tripList});
+    let turList = await search('tur');
+    this.setState({turList});
+  }
 
   _goTo = (screen, params) =>
     this.props.navigation.navigate(screen, params);
@@ -28,18 +43,55 @@ export default class ExploreScreen extends React.Component {
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
-    let {props} = this;
     let categoryHeader = ({title,searchUrl}) =>
-      <View style={[styles.container,{marginTop:30,flexDirection:'row'}]}>
-        <View style={{flex:2}}>
-          <Text style={styles.categoryTitle}>{title}</Text>
-        </View>
+      <View style={[styles.container,{flexDirection:'row'}]}>
+        <Text style={[{flex:2},styles.categoryTitle]}>{title}</Text>
         <TouchableOpacity style={{flex:1,alignItems:'flex-end'}}
           onPress={() => this._onPressCategory(searchUrl)} >
           <Text style={styles.seeMore}>Lihat Semua</Text>
         </TouchableOpacity>
       </View>
 
+    let categoryContent = (list, big=false) => {
+      return (
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
+          style={{marginBottom:20}} >
+
+          {list.map( listItem =>
+            <View key={listItem.id}
+              style={{width:big?300:140, marginLeft:15,}}
+            >
+              <TouchableOpacity activeOpacity={1}
+                onPress={() => this._onPressProduct(listItem.id)}
+              >
+                <Image
+                  style={big?styles.thumbnailBig:styles.thumbnailMedium}
+                  source={{uri:listItem.mediaSrc}}
+                />
+              </TouchableOpacity>
+              <View style={{marginTop:big?10:5, flexDirection:'row'}}>
+                <View style={{flex:big?4.5:4}}>
+                  <Text style={styles.namaKotaBig}>
+                    {listItem.city}
+                  </Text>
+                  <Text style={styles.activityTitleBig}>
+                    {listItem.name}
+                  </Text>
+                  <Text style={styles.priceTitleBig}>
+                    {Formatter.price(listItem.price)}
+                  </Text>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end',}}>
+                  <WishButton wishlisted={listItem.wishlisted}
+                    id={listItem.id} big={big} {...this.props} />
+                </View>
+              </View>
+            </View>
+          )}
+          <View style={{paddingHorizontal:7}} />
+        </ScrollView>
+      );
+    }
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
 
@@ -83,178 +135,16 @@ export default class ExploreScreen extends React.Component {
           </View> */} 
 
         {categoryHeader({title:'Tiket', searchUrl:'tiket'})}
-
-        <View style={{flexDirection:'row', marginTop:10}}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:300, marginLeft:15,}}>
-              <TouchableOpacity 
-                activeOpacity={1}
-                onPress={() => this._onPressProduct(1)}
-              >
-                <Image
-                  style={styles.thumbnailBig}
-                  source={require('../../assets/images/detailimg2.jpg')}
-                />
-              </TouchableOpacity>
-              <View style={{marginTop:10, flexDirection:'row'}}>
-                <View style={{flex:4.5}}>
-                  <Text style={styles.namaKotaBig}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitleBig}>
-                    Create your own Sushi with Chef Hanzo
-                  </Text>
-                  <Text style={styles.priceTitleBig}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  {/*<WishButton wishlisted={item.wishlisted} id={item.id} {...props}/>*/}
-                  <WishButton wishlisted={true} id={1} {...props}/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:300, marginLeft:15}}>
-              <TouchableOpacity 
-                activeOpacity={1}
-                onPress={() => this._onPressProduct(1)}
-              >
-                <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg3.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:10, flexDirection:'row'}}>
-                <View style={{flex:4.5}}>
-                  <Text style={styles.namaKotaBig}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitleBig}>
-                    Create your own Sushi with Chef Hanzo
-                  </Text>
-                  <Text style={styles.priceTitleBig}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={30}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:300, marginLeft:15, marginRight:15}}>
-              <TouchableOpacity 
-                activeOpacity={1}
-                onPress={() => this._onPressProduct(1)}
-              >
-                <Image style={styles.thumbnailBig} source={require('../../assets/images/detailimg.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:10, flexDirection:'row'}}>
-                <View style={{flex:4.5}}>
-                  <Text style={styles.namaKotaBig}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitleBig}>
-                    Create your own Sushi with Chef Hanzo
-                  </Text>
-                  <Text style={styles.priceTitleBig}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={30}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
+        {categoryContent(this.state.tiketList, true)}
 
         {categoryHeader({title:'Paket', searchUrl:'paket'})}
-
-        <View style={{flexDirection:'row', marginTop:10}}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{width:140, marginLeft:15,}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img1.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:140, marginLeft:15}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img2.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <WishButton wishlisted={true} id={1} {...props}/>
-                </View>
-              </View>
-            </View>
-            <View style={{width:140, marginLeft:15, marginRight:15}}>
-              <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                <Image style={styles.thumbnailMedium} source={require('../../assets/images/other-img3.jpg')}/>
-              </TouchableOpacity>
-              <View style={{marginTop:5, flexDirection:'row'}}>
-                <View style={{flex:4}}>
-                  <Text style={styles.namaKota}>
-                    Jepang
-                  </Text>
-                  <Text style={styles.activityTitle}>
-                    Create your own Sushi
-                  </Text>
-                  <Text style={styles.priceTitle}>
-                    IDR 300.000
-                  </Text>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
+        {categoryContent(this.state.paketList)}
 
         {categoryHeader({title:'Trip', searchUrl:'trip'})}
-
+        {categoryContent(this.state.tripList)}
 
         {categoryHeader({title:'Tur Keliling Kota', searchUrl:'tur'})}
+        {categoryContent(this.state.turList)}
 
         <View style={styles.container}>
           <View style={{marginTop:30}}>
@@ -492,7 +382,7 @@ const styles = StyleSheet.create({
   seeMore :{
     fontSize:14,
     color:'#acacac',
-    marginTop:3,
+    marginTop:5,
     fontFamily: 'Hind'
   },
   container: {

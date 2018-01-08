@@ -38,7 +38,7 @@ export default class WishButton extends React.Component {
       <View>
         <TouchableOpacity onPress={this._onPress}
         style={{flex:1, alignItems:'flex-end',}} >
-          <Icon type='materialicons' size={24}
+          <Icon type='materialicons' size={this.props.big? 30 : 24}
             name={this.state.wishlisted? 'favorite' : 'favorite-border'}
             color={this.state.wishlisted? 'red' : '#cdcdcd'}
           />
