@@ -48,12 +48,7 @@ export default class DetailScreen extends Component {
     // headerTitleStyle: {color:'white'},
    // headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
+      backgroundColor: '#fff',
     },
   }}
 

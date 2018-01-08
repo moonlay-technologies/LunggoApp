@@ -35,7 +35,7 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: MainTabNavigator
+      //screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
       // screen: LoginScreen
@@ -72,7 +72,8 @@ const RootStackNavigator = StackNavigator(
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
-        alignSelf: 'center',
+        fontFamily:'Hind',
+        marginBottom:-5
       },
     }),
   }
