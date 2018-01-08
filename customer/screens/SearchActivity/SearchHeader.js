@@ -13,9 +13,9 @@ export default class SearchHeader extends React.Component {
     };
   }
 
-  _goToSearchResult = () => {
+  _goToSearchActivity = () => {
     this.props.navigation.navigate(
-      'SearchResults', {searchString: this.state.searchString}
+      'SearchActivity', {searchString: this.state.searchString}
     );
   };
 
@@ -30,13 +30,13 @@ export default class SearchHeader extends React.Component {
             <TextInput
               style={styles.searchInput}
               onChangeText={str => this.setState({searchString:str})}
-              onSubmitEditing={this._goToSearchResult}
+              onSubmitEditing={this._goToSearchActivity}
               placeholder={this.state.placeholder}
               returnKeyType='search'
               underlineColorAndroid='transparent'
               selectTextOnFocus={true}
             />
-            <TouchableOpacity onPress={this._goToSearchResult}
+            <TouchableOpacity onPress={this._goToSearchActivity}
               style={{position:'absolute', right:5, top:-5, padding:9}}
             >
               <Icon name='magnifying-glass' type='entypo' size={20}

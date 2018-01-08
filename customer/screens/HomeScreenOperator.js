@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Image,
   Platform,
@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
   StyleSheet
 } from 'react-native';
-import SearchHeader from '../components/SearchHeader';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 

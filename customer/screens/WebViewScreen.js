@@ -34,7 +34,7 @@ export default class WebViewScreen extends Component {
 
   _onMessage = event => {
     if(event.nativeEvent.data == 'ExploreScreen') {
-      this.props.navigation.goBack('SearchResults');
+      this.props.navigation.goBack('SearchActivity');
     }
   }
 

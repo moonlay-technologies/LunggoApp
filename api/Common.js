@@ -178,8 +178,7 @@ export async function fetchWishlist (activityId = null, isAddingToWishlist = tru
     request.path += `/${activityId}`
     request.method = (isAddingToWishlist)? 'PUT' : 'DELETE';
   }
-  fetchTravoramaApi(request).then( response => {
-    if (response.status == 401) throw 'blom login!! nanti munculin modal';
-  }).catch(error => console.log(error));
-  return;
+  let response = await fetchTravoramaApi(request);
+  if (response.status == 401) throw 'blom login!! nanti munculin modal';
+  return response;
 }

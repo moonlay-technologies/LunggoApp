@@ -1,4 +1,5 @@
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+'use strict';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../../api/Common';
 
 function getQueryPath (key, value, pageNumber) {
   const version = 'v1';

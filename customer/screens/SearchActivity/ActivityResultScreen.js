@@ -3,37 +3,20 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, ActivityIndicator, FlatList,
   TouchableHighlight, TouchableOpacity } from 'react-native';
-import * as Formatter from '../components/Formatter';
-import { Icon } from 'react-native-elements';
-import { fetchWishlist } from '../../api/Common';
+import * as Formatter from '../../components/Formatter';
+import WishButton from '../../components/WishButton';
 
 class ListItem extends React.PureComponent {
 
-  _onPress = () => this.props.onPressItem(this.props.item);
+  _onPressItem = () => this.props.onPressItem(this.props.item);
 
-  _onPressWish = () => {
-    let { item } = this.props;
-    item.wishlisted = !item.wishlisted;
-    fetchWishlist(item.id, item.wishlisted);
-    this.forceUpdate();
-  };
 
   render() {
     const {item} = this.props;
-    let wishButton = (
-      <TouchableOpacity onPress={this._onPressWish}
-        style={{flex:1, alignItems:'flex-end',}} >
-        <Icon type='materialicons' size={24}
-          name={item.wishlisted? 'favorite' : 'favorite-border'}
-          color={item.wishlisted? 'red' : '#cdcdcd'}
-        />
-      </TouchableOpacity>
-    );
-
     return (
       <View style={{backgroundColor:'#fff', width:'50%'}}>
         <TouchableHighlight
-          onPress={this._onPress}
+          onPress={this._onPressItem}
           underlayColor='#ddd'>
           <View style={styles.rowContainer}>
             <View style={styles.containerItem}>
@@ -51,7 +34,7 @@ class ListItem extends React.PureComponent {
                     { Formatter.price(item.price) }
                   </Text>
                 </View>
-                {wishButton}
+                <WishButton wishlisted={item.wishlisted} id={item.id} />
               </View>
             </View>
           </View>
@@ -62,7 +45,7 @@ class ListItem extends React.PureComponent {
 
 }
 
-export default class ActivityList extends React.Component {
+export default class ActivityResultScreen extends React.Component {
 
   constructor (props) {
     super(props)

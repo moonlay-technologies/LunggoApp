@@ -10,7 +10,7 @@ import ExploreScreen from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking/MyBookingLoadingScreen';
 // import LinksScreen from '../customer/screens/LinksScreen';
 // import SettingsScreen from '../customer/screens/SettingsScreen';
-import WhishlistBlank from '../customer/screens/WhishlistBlank';
+import Wishlist from '../customer/screens/Wishlist/WishlistFrame';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
 
@@ -18,7 +18,7 @@ export default TabNavigator(
   {
     Explore: { screen: ExploreScreen },
     MyBooking: { screen: MyBooking },
-    WhishlistBlank: { screen: WhishlistBlank },
+    Wishlist: { screen: Wishlist },
     MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
   },
@@ -28,7 +28,7 @@ export default TabNavigator(
       <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
         {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
         <View style={styles.containerCart}>
-          <Entypo name={'shopping-basket'} size={26} color='#23d3c3'style={{/* marginRight:0*/}} />
+          <Entypo name='shopping-basket' size={26} color='#23d3c3' style={{/* marginRight:0*/}} />
           {/*<View style={styles.notification}>
             <Text style={styles.txtNotification}>5</Text>
           </View>*/}
@@ -77,7 +77,7 @@ export default TabNavigator(
               ? `ios-paper${focused ? '' : '-outline'}`
               : 'ios-paper-outline';
             break;
-          case 'WhishlistBlank':
+          case 'Wishlist':
             iconName = Platform.OS === 'ios'
               ? `ios-heart${focused ? '' : '-outline'}`
               : 'ios-heart-outline';

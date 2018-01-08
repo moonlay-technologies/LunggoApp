@@ -2,15 +2,9 @@
 
 import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
-import globalStyles from '../../commons/globalStyles';
+import globalStyles from '../../../commons/globalStyles';
 import Modal from 'react-native-simple-modal';
 
 export default class WishlistBlank extends React.Component {
@@ -24,7 +18,7 @@ export default class WishlistBlank extends React.Component {
     return (
         <View style={styles.container}>
           <View style={{justifyContent:'center', alignItems:'center', flex:1}}>
-            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../assets/images/favorit.jpg')}/>
+            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../../assets/images/favorit.jpg')}/>
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
               <Text style={styles.textCartBesar}>Belum ada favorit</Text>
               <View>

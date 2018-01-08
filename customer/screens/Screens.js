@@ -1,6 +1,6 @@
 'use strict';
 
-export SearchResults from './SearchResults';
+export SearchActivity from './SearchActivity/SearchLoadingScreen';
 export MyBooking from './MyBooking/MyBookingLoadingScreen';
 export AddPax from './AddPax';
 export DetailScreen from './DetailScreen';

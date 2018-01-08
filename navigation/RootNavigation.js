@@ -10,7 +10,7 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-import { SearchResults, MyBooking, AddPax, DetailScreen,
+import { SearchActivity, MyBooking, AddPax, DetailScreen,
   CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
   Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
   Review, RincianHarga, } from '../customer/screens/Screens';
@@ -44,7 +44,7 @@ const RootStackNavigator = StackNavigator(
       // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
-    SearchResults: { screen: SearchResults },
+    SearchActivity: { screen: SearchActivity },
     DetailScreen: { screen: DetailScreen },
     CalendarPicker: { screen: CalendarPicker },
     WebViewScreen: { screen: WebViewScreen },

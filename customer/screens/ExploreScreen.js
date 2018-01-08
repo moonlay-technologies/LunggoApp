@@ -3,8 +3,9 @@
 import React, { Component } from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
   Button, TextInput, StyleSheet } from 'react-native';
-import SearchHeader from '../components/SearchHeader';
+import SearchHeader from './SearchActivity/SearchHeader';
 import { Icon } from 'react-native-elements';
+import WishButton from '../components/WishButton';
 
 export default class ExploreScreen extends React.Component {
 
@@ -24,7 +25,7 @@ export default class ExploreScreen extends React.Component {
     this.props.navigation.navigate(screen, params);
 
   _onPressProduct = id => this._goTo('DetailScreen', {id});
-  _onPressCategory = str => this._goTo('SearchResults', {searchString: str});
+  _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
 
@@ -109,11 +110,8 @@ export default class ExploreScreen extends React.Component {
                   </Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite'
-                  type='materialicons'
-                  size={30}
-                  color='#ff5f5f'/>
+                  {/*<WishButton wishlisted={item.wishlisted} id={item.id} />*/}
+                  <WishButton wishlisted={true} id={1} />
                 </View>
               </View>
             </View>
@@ -222,11 +220,7 @@ export default class ExploreScreen extends React.Component {
                   </Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Icon
-                  name='favorite-border'
-                  type='materialicons'
-                  size={24}
-                  color='#cdcdcd'/>
+                  <WishButton wishlisted={true} id={1} />
                 </View>
               </View>
             </View>

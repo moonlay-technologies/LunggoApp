@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import BlankScreen from './MyBookingBlankScreen';
-import ListScreen from './MyBookingListScreen';
-import { getBookingList } from './MyBookingController';
+import BlankScreen from './WishlistBlankScreen';
+import ListScreen from '../SearchActivity/ActivityResultScreen';
+import { fetchWishlist } from '../../../api/Common';
 
 
-export default class MyBookingLoadingScreen extends React.Component {
+export default class WishlistFrame extends React.Component {
 
   constructor (props) {
     super(props);
@@ -18,13 +18,13 @@ export default class MyBookingLoadingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'My Booking',
+    title: 'Wishlist',
   };
 
   componentDidMount() {
-    getBookingList().then( ({ list, status }) => {
-      this.setState({list, status, isLoading: false});
-    });
+    fetchWishlist().then( ({ activityList, status }) => {
+      this.setState({list: activityList, status, isLoading: false});
+    }).catch(error=>console.log(error));
   }
 
   render() {
