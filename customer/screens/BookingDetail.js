@@ -40,6 +40,8 @@ export default class BookingDetail extends React.Component {
     this.state = {
       isDateSelected: true,
       isPaxFilled: true,
+      adultCount: 1,
+      childCount: 0,
     };
   }
 
@@ -62,8 +64,9 @@ export default class BookingDetail extends React.Component {
   }
 
   _book = async () => {
-    let {pax, date} = this.state;
+    let {pax, date, adultCount, childCount} = this.state;
 
+    if(true) pax = adultCount + childCount;
     //// validation
     if (!pax) this.setState({isPaxFilled:false});
     if (!date) this.setState({isDateSelected:false});
@@ -129,6 +132,11 @@ export default class BookingDetail extends React.Component {
     });
   }
 
+  _subsAdult = () => this.setState({adultCount:this.state.adultCount-1});
+  _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
+  _subsChild = () => this.setState({childCount:this.state.childCount-1});
+  _addChild = () => this.setState({childCount:this.state.childCount+1});
+
   render() {
     let {navigation} = this.props;
     let {price, requiredPaxData} = navigation.state.params;
@@ -137,9 +145,7 @@ export default class BookingDetail extends React.Component {
     if (!paxListItemIndexes) paxListItemIndexes = [];
 
     let selectedDateText = date ?
-      Moment(date).format('ddd, D MMM YYYY') +' '+ time
-      :
-      'Atur Jadwal'
+      Formatter.dateFullShort(date)+' '+ time : 'Atur Jadwal';
 
     let setDateButton = date ?
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
@@ -148,25 +154,22 @@ export default class BookingDetail extends React.Component {
 
     let rincianHarga = (pax && date) ?
       <TouchableOpacity style={{flex:1.5}} onPress={
-        () => this.props.navigation.navigate('RincianHarga')
-      }>
+        () => this.props.navigation.navigate('RincianHarga')}>
         <View style={{alignItems: 'flex-start'}}>
           <View>
             <Text style={{fontSize:15, color:'#000',}}>
               Total
-              {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
             </Text> 
           </View>
           <View style={{marginTop:3}}>
-            <Text style={{
-              color:'#000',
-              fontWeight: 'bold',
-              fontSize:17,
-            }}>{ Formatter.price(price) /* Formatter.price( pax && pax.length>0 ? pax.length*price : price)*/}</Text>
-            {/*<Text>/ 2 orang</Text>*/}
+            <Text style={{ color:'#000', fontWeight: 'bold', fontSize:17 }}>
+              { Formatter.price(price) }
+            </Text>
           </View>
           <View style={{marginTop:4}} >
-            <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>Lihat Rincian Harga</Text> 
+            <Text style={{fontSize:11, color:'#01d4cb', fontWeight:'bold'}}>
+              Lihat Rincian Harga
+            </Text> 
           </View>
         </View>
       </TouchableOpacity>
@@ -290,21 +293,25 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>Dewasa</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <Text style={styles.activityDesc}>1</Text>
-                     <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+                      onPress={this._subsAdult}
+                    >
                       <Icon
                       name='minus'
                       type='entypo'
                       size={10}
                       color='#ff5f5f'/>
-                    </View>
-                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                    </TouchableOpacity>
+                    <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+                      onPress={this._addAdult}
+                    >
                       <Icon
                       name='plus'
                       type='octicon'
                       size={10}
                       color='#ff5f5f'/>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View style={{marginTop:20, flexDirection:'row',}}>
@@ -312,21 +319,25 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>Anak-anak</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <Text style={styles.activityDesc}>1</Text>
-                     <View style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+                      onPress={this._subsChild}
+                    >
                       <Icon
                       name='minus'
                       type='entypo'
                       size={10}
                       color='#ff5f5f'/>
-                    </View>
-                    <View style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}>
+                    </TouchableOpacity>
+                    <Text style={styles.activityDesc}>{this.state.childCount}</Text>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+                      onPress={this._addChild}
+                    >
                       <Icon
                       name='plus'
                       type='octicon'
                       size={10}
                       color='#ff5f5f'/>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
 
