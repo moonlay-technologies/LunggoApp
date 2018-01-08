@@ -1,35 +1,71 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
+  ScrollView, } from 'react-native';
 import globalStyles from '../../commons/globalStyles';
-import { Rating, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
+import Modal from 'react-native-modal';
+import { removeAccessToken } from '../../api/Common';
+import { NavigationActions } from 'react-navigation';
 
-export default class LoginScreen extends Component<{}> {
+export default class AccountScreen extends React.Component {
   
+  constructor (props) {
+    super(props)
+    this.state = {
+      isModalVisible:false,
+    }
+  }
+
   static navigationOptions = {
     title: 'Akun',
-  };;
-  state = {open: false};
+  };
+
+  _setModalVisible = vis => this.setState({isModalVisible: vis});
+
+  _logout = () =>
+    removeAccessToken().then( () => 
+      this.props.navigation.dispatch(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Main'})]
+        }
+      ))
+    );
 
   render() {
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
+      <Modal
+        style={{
+          // justifyContent: 'flex-end',
+          // margin: 0,
+        }}
+        animationType="fade"
+        transparent={true}
+        // isVisible={true}
+        isVisible={this.state.isModalVisible}
+      >
+        <Text style={{color:'white'}}>
+          Are you sure you want to log out?
+        </Text>
+        <View style={{flexDirection:'row'}}>
+          <Button onPress={this._logout}>
+            Yes
+          </Button>
+          <Button onPress={()=>this._setModalVisible(false)}>
+            No
+          </Button>
+        </View>
+      </Modal>
       <View style={styles.container}>
         <View style={{alignItems:'center',marginBottom:40}}>
           <View style={{marginBottom:20}}>
             <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
           </View>
-          <View style={{}}>
+          <View>
             <View>
               <Text style={styles.activitydetailTitle}>Ali Zainal Abidin</Text>
             </View>
@@ -90,17 +126,19 @@ export default class LoginScreen extends Component<{}> {
             color='#454545'/>
           </View>
         </View>
-        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <View style={{justifyContent:'center', flex:1}}>
-            <Text style={styles.optionProfile}>Log Out</Text>
-          </View>
-          <View style={{alignItems:'flex-end', flex:1}}>
-            <Icon
-            name='ios-log-out'
-            type='ionicon'
-            size={30}
-            color='#454545'/>
-          </View>
+        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+          <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>this._setModalVisible(true)}>
+            <View style={{justifyContent:'center', flex:1}}>
+              <Text style={styles.optionProfile}>Log Out</Text>
+            </View>
+            <View style={{alignItems:'flex-end', flex:1}}>
+              <Icon
+              name='ios-log-out'
+              type='ionicon'
+              size={30}
+              color='#454545'/>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
       </ScrollView>

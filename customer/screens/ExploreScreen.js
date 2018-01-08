@@ -28,7 +28,6 @@ export default class ExploreScreen extends React.Component {
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
-
     let categoryHeader = ({title,searchUrl}) =>
       <View style={[styles.container,{marginTop:30,flexDirection:'row'}]}>
         <View style={{flex:2}}>
@@ -39,7 +38,6 @@ export default class ExploreScreen extends React.Component {
           <Text style={styles.seeMore}>Lihat Semua</Text>
         </TouchableOpacity>
       </View>
-
 
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>

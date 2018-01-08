@@ -6,7 +6,7 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import Colors from '../constants/Colors';
 
 import HomeScreen from '../customer/screens/HomeScreen';
-import ExploreScreen from '../customer/screens/ExploreScreen';
+import Explore from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking/MyBookingLoadingScreen';
 // import LinksScreen from '../customer/screens/LinksScreen';
 // import SettingsScreen from '../customer/screens/SettingsScreen';
@@ -16,7 +16,7 @@ import AccountPage from '../customer/screens/AccountPage';
 
 export default TabNavigator(
   {
-    Explore: { screen: ExploreScreen },
+    Explore: { screen: Explore },
     MyBooking: { screen: MyBooking },
     Wishlist: { screen: Wishlist },
     MessageBlank: { screen: MessageBlank },

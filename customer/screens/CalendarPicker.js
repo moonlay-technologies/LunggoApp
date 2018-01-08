@@ -90,10 +90,8 @@ export default class CalendarPicker extends Component {
     })
     this.props.navigation.goBack()
   }
-
-  _setModalVisible(visible) {
-    this.setState({isModalVisible: visible});
-  }
+  
+  _setModalVisible = vis => this.setState({isModalVisible: vis});
 
   _onDatePressed = chosenDate => {
     if (this._checkIsDateAvailable(chosenDate) == false) return;
@@ -163,7 +161,6 @@ export default class CalendarPicker extends Component {
           animationType="fade"
           transparent={true}
           isVisible={this.state.isModalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
         >
           <View style={{flex:1}}></View>
           <View style={{flex:1, backgroundColor:'white', padding:20,}}>

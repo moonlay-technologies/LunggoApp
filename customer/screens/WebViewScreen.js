@@ -5,6 +5,7 @@ import { WebView } from 'react-native';
 import {SHA1} from 'crypto-js';
 import Base64 from 'crypto-js/enc-base64';
 import {clientId, clientSecret} from '../../constants/env';
+import { NavigationActions } from 'react-navigation';
 
 export default class WebViewScreen extends Component {
   
@@ -34,7 +35,12 @@ export default class WebViewScreen extends Component {
 
   _onMessage = event => {
     if(event.nativeEvent.data == 'ExploreScreen') {
-      this.props.navigation.goBack('SearchActivity');
+      return this.props.navigation.dispatch(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator'})]
+        }
+      ));
     }
   }
 
