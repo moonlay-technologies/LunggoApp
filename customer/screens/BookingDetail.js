@@ -293,7 +293,7 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>Dewasa</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
                       onPress={this._subsAdult}
                     >
                       <Icon
@@ -302,8 +302,8 @@ export default class BookingDetail extends React.Component {
                       size={10}
                       color='#ff5f5f'/>
                     </TouchableOpacity>
-                    <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+                    <Text style={styles.activityDescNumb}>{this.state.adultCount}</Text>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2,  paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
                       onPress={this._addAdult}
                     >
                       <Icon
@@ -319,7 +319,7 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>Anak-anak</Text>
                   </View>
                   <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2,  paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
                       onPress={this._subsChild}
                     >
                       <Icon
@@ -328,8 +328,8 @@ export default class BookingDetail extends React.Component {
                       size={10}
                       color='#ff5f5f'/>
                     </TouchableOpacity>
-                    <Text style={styles.activityDesc}>{this.state.childCount}</Text>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+                    <Text style={styles.activityDescNumb}>{this.state.childCount}</Text>
+                    <TouchableOpacity style={{borderWidth:1, borderRadius:2,  paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
                       onPress={this._addChild}
                     >
                       <Icon
@@ -480,6 +480,25 @@ const styles = StyleSheet.create({
     fontSize:14,
     color:'#454545',
     fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 10,
+        marginBottom:-10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+    activityDescNumb: {
+    fontSize:14,
+    color:'#454545',
+    fontFamily: 'Hind',
+    width:30,
+    textAlign:'center',
     ...Platform.select({
       ios: {
         lineHeight:15*0.8,

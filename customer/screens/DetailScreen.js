@@ -281,7 +281,7 @@ export default class DetailScreen extends Component {
                 <Text>LatLong: {lat} , {long} </Text>
               </TouchableOpacity>
               
-              <View style={{marginTop:30, marginBottom:30}}>
+              <View style={{marginTop:30}}>
                 <Text style={styles.sectionTitle}>
                   Hal yang Perlu Dibawa
                 </Text>

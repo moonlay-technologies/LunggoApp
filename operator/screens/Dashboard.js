@@ -11,7 +11,7 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableNativeFeedback,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
@@ -258,17 +258,17 @@ export default class Dashboard extends React.Component {
             }}
             onPress={this._onAppointmentRequestPressed}
           >
-            <Text style={{color:'#676767', fontSize:11}}>You have</Text>
-            <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>12</Text>
-            <Text style={{color:'#676767', fontSize:11}}>Pending Requests</Text>
+            <Text style={styles.textKecil}>You have</Text>
+            <Text style={styles.point}>12</Text>
+            <Text style={styles.textKecil}>Pending Requests</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2, marginLeft:6}}
             onPress={this._onAppointmentListPressed}
           >
-            <Text style={{color:'#676767', fontSize:11}}>You have</Text>
-            <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>3</Text>
-            <Text style={{color:'#676767', fontSize:11}}>Appointments</Text>
+            <Text style={styles.textKecil}>You have</Text>
+            <Text style={styles.point}>3</Text>
+            <Text style={styles.textKecil}>Appointments</Text>
           </TouchableOpacity>
         </View>
 
@@ -279,7 +279,7 @@ export default class Dashboard extends React.Component {
                 <Text style={styles.categoryTitle}>Activity Review</Text>
               </View>
               <View style={{flex:1,alignItems:'flex-end', justifyContent:'center'}}>
-                <Text style={{fontSize: 12, color: '#676767', }}>Details</Text>
+                <Text style={styles.textKecil}>Details</Text>
               </View>
             </View>
           </View>
@@ -291,20 +291,20 @@ export default class Dashboard extends React.Component {
               <TouchableOpacity style={{flex:1, alignItems:'center'}}
                 onPress={this._onActivityListPressed}
               >
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>2</Text>
-                <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Activities</Text>
+                <Text style={styles.point}>2</Text>
+                <Text style={styles.textKecil}>Activities</Text>
               </TouchableOpacity>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>13</Text>
-                <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Deals</Text>
+                <Text style={styles.point}>13</Text>
+                <Text style={styles.textKecil}>Deals</Text>
               </View>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>107</Text>
-                <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Views</Text>
+                <Text style={styles.point}>107</Text>
+                <Text style={styles.textKecil}>Views</Text>
               </View>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>14</Text>
-                <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Review</Text>
+                <Text style={styles.point}>14</Text>
+                <Text style={styles.textKecil}>Review</Text>
               </View>
             </View>
           </View>
@@ -328,7 +328,7 @@ export default class Dashboard extends React.Component {
           <View style={{marginTop:0}}>
             <View style={{flexDirection:'row'}}>
               <View style={{}}>
-                <Text style={{fontSize:45, fontWeight:'bold', }}>4.3</Text>
+                <Text style={styles.boldRating}>4.3</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginLeft:20}}>Out of 5</Text>
               </View>
               <View style={{}}>
@@ -348,27 +348,16 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  placeTitleContainer: { 
-    backgroundColor:'transparent',
-    alignItems:'center',
-    position:'absolute',
-    width:'100%',
-    bottom:15
-  },
-  placeTitle: {
-    color:'#fff', 
-    fontWeight:'bold', 
-    fontSize:16
-  },
   divider: {
     height: 1,
     width: '100%',
     backgroundColor: '#efefef',
   },
-    credit: {
-    fontSize:14,
+  credit: {
+    fontSize:15,
     marginTop:3,
     marginLeft:5,
+    fontFamily:'Hind',
     color:'#454545',
 
   },
@@ -383,49 +372,86 @@ const styles = StyleSheet.create({
     right:0, 
     bottom:20
   },
-  thumbnailPromo: {
-    resizeMode:'cover', 
-    width:300, 
-    height:150, 
-    borderRadius:5,
+  textKecil: {
+    fontSize: 12, 
+    fontFamily:'Hind', 
+    color: '#676767', 
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-8,
+      },
+      android: {
+        marginBottom:-2,
+      },
+    }),
   },
-  thumbnailMedium: {
-    resizeMode:'cover', 
-    width:140, 
-    height:150, 
-    borderRadius:5,
+  boldRating: {
+    fontSize:45, 
+    fontFamily:'Hind-Bold',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-30,
+      },
+      android: {
+        marginBottom:-14,
+      },
+    }),
   },
-  thumbnailPlaces: {
-    resizeMode:'cover', 
-    width:140, 
-    height:150, 
-    borderRadius:5,
-    opacity: 0.7
+  point:{
+    fontFamily:'Hind-Bold', 
+    fontSize:30,
+    color:'#01d4cb',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-20,
+      },
+      android: {
+        marginBottom:-2,
+      },
+    }),
   },
   activityTitle: {
     fontWeight:'bold',
     fontSize:15,
     color:'#454545',
   },
-  priceTitle: {
-    fontSize:12,
-    color:'#676767',
-    marginTop:2
-  },
-  activityTitleBig: {
-    fontWeight:'bold',
-    fontSize:18,
-    color:'#454545',
-  },
   priceTitleBig: {
     fontSize:14,
     color:'#676767',
-    marginTop:2
+    marginTop:2,
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-5,
+      },
+      android: {
+
+      },
+    }),
   },
   categoryTitle :{
-    fontWeight:'bold',
-    fontSize:18,
-    color:'#454545'
+    fontFamily: 'Hind-Bold',
+    fontSize:20,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-15,
+      },
+      android: {
+
+      },
+    }),
   },
   avatarBig:{
     width:60, 

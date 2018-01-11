@@ -44,7 +44,7 @@ export default class ExploreScreen extends React.Component {
 
   render() {
     let categoryHeader = ({title,searchUrl}) =>
-      <View style={[styles.container,{flexDirection:'row'}]}>
+      <View style={[styles.container,{flexDirection:'row',}]}>
         <Text style={[{flex:2},styles.categoryTitle]}>{title}</Text>
         <TouchableOpacity style={{flex:1,alignItems:'flex-end'}}
           onPress={() => this._onPressCategory(searchUrl)} >
@@ -55,29 +55,78 @@ export default class ExploreScreen extends React.Component {
     let categoryContent = (list, big=false) => {
       return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{marginBottom:20}} >
+          style={{marginBottom:20, height:'100%'}} >
 
           {list.map( listItem =>
-            <View key={listItem.id}
-              style={{width:big?300:140, marginLeft:15,}}
+            <TouchableOpacity key={listItem.id}
+              style={{width:140, marginLeft:15,}}
+              activeOpacity={1}
+              onPress={() => this._onPressProduct(listItem.id)}
             >
-              <TouchableOpacity activeOpacity={1}
-                onPress={() => this._onPressProduct(listItem.id)}
-              >
-                <Image
-                  style={big?styles.thumbnailBig:styles.thumbnailMedium}
-                  source={{uri:listItem.mediaSrc}}
-                />
-              </TouchableOpacity>
-              <View style={{marginTop:big?10:5, flexDirection:'row'}}>
-                <View style={{flex:big?4.5:4}}>
+              <Image
+                style={styles.thumbnailMedium}
+                source={{uri:listItem.mediaSrc}}
+              />
+              <View style={{marginTop:5,   flexDirection:'row'}}>
+                <View style={{
+                  flex: 4,
+                  paddingBottom: 30,
+                  // marginBottom:big ? 0 : -60,
+                  // backgroundColor:'red',
+                  // zIndex: big? 1000 : 1000
+                }}>
+                  <Text style={styles.namaKota}>
+                    {listItem.city}
+                  </Text>
+                  <Text style={ styles.activityTitle}>
+                    {listItem.name}
+                  </Text>
+                  <Text style={ styles.priceTitle}>
+                    {Formatter.price(listItem.price)}
+                  </Text>
+
+                </View>
+                <View style={{flex:1, alignItems:'flex-end',}}>
+                  <WishButton wishlisted={listItem.wishlisted}
+                    id={listItem.id} big={big} {...this.props} />
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+        </ScrollView>
+      );
+    }
+    
+    let categoryContentBig = (list, big=false) => {
+      return (
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
+          style={{marginBottom:20, height:'100%'}} >
+
+          {list.map( listItem =>
+            <TouchableOpacity key={listItem.id}
+              style={{width:300, marginLeft:15,}}
+              activeOpacity={1}
+              onPress={() => this._onPressProduct(listItem.id)}
+            >
+              <Image
+                style={styles.thumbnailBig}
+                source={{uri:listItem.mediaSrc}}
+              />
+              <View style={{marginTop: 10 ,   flexDirection:'row'}}>
+                <View style={{
+                  flex: 4.5 ,
+                  paddingBottom: 30,
+                  // marginBottom:big ? 0 : -60,
+                  // backgroundColor:'red',
+                  // zIndex: big? 1000 : 1000
+                }}>
                   <Text style={styles.namaKotaBig}>
                     {listItem.city}
                   </Text>
-                  <Text style={styles.activityTitleBig}>
+                  <Text style={styles.activityTitleBig }>
                     {listItem.name}
                   </Text>
-                  <Text style={styles.priceTitleBig}>
+                  <Text style={styles.priceTitleBig }>
                     {Formatter.price(listItem.price)}
                   </Text>
                 </View>
@@ -86,12 +135,12 @@ export default class ExploreScreen extends React.Component {
                     id={listItem.id} big={big} {...this.props} />
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
-          <View style={{paddingHorizontal:7}} />
         </ScrollView>
       );
     }
+
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
 
@@ -133,9 +182,9 @@ export default class ExploreScreen extends React.Component {
               </View>
             </View>
           </View> */} 
-
+        
         {categoryHeader({title:'Tiket', searchUrl:'tiket'})}
-        {categoryContent(this.state.tiketList, true)}
+        {categoryContentBig(this.state.tiketList, true)}
 
         {categoryHeader({title:'Paket', searchUrl:'paket'})}
         {categoryContent(this.state.paketList)}
@@ -147,7 +196,7 @@ export default class ExploreScreen extends React.Component {
         {categoryContent(this.state.turList)}
 
         <View style={styles.container}>
-          <View style={{marginTop:30}}>
+          <View style={{marginTop:10}}>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:2}}>
                 <Text style={styles.categoryTitle}>Lokasi Populer</Text>
@@ -246,7 +295,6 @@ const styles = StyleSheet.create({
   namaKota: {
     fontSize:12,
     color:'#454545',
-    marginVertical:3,
     fontFamily: 'Hind',
     ...Platform.select({
       ios: {
@@ -257,7 +305,7 @@ const styles = StyleSheet.create({
       },
       android: {
         lineHeight:18,
-        //paddingTop: 23 - (23* 1),
+        marginBottom:-2
 
       },
     }),
@@ -282,14 +330,13 @@ const styles = StyleSheet.create({
   },
   activityTitleBig: {
     fontFamily: 'Hind-Bold',
-    fontSize:19,
+    fontSize:20,
     color:'#454545',
     ...Platform.select({
       ios: {
         lineHeight:12,
         paddingTop: 14,
         marginBottom:-13,
-        //backgroundColor:'red'
       },
       android: {
         lineHeight:24
@@ -299,9 +346,9 @@ const styles = StyleSheet.create({
     }),
   },
   activityTitle: {
-    fontFamily: 'Hind-Bold',
     fontSize:15,
     color:'#454545',
+    fontFamily: 'Hind-Bold',
     ...Platform.select({
       ios: {
         lineHeight:10,
@@ -377,7 +424,7 @@ const styles = StyleSheet.create({
   categoryTitle :{
     fontFamily: 'Hind-Bold',
     fontSize:22,
-    color:'#454545'
+    color:'#454545',
   },
   seeMore :{
     fontSize:14,
@@ -386,9 +433,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind'
   },
   container: {
-    flex: 1,
+    // flex: 1,
     padding:15,
-    paddingTop:20,
     backgroundColor: '#fff',
   },
 });
