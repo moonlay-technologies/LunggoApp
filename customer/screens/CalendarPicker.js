@@ -116,7 +116,7 @@ export default class CalendarPicker extends Component {
   render() {
     let {selectedDate, markedDates, selectedTime} = this.state;
     let date = (selectedDate)
-      ? Moment(selectedDate).format('ddd, D MMM YYYY')
+      ? Formatter.dateFullShort(selectedDate)
       : "Pilih Tanggal";
       console.log('markedDates')
       console.log(markedDates)

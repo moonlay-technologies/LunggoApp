@@ -152,6 +152,97 @@ export default class BookingDetail extends React.Component {
       :
       <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
 
+    let paxForm = !!requiredPaxData ?
+      <View style={{
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        paddingBottom:20,
+        marginTop:20
+      }}>
+        <Text style={styles.activityDesc}>
+          Atur Peserta
+        </Text>
+        <TouchableOpacity
+          containerStyle={styles.addButton}
+          onPress={() => navigation.navigate('PaxChoice', {
+            price, requiredPaxData,
+            setPax: this.setPax,
+            setPaxListItemIndexes: this.setPaxListItemIndexes,
+            paxListItemIndexes: paxListItemIndexes.slice(),
+            paxCount: pax? pax.length : 0,
+          })}
+        >
+          <View style={{flexDirection:'row'}}>
+            <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
+              {isPaxFilled ? null:<Text style={styles.validation}>Mohon isi peserta</Text>}
+            </View>
+            <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
+          </View>
+          
+        </TouchableOpacity>
+      </View>
+      :
+      <View style={{
+        borderBottomColor: '#efefef',
+        borderBottomWidth:1,
+        paddingBottom:20,
+        marginVertical:20,
+      }}>
+        <View style={{flexDirection:'row',}}>
+          <View style={{flex:1}}>
+            <Text style={styles.activityDesc}>Dewasa</Text>
+          </View>
+          <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+              onPress={this._subsAdult}
+            >
+              <Icon
+              name='minus'
+              type='entypo'
+              size={10}
+              color='#ff5f5f'/>
+            </TouchableOpacity>
+            <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+              onPress={this._addAdult}
+            >
+              <Icon
+              name='plus'
+              type='octicon'
+              size={10}
+              color='#ff5f5f'/>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{marginTop:20, flexDirection:'row',}}>
+          <View style={{flex:1}}>
+            <Text style={styles.activityDesc}>Anak-anak</Text>
+          </View>
+          <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+              onPress={this._subsChild}
+            >
+              <Icon
+              name='minus'
+              type='entypo'
+              size={10}
+              color='#ff5f5f'/>
+            </TouchableOpacity>
+            <Text style={styles.activityDesc}>{this.state.childCount}</Text>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+              onPress={this._addChild}
+            >
+              <Icon
+              name='plus'
+              type='octicon'
+              size={10}
+              color='#ff5f5f'/>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+      </View>
+
     let rincianHarga = (pax && date) ?
       <TouchableOpacity style={{flex:1.5}} onPress={
         () => this.props.navigation.navigate('RincianHarga')}>
@@ -276,73 +367,7 @@ export default class BookingDetail extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-            <View>
-              <View>
-                <Text style={styles.activityTitle}>
-                  Peserta
-                </Text>
-              </View>
-              <View style={{
-                borderBottomColor: '#efefef',
-                borderBottomWidth:1,
-                paddingBottom:20,
-                marginVertical:20,
-              }}>
-                <View style={{flexDirection:'row',}}>
-                  <View style={{flex:1}}>
-                    <Text style={styles.activityDesc}>Dewasa</Text>
-                  </View>
-                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
-                      onPress={this._subsAdult}
-                    >
-                      <Icon
-                      name='minus'
-                      type='entypo'
-                      size={10}
-                      color='#ff5f5f'/>
-                    </TouchableOpacity>
-                    <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
-                      onPress={this._addAdult}
-                    >
-                      <Icon
-                      name='plus'
-                      type='octicon'
-                      size={10}
-                      color='#ff5f5f'/>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{marginTop:20, flexDirection:'row',}}>
-                  <View style={{flex:1}}>
-                    <Text style={styles.activityDesc}>Anak-anak</Text>
-                  </View>
-                  <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
-                      onPress={this._subsChild}
-                    >
-                      <Icon
-                      name='minus'
-                      type='entypo'
-                      size={10}
-                      color='#ff5f5f'/>
-                    </TouchableOpacity>
-                    <Text style={styles.activityDesc}>{this.state.childCount}</Text>
-                    <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
-                      onPress={this._addChild}
-                    >
-                      <Icon
-                      name='plus'
-                      type='octicon'
-                      size={10}
-                      color='#ff5f5f'/>
-                    </TouchableOpacity>
-                  </View>
-                </View>
 
-              </View>
-            </View>
             <View>
               <View style={{flexDirection:'row'}}>
                 <View>
@@ -354,39 +379,12 @@ export default class BookingDetail extends React.Component {
                   <Text style={styles.seeMore}>5 orang</Text>
                 </View>
               </View>
-                {pax && pax.map( item =>
-                  <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
-                    <Text>{item.name}</Text>
-                  </View>
-                )}
-              <View style={{
-                flexDirection:'row',
-                justifyContent: 'space-between',
-                paddingBottom:20,
-                marginTop:20
-              }}>
-                <Text style={styles.activityDesc}>
-                  Atur Peserta
-                </Text>
-                <TouchableOpacity
-                  containerStyle={styles.addButton}
-                  onPress={() => navigation.navigate('PaxChoice', {
-                    price, requiredPaxData,
-                    setPax: this.setPax,
-                    setPaxListItemIndexes: this.setPaxListItemIndexes,
-                    paxListItemIndexes: paxListItemIndexes.slice(),
-                    paxCount: pax? pax.length : 0,
-                  })}
-                >
-                  <View style={{flexDirection:'row'}}>
-                    <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
-                      {isPaxFilled ? null:<Text style={styles.validation}>Mohon isi peserta</Text>}
-                    </View>
-                    <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
-                  </View>
-                  
-                </TouchableOpacity>
-              </View>
+              {pax && pax.map( item =>
+                <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
+                  <Text>{item.name}</Text>
+                </View>
+              )}
+              {paxForm}
             </View>
             
           </View>

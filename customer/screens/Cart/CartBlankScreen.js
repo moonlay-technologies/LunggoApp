@@ -36,7 +36,7 @@ export default class CartBlankScreen extends React.Component {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.navigate('Main')}
+                  onPress={() => this.props.navigation.navigate('MainTabNavigator')}
                 >
                   Jelajah Sekarang
               </Button>
