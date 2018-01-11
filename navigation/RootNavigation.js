@@ -39,7 +39,7 @@ const RootStackNavigator = StackNavigator(
       // screen: Cart
       // screen: ExploreScreen
       //screen: LoginScreen
-       screen: Dashboard
+       screen: Mutasi
       //screen: BeforeLoginScreen
       // screen: DetailScreen
     },

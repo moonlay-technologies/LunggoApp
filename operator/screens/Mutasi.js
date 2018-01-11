@@ -52,60 +52,60 @@ export default class DetailScreen extends Component<{}> {
       <View style={{flex:1, backgroundColor:'#fff'}}>
         <ScrollView style={{marginTop:60, }}>
           <View style={styles.container}>
-            <Text>Total Credit</Text>
-            <Text style={{fontSize:14, fontWeight:'bold', color:'#454545',}}>Rp 1.000.000</Text>
+            <Text style={styles.priceTitleBig}>Total Credit</Text>
+            <Text style={styles.categoryTitle}>Rp 1.000.000</Text>
           </View>
           <View style={styles.divider}></View>
           <View style={styles.container}>
             <View style={styles.boxMutasi}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
                 <View style={{flex:2}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>Pencairan Dana</Text>
-                  <Text style={{color:'#01d4cb', fontSize:14, fontWeight:'bold', marginVertical:3}}>Kode: #AWSD334122</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5'}}>15 Januari 2012 - 16.20</Text>
+                  <Text style={styles.textKecil}>Pencairan Dana</Text>
+                  <Text style={styles.kode}>Kode: #AWSD334122</Text>
+                  <Text style={styles.textKecilabu}>15 Januari 2012 - 16.20</Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end'}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>+Rp 100.000</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5', marginTop:3}}>Rp 200.000</Text>
+                  <Text style={styles.textKecil}>+Rp 100.000</Text>
+                  <Text style={styles.textKecilabu}>Rp 200.000</Text>
                 </View>
               </View>
             </View>
             <View style={styles.boxMutasi}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
                 <View style={{flex:2}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>Pencairan Dana</Text>
-                  <Text style={{color:'#01d4cb', fontSize:14, fontWeight:'bold', marginVertical:3}}>Kode: #AWSD334122</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5'}}>15 Januari 2012 - 16.20</Text>
+                  <Text style={styles.textKecil}>Pencairan Dana</Text>
+                  <Text style={styles.kode}>Kode: #AWSD334122</Text>
+                  <Text style={styles.textKecilabu}>15 Januari 2012 - 16.20</Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end'}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>+Rp 100.000</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5', marginTop:3}}>Rp 200.000</Text>
+                  <Text style={styles.textKecil}>+Rp 100.000</Text>
+                  <Text style={styles.textKecilabu}>Rp 200.000</Text>
                 </View>
               </View>
             </View>
             <View style={styles.boxMutasi}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
                 <View style={{flex:2}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>Pencairan Dana</Text>
-                  <Text style={{color:'#01d4cb', fontSize:14, fontWeight:'bold', marginVertical:3}}>Kode: #AWSD334122</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5'}}>15 Januari 2012 - 16.20</Text>
+                  <Text style={styles.textKecil}>Pencairan Dana</Text>
+                  <Text style={styles.kode}>Kode: #AWSD334122</Text>
+                  <Text style={styles.textKecilabu}>15 Januari 2012 - 16.20</Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end'}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>+Rp 100.000</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5', marginTop:3}}>Rp 200.000</Text>
+                  <Text style={styles.textKecil}>+Rp 100.000</Text>
+                  <Text style={styles.textKecilabu}>Rp 200.000</Text>
                 </View>
               </View>
             </View>
             <View style={styles.boxMutasi}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
                 <View style={{flex:2}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>Pencairan Dana</Text>
-                  <Text style={{color:'#01d4cb', fontSize:14, fontWeight:'bold', marginVertical:3}}>Kode: #AWSD334122</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5'}}>15 Januari 2012 - 16.20</Text>
+                  <Text style={styles.textKecil}>Pencairan Dana</Text>
+                  <Text style={styles.kode}>Kode: #AWSD334122</Text>
+                  <Text style={styles.textKecilabu}>15 Januari 2012 - 16.20</Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end'}}>
-                  <Text style={{color:'#454545', fontSize:14,}}>+Rp 100.000</Text>
-                  <Text style={{fontSize:12, color:'#a5a5a5', marginTop:3}}>Rp 200.000</Text>
+                  <Text style={styles.textKecil}>+Rp 100.000</Text>
+                  <Text style={styles.textKecilabu}>Rp 200.000</Text>
                 </View>
               </View>
             </View>
@@ -132,5 +132,80 @@ const styles = StyleSheet.create({
     borderWidth:1,
     borderColor:'#efefef',
     marginBottom:15
+  },
+  priceTitleBig: {
+    fontSize:14,
+    color:'#676767',
+    marginTop:2,
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-8,
+      },
+      android: {
+
+      },
+    }),
+  },
+  categoryTitle :{
+    fontFamily: 'Hind-Bold',
+    fontSize:18,
+    color:'#454545',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-15,
+      },
+      android: {
+      },
+    }),
+  },
+  textKecil: {
+    fontSize: 14, 
+    fontFamily:'Hind', 
+    color: '#676767', 
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+        marginBottom:-3,
+      },
+    }),
+  },
+  kode: {
+    fontSize: 15, 
+    fontFamily:'Hind-Bold', 
+    color:'#01d4cb',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+        marginBottom:-3,
+      },
+    }),
+  },
+    textKecilabu: {
+    fontSize: 13, 
+    fontFamily:'Hind', 
+    color:'#a5a5a5', 
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+        marginBottom:-3,
+      },
+    }),
   },
 });
