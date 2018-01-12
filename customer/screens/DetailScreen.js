@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import ImageSlider from 'react-native-image-slider';
@@ -15,7 +15,7 @@ import { Platform, StyleSheet, Text, View, Image, TextInput,
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 
-export default class DetailScreen extends Component {
+export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
@@ -90,6 +90,16 @@ export default class DetailScreen extends Component {
     );
   }
 
+  _goToEditActivity = () => this.props.navigation.navigate('EditActivity');
+
+  _onCtaButtonClick = () => {
+    //// if customer
+    // _goToBookingDetail();
+
+    //// if operator
+    this._goToEditActivity();
+  }
+
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long } = this.state;
@@ -117,6 +127,8 @@ export default class DetailScreen extends Component {
               <Text style={styles.activitydetailTitle}>
                 { name }
               </Text>
+              {/*<TextInput style={[styles.activitydetailTitle,{backgroundColor:'yellow'}]} value={ name } 
+                onChangeText={ name => this.setState({name}) } />*/}
             </View>
             <View style={{marginBottom:15}}>
               <Text style={styles.activityDesc}>
@@ -487,7 +499,7 @@ export default class DetailScreen extends Component {
             <Button
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => this._goToBookingDetail()}
+              onPress={this._onCtaButtonClick}
               disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >

@@ -20,6 +20,7 @@ import { LoginScreen } from '../commons/Screens';
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
+import EditActivity from '../operator/screens/EditActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
@@ -38,10 +39,10 @@ const RootStackNavigator = StackNavigator(
       //screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
-      screen: LoginScreen
+      // screen: LoginScreen
       // screen: Dashboard
       // screen: BeforeLoginScreen
-      // screen: DetailScreen
+      screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },
@@ -65,6 +66,7 @@ const RootStackNavigator = StackNavigator(
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
     Cart: { screen: Cart },
+    EditActivity: { screen: EditActivity },
 
   },
   {
