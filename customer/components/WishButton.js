@@ -1,11 +1,12 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Platform } from 'react-native';
 import Button from 'react-native-button';
 import { Icon } from 'react-native-elements';
 import { fetchWishlist, checkUserLoggedIn } from '../../api/Common';
 import Modal from 'react-native-modal';
+import globalStyles from '../../commons/globalStyles';
 
 export default class WishButton extends React.Component {
 
@@ -32,7 +33,7 @@ export default class WishButton extends React.Component {
     console.log(this.props)
     this.props.navigation.navigate('LoginScreen', {back: true} );
   }
-
+  state = {open: false};
   render() {
   	return (
       <View>
@@ -46,19 +47,51 @@ export default class WishButton extends React.Component {
 
         <Modal
           style={{}}
+          modalDidClose={() => this.setState({open: false})}
           // isVisible={true}
           isVisible={this.state.isModalVisible}
         >
-          <Text style={{color:'white'}}>
+        <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
+          <Text style={styles.textCart}>
             Login Here
           </Text>
-          <View style={{flexDirection:'row'}}>
-            <Button onPress={this._goToLoginScreen}>
+          <View style={{marginVertical:10}}>
+            <Button 
+            containerStyle={globalStyles.ctaButton2}
+            style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
+            onPress={this._goToLoginScreen}>
               OK
             </Button>
           </View>
+          <TouchableOpacity
+            style={{margin: 5}}
+            onPress={()=>this._setModalVisible(false)}>
+            <Text>Close modal</Text>
+          </TouchableOpacity>
+        </View>
         </Modal>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  textCart: {
+    fontFamily: 'Hind-Light', 
+    color:'#454545', 
+    fontSize:14,
+    textAlign:'center',
+    ...Platform.select({
+      ios: {
+        lineHeight:12,
+        paddingTop:4,
+        marginBottom:-5,
+        marginTop:8
+      },
+      android: {
+        marginTop:5
+
+      },
+    }),
+  }
+});

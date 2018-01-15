@@ -36,6 +36,7 @@ export default class AccountScreen extends React.Component {
     );
 
   render() {
+    let {navigate} = this.props.navigation;
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
       <Modal
@@ -43,28 +44,38 @@ export default class AccountScreen extends React.Component {
         // isVisible={true}
         isVisible={this.state.isModalVisible}
       >
-        <Text style={{color:'white'}}>
-          Are you sure you want to log out?
-        </Text>
-        <View style={{flexDirection:'row'}}>
-          <Button onPress={this._logout}>
-            Yes
-          </Button>
-          <Button onPress={()=>this._setModalVisible(false)}>
-            No
-          </Button>
+        <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
+          <Text style={styles.textCart}>
+            Are you sure you want to log out?
+          </Text>
+          <View style={{marginVertical:10}}>
+            <Button 
+            containerStyle={globalStyles.ctaButton2}
+            style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
+            onPress={this._logout}>
+              Yes
+            </Button>
+          </View>
+          <View>
+            <Button 
+            containerStyle={globalStyles.ctaButton3}
+            style={{fontSize: 14, color: '#ff5f5f', fontFamily:'Hind',}}
+            onPress={()=>this._setModalVisible(false)}>
+              No
+            </Button>
+          </View>
         </View>
       </Modal>
       <View style={styles.container}>
         <View style={{alignItems:'center',marginBottom:40}}>
           <View style={{marginBottom:20}}>
-            <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
+            <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')}/>
           </View>
           <View>
-            <View>
-              <Text style={styles.activitydetailTitle}>Ali Zainal Abidin</Text>
+            <View style={{alignItems:'center'}}>
+              <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
             </View>
-            <View style={{flexDirection:'row'}}>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
               <Text style={styles.textCart}>Edit Profile</Text>
               <View style={{marginHorizontal:10}}>
                 <Text style={styles.textCart}>|</Text>
@@ -129,6 +140,34 @@ export default class AccountScreen extends React.Component {
             <View style={{alignItems:'flex-end', flex:1}}>
               <Icon
               name='ios-log-out'
+              type='ionicon'
+              size={30}
+              color='#454545'/>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+          <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('LoginScreen')}>
+            <View style={{justifyContent:'center', flex:1}}>
+              <Text style={styles.optionProfile}>Log In</Text>
+            </View>
+            <View style={{alignItems:'flex-end', flex:1}}>
+              <Icon
+              name='ios-log-in'
+              type='ionicon'
+              size={30}
+              color='#454545'/>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+          <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('Registration')}>
+            <View style={{justifyContent:'center', flex:1}}>
+              <Text style={styles.optionProfile}>Daftar</Text>
+            </View>
+            <View style={{alignItems:'flex-end', flex:1}}>
+              <Icon
+              name='ios-laptop'
               type='ionicon'
               size={30}
               color='#454545'/>

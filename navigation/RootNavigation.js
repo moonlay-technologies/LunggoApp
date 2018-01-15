@@ -36,7 +36,7 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       //screen: MainTabNavigator
-      // screen: Cart
+      //screen: AccountPage
       // screen: ExploreScreen
       //screen: LoginScreen
       //screen: Dashboard
