@@ -1,6 +1,8 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import ImageSlider from 'react-native-image-slider';
@@ -10,15 +12,14 @@ import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 
-import { Platform, StyleSheet, Text, View, Image, TextInput,
-  ScrollView, TouchableOpacity, } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 
-export default class DetailScreen extends Component {
+export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
+    this.scrollY = new Animated.Value(0);
     const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
@@ -39,18 +40,41 @@ export default class DetailScreen extends Component {
   }
 
   static navigationOptions = props => {return {
-    title: props.navigation.state.params.name,
+    // title: props.navigation.state.params.name,
     // header: ({navigate}) => ({
     //     right: (
     //         <LikeShareHeaderButton navigate={navigate}/>
     //     ),
     // }),
     // headerTitleStyle: {color:'white'},
-   // headerRight: <LikeShareHeaderButton/>,
+    headerRight: <LikeShareHeaderButton/>,
     headerStyle: {
-      backgroundColor: '#fff',
+      // backgroundColor: '#fff',
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      zIndex: 100,
+      top: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: !props.navigation.state.params.bgColor
+        ? 'transparent'
+        : props.navigation.state.params.bgColor,
+      borderBottomWidth: 0,
+      elevation: 0,
     },
   }}
+
+
+  componentWillMount() {
+    var SCREEN_HEIGHT = Dimensions.get('window').height || 0;
+    this.props.navigation.setParams({
+      bgColor: this.scrollY.interpolate({
+        inputRange: [0, SCREEN_HEIGHT/ 2 - 40],
+        outputRange: ['transparent', 'rgb(255,0,0)'],
+        extrapolate: 'clamp',
+      }),
+    });
+  }
 
   componentDidMount() {
     const version = 'v1';
@@ -96,11 +120,17 @@ export default class DetailScreen extends Component {
     return (
       <View>
         <ScrollView
-          style={{backgroundColor:'#fff'}}
+          // style={{backgroundColor:'#fff'}}
+          style={{ backgroundColor: 'black' }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: this.scrollY } } },
+          ])}
+          scrollEventThrottle={16}
         >
           <View>
             <ImageSlider height={350} images={mediaSrc}/>
-            <View style={{
+            {/*<View style={{
               position:'absolute',
               top:20,
               right:20,
@@ -110,7 +140,7 @@ export default class DetailScreen extends Component {
               <View style={{marginLeft:10}}>
                 <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
               </View>
-            </View>
+            </View>*/}
           </View>
           <View style={styles.container}>
             <View style={{marginBottom:10}}>
