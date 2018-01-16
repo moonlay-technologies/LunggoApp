@@ -39,11 +39,8 @@ export default class AccountScreen extends React.Component {
     let {navigate} = this.props.navigation;
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
-      <Modal
-        style={{}}
-        // isVisible={true}
-        isVisible={this.state.isModalVisible}
-      >
+      <Modal isVisible={this.state.isModalVisible}
+        onBackdropPress={() => this._setModalVisible(false)} >
         <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
           <Text style={styles.textCart}>
             Are you sure you want to log out?
