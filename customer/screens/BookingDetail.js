@@ -3,8 +3,6 @@
 import React from 'react';
 import {AUTH_LEVEL, fetchTravoramaApi} from '../../api/Common';
 import * as Formatter from '../components/Formatter';
-import Moment from 'moment';
-import 'moment/locale/id';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
@@ -132,20 +130,33 @@ export default class BookingDetail extends React.Component {
     });
   }
 
-  _subsAdult = () => this.setState({adultCount:this.state.adultCount-1});
+  _goToPaxChoice = () => {
+    let {navigation} = this.props;
+    let {price, requiredPaxData} = navigation.state.params;
+    let {pax, paxListItemIndexes } = this.state;
+    if (!paxListItemIndexes) paxListItemIndexes = [];
+    navigation.navigate('PaxChoice', {
+      price, requiredPaxData,
+      setPax: this.setPax,
+      setPaxListItemIndexes: this.setPaxListItemIndexes,
+      paxListItemIndexes: paxListItemIndexes.slice(),
+      paxCount: pax? pax.length : 0,
+    })
+  }
+
+  _decrement = int => (int==0)? 0 : int-1;
+
+  _subsAdult = () => this.setState({adultCount:this._decrement(this.state.adultCount)});
   _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
-  _subsChild = () => this.setState({childCount:this.state.childCount-1});
+  _subsChild = () => this.setState({childCount:this._decrement(this.state.childCount)});
   _addChild = () => this.setState({childCount:this.state.childCount+1});
 
   render() {
-    let {navigation} = this.props;
-    let {price, requiredPaxData} = navigation.state.params;
-    let {pax, date, time, paxListItemIndexes, isDateSelected,
-      isPaxFilled } = this.state;
-    if (!paxListItemIndexes) paxListItemIndexes = [];
+    let {price, requiredPaxData} = this.props.navigation.state.params;
+    let {pax, date, time, isDateSelected, isPaxFilled } = this.state;
 
     let selectedDateText = date ?
-      Formatter.dateFullShort(date)+' '+ time : 'Atur Jadwal';
+      Formatter.dateFullShort(date)+', pk '+ time : 'Atur Jadwal';
 
     let setDateButton = date ?
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
@@ -164,13 +175,7 @@ export default class BookingDetail extends React.Component {
         </Text>
         <TouchableOpacity
           containerStyle={styles.addButton}
-          onPress={() => navigation.navigate('PaxChoice', {
-            price, requiredPaxData,
-            setPax: this.setPax,
-            setPaxListItemIndexes: this.setPaxListItemIndexes,
-            paxListItemIndexes: paxListItemIndexes.slice(),
-            paxCount: pax? pax.length : 0,
-          })}
+          onPress={this._goToPaxChoice}
         >
           <View style={{flexDirection:'row'}}>
             <View style={{justifyContent:'center', alignItems:'center', marginLeft:10}}>
@@ -196,21 +201,13 @@ export default class BookingDetail extends React.Component {
             <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
               onPress={this._subsAdult}
             >
-              <Icon
-              name='minus'
-              type='entypo'
-              size={10}
-              color='#ff5f5f'/>
+              <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
             </TouchableOpacity>
             <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
             <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
               onPress={this._addAdult}
             >
-              <Icon
-              name='plus'
-              type='octicon'
-              size={10}
-              color='#ff5f5f'/>
+              <Icon name='plus' type='octicon' size={10} color='#ff5f5f'/>
             </TouchableOpacity>
           </View>
         </View>
@@ -222,21 +219,13 @@ export default class BookingDetail extends React.Component {
             <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
               onPress={this._subsChild}
             >
-              <Icon
-              name='minus'
-              type='entypo'
-              size={10}
-              color='#ff5f5f'/>
+              <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
             </TouchableOpacity>
             <Text style={styles.activityDesc}>{this.state.childCount}</Text>
             <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
               onPress={this._addChild}
             >
-              <Icon
-              name='plus'
-              type='octicon'
-              size={10}
-              color='#ff5f5f'/>
+              <Icon name='plus' type='octicon' size={10} color='#ff5f5f'/>
             </TouchableOpacity>
           </View>
         </View>
@@ -268,147 +257,120 @@ export default class BookingDetail extends React.Component {
       <View style={{flex:1.5, justifyContent:'center'}} />
 
     return (
-      <View style={{flex:1, backgroundColor:'#fff'}}>
-        <ScrollView style={{}}>
-          <View style={styles.container}>
-            <View style={{}}>
-              {/*<View style={{flex:1, marginBottom:15}}>
-                <Image
-                  style={styles.thumb}
-                  source={require('../../assets/images/detailimg3.jpg')}
-                />
-              </View>*/}
-              <View style={{flex:1.5}}>
-                <Text style={styles.activitydetailTitle}>
-                  Trip to Sahara Desert
+      <ScrollView style={{flex:1, backgroundColor:'#fff'}}>
+        <View style={styles.container}>
+          {/*<View style={{flex:1, marginBottom:15}}>
+            <Image
+              style={styles.thumb}
+              source={require('../../assets/images/detailimg3.jpg')}
+            />
+          </View>*/}
+          <Text style={[{flex:1.5},styles.activitydetailTitle]}>
+            Trip to Sahara Desert
+          </Text>
+          {/*<View style={{flexDirection: 'row', marginBottom:5}}>
+            <Rating
+              // startingValue={3.6}
+              readonly
+              imageSize={12}
+              // onFinishRating={this.ratingCompleted}
+            />
+          </View>
+          <Text style={styles.activityDesc}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing
+            elit, sed do eiusmod tempor incididunt ut labore et 
+            dolore magna aliqua. Ut enim ad minim veniam.
+          </Text>*/}
+          <View style={{marginTop:15}}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={styles.activityDesc}>
+                  Jepang
                 </Text>
               </View>
-              {/*<View style={{flexDirection: 'row', marginBottom:5}}>
-                <Rating
-                  // startingValue={3.6}
-                  readonly
-                  imageSize={12}
-                  // onFinishRating={this.ratingCompleted}
-                />
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={styles.activityDesc}>
+                  Maksimum 6 orang
+                </Text>
               </View>
-              <Text style={styles.activityDesc}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit, sed do eiusmod tempor incididunt ut labore et 
-                dolore magna aliqua. Ut enim ad minim veniam.
-              </Text>*/}
-              <View style={{marginTop:15}}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View style={{}}>
-                    <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
-                  </View>
-                  <View style={{marginTop:1, marginLeft:10}}>
-                    <Text style={styles.activityDesc}>
-                      Jepang
-                    </Text>
-                  </View>
-                </View>
-                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                  <View style={{}}>
-                    <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
-                  </View>
-                  <View style={{marginTop:1, marginLeft:10}}>
-                    <Text style={styles.activityDesc}>
-                      Maksimum 6 orang
-                    </Text>
-                  </View>
-                </View>
-                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                  <View style={{}}>
-                   <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
-                  </View>
-                  <View style={{marginTop:1, marginLeft:10}}>
-                    <Text style={styles.activityDesc}>
-                      Khusus hari minggu
-                    </Text>
-                  </View>
-                </View>
-                <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-                  <View style={{}}>
-                    <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
-                  </View>
-                  <View style={{marginTop:1, marginLeft:10}}>
-                    <Text style={styles.activityDesc}>
-                      Untuk usia diatas 10 tahun
-                    </Text>
-                  </View>
-                </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={styles.activityDesc}>
+                  Khusus hari minggu
+                </Text>
+              </View>
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
+              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
+              <View style={{marginTop:1, marginLeft:10}}>
+                <Text style={styles.activityDesc}>
+                  Untuk usia diatas 10 tahun
+                </Text>
               </View>
             </View>
           </View>
-          <View style={styles.divider}/>
-          <View style={styles.container}>
-            <View>
-              <View>
-                <Text style={styles.activityTitle}>
-                  Jadwal
-                </Text>
-              </View>
-              <View style={{
-                flexDirection:'row',
-                justifyContent: 'space-between',
-                borderBottomColor: '#efefef',
-                borderBottomWidth:1,
-                paddingBottom:20,
-                marginVertical:20,
-              }}>
-                <Text style={this.state.isDateSelected ?
-                  styles.normalText : styles.warningText} >
-                  {selectedDateText}
-                </Text>
-                {isDateSelected ? null:<Text style={styles.validation}>mohon isi jadwal</Text>}
-                <TouchableOpacity containerStyle={styles.addButton}
-                  onPress={this._goToCalendarPicker} >
-                  {setDateButton}
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View>
-              <View style={{flexDirection:'row'}}>
-                <View>
-                  <Text style={styles.activityTitle}>
-                    Peserta
-                  </Text>
-                </View>
-                <View style={{flex:1,alignItems:'flex-end',}}>
-                  <Text style={styles.seeMore}>5 orang</Text>
-                </View>
-              </View>
-              {pax && pax.map( item =>
-                <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
-                  <Text>{item.name}</Text>
-                </View>
-              )}
-              {paxForm}
-            </View>
-            
-          </View>
-
-          <View style={globalStyles.bottomCtaBarContainer1}>
-            {rincianHarga}
-            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
-              <Button
-                containerStyle={globalStyles.ctaButton}
-                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                onPress={this._book}
-                disabled={this.state.isLoading}
-                styleDisabled={{color:'#aaa'}}
-              >
-                Pesan
-              </Button>
+        </View>
+        <View style={styles.divider}/>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.activityTitle}>Jadwal</Text>
+            <View style={{
+              flexDirection:'row',
+              justifyContent: 'space-between',
+              borderBottomColor: '#efefef',
+              borderBottomWidth:1,
+              paddingBottom:20,
+              marginVertical:20,
+            }}>
+              <Text style={this.state.isDateSelected ?
+                styles.normalText : styles.warningText} >
+                {selectedDateText}
+              </Text>
+              {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
+              <TouchableOpacity containerStyle={styles.addButton}
+                onPress={this._goToCalendarPicker} >
+                {setDateButton}
+              </TouchableOpacity>
             </View>
           </View>
-          {/*bottom CTA button*/}
 
-        </ScrollView>
+          <View>
+            <View style={{flexDirection:'row'}}>
+              <Text style={styles.activityTitle}>Peserta</Text>
+              <View style={{flex:1,alignItems:'flex-end',}}>
+                <Text style={styles.seeMore}>5 orang</Text>
+              </View>
+            </View>
+            {pax && pax.map( item =>
+              <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
+                <Text>{item.name}</Text>
+              </View>
+            )}
+            {paxForm}
+          </View>
+          
+        </View>
 
-
-      </View>
+        <View style={globalStyles.bottomCtaBarContainer1}>
+          {rincianHarga}
+          <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
+            <Button
+              containerStyle={globalStyles.ctaButton}
+              style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+              onPress={this._book}
+              disabled={this.state.isLoading}
+              styleDisabled={{color:'#aaa'}}
+            >Pesan</Button>
+          </View>
+        </View>
+        {/*bottom CTA button*/}
+      </ScrollView>
     );
   }
 }
