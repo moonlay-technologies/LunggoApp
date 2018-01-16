@@ -25,15 +25,17 @@ export default class ExploreScreen extends React.Component {
     header: (props) => <SearchHeader {...props}/>
   };
 
-  async componentDidMount() {
-    let tiketList = await search('tiket');
-    this.setState({tiketList});
-    let paketList = await search('paket');
-    this.setState({paketList});
-    let tripList = await search('trip');
-    this.setState({tripList});
-    let turList = await search('tur');
-    this.setState({turList});
+  componentDidMount() {
+    search('tiket').then( tiketList => this.setState({tiketList}));
+    search('paket').then( paketList => this.setState({paketList}));
+    search('trip').then( tiketList => this.setState({tripList}));
+    search('tur').then( tiketList => this.setState({turList}));
+    // let paketList = await search('paket');
+    // this.setState({paketList});
+    // let tripList = await search('trip');
+    // this.setState({tripList});
+    // let turList = await search('tur');
+    // this.setState({turList});
   }
 
   _goTo = (screen, params) =>

@@ -5,14 +5,12 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
-import Modal from 'react-native-simple-modal';
 
 export default class WishlistBlank extends React.Component {
   
   static navigationOptions = {
     title: 'Favorit',
-  };;
-  state = {open: false};
+  }
 
   render() {
     return (
@@ -29,7 +27,7 @@ export default class WishlistBlank extends React.Component {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.setState({open: true})}
+                  onPress={() => console.log('ADD ON PRESS')}
                 >
                   Jelajah Sekarang
               </Button>
