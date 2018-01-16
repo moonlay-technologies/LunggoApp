@@ -5,13 +5,14 @@ import { Platform, StyleSheet, Text, View, Image, TextInput,
   ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
+import Colors from '../../constants/Colors';
 import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
-
+import WishButton from '../components/WishButton';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 
@@ -19,7 +20,6 @@ export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    this.scrollY = new Animated.Value(0);
     const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
@@ -37,40 +37,18 @@ export default class DetailScreen extends React.Component {
       details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
     }
+    this.state.scrollY = new Animated.Value(0);
   }
 
-  static navigationOptions = props => {return {
-    // title: props.navigation.state.params.name,
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-    headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      // backgroundColor: '#fff',
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: !props.navigation.state.params.bgColor
-        ? 'transparent'
-        : props.navigation.state.params.bgColor,
-      borderBottomWidth: 0,
-      elevation: 0,
-    },
-  }}
-
+  static navigationOptions = { header: null }
 
   componentWillMount() {
     var SCREEN_HEIGHT = Dimensions.get('window').height || 0;
-    this.props.navigation.setParams({
-      bgColor: this.scrollY.interpolate({
-        inputRange: [0, SCREEN_HEIGHT/ 2 - 40],
-        outputRange: ['transparent', 'rgb(255,0,0)'],
+    // this.props.navigation.setParams({
+    this.setState({
+      bgColor: this.state.scrollY.interpolate({
+        inputRange: [175, 350],
+        outputRange: ['transparent', Colors.primaryColor],
         extrapolate: 'clamp',
       }),
     });
@@ -116,32 +94,18 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, address, lat, long } = this.state;
+      mediaSrc, address, lat, long, wishlisted } = this.state;
     return (
       <View>
+
         <ScrollView
-          // style={{backgroundColor:'#fff'}}
-          style={{ backgroundColor: 'black' }}
-          contentContainerStyle={{ flexGrow: 1 }}
+          style={{backgroundColor:'#fff'}}
           onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: this.scrollY } } },
+            { nativeEvent: { contentOffset: { y: this.state.scrollY } } },
           ])}
           scrollEventThrottle={16}
         >
-          <View>
-            <ImageSlider height={350} images={mediaSrc}/>
-            {/*<View style={{
-              position:'absolute',
-              top:20,
-              right:20,
-              flexDirection:'row'
-            }}>
-              <Icon name='share' type='materialicons' size={30} color='#fff'/>
-              <View style={{marginLeft:10}}>
-                <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
-              </View>
-            </View>*/}
-          </View>
+          <ImageSlider height={350} images={mediaSrc}/>
           <View style={styles.container}>
             <View style={{marginBottom:10}}>
               <Text style={styles.activitydetailTitle}>
@@ -497,6 +461,40 @@ export default class DetailScreen extends React.Component {
           <View style={{paddingBottom:65}}></View>
 
         </ScrollView>
+        
+        {/* HEADER */}
+        <Animated.View style={{
+          position:'absolute',
+          top:0,
+          right:0,
+          left: 0,
+          height:60,
+          flexDirection:'row',
+          backgroundColor: this.state.bgColor,
+          borderBottomWidth: 0,
+          elevation: 0,
+        }}>
+          <View style={{
+          // top:20,
+          // right:20,
+          padding:10,
+          paddingTop:20,
+          flex:1,
+          alignItems:'center',
+          justifyContent:'flex-end',
+          flexDirection:'row',
+          }}>
+            <TouchableOpacity style={{marginLeft:10}}>
+              <Icon name='share' type='materialicons' size={30} color='#fff'/>
+            </TouchableOpacity>
+            <WishButton wishlisted={wishlisted} id={id} big={true}
+              {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+            {/*<TouchableOpacity style={{marginLeft:10}}>
+              <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
+            </TouchableOpacity>*/}
+          </View>
+        </Animated.View>
+
 
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>

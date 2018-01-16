@@ -33,43 +33,43 @@ export default class WishButton extends React.Component {
     console.log(this.props)
     this.props.navigation.navigate('LoginScreen', {back: true} );
   }
-  state = {open: false};
+
+  _setModalVisible = vis => this.setState({isModalVisible: vis});
+
   render() {
   	return (
       <View>
+
         <TouchableOpacity onPress={this._onPress}
-        style={{flex:1, alignItems:'flex-end',}} >
+        style={{flex:1, alignItems:'flex-end', ...this.props.style}} >
           <Icon type='materialicons' size={this.props.big? 30 : 24}
             name={this.state.wishlisted? 'favorite' : 'favorite-border'}
-            color={this.state.wishlisted? 'red' : '#cdcdcd'}
+            color={this.state.wishlisted? 'red' : this.props.unwishlistedColor? this.props.unwishlistedColor : '#cdcdcd'}
           />
         </TouchableOpacity>
 
-        <Modal
-          style={{}}
-          modalDidClose={() => this.setState({open: false})}
-          // isVisible={true}
-          isVisible={this.state.isModalVisible}
-        >
-        <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
-          <Text style={styles.textCart}>
-            Login Here
-          </Text>
-          <View style={{marginVertical:10}}>
-            <Button 
-            containerStyle={globalStyles.ctaButton2}
-            style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
-            onPress={this._goToLoginScreen}>
-              OK
-            </Button>
+        <Modal isVisible={this.state.isModalVisible}
+          onBackdropPress={() => this._setModalVisible(false)} >
+          <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
+            <Text style={styles.textCart}>
+              Login Here
+            </Text>
+            <View style={{marginVertical:10}}>
+              <Button 
+              containerStyle={globalStyles.ctaButton2}
+              style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
+              onPress={this._goToLoginScreen}>
+                OK
+              </Button>
+            </View>
+            <TouchableOpacity
+              style={{margin: 5}}
+              onPress={()=>this._setModalVisible(false)}>
+              <Text>Close modal</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{margin: 5}}
-            onPress={()=>this._setModalVisible(false)}>
-            <Text>Close modal</Text>
-          </TouchableOpacity>
-        </View>
         </Modal>
+
       </View>
     );
   }
