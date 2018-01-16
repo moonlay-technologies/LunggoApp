@@ -6,6 +6,7 @@ import {SHA1} from 'crypto-js';
 import Base64 from 'crypto-js/enc-base64';
 import {clientId, clientSecret} from '../../constants/env';
 import { NavigationActions } from 'react-navigation';
+import { DOMAIN } from '../../constants/env';
 
 export default class WebViewScreen extends Component {
   
@@ -45,14 +46,13 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    // let {rsvNo} = this.props.navigation.state.params;
-    console.log(clientId);
-    console.log(clientSecret);
+    let {rsvNo, cartId} = this.props.navigation.state.params;
     return (
       <WebView
+        startInLoadingState={true}
         source={{
-          uri: 'http://travorama-local-cw.azurewebsites.net' +
-               '/id/payment/cartcheckout',
+          uri: DOMAIN + '/id/Payment/Payment?cartId=' + cartId,
+          // uri: DOMAIN + '/id/payment/cartcheckout',
                // '/id/payment/payment?rsvno=' + rsvNo +
                // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
           headers: {
@@ -60,7 +60,6 @@ export default class WebViewScreen extends Component {
             "X-Client-Secret": clientSecret
           }
         }}
-        startInLoadingState={true}
         // onMessage={this._onMessage}
       />
     );
