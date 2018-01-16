@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Platform, StyleSheet, Text, View, Image, TextInput,
-  ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
+  ScrollView, TouchableOpacity, Animated } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
@@ -10,7 +10,6 @@ import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
@@ -43,8 +42,6 @@ export default class DetailScreen extends React.Component {
   static navigationOptions = { header: null }
 
   componentWillMount() {
-    var SCREEN_HEIGHT = Dimensions.get('window').height || 0;
-    // this.props.navigation.setParams({
     this.setState({
       bgColor: this.state.scrollY.interpolate({
         inputRange: [175, 350],
@@ -218,34 +215,32 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('Review')
-                }
-              >
-            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
-                <View>
-                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+            <TouchableOpacity onPress={ () =>
+              this.props.navigation.navigate('Review')
+            }>
+              <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
+                <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+                  <View>
+                    <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+                  </View>
+                  <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
                 </View>
-                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
-              </View>
 
-              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
-                <View style={{marginBottom:5}}>
-                  <Text style={{ color:'#454545', fontSize:16,}}>
-                    See all 20 reviews
-                  </Text>
-                </View>
-                <View style={{marginLeft:10,}}>
-                  <Icon
-                  name='chevron-right'
-                  type='entypo'
-                  size={24}
-                  color='#00c5bc'/>
+                <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
+                  <View style={{marginBottom:5}}>
+                    <Text style={{ color:'#454545', fontSize:16,}}>
+                      See all 20 reviews
+                    </Text>
+                  </View>
+                  <View style={{marginLeft:10,}}>
+                    <Icon
+                    name='chevron-right'
+                    type='entypo'
+                    size={24}
+                    color='#00c5bc'/>
+                  </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
 
             <View style={styles.divider}></View>
@@ -475,8 +470,6 @@ export default class DetailScreen extends React.Component {
           elevation: 0,
         }}>
           <View style={{
-          // top:20,
-          // right:20,
           padding:10,
           paddingTop:20,
           flex:1,
@@ -489,9 +482,6 @@ export default class DetailScreen extends React.Component {
             </TouchableOpacity>
             <WishButton wishlisted={wishlisted} id={id} big={true}
               {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
-            {/*<TouchableOpacity style={{marginLeft:10}}>
-              <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
-            </TouchableOpacity>*/}
           </View>
         </Animated.View>
 
