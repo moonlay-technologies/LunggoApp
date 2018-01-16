@@ -22,8 +22,8 @@ export default class CartScreen extends React.Component {
   };
 
   componentDidMount() {
-    getCart().then( ({ list, totalPrice, status }) => {
-      this.setState({list, totalPrice, status, isLoading: false});
+    getCart().then( ({ cartId, list, totalPrice, status }) => {
+      this.setState({cartId, list, totalPrice, status, isLoading: false});
       // this.forceUpdate();
     }).catch(error=>console.log(error));
   }
@@ -34,7 +34,8 @@ export default class CartScreen extends React.Component {
 
     if (isLoading) return <ActivityIndicator size="large"/>
     else if (status==200 && list && list.length > 0 ) return (
-      <ListScreen list={list} totalPrice={totalPrice} {...props} /> )
+      <ListScreen list={list} totalPrice={totalPrice} cartId={cartId} {...props} />
+    );
     else return <BlankScreen {...props} />
   }
 }

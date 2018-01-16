@@ -1,5 +1,5 @@
 import {clientId, clientSecret, deviceId,
-  DOMAIN, AUTH_LEVEL } from '../constants/env';
+  API_DOMAIN, AUTH_LEVEL } from '../constants/env';
 // function fetchWrapper(url, method, headers, data, then, error) {
 //   headers.Accept = headers["Content-Type"] = "application/json";
 //   fetch(url, {method, headers, body: JSON.stringify(data) })
@@ -12,7 +12,7 @@ export {AUTH_LEVEL} from '../constants/env';
 
 
 async function fetchAuth(data) {
-  let url = DOMAIN + '/v1/login';
+  let url = API_DOMAIN + '/v1/login';
   let response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -102,7 +102,7 @@ export async function fetchTravoramaApi (request) {
   try{
     let {path, method, data, requiredAuthLevel} = request;
     method = method || 'GET';
-    let url = DOMAIN + (path || request);
+    let url = API_DOMAIN + (path || request);
     console.log('fetching '+ method +' from '+url+' ...')
     if (!requiredAuthLevel)
       throw 'ERROR fetch: requiredAuthLevel needed!';
