@@ -17,7 +17,7 @@ export default class AddBookingContact extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      countryCode:'+62',
+      countryCallCd:'+62',
       ...props.navigation.state.params.contact,
     }
   }
@@ -34,16 +34,16 @@ export default class AddBookingContact extends React.Component {
   }
 
   _onSubmitForm = () => {
-    let {name, email, countryCode, phone} = this.state;
+    let {name, email, countryCallCd, phone} = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     // let errorPassword = validatePassword(password);
-    let errorCountryCode = validateRequiredField(countryCode);
+    let errorcountryCallCd = validateRequiredField(countryCallCd);
     let errorPhone = validateRequiredField(phone);
-    this.setState({errorName, errorEmail, errorPassword,
-      errorCountryCode, errorPhone});
-    if (!errorName && !errorEmail && !errorPassword &&
-        !errorCountryCode && !errorPhone) {
+    this.setState({errorName, errorEmail,
+      errorcountryCallCd, errorPhone});
+    if (!errorName && !errorEmail &&
+        !errorcountryCallCd && !errorPhone) {
       this.props.navigation.state.params.setContact(this.state);
       this.props.navigation.goBack();
     }
@@ -51,8 +51,8 @@ export default class AddBookingContact extends React.Component {
 
 
   render() {
-    let { name, email, phone, countryCode, errorName, errorEmail,
-      errorPhone, errorCountryCode, error } = this.state;
+    let { name, email, phone, countryCallCd, errorName, errorEmail,
+      errorPhone, errorcountryCallCd, error } = this.state;
 
     let errorMessageName = errorName ?
       <View style={{alignItems:'center', marginBottom:10}}>
@@ -64,9 +64,9 @@ export default class AddBookingContact extends React.Component {
         <Text style={{color:'#fc2b4e'}}>{errorEmail}</Text>
       </View> : null;
 
-    let errorMessageCountryCode = errorCountryCode ?
+    let errorMessagecountryCallCd = errorcountryCallCd ?
       <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorCountryCode}</Text>
+        <Text style={{color:'#fc2b4e'}}>{errorcountryCallCd}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
@@ -123,24 +123,24 @@ export default class AddBookingContact extends React.Component {
                 email, errorEmail:null, error:null
               })}
               returnKeyType={ "next" }
-              onSubmitEditing={() => this.refs.countryCode.focus()}
+              onSubmitEditing={() => this.refs.countryCallCd.focus()}
             />
           </View>
           {errorMessageEmail}
           <View style={{marginBottom:15, flexDirection:'row'}}>
             <View style={{flex:1.4}}>
               <TextInput
-                style={ this.state.errorCountryCode ?
+                style={ this.state.errorcountryCallCd ?
                   styles.searchInputFalse : styles.searchInput
                 }
-                ref='countryCode'
+                ref='countryCallCd'
                 underlineColorAndroid='transparent'
                 placeholder='+ ....'
                 keyboardType='phone-pad'
-                value={countryCode}
+                value={countryCallCd}
                 selectTextOnFocus={true}
-                onChangeText={countryCode => this.setState({
-                  countryCode, errorCountryCode:null, error:null
+                onChangeText={countryCallCd => this.setState({
+                  countryCallCd, errorcountryCallCd:null, error:null
                 })}
                 returnKeyType={ "next" }
                 onSubmitEditing={() => this.refs.phone.focus()}
@@ -165,7 +165,7 @@ export default class AddBookingContact extends React.Component {
             </View>
           </View>
 
-          {errorMessageCountryCode}
+          {errorMessagecountryCallCd}
           {errorMessagePhone}
           <Button
             containerStyle={{

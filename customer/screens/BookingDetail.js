@@ -81,7 +81,7 @@ export default class BookingDetail extends React.Component {
   }
 
   _book = async () => {
-    let {pax, date, adultCount, childCount} = this.state;
+    let {pax, date, adultCount, childCount, contact } = this.state;
 
     if(true) pax = adultCount + childCount;
     //// validation
@@ -92,28 +92,8 @@ export default class BookingDetail extends React.Component {
     //// prepare fetching book
     this.setState({isLoading:true});
     let data = {
-      date, pax,
+      date, pax, contact,
       activityId: this.props.navigation.state.params.activityId,
-      contact: {
-        title: 1,
-        name: "Testing",
-        countryCallCd: 62,
-        phone : 1234567890,
-        email: "developer@travelmadezy.com"
-      },
-      // "ticketCount" : 2
-      // pax: [
-      //   {
-      //     type : 1,
-      //     title : 1,
-      //     name : "guest 1",
-      //     dob : "02-18-1997",
-      //     nationality : "ID",
-      //     passportNo : "1234567",
-      //     passportExp : "02-18-2022",
-      //     passportCountry : "en",
-      //   }
-      // ],
     };
     try {
       let response = await fetchTravoramaBookApi(data);
@@ -404,7 +384,7 @@ export default class BookingDetail extends React.Component {
                 styles.normalText : styles.warningText} >
                 {contact.name + '\n'}
                 {contact.email+'\n'}
-                {contact.countryCode + ' ' + contact.phone}
+                {contact.countryCallCd + ' ' + contact.phone}
               </Text>
               {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
               <TouchableOpacity containerStyle={styles.addButton}

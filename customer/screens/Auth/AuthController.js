@@ -12,11 +12,7 @@ export async function getProfile () {
   if (status == 200) {
   	let {name, email, countryCallCd, phone } = response;
   	return {
-      status,
-      contact: {
-        name, email, phone,
-    		countryCode: countryCallCd,
-    	},
+      status, contact: { name, email, phone, countryCallCd },
     };
   }
   else return response;
