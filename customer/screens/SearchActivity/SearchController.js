@@ -36,8 +36,7 @@ export default async function search(searchString) {
     if(response) {
       return response.activityList;
     } else {
-      // this.setState({ message: 'Location not recognized!'})
-      console.log('location not recognized')
+      console.log('response:')
       console.log(response)
     }
   } catch(error) {

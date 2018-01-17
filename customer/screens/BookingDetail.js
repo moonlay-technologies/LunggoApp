@@ -8,7 +8,8 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform } from 'react-native';
-
+import { getProfile } from './Auth/AuthController';
+// const {getItemAsync,setItemAsync,deleteItemAsync} = Expo.SecureStore;
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -40,6 +41,7 @@ export default class BookingDetail extends React.Component {
       isPaxFilled: true,
       adultCount: 1,
       childCount: 0,
+      contact: {},
     };
   }
 
@@ -47,6 +49,18 @@ export default class BookingDetail extends React.Component {
     title: 'Detail Pesanan'
   };
 
+  componentDidMount() {
+    // Promise.all([
+    //   getItemAsync('name'), getItemAsync('email'),
+    //   getItemAsync('countryCode'), getItemAsync('phone')
+    // ]).then( ([name, email, countryCode, phone]) => {
+    getProfile().then( ({contact}) => {
+      console.log('contact')
+      console.log(contact)
+      // let contact = {name,email,countryCode,phone};
+      this.setState({contact});
+    }).catch( err => console.error(err) );
+  }
   setPaxListItemIndexes = indexes =>
     this.setState({paxListItemIndexes: indexes});
 
@@ -59,6 +73,11 @@ export default class BookingDetail extends React.Component {
   setSchedule = scheduleObj => {
     scheduleObj.isDateSelected = true;
     this.setState(scheduleObj);
+  }
+
+  setContact = contactObj => {
+    // scheduleObj.isDateSelected = true;
+    this.setState({contact:contactObj});
   }
 
   _book = async () => {
@@ -120,6 +139,13 @@ export default class BookingDetail extends React.Component {
     }
   }
 
+  _goToBookingContact = () => {
+    this.props.navigation.navigate('AddBookingContact', {
+      setContact: this.setContact,
+      contact: this.state.contact,
+    });
+  }
+
   _goToCalendarPicker = () => {
     let {navigation} = this.props;
     let {price, availableDateTimes } = navigation.state.params;
@@ -153,12 +179,12 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let {price, requiredPaxData} = this.props.navigation.state.params;
-    let {pax, date, time, isDateSelected, isPaxFilled } = this.state;
+    let {pax, date, time, isDateSelected, isPaxFilled, contact } = this.state;
 
     let selectedDateText = date ?
       Formatter.dateFullShort(date)+', pk '+ time : 'Atur Jadwal';
 
-    let setDateButton = date ?
+    let addEditButton = isEdit => !!isEdit ?
       <Text style={{fontSize: 12, color: '#01d4cb'}}> Ubah </Text>
       :
       <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
@@ -317,7 +343,10 @@ export default class BookingDetail extends React.Component {
           </View>
         </View>
         <View style={styles.divider}/>
+
+
         <View style={styles.container}>
+
           <View>
             <Text style={styles.activityTitle}>Jadwal</Text>
             <View style={{
@@ -335,7 +364,7 @@ export default class BookingDetail extends React.Component {
               {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToCalendarPicker} >
-                {setDateButton}
+                {addEditButton(date)}
               </TouchableOpacity>
             </View>
           </View>
@@ -353,9 +382,41 @@ export default class BookingDetail extends React.Component {
               </View>
             )}
             {paxForm}
+
+            <View style={{
+              borderBottomWidth:1,
+              borderBottomColor: '#efefef',
+              marginBottom:20,}} />
+          </View>
+
+          <View>
+            <Text style={styles.activityTitle}>Kontak yang dapat dihubungi</Text>
+            <View style={{
+              flexDirection:'row',
+              justifyContent: 'space-between',
+              // borderBottomColor: '#efefef',
+              // borderBottomWidth:1,
+              // paddingBottom:20,
+              paddingTop:20,
+              // marginVertical:20,
+            }}>
+              <Text style={this.state.isDateSelected ?
+                styles.normalText : styles.warningText} >
+                {contact.name + '\n'}
+                {contact.email+'\n'}
+                {contact.countryCode + ' ' + contact.phone}
+              </Text>
+              {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
+              <TouchableOpacity containerStyle={styles.addButton}
+                onPress={this._goToBookingContact} >
+                {addEditButton(contact)}
+              </TouchableOpacity>
+            </View>
           </View>
           
         </View>
+
+
 
         <View style={globalStyles.bottomCtaBarContainer1}>
           {rincianHarga}

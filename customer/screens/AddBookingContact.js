@@ -3,21 +3,23 @@
 import React from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import { Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
+import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
+  ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
-import { KeyboardAwareScrollView }
-  from 'react-native-keyboard-aware-scroll-view';
-import { validateEmail, validatePassword, validateRequiredField }
-  from '../../commons/FormValidation';
-  import globalStyles from '../../commons/globalStyles';
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { validateEmail, validatePassword, validateRequiredField,
+} from '../../commons/FormValidation';
+import globalStyles from '../../commons/globalStyles';
 
 
-export default class Registration extends React.Component {
+export default class AddBookingContact extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {countryCode:'+62'}
+    this.state = {
+      countryCode:'+62',
+      ...props.navigation.state.params.contact,
+    }
   }
 
   static navigationOptions = {
@@ -31,62 +33,26 @@ export default class Registration extends React.Component {
     },
   }
 
-  _onRegisterPressed = () => {
-    let {name, password, email, countryCode, phone} = this.state;
+  _onSubmitForm = () => {
+    let {name, email, countryCode, phone} = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
-    let errorPassword = validatePassword(password);
+    // let errorPassword = validatePassword(password);
     let errorCountryCode = validateRequiredField(countryCode);
     let errorPhone = validateRequiredField(phone);
     this.setState({errorName, errorEmail, errorPassword,
       errorCountryCode, errorPhone});
     if (!errorName && !errorEmail && !errorPassword &&
         !errorCountryCode && !errorPhone) {
-      this._register();
+      this.props.navigation.state.params.setContact(this.state);
+      this.props.navigation.goBack();
     }
   }
 
-  _register = () => {
-    this.setState({isLoading:true})
-    // //// validation
-    //TODO
-
-    //// if validation passed, POST to API
-    let request = {
-      path: '/v1/register',
-      method: 'POST', 
-      data: this.state,
-      requiredAuthLevel: AUTH_LEVEL.Guest,
-    }
-    fetchTravoramaApi(request).then( response => {
-      if (response.status == 200) {
-        this.props.navigation.navigate('MainTabNavigator');
-        this.setState({isLoading:false})
-      }
-      else {
-        this.setState({isLoading:false});
-        console.log(request);
-        console.log(response);
-        let error;
-        switch (response.error) {
-          case 'ERR_ALREADY_EXIST':
-            error = 'Akun sudah pernah terdaftar';
-            break;
-          case 'ERR_INVALID_REQUEST':
-            error = 'Ada kesalahan pengisian data';
-            break;
-          default:
-            error = 'Terjadi kesalahan pada server';
-        }
-        this.setState({error});
-      }
-    }).catch(error => console.log(error));
-  }
 
   render() {
-    let { name, email, phone, password, countryCode, showPassword,
-        isLoading, errorName, errorPassword, errorEmail, errorPhone,
-        errorCountryCode, error } = this.state;
+    let { name, email, phone, countryCode, errorName, errorEmail,
+      errorPhone, errorCountryCode, error } = this.state;
 
     let errorMessageName = errorName ?
       <View style={{alignItems:'center', marginBottom:10}}>
@@ -96,11 +62,6 @@ export default class Registration extends React.Component {
     let errorMessageEmail = errorEmail ?
       <View style={{alignItems:'center', marginBottom:10}}>
         <Text style={{color:'#fc2b4e'}}>{errorEmail}</Text>
-      </View> : null;
-
-    let errorMessagePassword = errorPassword ?
-      <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorPassword}</Text>
       </View> : null;
 
     let errorMessageCountryCode = errorCountryCode ?
@@ -127,7 +88,7 @@ export default class Registration extends React.Component {
           scrollEnabled={true}
         >*/}
           <View style={{marginBottom:30}}>
-            <Text style={globalStyles.categoryTitle}>Daftar Akun Baru</Text>
+            <Text style={{}}>Kontak yang dapat dihubungi</Text>
           </View>
           
           <View style={{marginBottom:15}}>
@@ -198,49 +159,14 @@ export default class Registration extends React.Component {
                 onChangeText={phone => this.setState({
                   phone, errorPhone:null, error:null
                 })}
-                returnKeyType={ "next" }
-                onSubmitEditing={() => this.refs.password.focus()}
+                returnKeyType={ 'done' }
+                onSubmitEditing={this._onSubmitForm}
               />
             </View>
           </View>
 
           {errorMessageCountryCode}
           {errorMessagePhone}
-          <View style={{marginBottom:15}}>
-            <TextInput
-              style={ this.state.errorPassword ?
-                styles.searchInputFalse : styles.searchInput
-              }
-              ref='password'
-              underlineColorAndroid='transparent' 
-              placeholder='Password'
-              value={password}
-              onChangeText={password => this.setState({
-                password, errorPassword:null, error:null
-              })}
-              autoCapitalize='none'
-              autoCorrect={false}
-              secureTextEntry={!showPassword}
-              returnKeyType={ "done" }
-            />
-            {errorMessagePassword}
-            {errorMessage}
-            <View style={{position:'absolute', right:20, top:11,}}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.setState({showPassword:!showPassword})}
-              >
-                <View>
-                  <Icon
-                    name={showPassword ? 'eye' : 'eye-with-line'}
-                    type='entypo'
-                    size={22}
-                    color='#acacac'
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
           <Button
             containerStyle={{
               marginTop:30,
@@ -252,24 +178,11 @@ export default class Registration extends React.Component {
               backgroundColor: '#23d3c3',
             }}
             style={{fontSize: 16, color: '#ffffff', fontFamily:'Hind-Bold'}}
-            onPress={this._onRegisterPressed}
-            disabled={isLoading}
+            onPress={this._onSubmitForm}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
-          Daftarkan
+            OK
           </Button>
-          <TouchableOpacity
-            style={{
-              marginTop:30, alignItems:'center'
-            }}
-            onPress={() =>
-              this.props.navigation.navigate('LoginScreen')
-            }
-          >
-            <Text style={{fontSize:14, color:'#000', fontFamily: 'Hind'}}>
-              Sudah punya akun? Login di sini
-            </Text>
-          </TouchableOpacity>
         {/*</KeyboardAwareScrollView>*/}
       </View>
       </TouchableWithoutFeedback>
