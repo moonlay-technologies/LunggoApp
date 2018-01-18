@@ -10,48 +10,42 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-import { SearchResults, MyBooking, AddPax, DetailScreen,
+import { SearchActivity, MyBooking, AddPax, DetailScreen,
   CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
   Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga,  } from '../customer/screens/Screens';
+  Review, RincianHarga, } from '../customer/screens/Screens';
 
 import { LoginScreen } from '../commons/Screens';
 
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
-
-import ForgotPassword from '../customer/screens/ForgotPassword'
-import Cart from '../customer/screens/Cart'
+import Cart from '../customer/screens/Cart/CartScreen'
+import MapScreen from '../customer/screens/MapScreen';
+import AccountPage from '../customer/screens/AccountPage';
 
 //// unimplemented
+import ForgotPassword from '../customer/screens/ForgotPassword'
 // import Filter from '../screens/Filter';
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
-// for testing purpose
-import ExploreScreen from '../customer/screens/ExploreScreen';
 import Swiper from '../customer/screens/Swiper';
-import MapScreen from '../customer/screens/MapScreen';
-import CartBlank from '../customer/screens/CartBlank';
-import CartList from '../customer/screens/CartList';
 
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      // screen: Dashboard
-      screen: MainTabNavigator
-      // screen: Cart
-      // screen: ExploreScreen
-      // screen: LoginScreen
-      // screen: Dashboard
       //screen: MainTabNavigator
-      //screen: ExploreScreen
-      // screen: CartBlank
+      //screen: AccountPage
+      // screen: ExploreScreen
+      //screen: LoginScreen
+      // screen: Dashboard
+      screen: BeforeLoginScreen
       // screen: DetailScreen
+      // screen: WebViewScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
-    SearchResults: { screen: SearchResults },
+    SearchActivity: { screen: SearchActivity },
     DetailScreen: { screen: DetailScreen },
     CalendarPicker: { screen: CalendarPicker },
     WebViewScreen: { screen: WebViewScreen },
@@ -66,12 +60,12 @@ const RootStackNavigator = StackNavigator(
     AppointmentDetail: { screen: AppointmentDetail },
     AppointmentRequest: { screen: AppointmentRequest },
     ActivityList: { screen: ActivityList },
-    ExploreScreen: { screen: ExploreScreen },
     Review: { screen: Review },
     Mutasi: { screen: Mutasi },
     RincianHarga: { screen: RincianHarga },
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
+    Cart: { screen: Cart },
 
   },
   {
@@ -79,6 +73,8 @@ const RootStackNavigator = StackNavigator(
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
+        fontFamily:'Hind',
+        marginBottom:-5
       },
     }),
   }
@@ -86,7 +82,7 @@ const RootStackNavigator = StackNavigator(
 
 export default class RootNavigator extends React.Component {
   componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
+    // this._notificationSubscription = this._registerForPushNotifications();
   }
 
   componentWillUnmount() {

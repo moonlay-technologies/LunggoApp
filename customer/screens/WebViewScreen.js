@@ -1,10 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { WebView } from 'react-native';
+import { WebView, TouchableOpacity } from 'react-native';
 import {SHA1} from 'crypto-js';
 import Base64 from 'crypto-js/enc-base64';
 import {clientId, clientSecret} from '../../constants/env';
+import { NavigationActions } from 'react-navigation';
+import { DOMAIN } from '../../constants/env';
+import { Icon } from 'react-native-elements';
 
 export default class WebViewScreen extends Component {
   
@@ -14,7 +17,17 @@ export default class WebViewScreen extends Component {
   //   };
   // }
 
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => ({
+	title: 'Pembayaran',
+	headerLeft: 
+		<TouchableOpacity  style={{paddingLeft:10}}
+			onPress={() => navigation.dispatch(NavigationActions.reset(
+			{
+			  index: 0,
+			  actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator'})]
+			}))}>
+			<Icon name='close' type='evilicons' size={20}/>
+		</TouchableOpacity>,
     headerStyle: {
       // backgroundColor: 'transparent',
       // position: 'absolute',
@@ -30,35 +43,35 @@ export default class WebViewScreen extends Component {
       // borderBottomWidth: 0
       // // borderBottomWidth: 'transparent'
     },
-  }
+  })
 
   _onMessage = event => {
     if(event.nativeEvent.data == 'ExploreScreen') {
-      this.props.navigation.goBack('SearchResults');
+      return this.props.navigation.dispatch(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator'})]
+        }
+      ));
     }
   }
 
   render() {
-    let {rsvNo} = this.props.navigation.state.params;
-    console.log('http://travorama-local-cw.azurewebsites.net' +
-               '/id/payment/payment?rsvno=' + rsvNo +
-               '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) ) )
-    );
-    console.log(clientId);
-    console.log(clientSecret);
+    let {rsvNo, cartId} = this.props.navigation.state.params;
     return (
       <WebView
+        startInLoadingState={true}
         source={{
-          uri: 'http://travorama-local-cw.azurewebsites.net' +
-               '/id/payment/payment?rsvno=' + rsvNo +
-               '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
+          uri: DOMAIN + '/id/Payment/Payment?cartId=' + cartId,
+          // uri: DOMAIN + '/id/payment/cartcheckout',
+               // '/id/payment/payment?rsvno=' + rsvNo +
+               // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
           headers: {
             "X-Client-ID": clientId,
             "X-Client-Secret": clientSecret
           }
         }}
-        startInLoadingState={true}
-        // onMessage={this._onMessage}
+        onMessage={this._onMessage}
       />
     );
   }

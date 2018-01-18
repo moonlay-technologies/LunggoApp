@@ -12,6 +12,21 @@ export default StyleSheet.create({
     borderRadius:25,
     backgroundColor: Colors.primaryColor,
   },
+  ctaButton2: {
+    height: 40,
+    width: '100%',
+    paddingTop: 11,
+    paddingBottom: 13,
+    overflow: 'hidden',
+    borderRadius:3,
+    backgroundColor: Colors.primaryColor,
+  },
+  ctaButton3: {
+    height: 20,
+    width: '100%',
+    overflow: 'hidden',
+    borderRadius:3,
+  },
   bottomCtaBarContainer: {
     flexDirection: 'row',
     position: 'absolute',
@@ -71,8 +86,8 @@ export default StyleSheet.create({
         paddingTop: 76 - (56 * 0.4)
       },
       android: {
-        lineHeight:56*0.9,
-        paddingBottom: 100 - (56 * 0.9)
+        lineHeight:56,
+        paddingBottom: 30
       },
     }),
   },

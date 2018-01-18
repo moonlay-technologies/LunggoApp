@@ -104,7 +104,7 @@ export default class PaxChoice extends Component {
               borderRadius:4,
               backgroundColor: '#437ef7'
             }}
-            oonPress={ () => navigation.navigate( "AddPax", {
+            onPress={ () => navigation.navigate( "AddPax", {
               addPaxListItem: this.addPaxListItem,
               requiredPaxData,
               })}

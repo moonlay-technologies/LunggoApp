@@ -3,41 +3,23 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, ActivityIndicator, FlatList,
   TouchableHighlight, TouchableOpacity } from 'react-native';
-import * as Formatter from '../components/Formatter';
-import search from '../components/searchController';
-import SearchHeader from '../components/SearchHeader';
-import { Icon } from 'react-native-elements';
-import {fetchWishlist} from '../../api/Common';
+import * as Formatter from '../../components/Formatter';
+import WishButton from '../../components/WishButton';
 
 class ListItem extends React.PureComponent {
 
-  _onPress = () => this.props.onPressItem(this.props.item);
-  // _onPressLike = item => this.props.onPressLike(item);
-
-  _onPressWish = () => {
-    let {item} = this.props;
-    item.wishlisted = !item.wishlisted;
-    this.forceUpdate();
-    if (item.wishlisted) fetchWishlist(item.activityId, true)
-    else fetchWishlist(item.activityId, false)
-  };
+  // _onPressItem = () => this.props.onPressItem(this.props.item);
+  _onPressItem = () => this.props.navigation.navigate(
+    'DetailScreen', {details: this.props.item}
+  );
 
   render() {
-    const {item} = this.props;
-    let wishButton = (
-      <TouchableOpacity onPress={this._onPressWish}
-        style={{flex:1, alignItems:'flex-end',}} >
-        <Icon type='materialicons' size={24}
-          name={item.wishlisted? 'favorite' : 'favorite-border'}
-          color={item.wishlisted? 'red' : '#cdcdcd'}
-        />
-      </TouchableOpacity>
-    );
-
+    const {props} = this;
+    const {item} = props;
     return (
       <View style={{backgroundColor:'#fff', width:'50%'}}>
         <TouchableHighlight
-          onPress={this._onPress}
+          onPress={this._onPressItem}
           underlayColor='#ddd'>
           <View style={styles.rowContainer}>
             <View style={styles.containerItem}>
@@ -55,7 +37,8 @@ class ListItem extends React.PureComponent {
                     { Formatter.price(item.price) }
                   </Text>
                 </View>
-                {wishButton}
+                <WishButton wishlisted={item.wishlisted}
+                  id={item.id} {...props} />
               </View>
             </View>
           </View>
@@ -66,29 +49,14 @@ class ListItem extends React.PureComponent {
 
 }
 
-export default class SearchResults extends React.Component {
+export default class ActivityResultScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    let {searchString} = this.props.navigation.state.params || {};
+    // let {searchString} = this.props.navigation.state.params || {};
     this.state = {
-      searchString: searchString || '',
-      // placeholder: 'Try "snorkeling"...',
-      list:{},
-      isLoading: true,
+      list: props.list,
     };
-  }
-
-  static navigationOptions = {
-    title: 'Results',
-  };
- 
-  componentDidMount() {
-    search(this.state.searchString)
-      .then(response => {
-        this.setState({list: response, isLoading: false});
-        // this.forceUpdate();
-      }).catch(error=>console.log(error));
   }
 
   _keyExtractor = (item, index) => index;
@@ -98,28 +66,23 @@ export default class SearchResults extends React.Component {
       item={item}
       index={index}
       onPressItem={this._onPressItem}
-      // onPressLike={this._onPressLike}
+      {...this.props}
     />
   );
 
-  _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', {details: item})
-  };
+  // _onPressItem = item => {
+  //   this.props.navigation.navigate('DetailScreen', {details: item})
+  // };
 
   render() {
-    this.props.navigation.state.key = 'SearchResults';
-    return this.state.isLoading ?
-      <ActivityIndicator size='large'/> : (
-      <View>
-        {/*<Text>{this.state.list.length}</Text>*/}
-        <FlatList
-          numColumns={2}
-          contentContainerStyle={styles.list}
-          data={this.state.list}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-        />
-      </View>
+    return (
+      <FlatList
+        numColumns={2}
+        contentContainerStyle={styles.list}
+        data={this.state.list}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+      />
     );
   }
 

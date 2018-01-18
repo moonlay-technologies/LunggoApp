@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Platform,
   StyleSheet,
@@ -16,6 +16,7 @@ import * as Formatter from '../../customer/components/Formatter';
 class ListItem extends React.PureComponent {
 
   _onPress = () => this.props.onPressItem(this.props.item);
+  
   render() {
     const {item} = this.props;
     return (
@@ -42,7 +43,7 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class ActivityList extends Component {
+export default class ActivityList extends React.Component {
 
   static navigationOptions = {
     title: 'Your Activity',

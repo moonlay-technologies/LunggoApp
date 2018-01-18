@@ -1,61 +1,55 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, TouchableOpacity, Animated } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
+import Colors from '../../constants/Colors';
 import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
-
-import {
-  Platform, StyleSheet,
-  Text, View, Image, TextInput, ScrollView,TouchableOpacity,
-} from 'react-native';
+import WishButton from '../components/WishButton';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
-        removeAccessToken } from '../../api/Common';
+} from '../../api/Common';
 
-export default class DetailScreen extends Component {
+export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
     const {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
-        // isLoading, 
+        isLoading: true, 
         id:1,
         requiredPaxData: '',
         name: 'loading activity name...',
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
-        mediaSrc: []
+        mediaSrc: [],
+        // lat:0, long:0,
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
     }
+    this.state.scrollY = new Animated.Value(0);
   }
 
-  static navigationOptions = {
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
-   // headerRight: <LikeShareHeaderButton/>,
-    headerStyle: {
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0
-    },
-  };
+  static navigationOptions = { header: null }
+
+  componentWillMount() {
+    this.setState({
+      bgColor: this.state.scrollY.interpolate({
+        inputRange: [175, 350],
+        outputRange: ['transparent', Colors.primaryColor],
+        extrapolate: 'clamp',
+      }),
+    });
+  }
 
   componentDidMount() {
     const version = 'v1';
@@ -70,60 +64,45 @@ export default class DetailScreen extends Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      this.setState(response, () => {
-        // this.marker.props.title = this.state.address;
-        // this.marker.props.description = this.state.city;
-        // console.log(this.state.address +' '+this.state.city)
-        this.forceUpdate();
-        this.marker.showCallout();
-      });
-      //// = ({availableDateTimes})
+      response.isLoading = false;
+      this.setState(response);
+      this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
-    const { requiredPaxData, price, id } = this.state;
+    const { requiredPaxData, price, id, availableDateTimes } = this.state;
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
-      price, requiredPaxData,
+      price, requiredPaxData, availableDateTimes,
       activityId: id,
     });
     this.setState({isLoading: false})
   }
 
   _enlargeMapView = () => {
-    let {name, address, city} = this.state;
-    this.props.navigation.navigate('MapScreen',{name,address,city});
+    let {name, address, city, lat, long} = this.state;
+    this.props.navigation.navigate('MapScreen',
+      {name, address, city, lat, long}
+    );
   }
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, availableDateTimes, address } = this.state;
+      mediaSrc, address, lat, long, wishlisted } = this.state;
     return (
       <View>
+
         <ScrollView
           style={{backgroundColor:'#fff'}}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: this.state.scrollY } } },
+          ])}
+          scrollEventThrottle={16}
         >
-          <View>
-            <ImageSlider height={350} images={mediaSrc}/>
-            <View style={{
-              position:'absolute',
-              top:20,
-              right:20,
-              flexDirection:'row'
-            }}>
-              <View style={{}}>
-                <Icon name='share' type='materialicons'
-                  size={30} color='#fff'/>
-              </View>
-              <View style={{marginLeft:10}}>
-                <Icon name='favorite-border' type='materialicons'
-                  size={30} color='#fff'/>
-              </View>
-            </View>
-          </View>
+          <ImageSlider height={350} images={mediaSrc}/>
           <View style={styles.container}>
             <View style={{marginBottom:10}}>
               <Text style={styles.activitydetailTitle}>
@@ -137,57 +116,33 @@ export default class DetailScreen extends Component {
               </Text>
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <View style={{}}>
-                <Icon
-                name='location'
-                type='entypo'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   { city }
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='person'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Maksimum 6 orang
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='event'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Khusus hari minggu
                 </Text>
               </View>
             </View>
             <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <View style={{}}>
-                <Icon
-                name='receipt'
-                type='materialicons'
-                size={16}
-                color='#454545'/>
-              </View>
+              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
               <View style={{marginTop:1, marginLeft:10}}>
-                <Text style={{fontSize:14}}>
+                <Text style={styles.activityDesc}>
                   Untuk usia diatas 10 tahun
                 </Text>
               </View>
@@ -260,41 +215,32 @@ export default class DetailScreen extends Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('Review')
-                }
-              >
-            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
-                <View>
-                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+            <TouchableOpacity onPress={ () =>
+              this.props.navigation.navigate('Review')
+            }>
+              <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
+                <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+                  <View>
+                    <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+                  </View>
+                  <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
                 </View>
-                <View>
-                  <Icon
-                    name='star'
-                    type='fontawesome'
-                    size={20}
-                    color='#00c5bc'
-                    />
-                </View>
-              </View>
 
-              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
-                <View style={{marginBottom:5}}>
-                  <Text style={{ color:'#454545', fontSize:16,}}>
-                    See all 20 reviews
-                  </Text>
-                </View>
-                <View style={{marginLeft:10,}}>
-                  <Icon
-                  name='chevron-right'
-                  type='entypo'
-                  size={24}
-                  color='#00c5bc'/>
+                <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
+                  <View style={{marginBottom:5}}>
+                    <Text style={{ color:'#454545', fontSize:16,}}>
+                      See all 20 reviews
+                    </Text>
+                  </View>
+                  <View style={{marginLeft:10,}}>
+                    <Icon
+                    name='chevron-right'
+                    type='entypo'
+                    size={24}
+                    color='#00c5bc'/>
+                  </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
 
             <View style={styles.divider}></View>
@@ -304,8 +250,8 @@ export default class DetailScreen extends Component {
                 <MapView
                   style={{width:"100%", height:150}}
                   region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: -6.230295, //lat,
+                    longitude: 106.799057, //long,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                   }}
@@ -315,17 +261,16 @@ export default class DetailScreen extends Component {
                   pitchEnabled={false}
                 >
                   <Marker
-                    coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                    coordinate={{ latitude: -6.230295, longitude: 106.799057 }}
                     title={address}
                     description={city}
                     ref={marker => (this.marker = marker)}
-                    // centerOffset={{x:.5000, y:.100000}}
                   />
                 </MapView>
-                <Text>{this.state.address}</Text>
+                <Text>LatLong: {lat} , {long} </Text>
               </TouchableOpacity>
               
-              <View style={{marginTop:30, marginBottom:30}}>
+              <View style={{marginTop:30}}>
                 <Text style={styles.sectionTitle}>
                   Hal yang Perlu Dibawa
                 </Text>
@@ -511,6 +456,35 @@ export default class DetailScreen extends Component {
           <View style={{paddingBottom:65}}></View>
 
         </ScrollView>
+        
+        {/* HEADER */}
+        <Animated.View style={{
+          position:'absolute',
+          top:0,
+          right:0,
+          left: 0,
+          height:60,
+          flexDirection:'row',
+          backgroundColor: this.state.bgColor,
+          borderBottomWidth: 0,
+          elevation: 0,
+        }}>
+          <View style={{
+          padding:10,
+          paddingTop:20,
+          flex:1,
+          alignItems:'center',
+          justifyContent:'flex-end',
+          flexDirection:'row',
+          }}>
+            <TouchableOpacity style={{marginLeft:10}}>
+              <Icon name='share' type='materialicons' size={30} color='#fff'/>
+            </TouchableOpacity>
+            <WishButton wishlisted={wishlisted} id={id} big={true}
+              {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+          </View>
+        </Animated.View>
+
 
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>
@@ -587,7 +561,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   activitydetailTitle: {
     fontFamily: 'Hind-Bold',
@@ -597,7 +570,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight:15*0.8,
         paddingTop: 20 - (19 * 0.4),
-        height:22,
+        marginBottom:-15,
         //backgroundColor:'red'
       },
       android: {
@@ -606,7 +579,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   priceTitle: {
     fontSize:12,
@@ -625,6 +597,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight:15*0.8,
         paddingTop: 10,
+        marginBottom:-10
       },
       android: {
         //lineHeight:24
@@ -632,7 +605,6 @@ const styles = StyleSheet.create({
 
       },
     }),
-
   },
   containerdescriptionActivity: {
     marginBottom: 30,

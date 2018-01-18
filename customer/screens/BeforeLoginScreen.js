@@ -38,7 +38,7 @@ export default class BeforeLoginScreen extends Component {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={{position:'absolute', bottom:20, alignItems:'center', width:'111%',}}
-          onPress={() => navigate('MainTabNavigator')}
+          onPress={() => navigate('MainTabNavigator', {loggedIn:false} )}
         >
           <Text style={{fontSize:14, color:'#fff', fontFamily: 'Hind'}}>
             Lewati
