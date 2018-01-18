@@ -36,13 +36,13 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      //screen: MainTabNavigator
+      // screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
       // screen: LoginScreen
       // screen: Dashboard
-      screen: BeforeLoginScreen
-      // screen: DetailScreen
+      // screen: BeforeLoginScreen
+      screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },

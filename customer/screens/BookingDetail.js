@@ -9,7 +9,6 @@ import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform } from 'react-native';
 import { getProfile } from './Auth/AuthController';
-// const {getItemAsync,setItemAsync,deleteItemAsync} = Expo.SecureStore;
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -36,11 +35,15 @@ export default class BookingDetail extends React.Component {
 
   constructor (props) {
     super(props);
+    let counter = [], totalCount = 0;
+    props.navigation.state.params.package[0].price.map( ({type, minCount}) => {
+      counter.push( { type, minCount, count: minCount } );
+      totalCount += minCount;
+    });
     this.state = {
+      counter, totalCount,
       isDateSelected: true,
       isPaxFilled: true,
-      adultCount: 1,
-      childCount: 0,
       contact: {},
     };
   }
@@ -50,14 +53,7 @@ export default class BookingDetail extends React.Component {
   };
 
   componentDidMount() {
-    // Promise.all([
-    //   getItemAsync('name'), getItemAsync('email'),
-    //   getItemAsync('countryCode'), getItemAsync('phone')
-    // ]).then( ([name, email, countryCode, phone]) => {
     getProfile().then( ({contact}) => {
-      console.log('contact')
-      console.log(contact)
-      // let contact = {name,email,countryCode,phone};
       this.setState({contact});
     }).catch( err => console.error(err) );
   }
@@ -81,9 +77,12 @@ export default class BookingDetail extends React.Component {
   }
 
   _book = async () => {
-    let {pax, date, adultCount, childCount, contact } = this.state;
+    let { /*pax,*/ date, counter, totalCount, contact } = this.state;
+    let { params } = this.props.navigation.state;
 
-    if(true) pax = adultCount + childCount;
+    //// counting pax
+    let pax = totalCount;
+
     //// validation
     if (!pax) this.setState({isPaxFilled:false});
     if (!date) this.setState({isDateSelected:false});
@@ -91,10 +90,20 @@ export default class BookingDetail extends React.Component {
 
     //// prepare fetching book
     this.setState({isLoading:true});
+
+    // building data for bookingAPI
+    let ticketCount = [];
+    params.package[0].price.map( ({type}) => {
+      ticketCount.push({
+        type, count: counter[type],
+      });
+    });
+
     let data = {
-      date, pax, contact,
-      activityId: this.props.navigation.state.params.activityId,
+      date, pax, contact, ticketCount,
+      packageId: 1, activityId: params.activityId,
     };
+
     try {
       let response = await fetchTravoramaBookApi(data);
       if(response.status != 200) {
@@ -111,7 +120,7 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         this.setState({isLoading:false});
         return;
-      } else this.props.navigation.navigate('Cart');
+      } else this.props.navigation.navigate('Cart'); //TODO: ask user before navigate
       this.setState({isLoading:false});
     } catch (error) {
       this.setState({isLoading:false});
@@ -150,8 +159,6 @@ export default class BookingDetail extends React.Component {
     })
   }
 
-  _decrement = int => (int==0)? 0 : int-1;
-
   _subsAdult = () => this.setState({adultCount:this._decrement(this.state.adultCount)});
   _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
   _subsChild = () => this.setState({childCount:this._decrement(this.state.childCount)});
@@ -159,7 +166,7 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let {price, requiredPaxData} = this.props.navigation.state.params;
-    let {pax, date, time, isDateSelected, isPaxFilled, contact } = this.state;
+    let {pax, date, time, isDateSelected, isPaxFilled, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       Formatter.dateFullShort(date)+', pk '+ time : 'Atur Jadwal';
@@ -169,8 +176,56 @@ export default class BookingDetail extends React.Component {
       :
       <Icon name='plus' type='evilicon' size={26} color='#01d4cb'/>
 
-    let paxForm = !!requiredPaxData ?
+    let counterButtons = counterArr => {
+      let add = counterObj => {
+        //validasi maximum
+        let { maxCount = 100 } = counterObj;
+        if (counterObj.count < maxCount) {
+          counterObj.count++;
+          this.state.totalCount++;
+          this.forceUpdate();
+          // this.setState({counter: counterArr});
+        }
+      }
+      let substract = counterObj => {
+        let DECREMENT = int => (int==0)? 0 : int-1;
+        //validasi minimum
+        let { minCount = 0 } = counterObj;
+        if (counterObj.count > minCount) {
+          counterObj.count = DECREMENT(counterObj.count);
+          this.state.totalCount = DECREMENT(this.state.totalCount);
+          this.forceUpdate();
+          // this.setState({counter: counterArr});
+        }
+      }
+      console.log('counterArr')
+      console.log(counterArr)
+      return counterArr.map( (counterObj, index) =>
+        <View style={{flexDirection:'row',marginBottom:20}} key={index}>
+          <View style={{flex:1}}>
+            <Text style={styles.activityDesc}>{counterObj.type}</Text>
+          </View>
+          <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+              onPress={()=>substract(counterObj)}
+            >
+              <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
+            </TouchableOpacity>
+            <Text style={styles.activityDesc}>{counterObj.count}</Text>
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
+              onPress={()=>add(counterObj)}
+            >
+              <Icon name='plus' type='octicon' size={10} color='#ff5f5f'/>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+
+    let paxForm = (/* !!requiredPaxData */ false) ?
       <View style={{
+        borderBottomColor: '#efefef',
+        borderBottomWidth:1,
         flexDirection:'row',
         justifyContent: 'space-between',
         paddingBottom:20,
@@ -199,43 +254,7 @@ export default class BookingDetail extends React.Component {
         paddingBottom:20,
         marginVertical:20,
       }}>
-        <View style={{flexDirection:'row',}}>
-          <View style={{flex:1}}>
-            <Text style={styles.activityDesc}>Dewasa</Text>
-          </View>
-          <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
-              onPress={this._subsAdult}
-            >
-              <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
-            </TouchableOpacity>
-            <Text style={styles.activityDesc}>{this.state.adultCount}</Text>
-            <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
-              onPress={this._addAdult}
-            >
-              <Icon name='plus' type='octicon' size={10} color='#ff5f5f'/>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{marginTop:20, flexDirection:'row',}}>
-          <View style={{flex:1}}>
-            <Text style={styles.activityDesc}>Anak-anak</Text>
-          </View>
-          <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
-              onPress={this._subsChild}
-            >
-              <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
-            </TouchableOpacity>
-            <Text style={styles.activityDesc}>{this.state.childCount}</Text>
-            <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
-              onPress={this._addChild}
-            >
-              <Icon name='plus' type='octicon' size={10} color='#ff5f5f'/>
-            </TouchableOpacity>
-          </View>
-        </View>
-
+        {counterButtons(counter)}
       </View>
 
     let rincianHarga = (pax && date) ?
@@ -353,20 +372,17 @@ export default class BookingDetail extends React.Component {
             <View style={{flexDirection:'row'}}>
               <Text style={styles.activityTitle}>Peserta</Text>
               <View style={{flex:1,alignItems:'flex-end',}}>
-                <Text style={styles.seeMore}>5 orang</Text>
+                <Text style={styles.seeMore}>{totalCount} orang</Text>
               </View>
             </View>
+
+{/* 
             {pax && pax.map( item =>
               <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                 <Text>{item.name}</Text>
               </View>
-            )}
+            )} */}
             {paxForm}
-
-            <View style={{
-              borderBottomWidth:1,
-              borderBottomColor: '#efefef',
-              marginBottom:20,}} />
           </View>
 
           <View>
