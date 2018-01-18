@@ -29,7 +29,7 @@ export default class CartScreen extends React.Component {
   }
 
   render() {
-    let {isLoading, list, totalPrice, status } = this.state;
+    let {cartId, isLoading, list, totalPrice, status } = this.state;
     let {props} = this;
 
     if (isLoading) return <ActivityIndicator size="large"/>

@@ -42,6 +42,7 @@ const RootStackNavigator = StackNavigator(
       // screen: Dashboard
       screen: BeforeLoginScreen
       // screen: DetailScreen
+      // screen: WebViewScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },

@@ -7,9 +7,9 @@ export async function getCart() {
   let request = {path, requiredAuthLevel: AUTH_LEVEL.User}
   try {
     let response = await fetchTravoramaApi(request);
-    let { status, rsvNoList, totalPrice } = response;
+    let { cartId, status, rsvList, totalPrice } = response;
     if (status!=200) console.log(response)
-    return { status, list:rsvNoList, totalPrice}; ///TODO : ganti nama rsvNoList jadi rsvList ato reservationList
+    return { cartId, status, list:rsvList, totalPrice };
     // else if (response.status == 401) return {list:[], totalPrice:0};
   } catch(error) {
     console.log(error);
