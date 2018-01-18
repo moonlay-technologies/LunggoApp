@@ -77,6 +77,7 @@ export default class DetailScreen extends React.Component {
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
+      package: this.state.package,
       activityId: id,
     });
     this.setState({isLoading: false})
@@ -215,9 +216,7 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity onPress={ () =>
-              this.props.navigation.navigate('Review')
-            }>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
               <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
                 <View style={{marginTop:3, flexDirection:'row', flex:1}}>
                   <View>
