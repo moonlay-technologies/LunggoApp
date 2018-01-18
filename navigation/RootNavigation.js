@@ -23,6 +23,7 @@ import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
+import AddBookingContact from '../customer/screens/AddBookingContact';
 
 //// unimplemented
 import ForgotPassword from '../customer/screens/ForgotPassword'
@@ -66,6 +67,7 @@ const RootStackNavigator = StackNavigator(
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
     Cart: { screen: Cart },
+    AddBookingContact: { screen: AddBookingContact },
 
   },
   {

@@ -92,7 +92,7 @@ async function getAuthAccess() {
     }
     return {accessToken, authLevel};
   } catch (error) {
-    console.log('get auth access error');
+    console.error('get auth access error');
     console.log(error);
   }
 }
