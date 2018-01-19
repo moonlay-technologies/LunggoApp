@@ -14,6 +14,7 @@ import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
 
@@ -90,6 +91,15 @@ export default class DetailScreen extends React.Component {
     );
   }
 
+  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity');
+
+  _onCtaButtonClick = () => {
+    //// if customer
+    if (APP_TYPE == 'CUSTOMER') this._goToBookingDetail();
+    //// if operator
+    if (APP_TYPE == 'OPERATOR') this._goToEditActivity();
+  }
+
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted } = this.state;
@@ -109,6 +119,8 @@ export default class DetailScreen extends React.Component {
               <Text style={styles.activitydetailTitle}>
                 { name }
               </Text>
+              {/*<TextInput style={[styles.activitydetailTitle,{backgroundColor:'yellow'}]} value={ name } 
+                onChangeText={ name => this.setState({name}) } />*/}
             </View>
             <View style={{marginBottom:15}}>
               <Text style={styles.activityDesc}>
@@ -504,11 +516,11 @@ export default class DetailScreen extends React.Component {
             <Button
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => this._goToBookingDetail()}
+              onPress={this._onCtaButtonClick}
               disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
-              Pesan
+              {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
             </Button>
           </View>
         </View>
