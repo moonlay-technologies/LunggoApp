@@ -39,7 +39,7 @@ export default class ExploreScreen extends React.Component {
   _goTo = (screen, params) =>
     this.props.navigation.navigate(screen, params);
 
-  _onPressProduct = id => this._goTo('DetailScreen', {id});
+  _onPressProduct = item => this._goTo('DetailScreen', {details:item});
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
@@ -62,7 +62,7 @@ export default class ExploreScreen extends React.Component {
               style={{width:big?300:140, marginLeft:15,}}
             >
               <TouchableOpacity activeOpacity={1}
-                onPress={() => this._onPressProduct(listItem.id)}
+                onPress={() => this._onPressProduct(listItem)}
               >
                 <Image
                   style={big?styles.thumbnailBig:styles.thumbnailMedium}

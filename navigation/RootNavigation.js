@@ -21,6 +21,7 @@ import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
 import EditActivity from '../operator/screens/EditActivity';
+import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
@@ -67,6 +68,7 @@ const RootStackNavigator = StackNavigator(
     MapScreen: { screen: MapScreen },
     Cart: { screen: Cart },
     EditActivity: { screen: EditActivity },
+    EditDetailActivity: { screen: EditDetailActivity },
 
   },
   {

@@ -3,3 +3,5 @@ export const clientSecret = "V1RKSk1sa3lUWGxOUkdOM1dYcEdhMDB5VW1wT2VrMDFUWHBPYTA
 export const deviceId = 'asdf';
 export const AUTH_LEVEL = { Guest: '1', User: '2' }
 export const DOMAIN = 'http://travorama-local-api.azurewebsites.net';
+export const APP_TYPE = 'OPERATOR';
+// export const APP_TYPE = 'CUSTOMER';

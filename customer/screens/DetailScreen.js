@@ -14,6 +14,7 @@ import { Platform, StyleSheet, Text, View, Image, TextInput,
   ScrollView, TouchableOpacity, } from 'react-native';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
 
@@ -90,14 +91,13 @@ export default class DetailScreen extends React.Component {
     );
   }
 
-  _goToEditActivity = () => this.props.navigation.navigate('EditActivity');
+  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity');
 
   _onCtaButtonClick = () => {
     //// if customer
-    // _goToBookingDetail();
-
+    if (APP_TYPE == 'CUSTOMER') this._goToBookingDetail();
     //// if operator
-    this._goToEditActivity();
+    if (APP_TYPE == 'OPERATOR') this._goToEditActivity();
   }
 
   render() {
