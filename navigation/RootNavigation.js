@@ -40,10 +40,10 @@ const RootStackNavigator = StackNavigator(
       //screen: MainTabNavigator
       // screen: Cart
       // screen: ExploreScreen
-      // screen: LoginScreen
+      screen: LoginScreen
       // screen: Dashboard
       // screen: BeforeLoginScreen
-      screen: DetailScreen
+      // screen: DetailScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },

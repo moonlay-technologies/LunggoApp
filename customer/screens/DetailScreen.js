@@ -503,7 +503,7 @@ export default class DetailScreen extends React.Component {
               disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
-              Pesan
+              {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
             </Button>
           </View>
         </View>
