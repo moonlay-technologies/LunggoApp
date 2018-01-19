@@ -34,8 +34,9 @@ export default class DetailScreen extends React.Component {
         // lat:0, long:0,
       }
     } else {
-      details.mediaSrc = [details.mediaSrc];
+      // details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
+      this.state.mediaSrc = [details.mediaSrc];
     }
     this.state.scrollY = new Animated.Value(0);
   }
