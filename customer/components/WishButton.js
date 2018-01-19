@@ -19,19 +19,24 @@ export default class WishButton extends React.Component {
   }
 
   _onPress = async () => {
-    let { wishlisted } = this.state;
-    this.setState({wishlisted:!wishlisted})
+    //// negate wishlisted state
+    let wishlisted = !this.state.wishlisted;
+    this.setState({wishlisted})
 
     let isLoggedIn = await checkUserLoggedIn();
-    if (!isLoggedIn) {
-      return this.setState({isModalVisible:true, wishlisted});
+    if (!isLoggedIn) { //// if guest:
+      return this.setState({isModalVisible:true, wishlisted:false});
     } else fetchWishlist(this.props.id, wishlisted);
-  };
+  }
 
   _goToLoginScreen = () => {
     this.setState({isModalVisible: false});
-    console.log(this.props)
     this.props.navigation.navigate('LoginScreen', {back: true} );
+  }
+
+  _goToRegisterScreen = () => {
+    this.setState({isModalVisible: false});
+    this.props.navigation.navigate('Registration', {back: true} );
   }
 
   _setModalVisible = vis => this.setState({isModalVisible: vis});
@@ -52,21 +57,24 @@ export default class WishButton extends React.Component {
           onBackdropPress={() => this._setModalVisible(false)} >
           <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
             <Text style={styles.textCart}>
-              Login Here
+              Please Login or Register first!
             </Text>
             <View style={{marginVertical:10}}>
               <Button 
               containerStyle={globalStyles.ctaButton2}
               style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
               onPress={this._goToLoginScreen}>
-                OK
+                Login
               </Button>
             </View>
-            <TouchableOpacity
-              style={{margin: 5}}
-              onPress={()=>this._setModalVisible(false)}>
-              <Text>Close modal</Text>
-            </TouchableOpacity>
+            <View style={{marginVertical:5}}>
+              <Button 
+              containerStyle={globalStyles.ctaButton2}
+              style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
+              onPress={this._goToRegisterScreen}>
+                Register
+              </Button>
+            </View>
           </View>
         </Modal>
 
