@@ -184,7 +184,6 @@ export default class BookingDetail extends React.Component {
           counterObj.count++;
           this.state.totalCount++;
           this.forceUpdate();
-          // this.setState({counter: counterArr});
         }
       }
       let substract = counterObj => {
@@ -195,11 +194,8 @@ export default class BookingDetail extends React.Component {
           counterObj.count = DECREMENT(counterObj.count);
           this.state.totalCount = DECREMENT(this.state.totalCount);
           this.forceUpdate();
-          // this.setState({counter: counterArr});
         }
       }
-      console.log('counterArr')
-      console.log(counterArr)
       return counterArr.map( (counterObj, index) =>
         <View style={{flexDirection:'row',marginBottom:20}} key={index}>
           <View style={{flex:1}}>

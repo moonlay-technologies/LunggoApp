@@ -75,6 +75,8 @@ export default class DetailScreen extends React.Component {
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
     const { requiredPaxData, price, id, availableDateTimes } = this.state;
+    console.log('this.state.package')
+    console.log(this.state.package)
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {

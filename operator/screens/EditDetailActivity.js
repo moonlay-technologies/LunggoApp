@@ -48,7 +48,6 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    let {rsvNo, cartId} = this.props.navigation.state.params;
     return (
       <WebView
         startInLoadingState={true}
