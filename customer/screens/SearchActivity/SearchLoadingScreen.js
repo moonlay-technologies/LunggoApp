@@ -13,7 +13,7 @@ export default class SearchLoadingScreen extends React.Component {
     let {searchString} = this.props.navigation.state.params || {};
     this.state = {
       searchString: searchString || '',
-      list: {},
+      list: [],
       isLoading: true,
     };
   }

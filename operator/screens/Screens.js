@@ -5,4 +5,4 @@ export Mutasi from './Mutasi';
 export AppointmentList from './AppointmentList';
 export AppointmentDetail from './AppointmentDetail';
 export AppointmentRequest from './AppointmentRequest';
-export ActivityList from './ActivityList';
+export ActivityList from './MyActivityLoadingScreen';

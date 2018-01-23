@@ -14,6 +14,7 @@ import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
 
@@ -33,8 +34,9 @@ export default class DetailScreen extends React.Component {
         // lat:0, long:0,
       }
     } else {
-      details.mediaSrc = [details.mediaSrc];
+      // details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
+      this.state.mediaSrc = [details.mediaSrc];
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -73,10 +75,13 @@ export default class DetailScreen extends React.Component {
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
     const { requiredPaxData, price, id, availableDateTimes } = this.state;
+    console.log('this.state.package')
+    console.log(this.state.package)
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
+      package: this.state.package,
       activityId: id,
     });
     this.setState({isLoading: false})
@@ -87,6 +92,15 @@ export default class DetailScreen extends React.Component {
     this.props.navigation.navigate('MapScreen',
       {name, address, city, lat, long}
     );
+  }
+
+  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity');
+
+  _onCtaButtonClick = () => {
+    //// if customer
+    if (APP_TYPE == 'CUSTOMER') this._goToBookingDetail();
+    //// if operator
+    if (APP_TYPE == 'OPERATOR') this._goToEditActivity();
   }
 
   render() {
@@ -108,6 +122,8 @@ export default class DetailScreen extends React.Component {
               <Text style={styles.activitydetailTitle}>
                 { name }
               </Text>
+              {/*<TextInput style={[styles.activitydetailTitle,{backgroundColor:'yellow'}]} value={ name } 
+                onChangeText={ name => this.setState({name}) } />*/}
             </View>
             <View style={{marginBottom:15}}>
               <Text style={styles.activityDesc}>
@@ -215,9 +231,7 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity onPress={ () =>
-              this.props.navigation.navigate('Review')
-            }>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
               <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
                 <View style={{marginTop:3, flexDirection:'row', flex:1}}>
                   <View>
@@ -505,11 +519,11 @@ export default class DetailScreen extends React.Component {
             <Button
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => this._goToBookingDetail()}
+              onPress={this._onCtaButtonClick}
               disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
-              Pesan
+              {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
             </Button>
           </View>
         </View>

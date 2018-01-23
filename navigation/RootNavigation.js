@@ -20,12 +20,15 @@ import { LoginScreen } from '../commons/Screens';
 import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
   AppointmentRequest, ActivityList } from '../operator/screens/Screens';
 
+import EditActivity from '../operator/screens/EditActivity';
+import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
+import AddBookingContact from '../customer/screens/AddBookingContact';
 
 //// unimplemented
-import ForgotPassword from '../customer/screens/ForgotPassword'
+import ForgotPassword from '../customer/screens/ForgotPassword';
 // import Filter from '../screens/Filter';
 // import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -35,12 +38,13 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      //screen: MainTabNavigator
-      //screen: AccountPage
-      // screen: ExploreScreen
-      //screen: LoginScreen
-      // screen: Dashboard
       screen: BeforeLoginScreen
+      //screen: MainTabNavigator
+      // screen: Cart
+      // screen: ExploreScreen
+      // screen: LoginScreen
+      // screen: Dashboard
+      // screen: BeforeLoginScreen
       // screen: DetailScreen
       // screen: WebViewScreen
     },
@@ -66,6 +70,9 @@ const RootStackNavigator = StackNavigator(
     ForgotPassword: { screen: ForgotPassword },
     MapScreen: { screen: MapScreen },
     Cart: { screen: Cart },
+    AddBookingContact: { screen: AddBookingContact },
+    EditActivity: { screen: EditActivity },
+    EditDetailActivity: { screen: EditDetailActivity },
 
   },
   {

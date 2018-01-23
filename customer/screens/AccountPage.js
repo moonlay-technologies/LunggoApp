@@ -7,7 +7,7 @@ import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { removeAccessToken } from '../../api/Common';
+import { checkUserLoggedIn, removeAccessToken } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
 
 export default class AccountScreen extends React.Component {
@@ -16,6 +16,7 @@ export default class AccountScreen extends React.Component {
     super(props)
     this.state = {
       isModalVisible:false,
+      isLoggedIn: null,
     }
   }
 
@@ -23,155 +24,170 @@ export default class AccountScreen extends React.Component {
     title: 'Akun',
   };
 
+  componentDidMount() {
+    checkUserLoggedIn().then( isLoggedIn => this.setState({isLoggedIn}));
+  }
+
   _setModalVisible = vis => this.setState({isModalVisible: vis});
 
-  _logout = () =>
-    removeAccessToken().then( () => 
+  _logout = () => {
+    this.setState({isModalVisible:false});
+    removeAccessToken().then( () =>
       this.props.navigation.dispatch(NavigationActions.reset(
         {
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Main'})]
+          actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator'})]
         }
       ))
     );
+  }
 
   render() {
     let {navigate} = this.props.navigation;
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
-      <Modal isVisible={this.state.isModalVisible}
-        onBackdropPress={() => this._setModalVisible(false)} >
-        <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
-          <Text style={styles.textCart}>
-            Are you sure you want to log out?
-          </Text>
-          <View style={{marginVertical:10}}>
-            <Button 
-            containerStyle={globalStyles.ctaButton2}
-            style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
-            onPress={this._logout}>
-              Yes
-            </Button>
-          </View>
-          <View>
-            <Button 
-            containerStyle={globalStyles.ctaButton3}
-            style={{fontSize: 14, color: '#ff5f5f', fontFamily:'Hind',}}
-            onPress={()=>this._setModalVisible(false)}>
-              No
-            </Button>
-          </View>
-        </View>
-      </Modal>
-      <View style={styles.container}>
-        <View style={{alignItems:'center',marginBottom:40}}>
-          <View style={{marginBottom:20}}>
-            <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')}/>
-          </View>
-          <View>
-            <View style={{alignItems:'center'}}>
-              <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
+
+        <Modal isVisible={this.state.isModalVisible}
+          onBackdropPress={() => this._setModalVisible(false)} >
+          <View style={{paddingHorizontal:10,paddingVertical:15, backgroundColor:'#fff'}}>
+            <Text style={styles.textCart}>
+              Are you sure you want to log out?
+            </Text>
+            <View style={{marginVertical:10}}>
+              <Button 
+              containerStyle={globalStyles.ctaButton2}
+              style={{fontSize: 14, color: '#fff', fontFamily:'Hind',}}
+              onPress={this._logout}>
+                Yes
+              </Button>
             </View>
-            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-              <Text style={styles.textCart}>Edit Profile</Text>
-              <View style={{marginHorizontal:10}}>
-                <Text style={styles.textCart}>|</Text>
+            <View>
+              <Button 
+              containerStyle={globalStyles.ctaButton3}
+              style={{fontSize: 14, color: '#ff5f5f', fontFamily:'Hind',}}
+              onPress={()=>this._setModalVisible(false)}>
+                No
+              </Button>
+            </View>
+          </View>
+        </Modal>
+
+{this.state.isLoggedIn ?
+
+        <View style={styles.container}>
+          <View style={{alignItems:'center',marginBottom:40}}>
+            <View style={{marginBottom:20}}>
+              <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')}/>
+            </View>
+            <View>
+              <View style={{alignItems:'center'}}>
+                <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
               </View>
-              <Text style={styles.textCartColor}>100 point</Text>
+              <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                <Text style={styles.textCart}>Edit Profile</Text>
+                <View style={{marginHorizontal:10}}>
+                  <Text style={styles.textCart}>|</Text>
+                </View>
+                <Text style={styles.textCartColor}>100 point</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <View style={{justifyContent:'center', flex:1}}>
-            <Text style={styles.optionProfile}>Notifikasi</Text>
-          </View>
-          <View style={{alignItems:'flex-end', flex:1}}>
-            <Icon
-            name='ios-notifications-outline'
-            type='ionicon'
-            size={30}
-            color='#454545'/>
-          </View>
-        </View>
-        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <View style={{justifyContent:'center', flex:1}}>
-            <Text style={styles.optionProfile}>Undang Teman</Text>
-          </View>
-          <View style={{alignItems:'flex-end', flex:1}}>
-            <Icon
-            name='ios-contacts-outline'
-            type='ionicon'
-            size={30}
-            color='#454545'/>
-          </View>
-        </View>
-        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <View style={{justifyContent:'center', flex:1}}>
-            <Text style={styles.optionProfile}>Pembayaran</Text>
-          </View>
-          <View style={{alignItems:'flex-end', flex:1}}>
-            <Icon
-            name='ios-cash-outline'
-            type='ionicon'
-            size={30}
-            color='#454545'/>
-          </View>
-        </View>
-        <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <View style={{justifyContent:'center', flex:1}}>
-            <Text style={styles.optionProfile}>Pengaturan</Text>
-          </View>
-          <View style={{alignItems:'flex-end', flex:1}}>
-            <Icon
-            name='ios-settings-outline'
-            type='ionicon'
-            size={30}
-            color='#454545'/>
-          </View>
-        </View>
-        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>this._setModalVisible(true)}>
+          <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
             <View style={{justifyContent:'center', flex:1}}>
-              <Text style={styles.optionProfile}>Log Out</Text>
+              <Text style={styles.optionProfile}>Notifikasi</Text>
             </View>
             <View style={{alignItems:'flex-end', flex:1}}>
               <Icon
-              name='ios-log-out'
+              name='ios-notifications-outline'
               type='ionicon'
               size={30}
               color='#454545'/>
             </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('LoginScreen')}>
+          </View>
+          <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
             <View style={{justifyContent:'center', flex:1}}>
-              <Text style={styles.optionProfile}>Log In</Text>
+              <Text style={styles.optionProfile}>Undang Teman</Text>
             </View>
             <View style={{alignItems:'flex-end', flex:1}}>
               <Icon
-              name='ios-log-in'
+              name='ios-contacts-outline'
               type='ionicon'
               size={30}
               color='#454545'/>
             </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
-          <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('Registration')}>
+          </View>
+          <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
             <View style={{justifyContent:'center', flex:1}}>
-              <Text style={styles.optionProfile}>Daftar</Text>
+              <Text style={styles.optionProfile}>Pembayaran</Text>
             </View>
             <View style={{alignItems:'flex-end', flex:1}}>
               <Icon
-              name='ios-laptop'
+              name='ios-cash-outline'
               type='ionicon'
               size={30}
               color='#454545'/>
             </View>
-          </TouchableOpacity>
+          </View>
+          <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+            <View style={{justifyContent:'center', flex:1}}>
+              <Text style={styles.optionProfile}>Pengaturan</Text>
+            </View>
+            <View style={{alignItems:'flex-end', flex:1}}>
+              <Icon
+              name='ios-settings-outline'
+              type='ionicon'
+              size={30}
+              color='#454545'/>
+            </View>
+          </View>
+          <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+            <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>this._setModalVisible(true)}>
+              <View style={{justifyContent:'center', flex:1}}>
+                <Text style={styles.optionProfile}>Log Out</Text>
+              </View>
+              <View style={{alignItems:'flex-end', flex:1}}>
+                <Icon
+                name='ios-log-out'
+                type='ionicon'
+                size={30}
+                color='#454545'/>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+:
+        <View style={styles.container}>
+          <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+            <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('LoginScreen')}>
+              <View style={{justifyContent:'center', flex:1}}>
+                <Text style={styles.optionProfile}>Log In</Text>
+              </View>
+              <View style={{alignItems:'flex-end', flex:1}}>
+                <Icon
+                name='ios-log-in'
+                type='ionicon'
+                size={30}
+                color='#454545'/>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ borderBottomWidth:1, borderBottomColor:'#efefef', paddingBottom:15, marginBottom:15}}>
+            <TouchableOpacity style={{flexDirection:'row'}} onPress={() => navigate('Registration')}>
+              <View style={{justifyContent:'center', flex:1}}>
+                <Text style={styles.optionProfile}>Daftar</Text>
+              </View>
+              <View style={{alignItems:'flex-end', flex:1}}>
+                <Icon
+                name='ios-laptop'
+                type='ionicon'
+                size={30}
+                color='#454545'/>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+}
+
       </ScrollView>
     );
   }

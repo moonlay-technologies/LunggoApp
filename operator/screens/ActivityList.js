@@ -1,17 +1,9 @@
 'use strict';
 
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView, FlatList, TouchableHighlight
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, FlatList, TouchableHighlight } from 'react-native';
 import * as Formatter from '../../customer/components/Formatter';
-
 
 class ListItem extends React.PureComponent {
 
@@ -52,7 +44,7 @@ export default class ActivityList extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      list: this.props.navigation.state.params.list
+      list: props.list
     };
   }
 
