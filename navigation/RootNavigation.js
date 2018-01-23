@@ -36,8 +36,8 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: BeforeLoginScreen
-      // screen: DetailScreen
+      // screen: BeforeLoginScreen
+      screen: DetailScreen
       // screen: WebViewScreen
     },
     MainTabNavigator: { screen: MainTabNavigator },
