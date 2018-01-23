@@ -62,13 +62,18 @@ export default class DetailScreen extends React.Component {
     };
     fetchTravoramaApi(request).then( response => {
       this.setState(response.activityDetail);
+      if (!response.activityDetail.package) {
+        console.log('PACKAGES:');
+        console.log(response.activityDetail.package);
+        console.error(response.activityDetail.package);
+      }
     }).catch(error => console.log(error));
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
       response.isLoading = false;
       this.setState(response);
-      this.forceUpdate( () => {/*this.marker.showCallout()*/} );
+      // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
@@ -472,30 +477,30 @@ export default class DetailScreen extends React.Component {
         </ScrollView>
         
         {/* HEADER */}
-        <Animated.View style={{
-          position:'absolute',
-          top:0,
-          right:0,
-          left: 0,
-          height:60,
-          flexDirection:'row',
-          backgroundColor: this.state.bgColor,
-          borderBottomWidth: 0,
-          elevation: 0,
-        }}>
-          <View style={{
-          padding:10,
-          paddingTop:20,
-          flex:1,
-          alignItems:'center',
-          justifyContent:'flex-end',
-          flexDirection:'row',
-          }}>
-            <TouchableOpacity style={{marginLeft:10}}>
-              <Icon name='share' type='materialicons' size={30} color='#fff'/>
+        <Animated.View style={[styles.headerBackground,{backgroundColor: this.state.bgColor}]}>
+          <View style={styles.headerContentContainer}>
+            <TouchableOpacity
+              style={{
+                flex:1,
+                alignItems:'flex-start',
+              }}
+              onPress={()=>this.props.navigation.goBack()}
+            >
+              <Icon name='arrow-back' type='materialicons' size={30} color='#fff'/>
             </TouchableOpacity>
-            <WishButton wishlisted={wishlisted} id={id} big={true}
-              {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+            {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
+            <View style={{
+              flex:1,
+              alignItems:'center',
+              justifyContent:'flex-end',
+              flexDirection:'row',
+            }}>
+              <TouchableOpacity style={{marginLeft:10}}>
+                <Icon name='share' type='materialicons' size={30} color='#fff'/>
+              </TouchableOpacity>
+              <WishButton wishlisted={wishlisted} id={id} big={true}
+                {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+            </View>
           </View>
         </Animated.View>
 
@@ -534,6 +539,20 @@ export default class DetailScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  headerContentContainer: {
+    padding:10,
+    paddingTop:20,
+    flexDirection:'row',
+  },
+  headerBackground: {
+    position:'absolute',
+    top:0,
+    right:0,
+    left: 0,
+    height:60,
+    borderBottomWidth: 0,
+    elevation: 0,
+  },
   container: {
     padding:15,
     backgroundColor: '#fff',
@@ -651,7 +670,7 @@ const styles = StyleSheet.create({
     fontSize:11,
     marginTop:8,
     color:'#437ef7',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   isireview: {
     fontSize:11,
