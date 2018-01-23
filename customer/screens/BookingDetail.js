@@ -35,13 +35,14 @@ export default class BookingDetail extends React.Component {
 
   constructor (props) {
     super(props);
-    let counter = [], totalCount = 0;
-    props.navigation.state.params.package[0].price.map( ({type, minCount}) => {
-      counter.push( { type, minCount, count: minCount } );
+    let counter = [], totalCount = 0, price = 0;
+    props.navigation.state.params.package[0].price.map( ({type, amount, minCount}) => {
+      counter.push( { type, amount, minCount, count: minCount } );
       totalCount += minCount;
+      price += amount * minCount;
     });
     this.state = {
-      counter, totalCount,
+      counter, totalCount, price,
       isDateSelected: true,
       isPaxFilled: true,
       contact: {},
@@ -57,6 +58,7 @@ export default class BookingDetail extends React.Component {
       this.setState({contact});
     }).catch( err => console.error(err) );
   }
+
   setPaxListItemIndexes = indexes =>
     this.setState({paxListItemIndexes: indexes});
 
@@ -137,7 +139,8 @@ export default class BookingDetail extends React.Component {
 
   _goToCalendarPicker = () => {
     let {navigation} = this.props;
-    let {price, availableDateTimes } = navigation.state.params;
+    let {availableDateTimes } = navigation.state.params;
+    let {price} = this.state;
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
@@ -159,14 +162,14 @@ export default class BookingDetail extends React.Component {
     })
   }
 
-  _subsAdult = () => this.setState({adultCount:this._decrement(this.state.adultCount)});
-  _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
-  _subsChild = () => this.setState({childCount:this._decrement(this.state.childCount)});
-  _addChild = () => this.setState({childCount:this.state.childCount+1});
+  // _subsAdult = () => this.setState({adultCount:this._decrement(this.state.adultCount)});
+  // _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
+  // _subsChild = () => this.setState({childCount:this._decrement(this.state.childCount)});
+  // _addChild = () => this.setState({childCount:this.state.childCount+1});
 
   render() {
-    let {price, requiredPaxData} = this.props.navigation.state.params;
-    let {pax, date, time, isDateSelected, isPaxFilled, contact, totalCount, counter } = this.state;
+    let {requiredPaxData} = this.props.navigation.state.params;
+    let {price, pax, date, time, isDateSelected, isPaxFilled, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       Formatter.dateFullShort(date)+', pk '+ time : 'Atur Jadwal';
@@ -183,6 +186,7 @@ export default class BookingDetail extends React.Component {
         if (counterObj.count < maxCount) {
           counterObj.count++;
           this.state.totalCount++;
+          this.state.price = counterObj.count * counterObj.amount;
           this.forceUpdate();
         }
       }
@@ -193,6 +197,7 @@ export default class BookingDetail extends React.Component {
         if (counterObj.count > minCount) {
           counterObj.count = DECREMENT(counterObj.count);
           this.state.totalCount = DECREMENT(this.state.totalCount);
+          this.state.price = counterObj.count * counterObj.amount;
           this.forceUpdate();
         }
       }
@@ -253,7 +258,7 @@ export default class BookingDetail extends React.Component {
         {counterButtons(counter)}
       </View>
 
-    let rincianHarga = (pax && date) ?
+    let rincianHarga = (date) ?
       <TouchableOpacity style={{flex:1.5}} onPress={
         () => this.props.navigation.navigate('RincianHarga')}>
         <View style={{alignItems: 'flex-start'}}>
