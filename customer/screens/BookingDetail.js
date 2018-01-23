@@ -79,7 +79,7 @@ export default class BookingDetail extends React.Component {
   }
 
   _book = async () => {
-    let { /*pax,*/ date, counter, totalCount, contact } = this.state;
+    let { /*pax,*/ date, counter, totalCount, contact, time } = this.state;
     let { params } = this.props.navigation.state;
 
     //// counting pax
@@ -92,17 +92,19 @@ export default class BookingDetail extends React.Component {
 
     //// prepare fetching book
     this.setState({isLoading:true});
-
+    let selectedSession = time;
     // building data for bookingAPI
-    let ticketCount = [];
-    params.package[0].price.map( ({type}) => {
-      ticketCount.push({
-        type, count: counter[type],
-      });
-    });
+    let ticketCount = counter;
+    // console.log('counter');
+    // console.log(counter);
+    // params.package[0].price.map( ({type}) => {
+    //   ticketCount.push({
+    //     type, count: counter[type],
+    //   });
+    // });
 
     let data = {
-      date, pax, contact, ticketCount,
+      date, pax, contact, ticketCount, selectedSession,
       packageId: 1, activityId: params.activityId,
     };
 
