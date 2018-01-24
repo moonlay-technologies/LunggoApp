@@ -22,7 +22,8 @@ export default class ExploreScreen extends React.Component {
   }
 
   static navigationOptions = {
-    header: (props) => <SearchHeader {...props}/>
+    title: 'Jelajah',
+    header: (props) => <SearchHeader {...props} />
   };
 
   componentDidMount() {

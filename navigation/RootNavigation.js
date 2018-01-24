@@ -25,7 +25,6 @@ import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
-import MyBookingList from '../customer/screens/MyBooking/MyBookingList';
 import AddBookingContact from '../customer/screens/AddBookingContact';
 
 //// unimplemented
@@ -40,7 +39,6 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       screen: BeforeLoginScreen
-      // screen: MyBookingList
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },
