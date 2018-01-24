@@ -2,97 +2,106 @@
 
 import React from 'react';
 import Button from 'react-native-button';
-import { Platform, StyleSheet, FlatList, RefreshControl, Text, View,
-  Image, TextInput, ScrollView, TouchableHighlight,
+import { Platform, StyleSheet, Text, View, Image, ScrollView,
+  RefreshControl, FlatList, //TouchableOpacity
 } from 'react-native';
 import { getBookingList } from './MyBookingController';
-import { Icon } from 'react-native-elements';
+import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 
-class ListItem extends React.PureComponent {
-
-  _onPress = () => this.props.onPressItem(this.props.item);
+class ActivityListItem extends React.PureComponent {
   render() {
-    const {item} = this.props;
-    let bookingStatusText = 'booking status';
-    switch (item.bookingStatus) {
-      case 'PROC' : bookingStatusText = 'On Progress'; break;
-    }
+    let {item} = this.props;
     return (
-      <View key={item.rsvNo}>
-        <View style={styles.divider}></View>
-        <TouchableHighlight
-          onPress={this._onPress}
-          underlayColor='#ddd'
-        >
-          <View style={styles.containerBooking}>
-            <Image source={{uri: item.mediaSrc}} style={{
-              flex: 1.8,
-              resizeMode: 'cover',
-              width: '100%',
-              height: 100,
-              borderRadius:5,
-            }}/>
-            <View style={{
-              flex:3,
-              marginRight: '10%',
-              marginLeft: '5%',
-            }}>
-              <Text style={styles.activityTitle}>
-                {item.name}
-              </Text>
-              <Text style={styles.status}>
-                {bookingStatusText}
-              </Text>
-              <View style={{
-                marginTop: 10,
-                marginBottom: 5,
-                width: '100%',
-                flexDirection:'row',
-              }}>
-                <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <Icon
-                    name='person'
-                    type='materialicons'
-                    size={16}
-                    color='#454545'
-                  />
-                  <View style={{marginTop:1, marginLeft:5}}>
-                    <Text style={{fontSize:12}}>
-                      {item.paxCount} orang
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ flexDirection:'row', marginRight:10 }}>
-                <Icon
-                  name='event'
-                  type='materialicons'
-                  size={16}
-                  color='#454545'
-                />
-                <View style={{marginTop:1, marginLeft:5}}>
-                  <Text style={{fontSize:12}}>
-                    {Formatter.dateFullShort(item.date)}
-                  </Text>
-                </View>
-              </View>
-
-            </View> 
+      <View>
+        <View style={{flexDirection:'row'}}>
+          <Image style={styles.thumbprofile} source={{ uri:item.mediaSrc }} />
+          <View style={{flex:1}}>
+            <Text style={styles.activityTitle}>
+              { item.name }
+            </Text>
+            <Text style={styles.activityDesc}>{ Formatter.dateLong(item.date) }</Text>
+            <Text style={styles.activityDesc}>
+              {item.paxCount.map(p=>p.count+' '+p.type+'\n')}
+              status: {item.bookingStatus}
+            </Text>
           </View>
-        </TouchableHighlight>
+        </View>
+
+        <View style={{flexDirection:'row', marginTop:15}}>
+          <View style={{flex:1}}>
+            <Button
+              containerStyle={globalStyles.ctaButton5}
+              style={{fontSize: 12, color: '#777',}}>
+              Review
+            </Button>
+          </View>
+          <View style={{flex:1, alignItems:'flex-end'}}>
+            <Button
+              containerStyle={globalStyles.ctaButton4}
+              style={{fontSize: 12, color: '#fff',}}>
+              Lihat Voucher
+            </Button>
+          </View>
+        </View>
+        <View style={styles.separator} />
       </View>
-    );
+    )
+  }
+}
+
+class CartListItem extends React.PureComponent {
+
+  _keyExtractor = (item, index) => index
+  _renderItem = ({item, index}) => (
+    <ActivityListItem
+      item={item}
+      index={index}
+      // onPressItem={this._onPressItem}
+    />
+  )
+  render() {
+    let {item} = this.props;
+    return (
+      <View style={styles.cartbox}>
+
+        <FlatList
+          data={item.activities}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+        />
+
+        <View style={styles.total}>
+          <View style={{flexDirection:'row'}}>
+            <View style={{flex:1}}>
+              <Text style={styles.activityDesc}>Total</Text>
+              <Text style={styles.activityDesc}>Status: Terbit</Text>
+            </View>
+            <View style={{flex:1, alignItems:'flex-end'}}>
+              <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.invoice}>
+          <View style={{flexDirection:'row'}}>
+            <View style={{flex:1}}>
+              <Button
+                containerStyle={globalStyles.ctaButton6}
+                style={{fontSize: 12, color: '#fff',}}>
+                Lihat Invoice
+              </Button>
+            </View>
+          </View>
+        </View>
+
+      </View>
+    )
   }
 }
 
 export default class MyBookingListScreen extends React.Component {
-
-  static navigationOptions = {
-    title: 'Pesananku',
-  };
-
+  
   constructor (props) {
     super(props)
     this.state = {
@@ -101,30 +110,35 @@ export default class MyBookingListScreen extends React.Component {
     };
   }
 
-  _keyExtractor = (item, index) => index;
-  _renderItem = ({item, index}) => (
-    <ListItem
-      item={item}
-      index={index}
-      onPressItem={this._onPressItem}
-    />
-  );
-  _onPressItem = (item) => {
-    this.props.navigation.navigate(
-      'BookedPageDetail',{details: item}
-    );
+  static navigationOptions = {
+    title: 'Pesananku',
   };
+
   _onRefresh = () => {
     this.setState({isRefreshing: true});
-    getBookingList().then( () => {
+    getBookingList().then( response => {
+      console.log(response)
       this.setState({isRefreshing: false});
     });
   }
 
+  _keyExtractor = (item, index) => index
+  _renderItem = ({item, index}) => (
+    <CartListItem
+      item={item}
+      index={index}
+      // onPressItem={this._onPressItem}
+    />
+  )
+  // _onPressItem = (item) => {
+  //   this.props.navigation.navigate(
+  //     'BookedPageDetail',{details: item}
+  //   );
+  // };
+
   render() {
     return (
-      <ScrollView
-        style={{flex:1, backgroundColor: '#fff',}}
+      <ScrollView style={styles.container}
         refreshControl={
           <RefreshControl
             refreshing={this.state.isRefreshing}
@@ -132,6 +146,12 @@ export default class MyBookingListScreen extends React.Component {
           />
         }
       >
+        <FlatList
+          data={this.state.bookingList}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+        />
+
 
       {/* Tab Button
 
@@ -168,55 +188,106 @@ export default class MyBookingListScreen extends React.Component {
         
       */}
 
-        <View style={{marginBottom:10}}>
-          <FlatList
-            data={this.state.bookingList}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-          />
-        </View>
+
       </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  containerBooking: {
+  container: {
     padding:15,
-    paddingTop:0,
-    paddingBottom:0,
-    flexDirection: 'row',
-    flex:1
+    flex:1,
+    backgroundColor:'#f7f9fc',
   },
-  thumbnailMedium: {
-    resizeMode:'cover', 
-    width:'100%', 
-    height:100, 
-    borderRadius:5,
+  cartbox: {
+    backgroundColor:'#fff',
+    padding:15,
+    marginBottom:20,
+    borderRadius:3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.1
+      },
+      android: {
+        elevation: 2 ,
+      },
+    }),
   },
-  divider: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#efefef',
-    marginTop: 15,
-    marginBottom: 15,
-  },
-  activityTitle: {
-    fontWeight:'bold',
+    activityTitle: {
+    fontFamily: 'Hind-Bold',
     fontSize:15,
     color:'#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight:10,
+        paddingTop:10,
+        marginBottom:-12,
+      },
+      android: {
+        lineHeight:20,
+
+      },
+    }),
   },
-  status: {
-    color:'#01d4cb',
-    fontSize:12,
+  activityPrize: {
+    fontFamily: 'Hind-Light',
+    fontSize:14,
+    color:'#000',
+    ...Platform.select({
+      ios: {
+        lineHeight:10,
+        paddingTop:13,
+        marginBottom:-12,
+      },
+      android: {
+        lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
-  icon: {
-    width:15,
-    height:15,
-    marginRight:3,
+  activityDesc: {
+    fontSize:14,
+    color:'#454545',
+    fontFamily: 'Hind-Light',
+    ...Platform.select({
+      ios: {
+        lineHeight:15*0.8,
+        paddingTop: 10,
+        marginBottom:-10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
-  timeActivity: {
-    fontSize:12,
-    color:'#676767',
+  thumbprofile: {
+    height: 70,
+    width:70,
+    marginRight:10
+  },
+  separator: {
+    backgroundColor:'#ececec',
+    height:0.3,
+    width:'100%',
+    marginVertical:20
+  },
+  total: {
+    paddingBottom:15,
+    borderBottomWidth:1,
+    borderBottomColor:'#ececec'
+  },
+  invoice: {
+    marginTop:10,
+    paddingVertical:10,
   },
 });

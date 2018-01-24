@@ -164,11 +164,6 @@ export default class BookingDetail extends React.Component {
     })
   }
 
-  // _subsAdult = () => this.setState({adultCount:this._decrement(this.state.adultCount)});
-  // _addAdult = () => this.setState({adultCount:this.state.adultCount+1});
-  // _subsChild = () => this.setState({childCount:this._decrement(this.state.childCount)});
-  // _addChild = () => this.setState({childCount:this.state.childCount+1});
-
   render() {
     let {requiredPaxData} = this.props.navigation.state.params;
     let {price, pax, date, time, isDateSelected, isPaxFilled, contact, totalCount, counter } = this.state;
@@ -225,7 +220,7 @@ export default class BookingDetail extends React.Component {
       );
     }
 
-    let paxForm = (/* !!requiredPaxData */ false) ?
+    let paxForm = (/* !!requiredPaxData */ false) ? ///sementara ilangin paxForm, pake paxCount smua
       <View style={{
         borderBottomColor: '#efefef',
         borderBottomWidth:1,
