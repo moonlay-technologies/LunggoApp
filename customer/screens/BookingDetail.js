@@ -105,7 +105,7 @@ export default class BookingDetail extends React.Component {
 
     let data = {
       date, pax, contact, ticketCount, selectedSession,
-      packageId: 1, activityId: params.activityId,
+      packageId: params.activityId, activityId: params.activityId,
     };
 
     try {
