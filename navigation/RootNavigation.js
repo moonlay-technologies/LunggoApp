@@ -23,7 +23,7 @@ import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
-import MyBookingList from '../customer/screens/MyBookingList';
+import MyBookingList from '../customer/screens/MyBooking/MyBookingList';
 //// unimplemented
 import ForgotPassword from '../customer/screens/ForgotPassword'
 // import Filter from '../screens/Filter';
@@ -35,11 +35,8 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      //screen: MainTabNavigator
-      //screen: AccountPage
-      // screen: ExploreScreen
-      //screen: LoginScreen
       screen: BeforeLoginScreen
+      // screen: MyBookingList
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },
