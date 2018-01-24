@@ -138,7 +138,7 @@ export default class MyBookingListScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}
+      <ScrollView contentContainerStyle={styles.container}
         refreshControl={
           <RefreshControl
             refreshing={this.state.isRefreshing}
