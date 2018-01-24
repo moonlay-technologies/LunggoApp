@@ -7,17 +7,24 @@ import { Platform, StyleSheet, Text, View, Image, ScrollView,
 } from 'react-native';
 import { getBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
+import * as Formatter from '../../components/Formatter';
 
 class ActivityListItem extends React.PureComponent {
   render() {
+    let {item} = this.props;
     return (
       <View>
         <View style={{flexDirection:'row'}}>
-          <Image style={styles.thumbprofile} source={require('../../assets/images/thumbimg2.jpg')}/>
+          <Image style={styles.thumbprofile} source={{ uri:item.mediaSrc }} />
           <View style={{flex:1}}>
-            <Text style={styles.activityTitle}>Trip to Bandung</Text>
-            <Text style={styles.activityDesc}>12 Agustus 2017</Text>
-            <Text style={styles.activityDesc}>2 Adults</Text>
+            <Text style={styles.activityTitle}>
+              { item.name }
+            </Text>
+            <Text style={styles.activityDesc}>{ Formatter.dateLong(item.date) }</Text>
+            <Text style={styles.activityDesc}>
+              {item.paxCount.map(p=>p.count+' '+p.type+'\n')}
+              status: {item.bookingStatus}
+            </Text>
           </View>
         </View>
 
@@ -54,16 +61,15 @@ class CartListItem extends React.PureComponent {
     />
   )
   render() {
+    let {item} = this.props;
     return (
       <View style={styles.cartbox}>
 
-
         <FlatList
-          // data={this.state.bookingList}
+          data={item.activities}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />
-        <ActivityListItem/>
 
         <View style={styles.total}>
           <View style={{flexDirection:'row'}}>
@@ -72,7 +78,7 @@ class CartListItem extends React.PureComponent {
               <Text style={styles.activityDesc}>Status: Terbit</Text>
             </View>
             <View style={{flex:1, alignItems:'flex-end'}}>
-              <Text style={styles.activityDesc}>Rp. 1.000.000</Text>
+              <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
             </View>
           </View>
         </View>
@@ -145,7 +151,6 @@ export default class MyBookingListScreen extends React.Component {
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />
-        <CartListItem/>
 
 
       {/* Tab Button
