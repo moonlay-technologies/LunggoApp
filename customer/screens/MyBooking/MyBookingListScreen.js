@@ -116,7 +116,7 @@ export default class MyBookingListScreen extends React.Component {
   };
   _onRefresh = () => {
     this.setState({isRefreshing: true});
-    this.getBookingList().then( () => {
+    getBookingList().then( () => {
       this.setState({isRefreshing: false});
     });
   }

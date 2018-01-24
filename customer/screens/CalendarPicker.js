@@ -11,10 +11,10 @@ export default class CalendarPicker extends Component {
 
   constructor (props) {
     super(props)
-    let {selectedDate, selectedTime, availableDateTimes} =
+    let { selectedDate, selectedTime, availableDateTimes, price } =
       this.props.navigation.state.params;
     this.state = {
-      selectedDate, selectedTime,
+      selectedDate, selectedTime, price,
       // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
       minDate : Date(),
       isModalVisible: false,
@@ -189,12 +189,12 @@ export default class CalendarPicker extends Component {
                   color:'#000',
                   fontWeight: 'bold',
                   fontSize:17,
-                }}>Rp 500.000</Text>
+                }}>{ Formatter.price(this.state.price) }</Text>
                 {/*<Text>/ 2 orang</Text>*/}
               </View>
               <View>
                 <Text style={{fontSize:15, color:'#000',}}>
-                  per orang
+                  ???????per orang????)
                   {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
                 </Text> 
               </View>

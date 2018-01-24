@@ -18,16 +18,7 @@ export default class WebViewScreen extends Component {
   // }
 
   static navigationOptions = ({navigation}) => ({
-	title: 'Pembayaran',
-	headerLeft: 
-		<TouchableOpacity  style={{paddingLeft:10}}
-			onPress={() => navigation.dispatch(NavigationActions.reset(
-			{
-			  index: 0,
-			  actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator'})]
-			}))}>
-			<Icon name='close' type='evilicons' size={20}/>
-		</TouchableOpacity>,
+  title: 'Pembayaran',
     headerStyle: {
       // backgroundColor: 'transparent',
       // position: 'absolute',
@@ -57,12 +48,11 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
-    let {rsvNo, cartId} = this.props.navigation.state.params;
     return (
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/Payment/Payment?cartId=' + cartId,
+          uri: 'www.travorama.com',
           // uri: DOMAIN + '/id/payment/cartcheckout',
                // '/id/payment/payment?rsvno=' + rsvNo +
                // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),

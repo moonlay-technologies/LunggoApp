@@ -30,18 +30,12 @@ export default class ExploreScreen extends React.Component {
     search('paket').then( paketList => this.setState({paketList}));
     search('trip').then( tripList => this.setState({tripList}));
     search('tur').then( turList => this.setState({turList}));
-    // let paketList = await search('paket');
-    // this.setState({paketList});
-    // let tripList = await search('trip');
-    // this.setState({tripList});
-    // let turList = await search('tur');
-    // this.setState({turList});
   }
 
   _goTo = (screen, params) =>
     this.props.navigation.navigate(screen, params);
 
-  _onPressProduct = id => this._goTo('DetailScreen', {id});
+  _onPressProduct = item => this._goTo('DetailScreen', {details:item});
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
@@ -61,74 +55,27 @@ export default class ExploreScreen extends React.Component {
 
           {list.map( listItem =>
             <TouchableOpacity key={listItem.id}
-              style={{width:140, marginLeft:15,}}
+              style={{width:big?300:140, marginLeft:15,}}
               activeOpacity={1}
               onPress={() => this._onPressProduct(listItem.id)}
             >
-              <Image
-                style={styles.thumbnailMedium}
-                source={{uri:listItem.mediaSrc}}
-              />
-              <View style={{marginTop:5,   flexDirection:'row'}}>
-                <View style={{
-                  flex: 4,
-                  paddingBottom: 30,
-                  // marginBottom:big ? 0 : -60,
-                  // backgroundColor:'red',
-                  // zIndex: big? 1000 : 1000
-                }}>
-                  <Text style={styles.namaKota}>
+              <TouchableOpacity activeOpacity={1}
+                onPress={() => this._onPressProduct(listItem)}
+              >
+                <Image
+                  style={big?styles.thumbnailBig:styles.thumbnailMedium}
+                  source={{uri:listItem.mediaSrc}}
+                />
+              </TouchableOpacity>
+              <View style={{marginTop:big?10:5, flexDirection:'row'}}>
+                <View style={{flex:big?4.5:4}}>
+                  <Text style={big? styles.namaKotaBig : styles.namaKota}>
                     {listItem.city}
                   </Text>
-                  <Text style={ styles.activityTitle}>
+                  <Text style={big? styles.activityTitleBig : styles.activityTitle }>
                     {listItem.name}
                   </Text>
-                  <Text style={ styles.priceTitle}>
-                    {Formatter.price(listItem.price)}
-                  </Text>
-
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <WishButton wishlisted={listItem.wishlisted}
-                    id={listItem.id} big={big} {...this.props} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        </ScrollView>
-      );
-    }
-    
-    let categoryContentBig = (list, big=false) => {
-      return (
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{marginBottom:20, height:'100%'}} >
-
-          {list.map( listItem =>
-            <TouchableOpacity key={listItem.id}
-              style={{width:300, marginLeft:15,}}
-              activeOpacity={1}
-              onPress={() => this._onPressProduct(listItem.id)}
-            >
-              <Image
-                style={styles.thumbnailBig}
-                source={{uri:listItem.mediaSrc}}
-              />
-              <View style={{marginTop: 10 ,   flexDirection:'row'}}>
-                <View style={{
-                  flex: 4.5 ,
-                  paddingBottom: 30,
-                  // marginBottom:big ? 0 : -60,
-                  // backgroundColor:'red',
-                  // zIndex: big? 1000 : 1000
-                }}>
-                  <Text style={styles.namaKotaBig}>
-                    {listItem.city}
-                  </Text>
-                  <Text style={styles.activityTitleBig }>
-                    {listItem.name}
-                  </Text>
-                  <Text style={styles.priceTitleBig }>
+                  <Text style={big? styles.priceTitleBig : styles.priceTitle }>
                     {Formatter.price(listItem.price)}
                   </Text>
                 </View>
@@ -186,7 +133,7 @@ export default class ExploreScreen extends React.Component {
           </View> */} 
         
         {categoryHeader({title:'Tiket', searchUrl:'tiket'})}
-        {categoryContentBig(this.state.tiketList, true)}
+        {categoryContent(this.state.tiketList, true)}
 
         {categoryHeader({title:'Paket', searchUrl:'paket'})}
         {categoryContent(this.state.paketList)}
