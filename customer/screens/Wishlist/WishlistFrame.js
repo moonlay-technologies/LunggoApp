@@ -22,8 +22,8 @@ export default class WishlistFrame extends React.Component {
   };
 
   componentDidMount() {
-    let {loggedIn = null} = this.props.navigation.state.params || {};
-    if (!loggedIn) {
+    let {params} = this.props.navigation.state;
+    if (params && !params.loggedIn) {
       return this.setState({isLoading:false});
     }
     fetchWishlist().then( ({ activityList, status }) => {
