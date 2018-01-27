@@ -7,6 +7,7 @@ import { Icon } from 'react-native-elements';
 import { fetchWishlist, checkUserLoggedIn } from '../../api/Common';
 import Modal from 'react-native-modal';
 import globalStyles from '../../commons/globalStyles';
+import { NavigationActions } from 'react-navigation';
 
 export default class WishButton extends React.Component {
 
@@ -14,8 +15,20 @@ export default class WishButton extends React.Component {
     super(props)
     this.state = {
       isModalVisible: false,
-      wishlisted: this.props.wishlisted,
+      wishlisted: props.wishlisted,
     };
+  }
+
+  componentWillReceiveProps({wishlisted}) {
+    this.setState({wishlisted});
+  }
+
+  _syncWishlistStateWithOtherScreen = key => {
+    const setParamsAction = NavigationActions.setParams({
+      key,
+      params: { shouldRefresh: true },
+    });
+    this.props.navigation.dispatch(setParamsAction);
   }
 
   _onPress = async () => {
@@ -26,7 +39,21 @@ export default class WishButton extends React.Component {
     let isLoggedIn = await checkUserLoggedIn();
     if (!isLoggedIn) { //// if guest:
       return this.setState({isModalVisible:true, wishlisted:false});
-    } else fetchWishlist(this.props.id, wishlisted);
+    }
+
+    fetchWishlist(this.props.id, wishlisted).then( () => {
+      let key = '';
+      switch ( this.props.navigation.state.routeName ) {
+        case 'Explore' : key = 'Wishlist'; break;
+        case 'Wishlist' : key = 'Explore'; break;
+        case 'DetailScreen' :
+          this._syncWishlistStateWithOtherScreen('Explore');
+          key = 'Wishlist'; //// will be synced again after this SWITCH block
+      }
+      this._syncWishlistStateWithOtherScreen(key);
+
+    });
+
   }
 
   _goToLoginScreen = () => {
