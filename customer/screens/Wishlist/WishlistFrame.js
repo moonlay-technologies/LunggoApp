@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { View,Text,ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import BlankScreen from './WishlistBlankScreen';
 import ListScreen from '../SearchActivity/ActivityResultScreen';
 import { fetchWishlist } from '../../../api/Common';

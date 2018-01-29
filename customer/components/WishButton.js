@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Platform } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Platform, InteractionManager } from 'react-native';
 import Button from 'react-native-button';
 import { Icon } from 'react-native-elements';
 import { fetchWishlist, checkUserLoggedIn } from '../../api/Common';
@@ -47,7 +47,25 @@ export default class WishButton extends React.Component {
         case 'Explore' : key = 'Wishlist'; break;
         case 'Wishlist' : key = 'Explore'; break;
         case 'DetailScreen' :
-          this._syncWishlistStateWithOtherScreen('Explore');
+          console.log('prepare refresh explore and wishlist screen')
+          // this._syncWishlistStateWithOtherScreen('Explore');
+          // const setParamsAction = NavigationActions.setParams({
+          //   routeName: 'Explore',
+          //   params: { shouldRefresh: true },
+          // });
+          // this.props.navigation.dispatch(setParamsAction);
+          InteractionManager.runAfterInteractions( () => {
+            this._syncWishlistStateWithOtherScreen('Explore');
+            console.log("this._syncWishlistStateWithOtherScreen('Explore')");
+          });
+          InteractionManager.runAfterInteractions( () => {
+            const setParamsAction = NavigationActions.setParams({
+              key: 'Wishlist',
+              params: { shouldRefresh: true },
+            });
+            this.props.navigation.dispatch(setParamsAction);
+            console.log('this.props.navigation.dispatch(setParamsAction)');
+          });
           key = 'Wishlist'; //// will be synced again after this SWITCH block
       }
       this._syncWishlistStateWithOtherScreen(key);

@@ -50,6 +50,7 @@ export default class ExploreScreen extends React.Component {
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
+    console.log('rendering ExploreScreen')
     let categoryHeader = ({title,searchUrl}) =>
       <View style={[styles.container,{flexDirection:'row',}]}>
         <Text style={[{flex:2},styles.categoryTitle]}>{title}</Text>
@@ -81,7 +82,7 @@ export default class ExploreScreen extends React.Component {
               <View style={{marginTop:big?10:5, flexDirection:'row'}}>
                 <View style={{flex:big?4.5:4}}>
                   <Text style={big? styles.namaKotaBig : styles.namaKota}>
-                    {listItem.city+':'+listItem.wishlisted}
+                    {listItem.city}
                   </Text>
                   <Text style={big? styles.activityTitleBig : styles.activityTitle }>
                     {listItem.name}
