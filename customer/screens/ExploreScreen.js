@@ -26,11 +26,21 @@ export default class ExploreScreen extends React.Component {
     header: (props) => <SearchHeader {...props} />
   };
 
-  componentDidMount() {
+  _refreshContents = () => {
     search('tiket').then( tiketList => this.setState({tiketList}));
     search('paket').then( paketList => this.setState({paketList}));
     search('trip').then( tripList => this.setState({tripList}));
     search('tur').then( turList => this.setState({turList}));
+  }
+
+  componentDidMount() {
+    this._refreshContents();
+  }
+
+  componentWillReceiveProps({navigation}) {
+    if (navigation.state.params.shouldRefresh) {
+      this._refreshContents();
+    }
   }
 
   _goTo = (screen, params) =>
@@ -40,6 +50,7 @@ export default class ExploreScreen extends React.Component {
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
+    console.log('rendering ExploreScreen')
     let categoryHeader = ({title,searchUrl}) =>
       <View style={[styles.container,{flexDirection:'row',}]}>
         <Text style={[{flex:2},styles.categoryTitle]}>{title}</Text>
