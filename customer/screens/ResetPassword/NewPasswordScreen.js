@@ -5,7 +5,8 @@ import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+  KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
+} from 'react-native';
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from './ResetPasswordController';
 
@@ -15,6 +16,7 @@ export default class NewPasswordScreen extends React.Component {
     this.state = {
       password: '',
       showPassword: false,
+      isLoading: false,
     }
   }
 
@@ -30,8 +32,10 @@ export default class NewPasswordScreen extends React.Component {
       this.refs.password.focus();
       return this.setState({errorPassword});
     }
+    this.setState({isLoading: true});
     resetPassword(phone, otp, password).then( response => {
       if (response===true) this.props.navigation.navigate('Main');
+      this.setState({isLoading: false});
     });
   }
 
@@ -41,6 +45,7 @@ export default class NewPasswordScreen extends React.Component {
 
   render() {
     let {password, showPassword} = this.state;
+    let loadingIndicator = this.state.isLoading ? <ActivityIndicator/> : null;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
@@ -94,6 +99,7 @@ export default class NewPasswordScreen extends React.Component {
         >
           Ubah Password
         </Button>
+        {loadingIndicator}
         <View style={{alignItems:'center', marginTop:15, }}>
           <Text style={styles.smallText}>
             Stare at ceiling light roll over and sun my belly but purr as loud as possible, 

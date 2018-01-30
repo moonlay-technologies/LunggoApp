@@ -38,6 +38,7 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       screen: BeforeLoginScreen
+      // screen: NewPassword
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },

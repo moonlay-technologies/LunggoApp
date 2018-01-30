@@ -13,8 +13,8 @@
 import React from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
-import { Platform, StyleSheet, Text, View, Image, TextInput,
-  ScrollView, KeyboardAvoidingView, TouchableOpacity,
+import { StyleSheet, Text, View, Image, TextInput, ScrollView,
+  KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { sendOtp, verifyOtp } from './ResetPasswordController';
 
@@ -22,7 +22,8 @@ export default class OtpVerificationScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      inputs: [null,null,null, null,null,null],
+      inputs: [ null,null,null, null,null,null ],
+      isLoading: false,
     }
   }
 
@@ -35,11 +36,13 @@ export default class OtpVerificationScreen extends React.Component {
   _verifyOtp = () => {
     let otp = this.state.inputs.join();
     let {phone} = this.props.navigation.params;
+    this.setState({isLoading: true});
     verifyOtp(phone, otp).then( response => {
       if (response===true) {
         //go to new password inputScreen
         this.props.navigation.navigate('NewPassword',{phone,otp});
       }
+      this.setState({isLoading: false});
     });
   }
 
@@ -79,6 +82,7 @@ export default class OtpVerificationScreen extends React.Component {
 
   render() {
     let {inputs} = this.state;
+    let loadingIndicator = this.state.isLoading ? <ActivityIndicator/> : null;
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
@@ -174,6 +178,7 @@ export default class OtpVerificationScreen extends React.Component {
           >
           Kirim
           </Button>
+          {loadingIndicator}
           <TouchableOpacity style={{alignItems:'center', marginTop:15, }}
             onPress={this._resendOtp}
           >
