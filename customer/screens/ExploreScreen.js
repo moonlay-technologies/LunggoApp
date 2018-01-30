@@ -28,8 +28,8 @@ export default class ExploreScreen extends React.Component {
   componentDidMount() {
     search('tiket').then( tiketList => this.setState({tiketList}));
     search('paket').then( paketList => this.setState({paketList}));
-    search('trip').then( tiketList => this.setState({tripList}));
-    search('tur').then( tiketList => this.setState({turList}));
+    search('trip').then( tripList => this.setState({tripList}));
+    search('tur').then( turList => this.setState({turList}));
     // let paketList = await search('paket');
     // this.setState({paketList});
     // let tripList = await search('trip');
