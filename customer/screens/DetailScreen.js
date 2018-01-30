@@ -1,3 +1,11 @@
+/*
+
+===== FATAL ERROR ======
+bug when assign mediaSrc in constructor 
+"this.state.mediaSrc = [details.mediaSrc];"
+
+*/
+
 'use strict';
 
 import React from 'react';

@@ -1,7 +1,10 @@
 /*
 
+===== NOT IMPLEMENTED ======
+- error message
+
 ===== UNDESIRED BEHAVIOR =====
-- pindah fokus ketika input angka dan ketika backspace
+- pindah fokus ketika input dan ketika backspace blm perfect
 
 ===== FOR FUTURE IMPLEMENTATION =====
 - bikin timer untuk resend OTP biar user ga spam resend
@@ -34,8 +37,10 @@ export default class OtpVerificationScreen extends React.Component {
   _resendOtp = () => sendOtp( this.props.navigation.state.params.phone )
 
   _verifyOtp = () => {
-    let otp = this.state.inputs.join();
-    let {phone} = this.props.navigation.params;
+    let otp = this.state.inputs.join('');
+    console.log('otp');
+    console.log(otp);
+    let {phone} = this.props.navigation.state.params;
     this.setState({isLoading: true});
     verifyOtp(phone, otp).then( response => {
       if (response===true) {
@@ -51,18 +56,16 @@ export default class OtpVerificationScreen extends React.Component {
     //// if user was deleting text
     if (inputText.length==0) {
       // if this textInput is the first one, do nothing
-      if (index==0) return;
       // else focus on previous TextInput
-      indexToFocus = index - 1;
+      if (index>0) indexToFocus = index - 1;
     } else { // if user was inserting text
       // if this textInput is the last one, do nothing
-      if (index==5) return;
       // else focus on next TextInput
-      indexToFocus = index + 1;
+      if (index<5) indexToFocus = index + 1;
     }
     //// update state
     this.state.inputs[index] = inputText;
-    this.refs['input-'+indexToFocus].focus();
+    if (indexToFocus) this.refs['input-'+indexToFocus].focus();
   }
 
   _onKeyPress = ({nativeEvent}, index) => {
@@ -70,19 +73,14 @@ export default class OtpVerificationScreen extends React.Component {
     if (nativeEvent.key=='Backspace') {
       let indexToFocus = index - 1;
       let {inputs} = this.state;
-      if (inputs[index]=='') {
-        inputs[indexToFocus] = '';
-        // this.forceUpdate();
-        // this.setState({input})
-      }
+      if (inputs[index]=='') inputs[indexToFocus] = '';
       this.refs['input-'+indexToFocus].focus();
     }
-    // console.log(this.state.input[index])
   }
 
   render() {
-    let {inputs} = this.state;
-    let loadingIndicator = this.state.isLoading ? <ActivityIndicator/> : null;
+    let {inputs, isLoading} = this.state;
+    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">
@@ -131,9 +129,9 @@ export default class OtpVerificationScreen extends React.Component {
               />
             </View>
             <View style={{flex:1}}>
-              <TextInput 
-                style={styles.searchInput} 
-                keyboardType='numeric' 
+              <TextInput
+                style={styles.searchInput}
+                keyboardType='numeric'
                 underlineColorAndroid='transparent'
                 maxLength={1}
                 ref='input-3'
@@ -144,9 +142,9 @@ export default class OtpVerificationScreen extends React.Component {
               />
             </View>
             <View style={{flex:1}}>
-              <TextInput 
-                style={styles.searchInput} 
-                keyboardType='numeric' 
+              <TextInput
+                style={styles.searchInput}
+                keyboardType='numeric'
                 underlineColorAndroid='transparent'
                 maxLength={1}
                 ref='input-4'
@@ -159,7 +157,7 @@ export default class OtpVerificationScreen extends React.Component {
             <View style={{flex:1}}>
               <TextInput 
                 style={styles.searchInput} 
-                keyboardType='numeric' 
+                keyboardType='numeric'
                 underlineColorAndroid='transparent'
                 maxLength={1}
                 ref='input-5'
@@ -168,6 +166,7 @@ export default class OtpVerificationScreen extends React.Component {
                 onKeyPress={ e => this._onKeyPress(e, 5)}
                 onChangeText={input => this._onChangeText(input, 5)}
                 returnKeyType='done'
+                onSubmitEditing={this._verifyOtp}
               />
             </View>
           </View>
@@ -175,8 +174,10 @@ export default class OtpVerificationScreen extends React.Component {
             containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._verifyOtp}
+            disabled={isLoading}
+            styleDisabled={{color:'#aaa'}}
           >
-          Kirim
+            Verifikasi
           </Button>
           {loadingIndicator}
           <TouchableOpacity style={{alignItems:'center', marginTop:15, }}

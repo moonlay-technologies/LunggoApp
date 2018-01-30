@@ -44,8 +44,8 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   render() {
-    let {password, showPassword} = this.state;
-    let loadingIndicator = this.state.isLoading ? <ActivityIndicator/> : null;
+    let {password, showPassword, isLoading} = this.state;
+    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
@@ -96,6 +96,8 @@ export default class NewPasswordScreen extends React.Component {
           }}
           style={{fontSize: 16, color: '#fff'}}
           onPress={this._submit}
+          disabled={isLoading}
+          styleDisabled={{color:'#aaa'}}
         >
           Ubah Password
         </Button>

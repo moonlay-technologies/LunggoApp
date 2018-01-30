@@ -33,7 +33,10 @@ export async function verifyOtp(phoneNumber, otp) {
   try {
     let response = await fetchTravoramaApi(request);
     if(response) {
-      if (response.status == 200) return true;
+      switch (response.status) {
+        case 200: return true;
+        case 400: return 'not registered';
+      }
     } else {
       console.error('verifyOtpAPI: no response returned!');
       return 'no response returned';

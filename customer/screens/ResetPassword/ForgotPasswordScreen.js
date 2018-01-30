@@ -5,7 +5,7 @@ import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView } from 'react-native';
+  KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from './ResetPasswordController';
 
@@ -14,6 +14,7 @@ export default class ForgotPasswordScreen extends React.Component {
     super(props, context);
     this.state = {
       phone: '',
+      isLoading: false,
     }
   }
 
@@ -28,16 +29,18 @@ export default class ForgotPasswordScreen extends React.Component {
       this.refs.phone.focus();
       return this.setState({errorPhone});
     }
-    this.props.navigation.navigate('OtpVerification',{phone});
+    this.setState({isLoading: true});
     sendOtp(phone).then( response => {
-      if (!response)
-        console.error('something wrong with sendOtp API')
-      else console.log(response);
+      if (response===true)
+        this.props.navigation.navigate('OtpVerification',{phone});
+      else console.error('something wrong with sendOtp API');
+      this.setState({isLoading: false});
     });
   }
 
   render() {
-    let {phone} = this.state;
+    let {phone, isLoading} = this.state;
+    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
@@ -74,9 +77,12 @@ export default class ForgotPasswordScreen extends React.Component {
           }}
           style={{fontSize: 16, color: '#fff'}}
           onPress={this._submit}
+          disabled={isLoading}
+          styleDisabled={{color:'#aaa'}}
         >
           Kirim
         </Button>
+        {loadingIndicator}
         <View style={{alignItems:'center', marginTop:15, }}>
           <Text style={styles.smallText}>
             Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
