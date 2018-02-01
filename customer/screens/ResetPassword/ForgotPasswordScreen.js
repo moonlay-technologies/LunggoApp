@@ -31,8 +31,12 @@ export default class ForgotPasswordScreen extends React.Component {
     }
     this.setState({isLoading: true});
     sendOtp(phone).then( response => {
-      if (response.status==200)
-        this.props.navigation.navigate('OtpVerification',{phone});
+      if (response.status==200 ||
+        response.error=='ERR_TOO_MANY_SEND_SMS_IN_A_TIME')
+      {
+          this.props.navigation.navigate('OtpVerification',
+            {phone, resendCooldown: response.resendCooldown });
+      }
       else console.log(response.error);
       this.setState({isLoading: false, errorMessage:response.message});
     });

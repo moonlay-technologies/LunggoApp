@@ -1,8 +1,5 @@
 /*
 
-===== NOT IMPLEMENTED ======
-- error message
-
 ===== UNDESIRED BEHAVIOR =====
 - pindah fokus ketika input dan ketika backspace blm perfect
 
@@ -27,6 +24,8 @@ export default class OtpVerificationScreen extends React.Component {
     this.state = {
       inputs: [ null,null,null, null,null,null ],
       isLoading: false,
+      cooldown: props.navigation.state.params.resendCooldown,
+      showCooldown: false,
     }
   }
 
@@ -34,7 +33,30 @@ export default class OtpVerificationScreen extends React.Component {
     header: null,
   }
 
-  _resendOtp = () => sendOtp( this.props.navigation.state.params.phone )
+  _startResendCooldown = () => {
+    var itv = setInterval( () => {
+      let {cooldown} = this.state;
+      cooldown--;
+      if (cooldown > 0) this.setState({cooldown});
+      else { //// If the cooldown is finished, clear interval
+        clearInterval(itv);
+        this.setState({cooldown:null, showCooldown: false});
+      }
+    }, 1000);
+  }
+
+  componentDidMount() {
+    this._startResendCooldown();
+  }
+
+  _resendOtp = () => {
+    if (this.state.cooldown) this.setState({showCooldown:true});
+    else {
+      sendOtp( this.props.navigation.state.params.phone );
+      this.setState({cooldown:120}); //// 2 minutes
+      this._startResendCooldown();
+    }
+  }
 
   _verifyOtp = () => {
     let otp = this.state.inputs.join('');
@@ -81,7 +103,7 @@ export default class OtpVerificationScreen extends React.Component {
   }
 
   render() {
-    let {inputs, isLoading, errorMessage} = this.state;
+    let {inputs, isLoading, errorMessage, cooldown, showCooldown} = this.state;
     let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <View style={styles.container}>
@@ -190,7 +212,13 @@ export default class OtpVerificationScreen extends React.Component {
           <TouchableOpacity style={{alignItems:'center', marginTop:15, }}
             onPress={this._resendOtp}
           >
-            <Text style={{color:'#01d4cb'}}>Kirim ulang kode verifikasi</Text>
+            <Text style={{
+              textAlign:'center',
+              color: cooldown ? 'gray' : '#01d4cb',
+            }}>
+              Kirim ulang kode verifikasi
+              {showCooldown? `\n(tunggu ${cooldown} detik)` : null}
+            </Text>
           </TouchableOpacity>
           <View style={{alignItems:'center', marginTop:15, }}>
             <Text style={styles.smallText}>Stare at ceiling light roll over and sun my belly but purr as loud as possible, 

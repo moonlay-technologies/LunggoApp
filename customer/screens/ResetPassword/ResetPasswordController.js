@@ -20,6 +20,8 @@ export async function sendOtp(phoneNumber) {
             response.message = 'Nomor tidak terdaftar!'; break;
           case 'ERR_INVALID_REQUEST':
             response.message = 'Mohon masukkan nomor telepon!'; break;
+          case 'ERR_INVALID':
+            response.message = 'Terjadi kesalahan pada server!'; break;
           default: response.message = 'Something bad happened!';
         }
       }
