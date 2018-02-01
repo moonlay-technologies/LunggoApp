@@ -61,7 +61,17 @@ export default class ExploreScreen extends React.Component {
     let categoryContent = (list, big=false) => {
       return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{marginBottom:0, height:'100%'}} >
+          style={{ 
+            height:'100%',
+            ...Platform.select({
+              ios: {
+                marginBottom:-50, 
+              },
+              android: {
+                marginBottom:-30, 
+              },
+            }),
+          }} >
 
           {list.map( listItem =>
             <TouchableOpacity key={listItem.id}
@@ -69,10 +79,12 @@ export default class ExploreScreen extends React.Component {
               activeOpacity={1}
               onPress={() => this._onPressProduct(listItem.id)}
             >
+              <View style={styles.containerThumbnailMedium}>
               <Image
                 style={styles.thumbnailMedium}
                 source={{uri:listItem.mediaSrc}}
               />
+              </View>
               <View style={{marginTop:5,   flexDirection:'row'}}>
                 <View style={{
                   flex: 4,
@@ -80,6 +92,7 @@ export default class ExploreScreen extends React.Component {
                   // marginBottom:big ? 0 : -60,
                   // backgroundColor:'red',
                   // zIndex: big? 1000 : 1000
+                  backgroundColor:'transparent',
                 }}>
                   <Text style={styles.namaKota}>
                     {listItem.city}
@@ -106,18 +119,31 @@ export default class ExploreScreen extends React.Component {
     let categoryContentBig = (list, big=false) => {
       return (
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{marginBottom:30, height:'100%'}} >
+          style={{
+             
+            height:'100%',
+            ...Platform.select({
+              ios: {
+                marginBottom:20, 
+              },
+              android: {
+                marginBottom:10,
+              },
+            }),
+          }} >
 
           {list.map( listItem =>
             <TouchableOpacity key={listItem.id}
-              style={{width:width*0.85, marginLeft:15,}}
+              style={{width:width*0.90, marginLeft:15,}}
               activeOpacity={1}
               onPress={() => this._onPressProduct(listItem.id)}
             >
-              <Image
-                style={styles.thumbnailBig}
-                source={{uri:listItem.mediaSrc}}
-              />
+              <View style={styles.containerThumbnailBig}>
+                <Image
+                  style={styles.thumbnailBig}
+                  source={{uri:listItem.mediaSrc}}
+                />
+              </View>
               <View style={{marginTop: 10, paddingBottom:50,   flexDirection:'row'}}>
                 <View style={{
                   flex: 4.5 ,
@@ -125,6 +151,7 @@ export default class ExploreScreen extends React.Component {
                   // marginBottom:big ? 0 : -60,
                   // backgroundColor:'red',
                   // zIndex: big? 1000 : 1000
+                  backgroundColor:'transparent',
                 }}>
                   <Text style={styles.namaKotaBig}>
                     {listItem.city}
@@ -202,7 +229,7 @@ export default class ExploreScreen extends React.Component {
         {categoryContent(this.state.turList)}
 
         <View style={styles.container}>
-          <View style={{marginTop:-20}}>
+          <View style={{marginTop:-10}}>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:2}}>
                 <Text style={styles.categoryTitle}>Lokasi Populer</Text>
@@ -214,11 +241,33 @@ export default class ExploreScreen extends React.Component {
           </View>
         </View>
 
+{/*        <View style={{flexDirection:'row', marginTop:10, marginBottom:20}}>
+          <Swiper style={styles.wrapper} containerStyle={styles.wrapperContainer} loop={false} showsButtons={false} showsPagination={false}>
+            <View style={styles.slides}>
+              <View style={{backgroundColor:"#000", borderRadius:5,}}>
+                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
+                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')}/>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.placeTitleContainer}>
+                <Text style={styles.placeTitle}>Jogja</Text>
+              </View>
+            </View>
+            <View style={styles.slides}>
+              <View style={{backgroundColor:"#000", borderRadius:5,}}>
+                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
+                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')}/>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.placeTitleContainer}>
+                <Text style={styles.placeTitle}>Jogja</Text>
+              </View>
+            </View>
+          </Swiper>
+        </View>*/}
+
         <View style={{flexDirection:'row', marginTop:10, marginBottom:20}}>
-          <ScrollView 
-            horizontal={true} 
-            showsHorizontalScrollIndicator={false} 
-          >
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={{width:width/2, marginLeft:15,}}>
               <View style={{backgroundColor:"#000", borderRadius:5,}}>
                 <TouchableOpacity onPress={() => this._onPressProduct(1)}>
@@ -343,7 +392,7 @@ export default class ExploreScreen extends React.Component {
         </View>
 
          <View style={styles.container}>
-          <View style={{marginTop:30}}>
+          <View style={{marginTop:20}}>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
                 <Text style={styles.categoryTitle}>Promo</Text>
@@ -378,6 +427,17 @@ export default class ExploreScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+/*  slides:{
+    backgroundColor:'red',
+    width:width/2,
+     marginLeft:15
+  },
+  wrapper: {
+    height:200,
+  },
+  wrapperContainer: {
+    width:width/2
+  },*/
   placeTitleContainer: { 
     backgroundColor:'transparent',
     alignItems:'center',
@@ -463,11 +523,40 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  containerThumbnailBig: {
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.7
+      },
+      android: {
+        elevation: 2 ,
+      },
+    }),
+  },
   thumbnailBig: {
+    backgroundColor:'transparent',
     resizeMode:'cover', 
-    width:width*0.85, 
+    width:width*0.90, 
     height:200, 
     borderRadius:5,
+     ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.7
+      },
+    }),
   },
   thumbnailPromo: {
     resizeMode:'cover', 
@@ -475,11 +564,39 @@ const styles = StyleSheet.create({
     height:150, 
     borderRadius:5,
   },
+    containerThumbnailMedium: {
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 5,
+        shadowOpacity: 0.5
+      },
+      android: {
+        elevation: 2 ,
+      },
+    }),
+  },
   thumbnailMedium: {
     resizeMode:'cover', 
     width:width*0.4, 
     height:150, 
     borderRadius:5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 5,
+        shadowOpacity: 0.5
+      },
+    }),
   },
   thumbnailPlaces: {
     resizeMode:'cover', 
@@ -534,6 +651,16 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     padding:15,
+    
     backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+      paddingBottom:5,
+      },
+      android: {
+      paddingBottom:15,
+
+      },
+    }),
   },
 });
