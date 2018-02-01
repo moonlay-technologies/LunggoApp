@@ -69,8 +69,11 @@ export default class Registration extends React.Component {
         console.log(response);
         let error;
         switch (response.error) {
-          case 'ERR_ALREADY_EXIST':
-            error = 'Akun sudah pernah terdaftar';
+          case 'ERR_EMAIL_ALREADY_EXIST':
+            error = 'Email ' + this.state.email + ' sudah pernah terdaftar';
+            break;
+		  case 'ERR_PHONENUMBER_ALREADY_EXIST':
+            error = 'Nomor ' + this.state.phone + ' sudah pernah terdaftar';
             break;
           case 'ERR_INVALID_REQUEST':
             error = 'Ada kesalahan pengisian data';
