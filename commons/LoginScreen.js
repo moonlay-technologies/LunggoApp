@@ -117,6 +117,10 @@ _registerForPushNotifications() {
     })
   }
   
+  _toggleShowPassword = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  }
+
   render() {
     let {userName, password, showPassword, isLoading,
         errorUserName, errorPassword, error} = this.state;
@@ -197,17 +201,11 @@ _registerForPushNotifications() {
                 returnKeyType='done'
               />
               <View style={{position:'absolute', right:20, top:11,}}>
-                <TouchableOpacity
-                  onPress={() =>this.setState({
-                    showPassword:!showPassword
-                  })}
-                >
-                  <View>
-                    <Icon
-                      name={showPassword ? 'eye' : 'eye-with-line'}
-                      type='entypo' size={22} color='#acacac'
-                    />
-                  </View>
+                <TouchableOpacity onPress={this._toggleShowPassword}>
+                  <Icon
+                    name={showPassword ? 'eye' : 'eye-with-line'}
+                    type='entypo' size={22} color='#acacac'
+                  />
                 </TouchableOpacity>
               </View>
             </View>

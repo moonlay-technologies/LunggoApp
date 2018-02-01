@@ -26,11 +26,10 @@ import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
 import AddBookingContact from '../customer/screens/AddBookingContact';
-
-//// unimplemented
-import ForgotPassword from '../customer/screens/ForgotPassword';
+import ForgotPassword from '../customer/screens/ResetPassword/ForgotPasswordScreen';
+import OtpVerification from '../customer/screens/ResetPassword/OtpVerificationScreen';
+import NewPassword from '../customer/screens/ResetPassword/NewPasswordScreen';
 // import Filter from '../screens/Filter';
-// import Verifikasi from '../screens/Verifikasi'
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
 import Swiper from '../customer/screens/Swiper';
@@ -39,6 +38,7 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       screen: BeforeLoginScreen
+      // screen: NewPassword
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },
@@ -65,6 +65,8 @@ const RootStackNavigator = StackNavigator(
     AddBookingContact: { screen: AddBookingContact },
     EditActivity: { screen: EditActivity },
     EditDetailActivity: { screen: EditDetailActivity },
+    OtpVerification: { screen: OtpVerification },
+    NewPassword: { screen: NewPassword },
 
   },
   {

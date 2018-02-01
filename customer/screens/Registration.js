@@ -38,12 +38,12 @@ export default class Registration extends React.Component {
     let errorPassword = validatePassword(password);
     let errorCountryCode = validateRequiredField(countryCode);
     let errorPhone = validateRequiredField(phone);
-    this.setState({errorName, errorEmail, errorPassword,
-      errorCountryCode, errorPhone});
     if (!errorName && !errorEmail && !errorPassword &&
         !errorCountryCode && !errorPhone) {
       this._register();
     }
+    else this.setState({errorName, errorEmail, errorPassword,
+      errorCountryCode, errorPhone});
   }
 
   _register = () => {
