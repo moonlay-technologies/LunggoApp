@@ -19,10 +19,6 @@ export default class BookedPageDetail extends React.Component {
     this.state.timeLeft = Moment(this.state.timeLimit).toNow();
   }
 
-  // static navigationOptions = {
-  //   headerRight: <LikeShareHeaderButton/>,
-  // };
-
   _onContinuePaymentPressed = () => {
     this.props.navigation.navigate(
       'WebViewScreen', {rsvNo:this.state.rsvNo}

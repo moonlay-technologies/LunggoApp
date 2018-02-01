@@ -26,29 +26,35 @@ export default class ExploreScreen extends React.Component {
   }
 
   static navigationOptions = {
-    header: (props) => <SearchHeader {...props}/>
+    title: 'Jelajah',
+    header: (props) => <SearchHeader {...props} />
   };
 
-  componentDidMount() {
+  _refreshContents = () => {
     search('tiket').then( tiketList => this.setState({tiketList}));
     search('paket').then( paketList => this.setState({paketList}));
     search('trip').then( tripList => this.setState({tripList}));
     search('tur').then( turList => this.setState({turList}));
-    // let paketList = await search('paket');
-    // this.setState({paketList});
-    // let tripList = await search('trip');
-    // this.setState({tripList});
-    // let turList = await search('tur');
-    // this.setState({turList});
+  }
+
+  componentDidMount() {
+    this._refreshContents();
+  }
+
+  componentWillReceiveProps({navigation}) {
+    if (navigation.state.params.shouldRefresh) {
+      this._refreshContents();
+    }
   }
 
   _goTo = (screen, params) =>
     this.props.navigation.navigate(screen, params);
 
-  _onPressProduct = id => this._goTo('DetailScreen', {id});
+  _onPressProduct = item => this._goTo('DetailScreen', {details:item});
   _onPressCategory = str => this._goTo('SearchActivity', {searchString: str});
 
   render() {
+    console.log('rendering ExploreScreen')
     let categoryHeader = ({title,searchUrl}) =>
       <View style={[styles.container,{flexDirection:'row',}]}>
         <Text style={[{flex:2},styles.categoryTitle]}>{title}</Text>
@@ -63,103 +69,37 @@ export default class ExploreScreen extends React.Component {
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
           style={{ 
             height:'100%',
-            ...Platform.select({
-              ios: {
-                marginBottom:-50, 
-              },
-              android: {
-                marginBottom:-30, 
-              },
-            }),
+            marginBottom: big ? Platform.select({
+              ios: 20, 
+              android: 10,
+            }) : -50, 
           }} >
 
           {list.map( listItem =>
             <TouchableOpacity key={listItem.id}
-              style={{width:width*0.4, marginLeft:15,}}
+              style={{width: big? width*0.9 : width*0.4, marginLeft:15,}}
               activeOpacity={1}
               onPress={() => this._onPressProduct(listItem.id)}
             >
-              <View style={styles.containerThumbnailMedium}>
+              <View style={big? styles.containerThumbnailBig : styles.containerThumbnailMedium}>
               <Image
-                style={styles.thumbnailMedium}
+                style={big? styles.thumbnailBig : styles.thumbnailMedium}
                 source={{uri:listItem.mediaSrc}}
               />
               </View>
-              <View style={{marginTop:5,   flexDirection:'row'}}>
+              <View style={{marginTop:big?10:5, flexDirection:'row',paddingTop:big?50:0}}>
                 <View style={{
-                  flex: 4,
+                  flex: big? 4.5 : 4,
                   paddingBottom: 30,
-                  // marginBottom:big ? 0 : -60,
-                  // backgroundColor:'red',
-                  // zIndex: big? 1000 : 1000
                   backgroundColor:'transparent',
                 }}>
-                  <Text style={styles.namaKota}>
+                  <Text style={big? styles.namaKotaBig : styles.namaKota}>
                     {listItem.city}
                   </Text>
-                  <Text style={ styles.activityTitle}>
+                  <Text style={big? styles.activityTitleBig : styles.activityTitle }>
                     {listItem.name}
                   </Text>
-                  <Text style={ styles.priceTitle}>
-                    {Formatter.price(listItem.price)}
-                  </Text>
-
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <WishButton wishlisted={listItem.wishlisted}
-                    id={listItem.id} big={big} {...this.props} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        </ScrollView>
-      );
-    }
-    
-    let categoryContentBig = (list, big=false) => {
-      return (
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{
-             
-            height:'100%',
-            ...Platform.select({
-              ios: {
-                marginBottom:20, 
-              },
-              android: {
-                marginBottom:10,
-              },
-            }),
-          }} >
-
-          {list.map( listItem =>
-            <TouchableOpacity key={listItem.id}
-              style={{width:width*0.90, marginLeft:15,}}
-              activeOpacity={1}
-              onPress={() => this._onPressProduct(listItem.id)}
-            >
-              <View style={styles.containerThumbnailBig}>
-                <Image
-                  style={styles.thumbnailBig}
-                  source={{uri:listItem.mediaSrc}}
-                />
-              </View>
-              <View style={{marginTop: 10, paddingBottom:50,   flexDirection:'row'}}>
-                <View style={{
-                  flex: 4.5 ,
-                  paddingBottom: 30,
-                  // marginBottom:big ? 0 : -60,
-                  // backgroundColor:'red',
-                  // zIndex: big? 1000 : 1000
-                  backgroundColor:'transparent',
-                }}>
-                  <Text style={styles.namaKotaBig}>
-                    {listItem.city}
-                  </Text>
-                  <Text style={styles.activityTitleBig }>
-                    {listItem.name}
-                  </Text>
-                  <Text style={styles.priceTitleBig }>
+                  <Text style={big? styles.priceTitleBig : styles.priceTitle }>
                     {Formatter.price(listItem.price)}
                   </Text>
                 </View>
@@ -217,7 +157,7 @@ export default class ExploreScreen extends React.Component {
           </View> */} 
         
         {categoryHeader({title:'Tiket', searchUrl:'tiket'})}
-        {categoryContentBig(this.state.tiketList, true)}
+        {categoryContent(this.state.tiketList, true)}
 
         {categoryHeader({title:'Paket', searchUrl:'paket'})}
         {categoryContent(this.state.paketList)}

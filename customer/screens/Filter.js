@@ -1,11 +1,11 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import ImageSlider from 'react-native-image-slider';
 import MapView from 'react-native-maps';
 import Button from 'react-native-button';
 import { Slider } from 'react-native-elements';
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
 
 import {
   Platform,
@@ -17,16 +17,10 @@ import {
   ScrollView,
 } from 'react-native';
 
-export default class DetailScreen extends Component<{}> {
+export default class Filter extends React.Component {
 
   static navigationOptions = {
     title: 'Filter',
-    // header: ({navigate}) => ({
-    //     right: (
-    //         <LikeShareHeaderButton navigate={navigate}/>
-    //     ),
-    // }),
-    // headerTitleStyle: {color:'white'},
     headerStyle: {
       // backgroundColor: 'transparent',
       position: 'absolute',
@@ -48,7 +42,6 @@ export default class DetailScreen extends Component<{}> {
 
   render() {
     return (
-      //<Image style={styles.detailimg}source={require('../assets/images/detailimg.jpg')}/>
       <View style={styles.container}>
 
         <ScrollView style={{marginTop:60,}}>

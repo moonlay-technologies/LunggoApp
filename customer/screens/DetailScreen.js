@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Platform, StyleSheet, Text, View, Image, TextInput,
-  ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
+  ScrollView, TouchableOpacity, Animated } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
@@ -10,12 +10,12 @@ import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
 import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
-import LikeShareHeaderButton from '../components/LikeShareHeaderButton';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
 import Swiper from 'react-native-swiper';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
 
@@ -35,8 +35,10 @@ export default class DetailScreen extends React.Component {
         // lat:0, long:0,
       }
     } else {
-      details.mediaSrc = [details.mediaSrc];
+      // details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
+      this.state.mediaSrc = [details.mediaSrc];
+      // this.setState({mediaSrc: [details.mediaSrc]});
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -44,8 +46,6 @@ export default class DetailScreen extends React.Component {
   static navigationOptions = { header: null }
 
   componentWillMount() {
-    var SCREEN_HEIGHT = Dimensions.get('window').height || 0;
-    // this.props.navigation.setParams({
     this.setState({
       bgColor: this.state.scrollY.interpolate({
         inputRange: [175, 350],
@@ -64,23 +64,32 @@ export default class DetailScreen extends React.Component {
     };
     fetchTravoramaApi(request).then( response => {
       this.setState(response.activityDetail);
+      if (!response.activityDetail.package) {
+        console.log('PACKAGES:');
+        console.log(response.activityDetail.package);
+        console.error(response.activityDetail.package);
+      }
     }).catch(error => console.log(error));
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      response.isLoading = false;
+      // response.isLoading = false;
       this.setState(response);
-      this.forceUpdate( () => {/*this.marker.showCallout()*/} );
+      this.setState({isLoading:false});
+      // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
     this.setState({isLoading: true})
     const { requiredPaxData, price, id, availableDateTimes } = this.state;
+    console.log('this.state.package')
+    console.log(this.state.package)
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
+      package: this.state.package,
       activityId: id,
     });
     this.setState({isLoading: false})
@@ -91,6 +100,15 @@ export default class DetailScreen extends React.Component {
     this.props.navigation.navigate('MapScreen',
       {name, address, city, lat, long}
     );
+  }
+
+  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity');
+
+  _onCtaButtonClick = () => {
+    //// if customer
+    if (APP_TYPE == 'CUSTOMER') this._goToBookingDetail();
+    //// if operator
+    if (APP_TYPE == 'OPERATOR') this._goToEditActivity();
   }
 
   render() {
@@ -147,6 +165,8 @@ export default class DetailScreen extends React.Component {
               <Text style={styles.activitydetailTitle}>
                 { name }
               </Text>
+              {/*<TextInput style={[styles.activitydetailTitle,{backgroundColor:'yellow'}]} value={ name } 
+                onChangeText={ name => this.setState({name}) } />*/}
             </View>
             <View style={{marginBottom:15}}>
               <Text style={styles.activityDesc}>
@@ -254,34 +274,30 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('Review')
-                }
-              >
-            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
-                <View>
-                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
+              <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
+                <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+                  <View>
+                    <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
+                  </View>
+                  <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
                 </View>
-                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
-              </View>
 
-              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
-                <View style={{marginBottom:5}}>
-                  <Text style={{ color:'#454545', fontSize:16,}}>
-                    See all 20 reviews
-                  </Text>
-                </View>
-                <View style={{marginLeft:10,}}>
-                  <Icon
-                  name='chevron-right'
-                  type='entypo'
-                  size={24}
-                  color='#00c5bc'/>
+                <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
+                  <View style={{marginBottom:5}}>
+                    <Text style={{ color:'#454545', fontSize:16,}}>
+                      See all 20 reviews
+                    </Text>
+                  </View>
+                  <View style={{marginLeft:10,}}>
+                    <Icon
+                    name='chevron-right'
+                    type='entypo'
+                    size={24}
+                    color='#00c5bc'/>
+                  </View>
                 </View>
               </View>
-            </View>
             </TouchableOpacity>
 
             <View style={styles.divider}></View>
@@ -499,35 +515,30 @@ export default class DetailScreen extends React.Component {
         </ScrollView>
         
         {/* HEADER */}
-        <Animated.View style={{
-          position:'absolute',
-          top:0,
-          right:0,
-          left: 0,
-          height:60,
-          flexDirection:'row',
-          backgroundColor: this.state.bgColor,
-          borderBottomWidth: 0,
-          elevation: 0,
-        }}>
-          <View style={{
-          // top:20,
-          // right:20,
-          padding:10,
-          paddingTop:20,
-          flex:1,
-          alignItems:'center',
-          justifyContent:'flex-end',
-          flexDirection:'row',
-          }}>
-            <TouchableOpacity style={{marginLeft:10}}>
-              <Icon name='share' type='materialicons' size={30} color='#fff'/>
+        <Animated.View style={[styles.headerBackground,{backgroundColor: this.state.bgColor}]}>
+          <View style={styles.headerContentContainer}>
+            <TouchableOpacity
+              style={{
+                flex:1,
+                alignItems:'flex-start',
+              }}
+              onPress={()=>this.props.navigation.goBack()}
+            >
+              <Icon name='arrow-back' type='materialicons' size={30} color='#fff'/>
             </TouchableOpacity>
-            <WishButton wishlisted={wishlisted} id={id} big={true}
-              {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
-            {/*<TouchableOpacity style={{marginLeft:10}}>
-              <Icon name='favorite-border' type='materialicons' size={30} color='#fff'/>
-            </TouchableOpacity>*/}
+            {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
+            <View style={{
+              flex:1,
+              alignItems:'center',
+              justifyContent:'flex-end',
+              flexDirection:'row',
+            }}>
+              <TouchableOpacity style={{marginLeft:10}}>
+                <Icon name='share' type='materialicons' size={30} color='#fff'/>
+              </TouchableOpacity>
+              <WishButton wishlisted={wishlisted} id={id} big={true}
+                {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+            </View>
           </View>
         </Animated.View>
 
@@ -551,11 +562,11 @@ export default class DetailScreen extends React.Component {
             <Button
               containerStyle={globalStyles.ctaButton}
               style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-              onPress={() => this._goToBookingDetail()}
+              onPress={this._onCtaButtonClick}
               disabled={isLoading}
               styleDisabled={{color:'#aaa'}}
             >
-              Pesan
+              {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
             </Button>
           </View>
         </View>
@@ -566,6 +577,20 @@ export default class DetailScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  headerContentContainer: {
+    padding:10,
+    paddingTop:20,
+    flexDirection:'row',
+  },
+  headerBackground: {
+    position:'absolute',
+    top:0,
+    right:0,
+    left: 0,
+    height:60,
+    borderBottomWidth: 0,
+    elevation: 0,
+  },
   container: {
     padding:15,
     backgroundColor: '#fff',
@@ -691,7 +716,7 @@ const styles = StyleSheet.create({
     fontSize:11,
     marginTop:8,
     color:'#437ef7',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   isireview: {
     fontSize:11,

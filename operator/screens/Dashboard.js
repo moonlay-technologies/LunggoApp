@@ -1,17 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  ActivityIndicator,
-  TouchableNativeFeedback,
-  StyleSheet,
+import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
+  TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
@@ -66,17 +57,13 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  _goToActivityList = (response) => {
-    if(response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'ActivityList', { list: response.activityList}
-      )
-    } else {
-      this.setState({ message: 'response undefined'})
-      console.log(response)
-    }
+
+  _onActivityListPressed = () => {
+    // this.setState({ message: '', isLoading:true });
+    this._goToActivityList();
   }
+
+  _goToActivityList = () => this.props.navigation.navigate('ActivityList');
 
   _getAppointmentRequest = () => {
     const version = 'v1';
@@ -86,22 +73,6 @@ export default class Dashboard extends React.Component {
     fetchTravoramaApi(request).then(response => {
       this.setState({ isLoading: false });
       this._goToAppointmentRequest(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n'+ error
-      });
-      console.log(error);
-    });
-  }
-  _getActivityList = () => {
-    const version = 'v1';
-    const path = `/${version}/operator/myactivity`;
-    // this.setState({ isLoading: true });
-    let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._goToActivityList(response);
     }).catch(error => {
       this.setState({
         isLoading: false,
@@ -158,10 +129,6 @@ export default class Dashboard extends React.Component {
   //   const id = 1;
   //   this._getAppointmentDetail(id);
   // }
-  _onActivityListPressed = () => {
-    this.setState({ message: '', isLoading:true });
-    this._getActivityList();
-  }
 
   //// Bind <TextInput> searchText with state searchString
   _onSearchTextChanged = (event) => {

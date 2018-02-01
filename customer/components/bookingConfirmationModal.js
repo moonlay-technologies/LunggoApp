@@ -31,3 +31,27 @@
     </TouchableOpacity>*/}
   </View>
 </Modal>
+
+
+const styles = StyleSheet.create({
+  textCart: {
+    fontFamily: 'Hind', 
+    color:'#454545', 
+    fontSize:14,
+    textAlign:'center',
+    ...Platform.select({
+      ios: {
+        lineHeight:12,
+        paddingTop:4,
+        marginBottom:-5,
+        //backgroundColor:'red'
+      },
+      android: {
+        //marginTop:5
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+});

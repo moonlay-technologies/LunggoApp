@@ -18,11 +18,12 @@ export default class MyBookingLoadingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'My Booking',
+    title: 'Pesananku',
   };
 
   componentDidMount() {
-    if (this.props.navigation.state.params && !this.props.navigation.state.params.loggedIn) {
+    let {params} = this.props.navigation.state;
+    if (params && !params.loggedIn) {
       return this.setState({isLoading:false});
     }
     getBookingList().then( ({ list, status }) => {
