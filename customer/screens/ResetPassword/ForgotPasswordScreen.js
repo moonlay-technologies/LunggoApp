@@ -24,22 +24,22 @@ export default class ForgotPasswordScreen extends React.Component {
 
   _submit = () => {
     let {phone} = this.state;
-    let errorPhone = validatePhone(phone);
-    if (errorPhone) {
-      this.refs.phone.focus();
-      return this.setState({errorPhone});
+    let errorMessage = validatePhone(phone);
+    if (errorMessage) {
+      // this.refs.phone.focus(); //// keknya ga gitu guna
+      return this.setState({errorMessage});
     }
     this.setState({isLoading: true});
     sendOtp(phone).then( response => {
-      if (response===true)
+      if (response.status==200)
         this.props.navigation.navigate('OtpVerification',{phone});
-      else console.error('something wrong with sendOtp API');
-      this.setState({isLoading: false});
+      else console.log(response.error);
+      this.setState({isLoading: false, errorMessage:response.message});
     });
   }
 
   render() {
-    let {phone, isLoading} = this.state;
+    let {phone, isLoading, errorMessage} = this.state;
     let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
@@ -49,6 +49,11 @@ export default class ForgotPasswordScreen extends React.Component {
         <View style={{marginBottom:25}}>
           <Text style={styles.mediumText}>Enter your phone to reset your password</Text>
         </View>
+        { errorMessage ?
+          <View style={{alignItems:'center', marginBottom:10}}>
+            <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+          </View> : null
+        }
         <TextInput
           style={styles.searchInput}
           underlineColorAndroid='transparent'
@@ -58,7 +63,7 @@ export default class ForgotPasswordScreen extends React.Component {
           autoCapitalize='none'
           autoCorrect={false}
           onChangeText={ phone => this.setState({
-            phone, errorPhone:null, error:null
+            phone, errorMessage:null,
           })}
           onSubmitEditing={this._submit}
           ref='phone'

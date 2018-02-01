@@ -43,11 +43,12 @@ export default class OtpVerificationScreen extends React.Component {
     let {phone} = this.props.navigation.state.params;
     this.setState({isLoading: true});
     verifyOtp(phone, otp).then( response => {
-      if (response===true) {
+      if (response.status===200) {
         //go to new password inputScreen
         this.props.navigation.navigate('NewPassword',{phone,otp});
       }
-      this.setState({isLoading: false});
+      else console.log(response.error);
+      this.setState({isLoading: false, errorMessage:response.message});
     });
   }
 
@@ -65,6 +66,7 @@ export default class OtpVerificationScreen extends React.Component {
     }
     //// update state
     this.state.inputs[index] = inputText;
+    this.setState({errorMessage:null});
     if (indexToFocus) this.refs['input-'+indexToFocus].focus();
   }
 
@@ -79,7 +81,7 @@ export default class OtpVerificationScreen extends React.Component {
   }
 
   render() {
-    let {inputs, isLoading} = this.state;
+    let {inputs, isLoading, errorMessage} = this.state;
     let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
     return (
       <View style={styles.container}>
@@ -87,6 +89,11 @@ export default class OtpVerificationScreen extends React.Component {
           <View style={{marginBottom:30}}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
           </View>
+          { errorMessage ?
+            <View style={{alignItems:'center', marginBottom:10}}>
+              <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+            </View> : null
+          }
           <View style={{flexDirection:'row'}}>
             <View style={{flex:1}}>
               <TextInput 

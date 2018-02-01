@@ -12,11 +12,21 @@ export async function sendOtp(phoneNumber) {
   try {
     let response = await fetchTravoramaApi(request);
     if(response) {
-      if (response.status == 200) return true;
+      if (response.status!=200) {
+        switch (response.error) {
+          case 'ERR_INVALID_FORMAT_PHONENUMBER':
+            response.message = 'Format nomor telepon salah!'; break;
+          case 'ERR_PHONENUMBER_NOT_REGISTERED':
+            response.message = 'Nomor tidak terdaftar!'; break;
+          case 'ERR_INVALID_REQUEST':
+            response.message = 'Mohon masukkan nomor telepon!'; break;
+          default: response.message = 'Something bad happened!';
+        }
+      }
     } else {
       console.error('ForgotPasswordAPI: no response returned!');
-      return 'no response returned';
     }
+    return response;
   } catch(error) {
     console.error(error);
   }
@@ -33,14 +43,27 @@ export async function verifyOtp(phoneNumber, otp) {
   try {
     let response = await fetchTravoramaApi(request);
     if(response) {
-      switch (response.status) {
-        case 200: return true;
-        case 400: return 'not registered';
+      if (response.status!=200) {
+        switch (response.error) {
+          case 'ERR_INVALID_FORMAT_PHONENUMBER':
+            response.message = 'Format nomor telepon salah!'; break;
+          case 'ERR_PHONENUMBER_NOT_REGISTERED':
+            response.message =  'Nomor tidak terdaftar!'; break;
+          case 'ERR_INVALID_REQUEST':
+            response.message = 'Mohon masukkan kode verifikasi!'; break;
+          case 'ERR_OTP_NOT_VALID':
+            response.message = 'Kode verifikasi tidak cocok!'; break;
+          case 'ERR_OTP_EXPIRED':
+            response.message = 'Masa kode verifikasi telah habis!'; break;
+          default:
+            response.message = 'Something bad happened!';
+            console.warning(response);
+        }
       }
     } else {
       console.error('verifyOtpAPI: no response returned!');
-      return 'no response returned';
     }
+    return response;
   } catch(error) {
     console.error(error);
   }
@@ -57,11 +80,25 @@ export async function resetPassword(phoneNumber, otp, newPassword) {
   try {
     let response = await fetchTravoramaApi(request);
     if(response) {
-      if (response.status == 200) return true;
+      if (response.status!=200) {
+        switch (response.error) {
+          case 'ERR_INVALID_FORMAT_PHONENUMBER':
+            response.message = 'Format nomor telepon salah!'; break;
+          case 'ERR_PHONENUMBER_NOT_REGISTERED':
+            response.message =  'Nomor tidak terdaftar!'; break;
+          case 'ERR_INVALID_REQUEST':
+            response.message = 'Mohon masukkan password baru!'; break;
+          case 'ERR_OTP_NOT_VALID':
+            response.message = 'Kode verifikasi tidak cocok!'; break;
+          case 'ERR_OTP_EXPIRED':
+            response.message = 'Masa kode verifikasi telah habis!'; break;
+          default: response.message = 'Something bad happened!';
+        }
+      }
     } else {
       console.error('resetPasswordAPI: no response returned!');
-      return 'no response returned';
     }
+    return response;
   } catch(error) {
     console.error(error);
   }

@@ -35,7 +35,7 @@ export default class NewPasswordScreen extends React.Component {
     this.setState({isLoading: true});
     resetPassword(phone, otp, password).then( response => {
       if (response===true) this.props.navigation.navigate('Main');
-      this.setState({isLoading: false});
+      this.setState({isLoading: false, errorMessage:response.message});
     });
   }
 
@@ -44,8 +44,7 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   render() {
-    let {password, showPassword, isLoading} = this.state;
-    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
+    let {password, showPassword, isLoading, errorMessage} = this.state;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
@@ -54,11 +53,14 @@ export default class NewPasswordScreen extends React.Component {
         <View style={{marginBottom:25}}>
           <Text style={styles.mediumText}>Password must contain !&#@$%*!@#&^$(</Text>
         </View>
+        { errorMessage ?
+          <View style={{alignItems:'center', marginBottom:10}}>
+            <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+          </View> : null
+        }
         <View>
           <TextInput
-            style={ this.state.errorPassword ?
-              styles.searchInputFalse : styles.searchInput
-            }
+            style={styles.searchInput}
             underlineColorAndroid='transparent'
             placeholder='New Password'
             secureTextEntry={!showPassword}
@@ -66,7 +68,7 @@ export default class NewPasswordScreen extends React.Component {
             autoCorrect={false}
             blurOnSubmit={true}
             onChangeText={ password => this.setState({
-              password, errorPassword:null, error:null
+              password, errorMessage:null,
             })}
             onSubmitEditing={this._onLoginPressed}
             returnKeyType='done'
@@ -101,7 +103,7 @@ export default class NewPasswordScreen extends React.Component {
         >
           Ubah Password
         </Button>
-        {loadingIndicator}
+        {isLoading ? <ActivityIndicator/> : null}
         <View style={{alignItems:'center', marginTop:15, }}>
           <Text style={styles.smallText}>
             Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
