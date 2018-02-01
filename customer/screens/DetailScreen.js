@@ -37,6 +37,7 @@ export default class DetailScreen extends React.Component {
       // details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
       this.state.mediaSrc = [details.mediaSrc];
+      // this.setState({mediaSrc: [details.mediaSrc]});
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -71,8 +72,9 @@ export default class DetailScreen extends React.Component {
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then( response => {
-      response.isLoading = false;
+      // response.isLoading = false;
       this.setState(response);
+      this.setState({isLoading:false});
       // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }

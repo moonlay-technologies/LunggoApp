@@ -75,6 +75,7 @@ export default class ActivityResultScreen extends React.Component {
   // };
 
   render() {
+    console.log('rendering ActivityResultScreen')
     return (
       <FlatList
         numColumns={2}

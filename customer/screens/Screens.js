@@ -1,7 +1,7 @@
 'use strict';
 
 export SearchActivity from './SearchActivity/SearchLoadingScreen';
-export MyBooking from './MyBooking/MyBookingLoadingScreen';
+// export MyBooking from './MyBooking/MyBookingLoadingScreen';
 export AddPax from './AddPax';
 export DetailScreen from './DetailScreen';
 export CalendarPicker from './CalendarPicker';

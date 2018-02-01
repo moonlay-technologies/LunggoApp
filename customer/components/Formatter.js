@@ -10,3 +10,9 @@ export var dateFullShort = date =>
 
 export var dateFullLong = date =>
 	Moment(date).format('dddd, D MMM YYYY');
+
+export var date = date =>
+	Moment(date).format('D MMM YYYY');
+
+export var dateLong = date =>
+	Moment(date).format('D MMMM YYYY');

@@ -27,6 +27,32 @@ export default StyleSheet.create({
     overflow: 'hidden',
     borderRadius:3,
   },
+  ctaButton4: {
+    width: '85%',
+    paddingTop: 5,
+    paddingBottom: 5,
+    overflow: 'hidden',
+    borderRadius:2,
+    backgroundColor: '#23d3c3',
+  },
+  ctaButton5: {
+    width: '85%',
+    paddingTop: 5,
+    paddingBottom: 5,
+    overflow: 'hidden',
+    borderRadius:2,
+    backgroundColor: '#fff',
+    borderWidth:1,
+    borderColor:'#23d3c3'
+  },
+  ctaButton6: {
+    width: '100%',
+    paddingTop: 10,
+    paddingBottom: 10,
+    overflow: 'hidden',
+    borderRadius:2,
+    backgroundColor: '#ff5f5f',
+  },
   bottomCtaBarContainer: {
     flexDirection: 'row',
     position: 'absolute',
