@@ -21,7 +21,7 @@ export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    const {details, id} = this.props.navigation.state.params || {};
+    let {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         isLoading: true, 
@@ -31,14 +31,12 @@ export default class DetailScreen extends React.Component {
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
-        mediaSrc: [],
+        sliderImages: [],
         // lat:0, long:0,
       }
     } else {
-      // details.mediaSrc = [details.mediaSrc];
+      details.sliderImages = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
-      this.state.mediaSrc = [details.mediaSrc];
-      // this.setState({mediaSrc: [details.mediaSrc]});
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -113,7 +111,7 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, address, lat, long, wishlisted } = this.state;
+      sliderImages, address, lat, long, wishlisted } = this.state;
 
     var activeDot = 
       <View style={{
@@ -148,16 +146,16 @@ export default class DetailScreen extends React.Component {
           ])}
           scrollEventThrottle={16}
         >
-          {/*<ImageSlider height={350} images={mediaSrc}/>*/}
+          {/*<ImageSlider height={350} images={sliderImages}/>*/}
           <Swiper style={styles.wrapper} activeDot={activeDot} dot={Dot} showsButtons={false}>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: mediaSrc[0]}}/>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
             </View>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: mediaSrc[0]}}/>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
             </View>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: mediaSrc[0]}}/>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
             </View>
           </Swiper>
           <View style={styles.container}>
