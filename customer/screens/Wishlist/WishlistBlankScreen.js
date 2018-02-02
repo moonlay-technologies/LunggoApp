@@ -27,7 +27,7 @@ export default class WishlistBlank extends React.Component {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => console.log('ADD ON PRESS')}
+                  onPress={() => this.props.navigation.goBack()}
                 >
                   Jelajah Sekarang
               </Button>

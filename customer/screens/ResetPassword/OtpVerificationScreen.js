@@ -220,10 +220,6 @@ export default class OtpVerificationScreen extends React.Component {
               {showCooldown? `\n(tunggu ${cooldown} detik)` : null}
             </Text>
           </TouchableOpacity>
-          <View style={{alignItems:'center', marginTop:15, }}>
-            <Text style={styles.smallText}>Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
-            be the most annoying cat that you can.</Text>
-          </View>
         </KeyboardAvoidingView>
       </View>
     );

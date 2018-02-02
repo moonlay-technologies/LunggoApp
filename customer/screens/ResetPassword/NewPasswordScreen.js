@@ -34,7 +34,7 @@ export default class NewPasswordScreen extends React.Component {
     }
     this.setState({isLoading: true});
     resetPassword(phone, otp, password).then( response => {
-      if (response===true) this.props.navigation.navigate('Main');
+      if (response.status == '200') this.props.navigation.navigate('Main');
       this.setState({isLoading: false, errorMessage:response.message});
     });
   }
@@ -48,10 +48,10 @@ export default class NewPasswordScreen extends React.Component {
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
-          <Text style={styles.categoryTitle}>Masukkan Password Baru!</Text>
+          <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
         </View>
         <View style={{marginBottom:25}}>
-          <Text style={styles.mediumText}>Password must contain !&#@$%*!@#&^$(</Text>
+          <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
         </View>
         { errorMessage ?
           <View style={{alignItems:'center', marginBottom:10}}>
@@ -70,7 +70,6 @@ export default class NewPasswordScreen extends React.Component {
             onChangeText={ password => this.setState({
               password, errorMessage:null,
             })}
-            onSubmitEditing={this._onLoginPressed}
             returnKeyType='done'
             onSubmitEditing={this._submit}
             ref='password'
@@ -104,12 +103,6 @@ export default class NewPasswordScreen extends React.Component {
           Ubah Password
         </Button>
         {isLoading ? <ActivityIndicator/> : null}
-        <View style={{alignItems:'center', marginTop:15, }}>
-          <Text style={styles.smallText}>
-            Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
-            be the most annoying cat that you can.
-          </Text>
-        </View>
       </KeyboardAvoidingView>
     );
   }
