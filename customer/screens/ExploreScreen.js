@@ -70,24 +70,24 @@ export default class ExploreScreen extends React.Component {
           style={{ 
             height:'100%',
             marginBottom: big ? Platform.select({
-              ios: 20, 
+              ios: -10, 
               android: 10,
             }) : -50, 
           }} >
 
           {list.map( listItem =>
             <TouchableOpacity key={listItem.id}
-              style={{width: big? width*0.9 : width*0.4, marginLeft:15,}}
+              style={{width: big? width*0.9 : width*0.4, marginLeft:15, paddingBottom:big? 0:50,}}
               activeOpacity={1}
               onPress={() => this._onPressProduct(listItem.id)}
             >
-              <View style={big? styles.containerThumbnailBig : styles.containerThumbnailMedium}>
+              <View style={[big? styles.containerThumbnailBig : styles.containerThumbnailMedium, {paddingTop:10}]}>
               <Image
                 style={big? styles.thumbnailBig : styles.thumbnailMedium}
                 source={{uri:listItem.mediaSrc}}
               />
               </View>
-              <View style={{marginTop:big?10:5, flexDirection:'row',paddingTop:big?50:0}}>
+              <View style={{marginTop:big?10:5, flexDirection:'row',paddingTop:big?0:0}}>
                 <View style={{
                   flex: big? 4.5 : 4,
                   paddingBottom: 30,
@@ -591,11 +591,10 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     padding:15,
-    
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {
-      paddingBottom:5,
+      paddingBottom:0,
       },
       android: {
       paddingBottom:15,
