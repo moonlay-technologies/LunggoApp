@@ -20,6 +20,7 @@ import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
+import Swiper from 'react-native-swiper';
 import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { APP_TYPE } from '../../constants/env';
@@ -28,7 +29,7 @@ export default class DetailScreen extends React.Component {
 
   constructor (props) {
     super(props)
-    const {details, id} = this.props.navigation.state.params || {};
+    let {details, id} = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         isLoading: true, 
@@ -38,14 +39,12 @@ export default class DetailScreen extends React.Component {
         city: 'loading address...',
         duration: {amount: 'loading ', unit: 'duration...'},
         price: '...',
-        mediaSrc: [],
+        sliderImages: [],
         // lat:0, long:0,
       }
     } else {
-      // details.mediaSrc = [details.mediaSrc];
+      details.sliderImages = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
-      this.state.mediaSrc = [details.mediaSrc];
-      // this.setState({mediaSrc: [details.mediaSrc]});
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -120,7 +119,31 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, address, lat, long, wishlisted } = this.state;
+      sliderImages, address, lat, long, wishlisted } = this.state;
+
+    var activeDot = 
+      <View style={{
+        backgroundColor:'#01aebc',
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+      }} />
+      var Dot = 
+      <View style={{
+        backgroundColor:'#fff',
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        marginLeft: 3,
+        marginRight: 3,
+        marginTop: 3,
+        marginBottom: 3,
+      }} />
+
     return (
       <View>
 
@@ -131,7 +154,18 @@ export default class DetailScreen extends React.Component {
           ])}
           scrollEventThrottle={16}
         >
-          <ImageSlider height={350} images={mediaSrc}/>
+          {/*<ImageSlider height={350} images={sliderImages}/>*/}
+          <Swiper style={styles.wrapper} activeDot={activeDot} dot={Dot} showsButtons={false}>
+            <View style={styles.slides}>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+            </View>
+            <View style={styles.slides}>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+            </View>
+            <View style={styles.slides}>
+              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+            </View>
+          </Swiper>
           <View style={styles.container}>
             <View style={{marginBottom:10}}>
               <Text style={styles.activitydetailTitle}>
@@ -571,6 +605,14 @@ const styles = StyleSheet.create({
     marginRight:10,
     width:150,
     // flex:1,
+  },
+  wrapper: {height:350},
+  slides: {
+    flex:1,
+    width:'100%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: '#9DD6EB',
   },
   thumbnailMedium: {
     resizeMode:'cover', 

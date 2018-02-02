@@ -37,7 +37,7 @@ export default class SearchHeader extends React.Component {
               selectTextOnFocus={true}
             />
             <TouchableOpacity onPress={this._goToSearchActivity}
-              style={{position:'absolute', right:5, top:-5, padding:9}}
+              style={{position:'absolute', left:5, top:-3, padding:9}}
             >
               <Icon name='magnifying-glass' type='entypo' size={20}
                 color='#ccc' />
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         // paddingVertical:15,*/
         paddingHorizontal:15,
         paddingTop:30,
-        paddingBottom:10,
+        paddingBottom:13,
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
       },
@@ -116,17 +116,17 @@ const styles = StyleSheet.create({
     }),
   },
   searchInput: {
-    height: 30,
-    paddingLeft:15,
+    height: 33,
+    paddingLeft:40,
     paddingTop:5,
     paddingBottom:5,
     marginRight: 5,
     flexGrow: 1,
     fontSize: 14,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#23d3c3',
     borderRadius: 20,
     color: '#acacac',
-    backgroundColor:'#f5f5f5',
+    backgroundColor:'#ffffff',
   },
 });
