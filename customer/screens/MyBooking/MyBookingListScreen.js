@@ -1,3 +1,10 @@
+/*
+
+  ===== TODO =====
+  invoice screen dan instruction screen
+
+*/
+
 'use strict';
 
 import React from 'react';
@@ -30,17 +37,19 @@ class ActivityListItem extends React.PureComponent {
 
         <View style={{flexDirection:'row', marginTop:15}}>
           <View style={{flex:1}}>
-            <Button
+            {/*<Button
               containerStyle={globalStyles.ctaButton5}
               style={{fontSize: 12, color: '#777',}}>
               Review
-            </Button>
+            </Button>*/}
           </View>
           <View style={{flex:1, alignItems:'flex-end'}}>
             <Button
               containerStyle={globalStyles.ctaButton4}
-              style={{fontSize: 12, color: '#fff',}}>
-              Lihat Voucher
+              style={{fontSize: 12, color: '#fff',}}
+              onPress={()=>this.props.navigation.navigate('BookedPageDetail',{details: item})}
+            >
+              Voucher
             </Button>
           </View>
         </View>
@@ -58,8 +67,13 @@ class CartListItem extends React.PureComponent {
       item={item}
       index={index}
       // onPressItem={this._onPressItem}
+      navigation={this.props.navigation}
     />
   )
+
+  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// ganti jd Invoice
+  _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// ganti jd INstruction
+
   render() {
     let {item} = this.props;
     return (
@@ -75,7 +89,7 @@ class CartListItem extends React.PureComponent {
           <View style={{flexDirection:'row'}}>
             <View style={{flex:1}}>
               <Text style={styles.activityDesc}>Total</Text>
-              <Text style={styles.activityDesc}>Status: Terbit</Text>
+              <Text style={styles.activityDesc}>Status: {item.paymentStatus}</Text>
             </View>
             <View style={{flex:1, alignItems:'flex-end'}}>
               <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
@@ -88,8 +102,16 @@ class CartListItem extends React.PureComponent {
             <View style={{flex:1}}>
               <Button
                 containerStyle={globalStyles.ctaButton6}
-                style={{fontSize: 12, color: '#fff',}}>
-                Lihat Invoice
+                style={{fontSize: 12, color: '#fff',}}
+                onPress={
+                  (item.paymentStatus=='SETTLED') ?
+                  this._showInvoice :
+                  this._showInstruction
+                }
+              >
+                { (item.paymentStatus=='SETTLED') ?
+                  'Lihat Invoice' : 'Lihat Instruksi'
+                }
               </Button>
             </View>
           </View>
@@ -128,6 +150,7 @@ export default class MyBookingListScreen extends React.Component {
       item={item}
       index={index}
       // onPressItem={this._onPressItem}
+      navigation={this.props.navigation}
     />
   )
   // _onPressItem = (item) => {
