@@ -79,7 +79,7 @@ export default class ExploreScreen extends React.Component {
             <TouchableOpacity key={listItem.id}
               style={{width: big? width*0.9 : width*0.4, marginLeft:15, paddingBottom:big? 0:50,}}
               activeOpacity={1}
-              onPress={() => this._onPressProduct(listItem.id)}
+              onPress={() => this._onPressProduct(listItem)}
             >
               <View style={[big? styles.containerThumbnailBig : styles.containerThumbnailMedium, {paddingTop:10}]}>
               <Image
