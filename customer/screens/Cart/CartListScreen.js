@@ -44,7 +44,7 @@ class ListItem extends React.PureComponent {
                 {selectedDateTimeText}
               </Text>
               <Text style={styles.infoActivity}>
-                {item.pax.length} orang
+                {item.ticketCount.map(p=>p.count+' '+p.type+'\n')}
               </Text>
             </View>
           </View>

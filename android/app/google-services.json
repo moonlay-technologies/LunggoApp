@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "666726706964",
+    "firebase_url": "https://travorama-e53db.firebaseio.com",
+    "project_id": "travorama-e53db",
+    "storage_bucket": "travorama-e53db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666726706964:android:6ea9db781efd6634",
+        "android_client_info": {
+          "package_name": "com.travorama"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666726706964-7idh3flpmjr9g7ic31r02je148gu5ihs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm_gSII0tVWGOGVzJIBeLPxs7sPNMNJA0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
