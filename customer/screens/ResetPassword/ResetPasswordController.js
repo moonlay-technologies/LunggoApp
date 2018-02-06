@@ -22,7 +22,7 @@ export async function sendOtp(phoneNumber) {
             response.message = 'Mohon masukkan nomor telepon!'; break;
           case 'ERR_INVALID':
             response.message = 'Terjadi kesalahan pada server!'; break;
-          default: response.message = 'Something bad happened!';
+          default: response.message = 'Terjadi kesalahan pada server!';
         }
       }
     } else {
@@ -58,7 +58,7 @@ export async function verifyOtp(phoneNumber, otp) {
           case 'ERR_OTP_EXPIRED':
             response.message = 'Masa kode verifikasi telah habis!'; break;
           default:
-            response.message = 'Something bad happened!';
+            response.message = 'Terjadi kesalahan pada server';
             console.warning(response);
         }
       }
@@ -94,7 +94,7 @@ export async function resetPassword(phoneNumber, otp, newPassword) {
             response.message = 'Kode verifikasi tidak cocok!'; break;
           case 'ERR_OTP_EXPIRED':
             response.message = 'Masa kode verifikasi telah habis!'; break;
-          default: response.message = 'Something bad happened!';
+          default: response.message = 'Terjadi kesalahan pada server';
         }
       }
     } else {

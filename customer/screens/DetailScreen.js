@@ -41,10 +41,18 @@ export default class DetailScreen extends React.Component {
         price: '...',
         sliderImages: [],
         // lat:0, long:0,
+        review: {
+          rating: 0.0,
+          reviewCount: 0
+        }
       }
     } else {
       details.sliderImages = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
+      this.state.review = {
+        rating: 0.0,
+        reviewCount: 0
+      };
     }
     this.state.scrollY = new Animated.Value(0);
   }
@@ -119,7 +127,8 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      sliderImages, address, lat, long, wishlisted } = this.state;
+      sliderImages, address, lat, long, wishlisted, 
+      review, reviewCount, rating, ratingCount } = this.state;
 
     var activeDot = 
       <View style={{
@@ -240,71 +249,7 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <View style={styles.containerdescriptionActivity}>
-              <View style={{flexDirection:'row', flex:1}}>
-                <View style={{flex:2, flexDirection:'row'}}>
-                  <View style={{marginRight:10}}>
-                    <Image style={styles.avatar} source={require('../../assets/images/janedoe.jpg')}/>
-                  </View>
-                  <View>
-                    <Text style={styles.reviewTitle}>
-                      Amazing Experience!
-                    </Text>
-                    <View>
-                      <Rating
-                        type="star"
-                        fractions={1}
-                        startingValue={3.6}
-                        readonly
-                        imageSize={12}
-                        ratingColor="#00c5bc"
-                        onFinishRating={this.ratingCompleted}
-                        style={{ paddingTop: 2.5, marginRight:5,}}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end',}}>
-                  <Text style={styles.reviewDate}>
-                    June 2017
-                  </Text>
-                </View>
-              </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.activityDesc}>
-                  Eat all the power cords rub whiskers on bare skin act innocent 
-                  for slap kitten brother with paw. Chase mice i just saw other cats
-                </Text>
-              </View>
-            </View>{/* end containerdescriptionActivity */}
-
-            <View style={styles.divider}></View>
-
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
-              <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-                <View style={{marginTop:3, flexDirection:'row', flex:1}}>
-                  <View>
-                    <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>4.8</Text>
-                  </View>
-                  <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
-                </View>
-
-                <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
-                  <View style={{marginBottom:5}}>
-                    <Text style={{ color:'#454545', fontSize:16,}}>
-                      See all 20 reviews
-                    </Text>
-                  </View>
-                  <View style={{marginLeft:10,}}>
-                    <Icon
-                    name='chevron-right'
-                    type='entypo'
-                    size={24}
-                    color='#00c5bc'/>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} />
 
             <View style={styles.divider}></View>
 
@@ -581,6 +526,94 @@ export default class DetailScreen extends React.Component {
   }
 }
 
+class ReviewAndRating extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render () {
+    let { rating, ratingCount, review, reviewCount } = this.props;
+    console.log(this.props);
+    return (
+      <View>
+        {!reviewCount && (
+          <Text>
+            Belum ada review
+          </Text>
+        )}
+        {reviewCount && (
+          <View style={styles.containerdescriptionActivity}>
+            <View style={{flexDirection:'row', flex:1}}>
+              <View style={{flex:2, flexDirection:'row'}}>
+                <View style={{marginRight:10}}>
+                  <Image style={styles.avatar} source={review.avatar}/>
+                </View>
+                {/* <View>
+                  <Text style={styles.reviewTitle}>
+                    Amazing experience!
+                  </Text>
+                  <View>
+                    <Rating
+                      type="star"
+                      fractions={1}
+                      startingValue={3.6}
+                      readonly
+                      imageSize={12}
+                      ratingColor="#00c5bc"
+                      onFinishRating={this.ratingCompleted}
+                      style={{ paddingTop: 2.5, marginRight:5,}}
+                    />
+                  </View>
+                </View> */}
+              </View>
+              <View style={{flex:1, alignItems:'flex-end',}}>
+                <Text style={styles.reviewDate}>
+                  {Formatter.dateLong(review.date)}
+                </Text>
+              </View>
+            </View>
+            <View style={{marginTop:10}}>
+              <Text style={styles.activityDesc}>
+                {review.content}
+              </Text>
+            </View>
+          </View>
+        )}
+        <View style={styles.divider}></View>
+
+        {reviewCount && (
+          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', {id: id})} >
+            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
+              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+                <View>
+                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>{rating}</Text>
+                </View>
+                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
+              </View>
+
+              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
+                
+                    <View style={{marginBottom:5}}>
+                      <Text style={{ color:'#454545', fontSize:16,}}>
+                        Lihat semua {reviewCount} review
+                      </Text>  
+                    </View>
+                    <View style={{marginLeft:10,}}>
+                      <Icon
+                      name='chevron-right'
+                      type='entypo'
+                      size={24}
+                      color='#00c5bc'/>
+                    </View>
+                
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
+    )
+  };
+}
 
 const styles = StyleSheet.create({
   headerContentContainer: {

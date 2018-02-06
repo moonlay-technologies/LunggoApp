@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import Button from 'react-native-button';
+import * as Formatter from '../components/Formatter';
 import {
   Platform,
   StyleSheet,
@@ -9,48 +10,51 @@ import {
   View,
   Image,
 } from 'react-native';
+import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+} from '../../api/Common';
 
-export default class LoginScreen extends Component<{}> {
+export default class ReviewScreen extends React.Component {
   
   static navigationOptions = {
     title: 'Review',
   };
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      reviews : []
+    }
+  }
+
+  componentDidMount() {
+    const version = 'v1';
+    const {id} = this.props.navigation.state;
+    let request = {
+      path: `/${version}/activities/${id}/review`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    };
+    fetchTravoramaApi(request).then( response => {
+      this.setState({reviews: response.reviews});
+      if (!response.review) {
+        console.log('REVIEW:');
+        console.log(response.reviews);
+      }
+    }).catch(error => console.log(error));
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
-          <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
+      this.state.reviews.map(review => (
+        <View style={styles.container}>
+          <View style={{flexDirection: 'row'}}>
+            <Image style={styles.thumbprofile} source='{review.avatar}'/>
+            <Text style={styles.reviewTitle}>{review.name} {"\n"}<Text style={styles.reviewDate}>{Formatter.dateLong(review.date)}</Text></Text>
+          </View>
+          <Text style={styles.isireview}>
+            {review.content}
+          </Text>
         </View>
-        <Text style={styles.isireview}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et
-        </Text>
-        <Text style={styles.hyperlink}>
-          Reply
-        </Text>
-        <View style={styles.reviewreply}>
-          <View style={{flexDirection: 'row'}}>
-            <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
-            <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
-          </View>
-          <Text style={styles.isireview}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et
-          </Text>
-        </View>{/* end reviewreply */}
-        <View style={styles.reviewreply}>
-          <View style={{flexDirection: 'row'}}>
-            <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
-            <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
-          </View>
-          <Text style={styles.isireview}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et
-          </Text>
-        </View>{/* end reviewreply */}
-      </View>
+      ))
     );
   }
 }
