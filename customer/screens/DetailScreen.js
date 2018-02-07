@@ -667,7 +667,7 @@ const styles = StyleSheet.create({
     color:'#acacac'
   },
   activityDesc: {
-    fontSize:14,
+    fontSize:16,
     color:'#454545',
     fontFamily: 'Hind',
     ...Platform.select({

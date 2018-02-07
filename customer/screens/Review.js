@@ -19,18 +19,18 @@ export default class LoginScreen extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
-          <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
+
+        <View>
+          <View style={{flexDirection: 'row'}}>
+            <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
+            <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
+          </View>
+          <Text style={styles.isireview}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et
+          </Text>
         </View>
-        <Text style={styles.isireview}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et
-        </Text>
-        <Text style={styles.hyperlink}>
-          Reply
-        </Text>
-        <View style={styles.reviewreply}>
+        <View>
           <View style={{flexDirection: 'row'}}>
             <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
             <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
@@ -39,8 +39,8 @@ export default class LoginScreen extends Component<{}> {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et
           </Text>
-        </View>{/* end reviewreply */}
-        <View style={styles.reviewreply}>
+        </View>
+        <View>
           <View style={{flexDirection: 'row'}}>
             <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
             <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
@@ -49,7 +49,18 @@ export default class LoginScreen extends Component<{}> {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et
           </Text>
-        </View>{/* end reviewreply */}
+        </View>
+        <View>
+          <View style={{flexDirection: 'row'}}>
+            <Image style={styles.thumbprofile} source={require('../assets/images/poto-profile.jpg')}/>
+            <Text style={styles.reviewTitle}>Jane Doe {"\n"}<Text style={styles.reviewDate}>3 maret 2017</Text></Text>
+          </View>
+          <Text style={styles.isireview}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et
+          </Text>
+        </View>
+
       </View>
     );
   }
