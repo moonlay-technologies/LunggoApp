@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
+import StarRating from 'react-native-star-rating';
 import {
   Platform,
   StyleSheet,
@@ -18,6 +19,19 @@ export default class LoginScreen extends Component<{}> {
     title: 'Rating',
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      starCount: 0
+    };
+  }
+
+  onStarRatingPress(rating) {
+    this.setState({
+      starCount: rating
+    });
+  }
+
   render() {
     let {navigate} = this.props.navigation;
     return (
@@ -31,14 +45,14 @@ export default class LoginScreen extends Component<{}> {
               <Text style={styles.activityDesc}>Plan steps for world domination fooled again thinking the dog likes me flop over?</Text>
             </View>
             <View style={{alignItems:'center', marginTop:20}}>
-              <Rating
-                type="star"
-                fractions={0}
-                startingValue={0}
-                imageSize={24}
-                ratingColor="#00c5bc"
-                onFinishRating={this.ratingCompleted}
-                style={{}}
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                starColor={'#f2a609'}
+                emptyStarColor={'#f2a609'}
+                starSize={35}
+                rating={this.state.starCount}
+                selectedStar={(rating) => this.onStarRatingPress(rating)}
               />
             </View>
           </View>

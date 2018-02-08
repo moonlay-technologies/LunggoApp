@@ -42,7 +42,7 @@ const RootStackNavigator = StackNavigator(
     Main: {
       //screen: BeforeLoginScreen
       //screen: MyBookingList
-      screen: Review
+      screen: IsiRating
       //screen: IsiRating
     },
     MainTabNavigator: { screen: MainTabNavigator },
