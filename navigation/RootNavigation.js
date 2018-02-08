@@ -25,8 +25,8 @@ import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
-import IsiReview from '../customer/screens/IsiReview';
-import IsiRating from '../customer/screens/IsiRating';
+import SubmitReview from '../customer/screens/SubmitReviewScreen';
+import SubmitRating from '../customer/screens/SubmitRatingScreen';
 import AddBookingContact from '../customer/screens/AddBookingContact';
 import ForgotPassword from '../customer/screens/ResetPassword/ForgotPasswordScreen';
 import OtpVerification from '../customer/screens/ResetPassword/OtpVerificationScreen';
@@ -39,10 +39,10 @@ import Swiper from '../customer/screens/Swiper';
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      //screen: BeforeLoginScreen
+      screen: BeforeLoginScreen
       //screen: MyBookingList
-      screen: Review
-      //screen: IsiRating
+      // screen: SubmitReview
+      //screen: SubmitRating
     },
     MainTabNavigator: { screen: MainTabNavigator },
     SearchActivity: { screen: SearchActivity },
@@ -71,6 +71,8 @@ const RootStackNavigator = StackNavigator(
     EditDetailActivity: { screen: EditDetailActivity },
     OtpVerification: { screen: OtpVerification },
     NewPassword: { screen: NewPassword },
+    SubmitRating: { screen: SubmitRating },
+    SubmitReview: { screen: SubmitReview }
 
   },
   {

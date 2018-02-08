@@ -1,0 +1,192 @@
+'use strict';
+
+import React, { Component } from 'react';
+import Button from 'react-native-button';
+import { Rating, Icon } from 'react-native-elements';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity
+} from 'react-native';
+import {
+  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+} from '../../api/Common';
+
+export default class SubmitRatingScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'SubmitRating',
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.state = {
+      step: 0,
+      questions: [],
+      hasRetrievedQuestions: false
+    };
+    this.answers = [];
+  }
+
+  componentDidMount() {
+    const version = 'v1';
+    this.rating = 0;
+    let rsvNo = this.props.navigation.state.params.rsvNo;
+    let request = {
+      path: `/${version}/activities/mybooking/${rsvNo}/ratingquestion`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+    };
+    fetchTravoramaApi(request).then(response => {
+      this.setState({
+        questions: response.questions,
+        hasRetrievedQuestions: true
+      })
+    }).catch(error => console.log(error));
+  }
+
+  _submitRating = () => {
+    let { questions, step } = this.state
+    this.answers.push({
+      question: questions[step],
+      rate: this.rating,
+      date: new Date()
+    })
+    this.setState({ step: step + 1 })
+    if (step == questions.length - 1)
+      this._submitAllRating();
+  }
+
+  _submitAllRating = () => {
+    const version = 'v1';
+    let rsvNo = this.props.navigation.state.params.rsvNo;
+    let request = {
+      path: `/${version}/activities/mybooking/${rsvNo}/ratinganswer`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+      data: { answers: this.answers },
+      method: 'POST'
+    };
+    fetchTravoramaApi(request)
+      .catch(error => console.log(error));
+    this.props.navigation.navigate('SubmitReview', { rsvNo: rsvNo });
+  }
+
+  render() {
+    let question = this.state.questions[this.state.step];
+    console.log(`${question}, ${this.state.step}`);
+    return (
+      this.state.hasRetrievedQuestions ? (
+        <View style={styles.container}>
+          <View style={styles.containerReview}>
+            <View >
+              {!this.state.step && (
+                <View style={{ marginBottom: 40 }}>
+                  <Text style={styles.activityTitleBig}>Terima kasih telah memesan aktivitas di Travorama!</Text>
+                </View>
+              )}
+              <View>
+                <Text style={styles.activityDesc}>{question}</Text>
+              </View>
+              <View style={{ alignItems: 'center', marginTop: 20 }}>
+                <Rating
+                  type="star"
+                  fractions={0}
+                  startingValue={0}
+                  imageSize={24}
+                  ratingColor="#00c5bc"
+                  onFinishRating={value => this.rating = value}
+                  style={{}}
+                />
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.containerSubmit} onPress={this._submitRating}>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
+          </TouchableOpacity>
+        </View>)
+        :
+        <Text>
+          Belom Balik
+        </Text>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+    flex: 1,
+    backgroundColor: '#f7f9fc',
+  },
+  containerSubmit: {
+    backgroundColor: '#23d3c3',
+    paddingVertical: 20,
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    width: '111%'
+  },
+  containerReview: {
+    backgroundColor: '#fff',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 3,
+    marginTop: 70,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.1
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  activityTitleBig: {
+    fontFamily: 'Hind',
+    fontSize: 30,
+    color: '#454545',
+    textAlign: 'center',
+    ...Platform.select({
+      ios: {
+        lineHeight: 16,
+        paddingTop: 24,
+        marginBottom: -30,
+      },
+      android: {
+        lineHeight: 36
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityDesc: {
+    fontSize: 17,
+    color: '#454545',
+    fontFamily: 'Hind',
+    textAlign: 'center',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+});
