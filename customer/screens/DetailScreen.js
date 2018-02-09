@@ -272,7 +272,13 @@ export default class DetailScreen extends React.Component {
 
             <View style={styles.divider}></View>
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
+            <View style={{flex:1, marginTop:15, marginBottom:15,}}>
+              <Text style={{ color:'#000', fontSize:16,}}>
+                Belum ada ulasan
+              </Text>
+            </View>
+
+            {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('Review')} >
               <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
                 <View style={{marginTop:3, flexDirection:'row', flex:1}}>
                   <View>
@@ -296,7 +302,7 @@ export default class DetailScreen extends React.Component {
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
 
             <View style={styles.divider}></View>
 

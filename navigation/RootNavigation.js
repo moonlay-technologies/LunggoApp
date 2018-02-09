@@ -27,6 +27,7 @@ import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
 import IsiReview from '../customer/screens/IsiReview';
 import IsiRating from '../customer/screens/IsiRating';
+import Loadingscreen from '../customer/screens/Loadingscreen';
 import AddBookingContact from '../customer/screens/AddBookingContact';
 
 //// unimplemented
@@ -41,8 +42,8 @@ const RootStackNavigator = StackNavigator(
   {
     Main: {
       //screen: BeforeLoginScreen
-      //screen: MyBookingList
-      screen: IsiRating
+      screen: Loadingscreen
+      //screen: IsiRating
       //screen: IsiRating
     },
     MainTabNavigator: { screen: MainTabNavigator },
