@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>666726706964-8jjfjisjipjncpsqqablm018vgn1r9ic.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.666726706964-8jjfjisjipjncpsqqablm018vgn1r9ic</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBMcoV5xSy6uqkkWwUgC8yMbLXmBa4etyo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>666726706964</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.travorama</string>
+	<key>PROJECT_ID</key>
+	<string>travorama-e53db</string>
+	<key>STORAGE_BUCKET</key>
+	<string>travorama-e53db.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:666726706964:ios:6ea9db781efd6634</string>
+	<key>DATABASE_URL</key>
+	<string>https://travorama-e53db.firebaseio.com</string>
+</dict>
+</plist>

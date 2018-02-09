@@ -1,0 +1,31 @@
+dependencies: \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTModalHostView.m \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTModalHostView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTModalHostViewManager.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTViewManager.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTConvert.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTAnimationType.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTBorderStyle.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTPointerEvents.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTTextDecorationLineType.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/UIView+React.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Views/RCTModalHostViewController.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTTouchHandler.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Modules/RCTUIManager.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/React/Base/RCTRootView.h

@@ -1,0 +1,35 @@
+dependencies: \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/gRPC-ProtoRPC/src/objective-c/ProtoRPC/ProtoRPC.m \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Target\ Support\ Files/gRPC-ProtoRPC/gRPC-ProtoRPC-prefix.pch \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/gRPC-ProtoRPC/src/objective-c/ProtoRPC/ProtoRPC.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Public/gRPC/GRPCClient/GRPCCall.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Public/gRPC-RxLibrary/RxLibrary/GRXWriter.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Public/gRPC-RxLibrary/RxLibrary/GRXWriteable.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/gRPC-ProtoRPC/src/objective-c/ProtoRPC/ProtoMethod.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBProtocolBuffers.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBBootstrap.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBArray.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBRuntimeTypes.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBCodedInputStream.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBCodedOutputStream.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBWireFormat.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBDescriptor.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBDictionary.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBExtensionRegistry.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBMessage.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBRootObject.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBUnknownField.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBUnknownFieldSet.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBUtilities.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/GPBWellKnownTypes.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Any.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Duration.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Timestamp.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Api.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Empty.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/FieldMask.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/SourceContext.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Struct.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Type.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Private/Protobuf/Wrappers.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Headers/Public/gRPC-RxLibrary/RxLibrary/GRXWriter+Transformations.h

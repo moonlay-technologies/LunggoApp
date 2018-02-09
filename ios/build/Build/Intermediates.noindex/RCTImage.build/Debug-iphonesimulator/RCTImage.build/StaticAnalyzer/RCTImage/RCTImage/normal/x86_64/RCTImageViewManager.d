@@ -1,0 +1,33 @@
+dependencies: \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/Libraries/Image/RCTImageViewManager.m \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/Libraries/Image/RCTImageViewManager.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTViewManager.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTEventDispatcher.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/Libraries/Image/RCTImageLoader.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTResizeMode.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTURLRequestHandler.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTURLRequestDelegate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/Libraries/Image/RCTImageShadowView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/node_modules/react-native/Libraries/Image/RCTImageView.h

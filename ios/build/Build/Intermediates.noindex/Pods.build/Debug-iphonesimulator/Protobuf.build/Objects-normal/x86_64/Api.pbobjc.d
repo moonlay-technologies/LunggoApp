@@ -1,0 +1,35 @@
+dependencies: \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Api.pbobjc.m \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Target\ Support\ Files/Protobuf/Protobuf-prefix.pch \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBProtocolBuffers_RuntimeSupport.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBProtocolBuffers.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBBootstrap.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBArray.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBRuntimeTypes.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBCodedInputStream.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBCodedOutputStream.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBWireFormat.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBDescriptor.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBDictionary.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBExtensionRegistry.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBMessage.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBRootObject.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBUnknownField.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBUnknownFieldSet.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBUtilities.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBWellKnownTypes.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Any.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Duration.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Timestamp.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Api.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Empty.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/FieldMask.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/SourceContext.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Struct.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Type.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/google/protobuf/Wrappers.pbobjc.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBDescriptor_PackagePrivate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBExtensionInternals.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBMessage_PackagePrivate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBRootObject_PackagePrivate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/Pods/Protobuf/objectivec/GPBUtilities_PackagePrivate.h

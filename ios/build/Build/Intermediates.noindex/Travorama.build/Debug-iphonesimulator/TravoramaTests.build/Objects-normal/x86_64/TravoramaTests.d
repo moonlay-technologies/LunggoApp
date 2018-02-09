@@ -1,0 +1,13 @@
+dependencies: \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/TravoramaTests/TravoramaTests.m \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/moonlay/Repository/Carlos/LunggoApp/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h
