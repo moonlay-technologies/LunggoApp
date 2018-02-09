@@ -63,7 +63,7 @@ export default class DetailScreen extends React.Component {
     this.setState({
       bgColor: this.state.scrollY.interpolate({
         inputRange: [175, 350],
-        outputRange: ['transparent', Colors.primaryColor],
+        outputRange: ['transparent', '#fff'],
         extrapolate: 'clamp',
       }),
     });
@@ -475,7 +475,7 @@ export default class DetailScreen extends React.Component {
               }}
               onPress={()=>this.props.navigation.goBack()}
             >
-              <Icon name='arrow-back' type='materialicons' size={30} color='#fff'/>
+              <Icon name='arrow-back' type='materialicons' size={30} color='#000'/>
             </TouchableOpacity>
             {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
             <View style={{
@@ -485,10 +485,10 @@ export default class DetailScreen extends React.Component {
               flexDirection:'row',
             }}>
               <TouchableOpacity style={{marginLeft:10}}>
-                <Icon name='share' type='materialicons' size={30} color='#fff'/>
+                <Icon name='share' type='materialicons' size={30} color='#000'/>
               </TouchableOpacity>
               <WishButton wishlisted={wishlisted} id={id} big={true}
-                {...this.props} style={{marginLeft:10}} unwishlistedColor={'white'} />
+                {...this.props} style={{marginLeft:10}} unwishlistedColor={'#000'} />
             </View>
           </View>
         </Animated.View>
@@ -641,7 +641,7 @@ const styles = StyleSheet.create({
     width:150,
     // flex:1,
   },
-  wrapper: {height:350},
+  wrapper: {height:450},
   slides: {
     flex:1,
     width:'100%',
