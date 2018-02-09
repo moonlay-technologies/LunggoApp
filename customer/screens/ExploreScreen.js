@@ -415,6 +415,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind',
     ...Platform.select({
       ios: {
+        
         lineHeight:6,
         paddingTop: 14,
         marginBottom:-4,
@@ -475,9 +476,6 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
         shadowOpacity: 0.7
       },
-      android: {
-        elevation: 2 ,
-      },
     }),
   },
   thumbnailBig: {
@@ -496,6 +494,7 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
         shadowOpacity: 0.7
       },
+
     }),
   },
   thumbnailPromo: {

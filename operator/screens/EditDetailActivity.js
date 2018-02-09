@@ -48,11 +48,12 @@ export default class WebViewScreen extends Component {
   }
 
   render() {
+    let text = 'Ingin mengubah detail aktivitas kamu';
     return (
       <WebView
         startInLoadingState={true}
         source={{
-          uri: 'www.travorama.com',
+          uri: 'travorama-local-cw.azurewebsites.net/id/webview/redirectcontact?text=' + text,
           // uri: DOMAIN + '/id/payment/cartcheckout',
                // '/id/payment/payment?rsvno=' + rsvNo +
                // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
