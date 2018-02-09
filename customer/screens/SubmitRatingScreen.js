@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
+import LoadingAnimation from 'LoadingAnimation';
 import {
   Platform,
   StyleSheet,
@@ -98,9 +99,7 @@ export default class SubmitRatingScreen extends React.Component {
           <View style={styles.containerReview}>
             <View>
               {!this.state.step && (
-                <View style={{ marginBottom: 40 }}>
-                  <Text style={styles.activityTitleBig}>Terima kasih telah memesan aktivitas di Travorama!</Text>
-                </View>
+                <LoadingAnimation />
               )}
               <View>
                 <Text style={styles.activityDesc}>{question}</Text>
