@@ -5,6 +5,7 @@ import { ActivityIndicator } from 'react-native';
 import BlankScreen from './CartBlankScreen';
 import ListScreen from './CartListScreen';
 import { getCart } from './CartController';
+import LoadingAnimation from '../LoadingAnimation';
 
 
 export default class CartScreen extends React.Component {
@@ -32,22 +33,11 @@ export default class CartScreen extends React.Component {
     let { props } = this;
 
     if (isLoading) return (
-      <View style={styles.container}>
-        <Image width="70" height="70" source={require('../assets/images/loader1.gif')} />
-      </View>)
+      <LoadingAnimation />)
     else if (status == 200 && list && list.length > 0) return (
       <ListScreen list={list} totalPrice={totalPrice} cartId={cartId} {...props} />
     );
     else return <BlankScreen {...props} />
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    backgroundColor:'#fff',
-    alignItems:'center',
-    justifyContent:'center'
-  },
-});
 

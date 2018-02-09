@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
-import LoadingAnimation from 'LoadingAnimation';
+import LoadingAnimation from './LoadingAnimation';
 import {
   Platform,
   StyleSheet,
