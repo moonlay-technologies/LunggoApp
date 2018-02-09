@@ -27,6 +27,7 @@ import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
 import SubmitReview from '../customer/screens/SubmitReviewScreen';
 import SubmitRating from '../customer/screens/SubmitRatingScreen';
+import Loadingscreen from '../customer/screens/Loadingscreen';
 import AddBookingContact from '../customer/screens/AddBookingContact';
 import ForgotPassword from '../customer/screens/ResetPassword/ForgotPasswordScreen';
 import OtpVerification from '../customer/screens/ResetPassword/OtpVerificationScreen';

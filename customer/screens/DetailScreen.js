@@ -537,9 +537,11 @@ class ReviewAndRating extends React.Component {
     return (
       <View>
         {!reviewCount && (
-          <Text>
-            Belum ada review
-          </Text>
+          <View style={{flex:1, marginTop:15, marginBottom:15,}}>
+            <Text style={{ color:'#000', fontSize:16,}}>
+              Belum ada review
+            </Text>
+          </View>
         )}
         {reviewCount && (
           <View style={styles.containerdescriptionActivity}>
