@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
+import StarRating from 'react-native-star-rating';
 import {
   Platform,
   StyleSheet,
@@ -14,6 +15,7 @@ import {
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import Swiper from 'react-native-swiper';
 
 export default class SubmitRatingScreen extends React.Component {
 
@@ -23,67 +25,78 @@ export default class SubmitRatingScreen extends React.Component {
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
     this.state = {
-      step: 0,
-      questions: [],
-      hasRetrievedQuestions: false
+      step: this.props.navigation.state.params.step || 0,
+      questions: this.props.navigation.state.params.questions || [],
+      hasRetrievedQuestions: this.props.navigation.state.params.hasRetrievedQuestions || false,
+      answers: this.props.navigation.state.params.answers || [],
+      rsvNo: this.props.navigation.state.params.rsvNo || ''
     };
-    this.answers = [];
   }
 
   componentDidMount() {
-    const version = 'v1';
-    this.rating = 0;
-    let rsvNo = this.props.navigation.state.params.rsvNo;
-    let request = {
-      path: `/${version}/activities/mybooking/${rsvNo}/ratingquestion`,
-      requiredAuthLevel: AUTH_LEVEL.User,
-    };
-    fetchTravoramaApi(request).then(response => {
-      this.setState({
-        questions: response.questions,
-        hasRetrievedQuestions: true
-      })
-    }).catch(error => console.log(error));
+    if (!this.state.hasRetrievedQuestions) {
+      const version = 'v1';
+      this.setState({ starCount: 0 });
+      let rsvNo = this.props.navigation.state.params.rsvNo;
+      let request = {
+        path: `/${version}/activities/mybooking/${rsvNo}/ratingquestion`,
+        requiredAuthLevel: AUTH_LEVEL.User,
+      };
+      fetchTravoramaApi(request).then(response => {
+        this.setState({
+          questions: response.questions,
+          hasRetrievedQuestions: true
+        })
+      }).catch(error => console.log(error));
+    }
   }
 
   _submitRating = () => {
-    let { questions, step } = this.state
-    this.answers.push({
-      question: questions[step],
-      rate: this.rating,
-      date: new Date()
-    })
-    this.setState({ step: step + 1 })
-    if (step == questions.length - 1)
-      this._submitAllRating();
+    setTimeout(() => {
+      let { step, questions, answers, hasRetrievedQuestions, rsvNo } = this.state
+      answers.push({
+        question: questions[step],
+        rate: this.state.starCount,
+        date: new Date()
+      })
+      if (step == questions.length - 1) {
+        this._submitAllRating();
+        this.props.navigation.navigate('SubmitReview', { rsvNo: rsvNo });
+      }
+      else {
+        this.props.navigation.navigate('SubmitRating', {
+          rsvNo: rsvNo,
+          step: step + 1,
+          questions: questions,
+          answers: answers,
+          hasRetrievedQuestions: hasRetrievedQuestions
+        });
+        // this.setState({ step: step + 1, starCount: 0 })
+      }
+    }, 500);
   }
 
   _submitAllRating = () => {
     const version = 'v1';
-    let rsvNo = this.props.navigation.state.params.rsvNo;
+    let rsvNo = this.state.rsvNo;
     let request = {
       path: `/${version}/activities/mybooking/${rsvNo}/ratinganswer`,
       requiredAuthLevel: AUTH_LEVEL.User,
-      data: { answers: this.answers },
+      data: { answers: this.state.answers },
       method: 'POST'
     };
     fetchTravoramaApi(request)
       .catch(error => console.log(error));
-    this.props.navigation.navigate('SubmitReview', { rsvNo: rsvNo });
   }
 
   render() {
-    let question = this.state.questions[this.state.step];
-    console.log(`${question}, ${this.state.step}`);
+    const question = this.state.questions[this.state.step];
     return (
       this.state.hasRetrievedQuestions ? (
         <View style={styles.container}>
           <View style={styles.containerReview}>
-            <View >
+            <View>
               {!this.state.step && (
                 <View style={{ marginBottom: 40 }}>
                   <Text style={styles.activityTitleBig}>Terima kasih telah memesan aktivitas di Travorama!</Text>
@@ -93,21 +106,21 @@ export default class SubmitRatingScreen extends React.Component {
                 <Text style={styles.activityDesc}>{question}</Text>
               </View>
               <View style={{ alignItems: 'center', marginTop: 20 }}>
-                <Rating
-                  type="star"
-                  fractions={0}
-                  startingValue={0}
-                  imageSize={24}
-                  ratingColor="#00c5bc"
-                  onFinishRating={value => this.rating = value}
-                  style={{}}
+                <StarRating
+                  disabled={false}
+                  maxStars={5}
+                  starColor={'#f2a609'}
+                  emptyStarColor={'#f2a609'}
+                  starSize={35}
+                  rating={this.state.starCount}
+                  selectedStar={(rating) => {
+                    this.setState({ starCount: rating });
+                    this._submitRating();
+                  }}
                 />
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.containerSubmit} onPress={this._submitRating}>
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
-          </TouchableOpacity>
         </View>)
         :
         <Text>

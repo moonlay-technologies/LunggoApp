@@ -38,13 +38,16 @@ class ActivityListItem extends React.PureComponent {
 
         <View style={{ flexDirection: 'row', marginTop: 15 }}>
           <View style={{ flex: 1 }}>
-            {item.requestReview && (
+            {(item.requestRating || item.requestReview) && (
               <Button
                 containerStyle={globalStyles.ctaButton5}
                 style={{ fontSize: 12, color: '#777', }}
-                onPress={() => this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo })}
+                onPress={
+                  () => item.requestRating ?
+                    this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
+                    this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
               >
-                Review
+                {item.requestRating ? 'Beri Rating' : 'Beri Review'}
               </Button>
             )}
           </View>

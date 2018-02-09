@@ -24,15 +24,16 @@ export default class SubmitReviewScreen extends React.Component {
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
     this.reviewText = '';
   }
 
   _submitReview = () => {
     const version = 'v1';
     let rsvNo = this.props.navigation.state.params.rsvNo;
+    console.log({
+      review: this.reviewText,
+      date: new Date()
+    });
     let request = {
       path: `/${version}/activities/mybooking/${rsvNo}/review`,
       requiredAuthLevel: AUTH_LEVEL.User,
@@ -61,16 +62,18 @@ export default class SubmitReviewScreen extends React.Component {
             </View>
             <View style={{ alignItems: 'center', marginTop: 25, }}>
               <TextInput
-                style={{ borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5, paddingVertical: 10, paddingHorizontal: 10, }}
+                style={{textAlignVertical:'top', borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5,  paddingVertical: 13, paddingHorizontal: 10, height: 100}}
                 placeholder='Aktivitasnya menyenangkan, pelayanannya baik dan ramah, dst...'
                 underlineColorAndroid='transparent'
+                multiline={true}
+                numberOfLines={5}
                 onChange={text => this.reviewText = text}
-                onSubmitEditing={content => this._submitReview}
+                onSubmitEditing={content => this._submitReview()}
               />
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.containerSubmit} onPress={this._submitReview}>
+        <TouchableOpacity style={styles.containerSubmit} onPress={() => this._submitReview()}>
           <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
         </TouchableOpacity>
       </View>
