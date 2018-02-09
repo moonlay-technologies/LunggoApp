@@ -2,15 +2,15 @@
 
 import React, { Component } from 'react';
 import { WebView, TouchableOpacity } from 'react-native';
-import { clientId, clientSecret } from '../../constants/env';
+import { clientId, clientSecret } from '../../../constants/env';
 import { NavigationActions } from 'react-navigation';
-import { DOMAIN } from '../../constants/env';
+import { DOMAIN } from '../../../constants/env';
 import { Icon } from 'react-native-elements';
 
-export default class EditDetailActivity extends Component {
+export default class CancelationPolicy extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'Ubah Detail',
+    title: 'Ketentuan Pembatalan',
   })
 
   render() {
@@ -19,7 +19,7 @@ export default class EditDetailActivity extends Component {
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/webview/redirectcontact?text=' + text,
+          uri: DOMAIN + '/id/terms/cancelationpolicy',
           // uri: DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),

@@ -9,8 +9,10 @@ bug when assign mediaSrc in constructor
 'use strict';
 
 import React from 'react';
-import { Platform, StyleSheet, Text, View, Image, TextInput,
-  ScrollView, TouchableOpacity, Animated } from 'react-native';
+import {
+  Platform, StyleSheet, Text, View, Image, TextInput,
+  ScrollView, TouchableOpacity, Animated
+} from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
@@ -21,23 +23,24 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
 import Swiper from 'react-native-swiper';
-import { AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+import {
+  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    let {details, id} = this.props.navigation.state.params || {};
+    let { details, id } = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
-        isLoading: true, 
-        id:1,
+        isLoading: true,
+        id: 1,
         requiredPaxData: '',
         name: 'loading activity name...',
         city: 'loading address...',
-        duration: {amount: 'loading ', unit: 'duration...'},
+        duration: { amount: 'loading ', unit: 'duration...' },
         price: '...',
         sliderImages: [],
         // lat:0, long:0,
@@ -71,12 +74,12 @@ export default class DetailScreen extends React.Component {
 
   componentDidMount() {
     const version = 'v1';
-    const {id} = this.state;
+    const { id } = this.state;
     let request = {
       path: `/${version}/activities/${id}`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
-    fetchTravoramaApi(request).then( response => {
+    fetchTravoramaApi(request).then(response => {
       this.setState(response.activityDetail);
       if (!response.activityDetail.package) {
         console.log('PACKAGES:');
@@ -86,33 +89,33 @@ export default class DetailScreen extends React.Component {
     }).catch(error => console.log(error));
 
     request.path = `/${version}/activities/${id}/availabledates`;
-    fetchTravoramaApi(request).then( response => {
+    fetchTravoramaApi(request).then(response => {
       // response.isLoading = false;
       this.setState(response);
-      this.setState({isLoading:false});
+      this.setState({ isLoading: false });
       // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
 
   _goToBookingDetail = async () => {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     const { requiredPaxData, price, id, availableDateTimes } = this.state;
     console.log('this.state.package')
     console.log(this.state.package)
     let isUserLoggedIn = await checkUserLoggedIn();
-    let nextScreen = isUserLoggedIn? 'BookingDetail' : 'LoginScreen';
+    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
       package: this.state.package,
       activityId: id,
     });
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   }
 
   _enlargeMapView = () => {
-    let {name, address, city, lat, long} = this.state;
+    let { name, address, city, lat, long } = this.state;
     this.props.navigation.navigate('MapScreen',
-      {name, address, city, lat, long}
+      { name, address, city, lat, long }
     );
   }
 
@@ -127,12 +130,12 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      sliderImages, address, lat, long, wishlisted, 
+      sliderImages, address, lat, long, wishlisted,
       review, reviewCount, rating, ratingCount } = this.state;
 
-    var activeDot = 
+    var activeDot =
       <View style={{
-        backgroundColor:'#01aebc',
+        backgroundColor: '#01aebc',
         width: 8,
         height: 8,
         borderRadius: 4,
@@ -141,9 +144,9 @@ export default class DetailScreen extends React.Component {
         marginTop: 3,
         marginBottom: 3,
       }} />
-      var Dot = 
+    var Dot =
       <View style={{
-        backgroundColor:'#fff',
+        backgroundColor: '#fff',
         width: 6,
         height: 6,
         borderRadius: 3,
@@ -157,65 +160,65 @@ export default class DetailScreen extends React.Component {
       <View>
 
         <ScrollView
-          style={{backgroundColor:'#fff'}}
+          style={{ backgroundColor: '#fff' }}
           onScroll={Animated.event([
             { nativeEvent: { contentOffset: { y: this.state.scrollY } } },
           ])}
           scrollEventThrottle={16}
         >
-          {/*<ImageSlider height={350} images={sliderImages}/>*/}
+          {/*<ImageSlider height={300} images={sliderImages}/>*/}
           <Swiper style={styles.wrapper} activeDot={activeDot} dot={Dot} showsButtons={false}>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+              <Image style={styles.slides} source={{ uri: sliderImages[0] }} />
             </View>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+              <Image style={styles.slides} source={{ uri: sliderImages[0] }} />
             </View>
             <View style={styles.slides}>
-              <Image style={styles.slides} source={{uri: sliderImages[0]}}/>
+              <Image style={styles.slides} source={{ uri: sliderImages[0] }} />
             </View>
           </Swiper>
           <View style={styles.container}>
-            <View style={{marginBottom:10}}>
+            <View style={{ marginBottom: 10 }}>
               <Text style={styles.activitydetailTitle}>
-                { name }
+                {name}
               </Text>
               {/*<TextInput style={[styles.activitydetailTitle,{backgroundColor:'yellow'}]} value={ name } 
                 onChangeText={ name => this.setState({name}) } />*/}
             </View>
-            <View style={{marginBottom:15}}>
+            <View style={{ marginBottom: 15 }}>
               <Text style={styles.activityDesc}>
-                Jump five feet high and sideways when a shadow moves hiding behind the couch 
+                Jump five feet high and sideways when a shadow moves hiding behind the couch
                 until lured out by a feathery toy so yowling nonstop the whole night.
               </Text>
             </View>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <Icon name='ios-pin' type='ionicon' size={18} color='#454545'/>
-              <View style={{marginTop:1, marginLeft:10}}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
+              <View style={{ marginTop: 1, marginLeft: 10 }}>
                 <Text style={styles.activityDesc}>
-                  { city }
+                  {city}
                 </Text>
               </View>
             </View>
-            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='ios-person' type='ionicon' size={18} color='#454545'/>
-              <View style={{marginTop:1, marginLeft:10}}>
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
+              <View style={{ marginTop: 1, marginLeft: 10 }}>
                 <Text style={styles.activityDesc}>
                   Maksimum 6 orang
                 </Text>
               </View>
             </View>
-            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545'/>
-              <View style={{marginTop:1, marginLeft:10}}>
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
+              <View style={{ marginTop: 1, marginLeft: 10 }}>
                 <Text style={styles.activityDesc}>
                   Khusus hari minggu
                 </Text>
               </View>
             </View>
-            <View style={{flex: 1, flexDirection: 'row', marginTop:8}}>
-              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545'/>
-              <View style={{marginTop:1, marginLeft:10}}>
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
+              <View style={{ marginTop: 1, marginLeft: 10 }}>
                 <Text style={styles.activityDesc}>
                   Untuk usia diatas 10 tahun
                 </Text>
@@ -242,10 +245,20 @@ export default class DetailScreen extends React.Component {
                 Hal yang Perlu Diperhatikan
               </Text>
               <Text style={styles.activityDesc}>
-                Eat all the power cords rub whiskers on bare skin act innocent 
+                Eat all the power cords rub whiskers on bare skin act innocent
                 for slap kitten brother with paw. Chase mice i just saw other cats
               </Text>
             </View>{/* end containerdescriptionActivity */}
+
+            <View style={styles.divider}></View>
+
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
+              <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
+                <Text style={{ color: '#000', fontSize: 16, }}>
+                  Ketentuan Pembatalan
+                </Text>
+              </View>
+            </TouchableOpacity>
 
             <View style={styles.divider}></View>
 
@@ -256,7 +269,7 @@ export default class DetailScreen extends React.Component {
             <View style={styles.containerdescriptionActivity}>
               <TouchableOpacity onPress={this._enlargeMapView}>
                 <MapView
-                  style={{width:"100%", height:150}}
+                  style={{ width: "100%", height: 150 }}
                   region={{
                     latitude: -6.230295, //lat,
                     longitude: 106.799057, //long,
@@ -277,13 +290,13 @@ export default class DetailScreen extends React.Component {
                 </MapView>
                 <Text>LatLong: {lat} , {long} </Text>
               </TouchableOpacity>
-              
-              <View style={{marginTop:30}}>
+
+              <View style={{ marginTop: 30 }}>
                 <Text style={styles.sectionTitle}>
                   Hal yang Perlu Dibawa
                 </Text>
                 <Text style={styles.activityDesc}>
-                  Eat all the power cords rub whiskers on bare skin act innocent 
+                  Eat all the power cords rub whiskers on bare skin act innocent
                   for slap kitten brother with paw. Chase mice i just saw other cats
                 </Text>
               </View>{/* end containerdescriptionActivity */}
@@ -347,10 +360,10 @@ export default class DetailScreen extends React.Component {
                 </View>
               </View>
             </View>*/}
-            
+
           </View>{/* end container */}
 
-          
+
           {/*<View style={{flex: 1, flexDirection: 'row',}}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={{width:140, marginLeft:15,}}>
@@ -461,34 +474,34 @@ export default class DetailScreen extends React.Component {
             </ScrollView>
           </View>*/}
 
-          <View style={{paddingBottom:65}}></View>
+          <View style={{ paddingBottom: 65 }}></View>
 
         </ScrollView>
-        
+
         {/* HEADER */}
-        <Animated.View style={[styles.headerBackground,{backgroundColor: this.state.bgColor}]}>
+        <Animated.View style={[styles.headerBackground, { backgroundColor: this.state.bgColor }]}>
           <View style={styles.headerContentContainer}>
             <TouchableOpacity
               style={{
-                flex:1,
-                alignItems:'flex-start',
+                flex: 1,
+                alignItems: 'flex-start',
               }}
-              onPress={()=>this.props.navigation.goBack()}
+              onPress={() => this.props.navigation.goBack()}
             >
-              <Icon name='arrow-back' type='materialicons' size={30} color='#000'/>
+              <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
             </TouchableOpacity>
             {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
             <View style={{
-              flex:1,
-              alignItems:'center',
-              justifyContent:'flex-end',
-              flexDirection:'row',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flexDirection: 'row',
             }}>
-              <TouchableOpacity style={{marginLeft:10}}>
-                <Icon name='share' type='materialicons' size={30} color='#000'/>
+              <TouchableOpacity style={{ marginLeft: 10 }}>
+                <Icon name='share' type='materialicons' size={30} color='#000' />
               </TouchableOpacity>
               <WishButton wishlisted={wishlisted} id={id} big={true}
-                {...this.props} style={{marginLeft:10}} unwishlistedColor={'#000'} />
+                {...this.props} style={{ marginLeft: 10 }} unwishlistedColor={'#000'} />
             </View>
           </View>
         </Animated.View>
@@ -496,26 +509,26 @@ export default class DetailScreen extends React.Component {
 
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>
-          <View style={{alignItems: 'flex-start', flex:1.5}}>
+          <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
             <View >
-              <Text style={{fontSize:12, color:'#676767',}}>Start from</Text> 
+              <Text style={{ fontSize: 12, color: '#676767', }}>Start from</Text>
             </View>
             <View>
               <Text style={{
-                color:'#000',
+                color: '#000',
                 fontWeight: 'bold',
-                fontSize:20,
-              }}>{ Formatter.price(price) }</Text>
-            </View> 
-            
+                fontSize: 20,
+              }}>{Formatter.price(price)}</Text>
+            </View>
+
           </View>
-          <View style={{alignItems: 'flex-end', flex:1}}>
+          <View style={{ alignItems: 'flex-end', flex: 1 }}>
             <Button
               containerStyle={globalStyles.ctaButton}
-              style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+              style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
               onPress={this._onCtaButtonClick}
               disabled={isLoading}
-              styleDisabled={{color:'#aaa'}}
+              styleDisabled={{ color: '#aaa' }}
             >
               {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
             </Button>
@@ -531,24 +544,24 @@ class ReviewAndRating extends React.Component {
     super(props);
   }
 
-  render () {
+  render() {
     let { rating, ratingCount, review, reviewCount } = this.props;
     console.log(this.props);
     return (
       <View>
         {!reviewCount && (
-          <View style={{flex:1, marginTop:15, marginBottom:15,}}>
-            <Text style={{ color:'#000', fontSize:16,}}>
+          <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
+            <Text style={{ color: '#000', fontSize: 16, }}>
               Belum ada review
             </Text>
           </View>
         )}
         {reviewCount && (
           <View style={styles.containerdescriptionActivity}>
-            <View style={{flexDirection:'row', flex:1}}>
-              <View style={{flex:2, flexDirection:'row'}}>
-                <View style={{marginRight:10}}>
-                  <Image style={styles.avatar} source={review.avatar}/>
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              <View style={{ flex: 2, flexDirection: 'row' }}>
+                <View style={{ marginRight: 10 }}>
+                  <Image style={styles.avatar} source={review.avatar} />
                 </View>
                 {/* <View>
                   <Text style={styles.reviewTitle}>
@@ -568,13 +581,13 @@ class ReviewAndRating extends React.Component {
                   </View>
                 </View> */}
               </View>
-              <View style={{flex:1, alignItems:'flex-end',}}>
+              <View style={{ flex: 1, alignItems: 'flex-end', }}>
                 <Text style={styles.reviewDate}>
                   {Formatter.dateLong(review.date)}
                 </Text>
               </View>
             </View>
-            <View style={{marginTop:10}}>
+            <View style={{ marginTop: 10 }}>
               <Text style={styles.activityDesc}>
                 {review.content}
               </Text>
@@ -584,30 +597,30 @@ class ReviewAndRating extends React.Component {
         <View style={styles.divider}></View>
 
         {reviewCount && (
-          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', {id: id})} >
-            <View style={{flex:1, marginTop:15, marginBottom:15, flexDirection:'row',}}>
-              <View style={{marginTop:3, flexDirection:'row', flex:1}}>
+          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id: id })} >
+            <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
+              <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
                 <View>
-                  <Text style={{ color:'#454545', fontSize:18, fontWeight:'bold'}}>{rating}</Text>
+                  <Text style={{ color: '#454545', fontSize: 18, fontWeight: 'bold' }}>{rating}</Text>
                 </View>
                 <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
               </View>
 
-              <View style={{alignItems:'flex-end', justifyContent: 'flex-end',flexDirection:'row', flex:2}}>
-                
-                    <View style={{marginBottom:5}}>
-                      <Text style={{ color:'#454545', fontSize:16,}}>
-                        Lihat semua {reviewCount} review
-                      </Text>  
-                    </View>
-                    <View style={{marginLeft:10,}}>
-                      <Icon
-                      name='chevron-right'
-                      type='entypo'
-                      size={24}
-                      color='#00c5bc'/>
-                    </View>
-                
+              <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', flex: 2 }}>
+
+                <View style={{ marginBottom: 5 }}>
+                  <Text style={{ color: '#454545', fontSize: 16, }}>
+                    Lihat semua {reviewCount} review
+                      </Text>
+                </View>
+                <View style={{ marginLeft: 10, }}>
+                  <Icon
+                    name='chevron-right'
+                    type='entypo'
+                    size={24}
+                    color='#00c5bc' />
+                </View>
+
               </View>
             </View>
           </TouchableOpacity>
@@ -619,64 +632,64 @@ class ReviewAndRating extends React.Component {
 
 const styles = StyleSheet.create({
   headerContentContainer: {
-    padding:10,
-    paddingTop:20,
-    flexDirection:'row',
+    padding: 10,
+    paddingTop: 20,
+    flexDirection: 'row',
   },
   headerBackground: {
-    position:'absolute',
-    top:0,
-    right:0,
+    position: 'absolute',
+    top: 0,
+    right: 0,
     left: 0,
-    height:60,
+    height: 60,
     borderBottomWidth: 0,
     elevation: 0,
   },
   container: {
-    padding:15,
+    padding: 15,
     backgroundColor: '#fff',
   },
   similarActivityContainer: {
-    marginRight:10,
-    width:150,
+    marginRight: 10,
+    width: 150,
     // flex:1,
   },
-  wrapper: {height:450},
+  wrapper: { height: 400 },
   slides: {
-    flex:1,
-    width:'100%',
+    flex: 1,
+    width: '100%',
     // justifyContent: 'center',
     // alignItems: 'center',
     // backgroundColor: '#9DD6EB',
   },
   thumbnailMedium: {
-    resizeMode:'cover', 
-    width:140, 
-    height:150, 
-    borderRadius:5,
+    resizeMode: 'cover',
+    width: 140,
+    height: 150,
+    borderRadius: 5,
   },
   namaKota: {
-    fontSize:12,
-    color:'#454545',
+    fontSize: 12,
+    color: '#454545',
   },
-  avatar:{
-    width:40, 
-    height:40, 
-    resizeMode:'cover', 
-    borderRadius:20
+  avatar: {
+    width: 40,
+    height: 40,
+    resizeMode: 'cover',
+    borderRadius: 20
   },
   activityTitle: {
     fontFamily: 'Hind-Bold',
-    fontSize:15,
-    color:'#454545',
+    fontSize: 15,
+    color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight:15*0.8,
+        lineHeight: 15 * 0.8,
         paddingTop: 20 - (19 * 0.4),
         //backgroundColor:'red'
       },
       android: {
-        lineHeight:24
+        lineHeight: 24
         //paddingTop: 23 - (23* 1),
 
       },
@@ -684,40 +697,40 @@ const styles = StyleSheet.create({
   },
   activitydetailTitle: {
     fontFamily: 'Hind-Bold',
-    fontSize:19,
-    color:'#454545',
+    fontSize: 19,
+    color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight:15*0.8,
+        lineHeight: 15 * 0.8,
         paddingTop: 20 - (19 * 0.4),
-        marginBottom:-15,
+        marginBottom: -15,
         //backgroundColor:'red'
       },
       android: {
-        lineHeight:24
+        lineHeight: 24
         //paddingTop: 23 - (23* 1),
 
       },
     }),
   },
   priceTitle: {
-    fontSize:12,
-    color:'#676767',
-    marginTop:2
+    fontSize: 12,
+    color: '#676767',
+    marginTop: 2
   },
-  seeMore :{
-    fontSize:14,
-    color:'#acacac'
+  seeMore: {
+    fontSize: 14,
+    color: '#acacac'
   },
   activityDesc: {
-    fontSize:16,
-    color:'#454545',
+    fontSize: 16,
+    color: '#454545',
     fontFamily: 'Hind',
     ...Platform.select({
       ios: {
-        lineHeight:15*0.8,
+        lineHeight: 15 * 0.8,
         paddingTop: 10,
-        marginBottom:-10
+        marginBottom: -10
       },
       android: {
         //lineHeight:24
@@ -728,67 +741,67 @@ const styles = StyleSheet.create({
   },
   containerdescriptionActivity: {
     marginBottom: 30,
-    marginTop:30,
+    marginTop: 30,
     flex: 1
   },
   containersimiliarActivity: {
     marginBottom: 20,
-    marginTop:20,
+    marginTop: 20,
     flex: 1
   },
   sectionTitle: {
     fontWeight: 'bold',
-    fontSize:16,
+    fontSize: 16,
     marginBottom: 7,
-    color:'#454545',
+    color: '#454545',
   },
 
   reviewTitle: {
-    fontSize:15,
+    fontSize: 15,
     marginBottom: 5,
-    color:'#454545',
+    color: '#454545',
   },
   reviewDate: {
-    fontSize:12,
-    color:'#cecece'
+    fontSize: 12,
+    color: '#cecece'
 
   },
   hyperlink: {
-    fontSize:11,
-    marginTop:8,
-    color:'#437ef7',
+    fontSize: 11,
+    marginTop: 8,
+    color: '#437ef7',
     textDecorationLine: 'underline',
   },
   isireview: {
-    fontSize:11,
-    marginTop:10,
+    fontSize: 11,
+    marginTop: 10,
   },
   thumbprofile: {
     height: 30,
-    width:30,
+    width: 30,
     borderRadius: 15,
     marginRight: 10,
   },
   ul: {
-    flex: 1, 
+    flex: 1,
     flexDirection: 'row',
     marginLeft: 10,
   },
   li: {
-    fontSize:11,
-    marginRight:8
+    fontSize: 11,
+    marginRight: 8
   },
   icon: {
-    width:15,
-    height:15,
-    marginRight:5,
+    width: 15,
+    height: 15,
+    marginRight: 5,
   },
   descriptionActivity: {
-    fontSize:11,
+    fontSize: 11,
     lineHeight: 15,
   },
   lidescriptionActivity: {
-    fontSize:11,
+    fontSize: 11,
     marginBottom: 2,
     lineHeight: 15,
   },
@@ -798,11 +811,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
   },
   locationActivity: {
-    fontSize:12,
+    fontSize: 12,
     marginBottom: 5,
   },
   timeActivity: {
-    fontSize:12,
+    fontSize: 12,
     marginBottom: 5,
   },
   detailimg: {

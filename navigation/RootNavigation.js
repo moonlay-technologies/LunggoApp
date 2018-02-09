@@ -2,7 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
@@ -10,15 +10,19 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
-import { SearchActivity, MyBooking, AddPax, DetailScreen,
+import {
+  SearchActivity, MyBooking, AddPax, DetailScreen,
   CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
   Registration, BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga, } from '../customer/screens/Screens';
+  Review, RincianHarga,
+} from '../customer/screens/Screens';
 
 import { LoginScreen } from '../commons/Screens';
 
-import { Dashboard, Mutasi, AppointmentList, AppointmentDetail,
-  AppointmentRequest, ActivityList } from '../operator/screens/Screens';
+import {
+  Dashboard, Mutasi, AppointmentList, AppointmentDetail,
+  AppointmentRequest, ActivityList
+} from '../operator/screens/Screens';
 
 import EditActivity from '../operator/screens/EditActivity';
 import EditDetailActivity from '../operator/screens/EditDetailActivity';
@@ -31,6 +35,9 @@ import AddBookingContact from '../customer/screens/AddBookingContact';
 import ForgotPassword from '../customer/screens/ResetPassword/ForgotPasswordScreen';
 import OtpVerification from '../customer/screens/ResetPassword/OtpVerificationScreen';
 import NewPassword from '../customer/screens/ResetPassword/NewPasswordScreen';
+
+import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
+
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
 
@@ -72,16 +79,16 @@ const RootStackNavigator = StackNavigator(
     OtpVerification: { screen: OtpVerification },
     NewPassword: { screen: NewPassword },
     SubmitRating: { screen: SubmitRating },
-    SubmitReview: { screen: SubmitReview }
-
+    SubmitReview: { screen: SubmitReview },
+    CancelationPolicy: { screen: CancelationPolicy }
   },
   {
-    initialRouteParams: {appType: 'OPERATOR'},
+    initialRouteParams: { appType: 'OPERATOR' },
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
-        fontFamily:'Hind',
-        marginBottom:-5
+        fontFamily: 'Hind',
+        marginBottom: -5
       },
     }),
   }
