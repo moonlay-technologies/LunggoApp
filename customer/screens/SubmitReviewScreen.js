@@ -15,6 +15,7 @@ import {
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { NavigationActions } from 'react-navigation';
 
 export default class SubmitReviewScreen extends React.Component {
 
@@ -45,7 +46,11 @@ export default class SubmitReviewScreen extends React.Component {
     };
     fetchTravoramaApi(request)
       .catch(error => console.log(error));
-    this.props.navigation.navigate('MainTabNavigator');
+    this.props.navigation.dispatch(NavigationActions.reset(
+      {
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })]
+      }));
   }
 
   render() {
@@ -62,12 +67,12 @@ export default class SubmitReviewScreen extends React.Component {
             </View>
             <View style={{ alignItems: 'center', marginTop: 25, }}>
               <TextInput
-                style={{textAlignVertical:'top', borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5,  paddingVertical: 13, paddingHorizontal: 10, height: 100}}
+                style={{ textAlignVertical: 'top', borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5, paddingVertical: 13, paddingHorizontal: 10, height: 100 }}
                 placeholder='Aktivitasnya menyenangkan, pelayanannya baik dan ramah, dst...'
                 underlineColorAndroid='transparent'
                 multiline={true}
                 numberOfLines={5}
-                onChange={text => this.reviewText = text}
+                onChangeText={text => {this.reviewText = text}}
                 onSubmitEditing={content => this._submitReview()}
               />
             </View>
