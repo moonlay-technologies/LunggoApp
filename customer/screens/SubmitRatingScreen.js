@@ -123,14 +123,20 @@ export default class SubmitRatingScreen extends React.Component {
           </View>
         </View>)
         :
-        <Text>
-          Belom Balik
-        </Text>
+        <View style={styles.container}>
+          <Image width="70" height="70" source={require('../assets/images/loader1.gif')}/>
+        </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    backgroundColor:'#fff',
+    alignItems:'center',
+    justifyContent:'center'
+  },
   container: {
     padding: 15,
     flex: 1,
