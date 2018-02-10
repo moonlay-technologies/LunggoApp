@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
-import LoadingAnimation from './LoadingAnimation';
+import LoadingAnimation from '../components/LoadingAnimation';
 import {
   Platform,
   StyleSheet,
@@ -99,7 +99,9 @@ export default class SubmitRatingScreen extends React.Component {
           <View style={styles.containerReview}>
             <View>
               {!this.state.step && (
-                <LoadingAnimation />
+                <View style={{ marginBottom: 40 }}>
+                  <Text style={styles.activityTitleBig}>Terima kasih telah memesan aktivitas di Travorama!</Text>
+                </View>
               )}
               <View>
                 <Text style={styles.activityDesc}>{question}</Text>
@@ -122,20 +124,12 @@ export default class SubmitRatingScreen extends React.Component {
           </View>
         </View>)
         :
-        <View style={styles.container}>
-          <Image width="70" height="70" source={require('../assets/images/loader1.gif')}/>
-        </View>
+        <LoadingAnimation />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    backgroundColor:'#fff',
-    alignItems:'center',
-    justifyContent:'center'
-  },
   container: {
     padding: 15,
     flex: 1,

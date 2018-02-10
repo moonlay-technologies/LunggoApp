@@ -25,41 +25,41 @@ export default TabNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerRight:
-      <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-        {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
-        <View style={styles.containerCart}>
-          <Entypo name='shopping-basket' size={26} color='#23d3c3' style={{/* marginRight:0*/}} />
-          {/*<View style={styles.notification}>
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
+          <View style={styles.containerCart}>
+            <Entypo name='shopping-basket' size={26} color='#23d3c3' style={{/* marginRight:0*/ }} />
+            {/*<View style={styles.notification}>
             <Text style={styles.txtNotification}>5</Text>
           </View>*/}
-        </View>
-      </TouchableOpacity>,
+          </View>
+        </TouchableOpacity>,
 
       headerStyle: {
         backgroundColor: '#fff',
         ...Platform.select({
           ios: {
-           /* paddingHorizontal:15,
-            paddingTop:30,
-            paddingBottom:10,
-            shadowColor: '#cdcdcd',
-            shadowOffset: { height: 3 },
-            shadowOpacity: 0.2,
-            shadowRadius: 2,
-            paddingVertical:15,*/
+            /* paddingHorizontal:15,
+             paddingTop:30,
+             paddingBottom:10,
+             shadowColor: '#cdcdcd',
+             shadowOffset: { height: 3 },
+             shadowOpacity: 0.2,
+             shadowRadius: 2,
+             paddingVertical:15,*/
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
-            height:51
+            height: 51
           },
           android: {
             //paddingHorizontal:12.6,
             //paddingVertical:12.6,
             //paddingRight:25,
-            elevation: 0,        
+            elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
-            backgroundColor:'#fbfbfb',
-            borderBottomColor:'#ececec'
+            backgroundColor: '#fbfbfb',
+            borderBottomColor: '#ececec'
           },
         }),
       },
@@ -72,7 +72,7 @@ export default TabNavigator(
               ? `ios-search${focused ? '' : '-outline'}`
               : 'ios-search-outline';
             break;
-            case 'MyBooking':
+          case 'MyBooking':
             iconName = Platform.OS === 'ios'
               ? `ios-paper${focused ? '' : '-outline'}`
               : 'ios-paper-outline';
@@ -101,63 +101,72 @@ export default TabNavigator(
           />
         );
       },
+      tabBarOnPress: ({ scene }) => {
+        let focused = scene.focused;
+        let route = scene.route.routeName;
+        if (!focused) {
+          // if (route == 'Wishlist') {
+          //   navigation.setParams({ shouldRefresh: true });
+          // }
+          navigation.navigate(route);
+        }
+      }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     //initialLayout: {width:100, height:300},
-    animationEnabled: false,
-    swipeEnabled: false,
-    tabBarOptions: { 
-      activeTintColor: Colors.bottomTabSelected, 
-      style:{paddingBottom:5, height:60, backgroundColor:'#fbfbfb', borderTopColor:'#ececec'} 
+    animationEnabled: true,
+    swipeEnabled: true,
+    tabBarOptions: {
+      activeTintColor: Colors.bottomTabSelected,
+      style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec' }
     },
   }
 );
-
 
 const styles = StyleSheet.create({
 
   containerCart: {
     ...Platform.select({
       ios: {
-        paddingRight:23,
+        paddingRight: 23,
       },
       android: {
-        paddingRight:23.5,
-        zIndex:100,
+        paddingRight: 23.5,
+        zIndex: 100,
       },
     }),
   },
   notification: {
-    backgroundColor:'#ffc943',
-    height:16,
-    width:16,
-    position:'absolute',
-    right:13,
-    top:-4,
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:8,
-    zIndex:100,
+    backgroundColor: '#ffc943',
+    height: 16,
+    width: 16,
+    position: 'absolute',
+    right: 13,
+    top: -4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    zIndex: 100,
     ...Platform.select({
       ios: {
-        right:15
+        right: 15
       },
       android: {
-        paddingRight:23.5,
-        zIndex:100,
+        paddingRight: 23.5,
+        zIndex: 100,
       },
     }),
   },
   txtNotification: {
-    color:'#fff',
-    fontFamily:'Hind-Bold',
-    fontSize:11,
+    color: '#fff',
+    fontFamily: 'Hind-Bold',
+    fontSize: 11,
     ...Platform.select({
       ios: {
         //backgroundColor:'red',
-        height:12,
-        lineHeight:16,
+        height: 12,
+        lineHeight: 16,
       },
     })
   },
@@ -165,9 +174,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {
-        paddingHorizontal:15,
-        paddingTop:30,
-        paddingBottom:15,
+        paddingHorizontal: 15,
+        paddingTop: 30,
+        paddingBottom: 15,
         shadowColor: '#cdcdcd',
         shadowOffset: { height: 3 },
         shadowOpacity: 0.2,
@@ -175,9 +184,9 @@ const styles = StyleSheet.create({
         // paddingVertical:15,
       },
       android: {
-        paddingHorizontal:15,
-        paddingVertical:15,
-        elevation: 20,        
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        elevation: 20,
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
       },

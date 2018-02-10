@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import LoadingAnimation from '../../components/LoadingAnimation';
 import BlankScreen from './WishlistBlankScreen';
 import ListScreen from '../SearchActivity/ActivityResultScreen';
 import { fetchWishlist } from '../../../api/Common';
@@ -11,7 +11,6 @@ export default class WishlistFrame extends React.Component {
 
   constructor (props) {
     super(props);
-    props.navigation.state.key = 'Wishlist';
     this.state = {
       isLoading: false,
       list:[],
@@ -42,9 +41,10 @@ export default class WishlistFrame extends React.Component {
   }
 
   render() {
+    console.log('wishlist rerendered');
     let {isLoading, list, status } = this.state;
     let {props} = this;
-    if (isLoading) return <ActivityIndicator size="large"/>
+    if (isLoading) return <LoadingAnimation />
     else if (status==200 && list && list.length > 0 )
          return <ListScreen list={list} {...props} />
     else return <BlankScreen {...props} />

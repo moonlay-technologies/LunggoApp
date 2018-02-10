@@ -5,7 +5,7 @@ import { ActivityIndicator } from 'react-native';
 import BlankScreen from './CartBlankScreen';
 import ListScreen from './CartListScreen';
 import { getCart } from './CartController';
-import LoadingAnimation from '../LoadingAnimation';
+import LoadingAnimation from '../../components/LoadingAnimation';
 
 
 export default class CartScreen extends React.Component {
