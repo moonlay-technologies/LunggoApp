@@ -11,6 +11,7 @@ import WishButton from '../components/WishButton';
 import search from './SearchActivity/SearchController';
 import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
+import Carousel from 'react-native-snap-carousel';
 
 
 const { width } = Dimensions.get('window');
@@ -24,6 +25,11 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
+      aaaa:[
+        {name:'sdssd'},
+        {name:'ddddd'},
+        {name:'bbbb'},
+      ]
     };
   }
 
@@ -54,6 +60,45 @@ export default class ExploreScreen extends React.Component {
 
   _onPressProduct = item => this._goTo('DetailScreen', { details: item });
   _onPressCategory = str => this._goTo('SearchActivity', { searchString: str });
+
+  _renderItem ({item, index}) {
+    let big = false;
+    return  (
+      <TouchableOpacity key={item.id}
+        style={{width: big? width*0.9 : width*0.4, marginLeft:15, paddingBottom:big? 0:50,}}
+        activeOpacity={1}
+        onPress={() => this._onPressProduct(item)}
+      >
+        <View style={[big? styles.containerThumbnailBig : styles.containerThumbnailMedium, {paddingTop:10}]}>
+        <Image
+          style={big? styles.thumbnailBig : styles.thumbnailMedium}
+          source={{uri:item.mediaSrc}}
+        />
+        </View>
+        <View style={{marginTop:big?10:5, flexDirection:'row',paddingTop:big?0:0}}>
+          <View style={{
+            flex: big? 4.5 : 4,
+            paddingBottom: 30,
+            backgroundColor:'transparent',
+          }}>
+            <Text style={big? styles.namaKotaBig : styles.namaKota}>
+              {item.city}
+            </Text>
+            <Text style={big? styles.activityTitleBig : styles.activityTitle }>
+              {item.name}
+            </Text>
+            <Text style={big? styles.priceTitleBig : styles.priceTitle }>
+              {Formatter.price(item.price)}
+            </Text>
+          </View>
+          {/*<View style={{flex:1, alignItems:'flex-end',}}>
+            <WishButton wishlisted={item.wishlisted}
+              id={item.id} big={big} {...this.props} />
+          </View>*/}
+        </View>
+      </TouchableOpacity>
+    );
+  }
 
   render() {
     console.log('rendering ExploreScreen')
@@ -207,6 +252,18 @@ export default class ExploreScreen extends React.Component {
             </View>
           </Swiper>
         </View>*/}
+        <View style={{marginTop:10, marginBottom:20}}>
+          <Carousel
+            ref={ c =>  this._carousel = c }
+            data={this.state.tripList}
+            renderItem={this._renderItem}
+            sliderWidth={width}
+            itemWidth={width/2}
+            layout={'default'}
+            activeAnimationType={'decay'}
+
+          />
+        </View>
 
         <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
