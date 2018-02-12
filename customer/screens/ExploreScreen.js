@@ -252,16 +252,20 @@ export default class ExploreScreen extends React.Component {
             </View>
           </Swiper>
         </View>*/}
-        <View style={{marginTop:10, marginBottom:20}}>
+        <View style={{}}>
           <Carousel
             ref={ c =>  this._carousel = c }
-            data={this.state.tripList}
+            data={[...this.state.paketList, ...this.state.tripList, ...this.state.tiketList, ...this.state.turList]}
             renderItem={this._renderItem}
             sliderWidth={width}
-            itemWidth={width/2}
+            itemWidth={width * 0.4 + 15}
             layout={'default'}
-            activeAnimationType={'decay'}
-
+            firstItem={0}
+            activeSlideAlignment={'start'}
+            inactiveSlideScale={1}
+            inactiveSlideOpacity={1}
+            contentContainerCustomStyle={{paddingLeft:100}}
+            containerCustomStyle={{}}
           />
         </View>
 
