@@ -43,9 +43,14 @@ import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 
 import Swiper from '../customer/screens/Swiper';
 
+
+import Settings from '../customer/screens/SettingsScreen';
+import NotFound from '../commons/NotFoundScreen';
+
 const RootStackNavigator = StackNavigator(
   {
     Main: {
+      // screen: LoginScreen
       screen: BeforeLoginScreen
       //screen: MyBookingList
       //screen: LoginScreen
@@ -81,7 +86,9 @@ const RootStackNavigator = StackNavigator(
     NewPassword: { screen: NewPassword },
     SubmitRating: { screen: SubmitRating },
     SubmitReview: { screen: SubmitReview },
-    CancelationPolicy: { screen: CancelationPolicy }
+    CancelationPolicy: { screen: CancelationPolicy },
+    Settings: { screen: Settings },
+    NotFound: { screen: NotFound },
   },
   {
     initialRouteParams: { appType: 'OPERATOR' },

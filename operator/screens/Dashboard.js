@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
   TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet
 } from 'react-native';
@@ -131,10 +131,19 @@ export default class Dashboard extends React.Component {
   // }
 
   //// Bind <TextInput> searchText with state searchString
-  _onSearchTextChanged = (event) => {
+  _onSearchTextChanged = event => {
     this.setState({ searchString: event.nativeEvent.text });
-  };
+  }
 
+  _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
+
+  _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
+
+  _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
+  _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
+  _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
+  _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
+  _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
   render() {
     const loadingIndicator = this.state.isLoading ?
@@ -147,10 +156,16 @@ export default class Dashboard extends React.Component {
             //style={{marginTop:40}}
           >
             <View style={{flexDirection:'row'}}>
-              <View style={{flex:1}}>
+              <TouchableOpacity
+                style={{flex:1}}
+                onPress={this._goToAccountScreen}
+              >
                 <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
-              </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}
+                onPress={this._goToMessageScreen}
+              >
                 <Icon
                   style={{marginRight:4}}
                   name='sms'
@@ -160,7 +175,7 @@ export default class Dashboard extends React.Component {
                 <View style={styles.notification}>
                   <Text style={{color:'#fff', fontWeight:'bold', fontSize:11}}>5</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -204,17 +219,21 @@ export default class Dashboard extends React.Component {
                   borderWidth:1
                 }}
                 style={{fontSize: 12, color: '#676767',}}
+                onPress={this._goToAccountScreen}
               >
                 Edit Profile
               </Button>
             </View>
-            <View style={{marginLeft:10}}>
+            <TouchableOpacity
+              style={{marginLeft:10}}
+              onPress={this._goToSettingsScreen}
+            >
               <Icon
                 name='ios-settings-outline'
                 type='ionicon'
                 size={26}
                 color='#454545'/>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -245,9 +264,12 @@ export default class Dashboard extends React.Component {
               <View style={{flex:2}}>
                 <Text style={styles.categoryTitle}>Activity Review</Text>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'center'}}>
+              <TouchableOpacity
+                onPress={this._goToActivityViewDetailsScreen}
+                style={{flex:1,alignItems:'flex-end', justifyContent:'center'}}
+              >
                 <Text style={styles.textKecil}>Details</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -255,24 +277,34 @@ export default class Dashboard extends React.Component {
         <View style={styles.container}>
           <View style={{marginTop:0}}>
             <View style={{flexDirection:'row'}}>
-              <TouchableOpacity style={{flex:1, alignItems:'center'}}
+              <TouchableOpacity
                 onPress={this._onActivityListPressed}
+                style={styles.activityReviewButton}
               >
                 <Text style={styles.point}>2</Text>
                 <Text style={styles.textKecil}>Activities</Text>
               </TouchableOpacity>
-              <View style={{flex:1, alignItems:'center'}}>
+              <TouchableOpacity
+                onPress={this._goToDealsScreen}
+                style={styles.activityReviewButton}
+              >
                 <Text style={styles.point}>13</Text>
                 <Text style={styles.textKecil}>Deals</Text>
-              </View>
-              <View style={{flex:1, alignItems:'center'}}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this._goToActivityViewsScreen}
+                style={styles.activityReviewButton}
+              >
                 <Text style={styles.point}>107</Text>
                 <Text style={styles.textKecil}>Views</Text>
-              </View>
-              <View style={{flex:1, alignItems:'center'}}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this._goToReviewScreen}
+                style={styles.activityReviewButton}
+              >
                 <Text style={styles.point}>14</Text>
                 <Text style={styles.textKecil}>Review</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -315,6 +347,10 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  activityReviewButton: {
+    flex:1,
+    alignItems:'center',
+  },
   divider: {
     height: 1,
     width: '100%',
@@ -432,68 +468,5 @@ const styles = StyleSheet.create({
     paddingTop:20,
     backgroundColor: '#fff',
   },
+
 });
-
-//   render() {
-//     const spinner = this.state.isLoading ?
-//       <ActivityIndicator size='large'/> : null;
-//     return (
-//       <ScrollView
-//         style={styles.container}
-//         contentContainerStyle={styles.contentContainer}
-//       >
-//         {/*<View style={styles.flowRight}>*/}
-//           <Button
-//             onPress={this._onAppointmentRequestPressed}
-//             color='#48BBEC'
-//             title='AppointmentRequest'
-//           />
-//           <Button
-//             onPress={this._onAppointmentListPressed}
-//             color='#48BBEC'
-//             title='AppointmentList'
-//           />
-//           <Button
-//             onPress={this._onActivityListPressed}
-//             color='#48BBEC'
-//             title='ActivityList'
-//           />
-//         {/*</View>*/}
-//         {spinner}
-//         <Text>
-//           {this.state.message}
-//         </Text>
-//       </ScrollView>
-//     );
-//   }
-
-// }
-
-
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//   },
-//   contentContainer: {
-//     paddingTop: 30,
-//   },
-//   flowRight: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     alignSelf: 'stretch',
-//   },
-//   searchInput: {
-//     height: 36,
-//     padding: 4,
-//     marginRight: 5,
-//     flexGrow: 1,
-//     fontSize: 18,
-//     borderWidth: 1,
-//     borderColor: '#48BBEC',
-//     borderRadius: 8,
-//     color: '#48BBEC',
-//   },
-// });
