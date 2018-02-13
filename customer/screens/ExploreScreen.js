@@ -13,7 +13,6 @@ import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
 
-
 const { width } = Dimensions.get('window');
 
 export default class ExploreScreen extends React.Component {
@@ -25,11 +24,8 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
-      aaaa:[
-        {name:'sdssd'},
-        {name:'ddddd'},
-        {name:'bbbb'},
-      ]
+      isLoading: true,
+      a: 0
     };
   }
 
@@ -39,10 +35,14 @@ export default class ExploreScreen extends React.Component {
   };
 
   _refreshContents = () => {
-    search('tiket').then(tiketList => this.setState({ tiketList }));
-    search('paket').then(paketList => this.setState({ paketList }));
-    search('trip').then(tripList => this.setState({ tripList }));
-    search('tur').then(turList => this.setState({ turList }));
+    Promise.all([
+      search('tiket').then(tiketList => this.setState({ tiketList })),
+      search('paket').then(paketList => this.setState({ paketList })),
+      search('trip').then(tripList => this.setState({ tripList })),
+      search('tur').then(turList => this.setState({ turList }))
+    ]).then(response => {
+      this.setState({ isLoading: false });
+    });
   }
 
   componentDidMount() {
@@ -55,112 +55,13 @@ export default class ExploreScreen extends React.Component {
     }
   }
 
-  _goTo = (screen, params) =>
-    this.props.navigation.navigate(screen, params);
-
-  _onPressProduct = item => this._goTo('DetailScreen', { details: item });
-  _onPressCategory = str => this._goTo('SearchActivity', { searchString: str });
-
-  _renderItem ({item, index}) {
-    let big = false;
-    return  (
-      <TouchableOpacity key={item.id}
-        style={{width: big? width*0.9 : width*0.4, marginLeft:15, paddingBottom:big? 0:50,}}
-        activeOpacity={1}
-        onPress={() => this._onPressProduct(item)}
-      >
-        <View style={[big? styles.containerThumbnailBig : styles.containerThumbnailMedium, {paddingTop:10}]}>
-        <Image
-          style={big? styles.thumbnailBig : styles.thumbnailMedium}
-          source={{uri:item.mediaSrc}}
-        />
-        </View>
-        <View style={{marginTop:big?10:5, flexDirection:'row',paddingTop:big?0:0}}>
-          <View style={{
-            flex: big? 4.5 : 4,
-            paddingBottom: 30,
-            backgroundColor:'transparent',
-          }}>
-            <Text style={big? styles.namaKotaBig : styles.namaKota}>
-              {item.city}
-            </Text>
-            <Text style={big? styles.activityTitleBig : styles.activityTitle }>
-              {item.name}
-            </Text>
-            <Text style={big? styles.priceTitleBig : styles.priceTitle }>
-              {Formatter.price(item.price)}
-            </Text>
-          </View>
-          {/*<View style={{flex:1, alignItems:'flex-end',}}>
-            <WishButton wishlisted={item.wishlisted}
-              id={item.id} big={big} {...this.props} />
-          </View>*/}
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
   render() {
-    console.log('rendering ExploreScreen')
-    let categoryHeader = ({ title, searchUrl }) =>
-      <View style={[styles.container, { flexDirection: 'row', }]}>
-        <Text style={[{ flex: 2 }, styles.categoryTitle]}>{title}</Text>
-        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}
-          onPress={() => this._onPressCategory(searchUrl)} >
-          <Text style={styles.seeMore}>Lihat Semua</Text>
-        </TouchableOpacity>
-      </View>
-
-    let categoryContent = (list, big = false) => {
-      return (
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}
-          style={{
-            height: '100%',
-            marginBottom: big ? Platform.select({
-              ios: -10,
-              android: 10,
-            }) : -50,
-          }} >
-
-          {list.map(listItem =>
-            <TouchableOpacity key={listItem.id}
-              style={{ width: big ? width * 0.9 : width * 0.4, marginLeft: 15, paddingBottom: big ? 0 : 50, }}
-              activeOpacity={1}
-              onPress={() => this._onPressProduct(listItem)}
-            >
-              <View style={[big ? styles.containerThumbnailBig : styles.containerThumbnailMedium, { paddingTop: 10 }]}>
-                <Image
-                  style={big ? styles.thumbnailBig : styles.thumbnailMedium}
-                  source={{ uri: listItem.mediaSrc }}
-                />
-              </View>
-              <View style={{ marginTop: big ? 10 : 5, flexDirection: 'row', paddingTop: big ? 0 : 0 }}>
-                <View style={{
-                  flex: big ? 4.5 : 4,
-                  paddingBottom: 30,
-                  backgroundColor: 'transparent',
-                }}>
-                  <Text style={big ? styles.namaKotaBig : styles.namaKota}>
-                    {listItem.city}
-                  </Text>
-                  <Text style={big ? styles.activityTitleBig : styles.activityTitle}>
-                    {listItem.name}
-                  </Text>
-                  <Text style={big ? styles.priceTitleBig : styles.priceTitle}>
-                    {Formatter.price(listItem.price)}
-                  </Text>
-                </View>
-                <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                  <WishButton wishlisted={listItem.wishlisted}
-                    id={listItem.id} big={big} {...this.props} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        </ScrollView>
-      );
-    }
-
+    let allList = [...this.state.turList, ...this.state.tripList, ...this.state.paketList, ...this.state.tiketList];
+    let placeSrc = [require('../../assets/images/yogya.jpg'), require('../../assets/images/surabaya.jpg'), require('../../assets/images/bg.jpg')];
+    let places = [...placeSrc, ...placeSrc, ...placeSrc];
+    let placeList = places.map(place => { return { mediaSrc: place } });
+    let promos = [require('../../assets/images/promo1.jpg'), require('../../assets/images/promo2.jpg'), require('../../assets/images/promo3.jpg')]
+    let promoList = promos.map(promo => { return { mediaSrc: promo } });
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
@@ -203,223 +104,23 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */}
 
-        {categoryHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-        {categoryContent(this.state.tiketList, true)}
+        {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
+        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
 
-        {categoryHeader({ title: 'Paket', searchUrl: 'paket' })}
-        {categoryContent(this.state.paketList)}
+        {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
+        {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
 
-        {categoryHeader({ title: 'Trip', searchUrl: 'trip' })}
-        {categoryContent(this.state.tripList)}
+        {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
+        {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
 
-        {categoryHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-        {categoryContent(this.state.turList)}
+        {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
+        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
 
-        <View style={styles.container}>
-          <View style={{ marginTop: -10 }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 2 }}>
-                <Text style={styles.categoryTitle}>Lokasi Populer</Text>
-              </View>
-              <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                <Text style={styles.seeMore}>Lihat Semua</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+        {this._renderHeader({ title: 'Destinasi Favorit' })}
+        {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
 
-        {/*        <View style={{flexDirection:'row', marginTop:10, marginBottom:20}}>
-          <Swiper style={styles.wrapper} containerStyle={styles.wrapperContainer} loop={false} showsButtons={false} showsPagination={false}>
-            <View style={styles.slides}>
-              <View style={{backgroundColor:"#000", borderRadius:5,}}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')}/>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-            <View style={styles.slides}>
-              <View style={{backgroundColor:"#000", borderRadius:5,}}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')}/>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-          </Swiper>
-        </View>*/}
-        <View style={{}}>
-          <Carousel
-            ref={ c =>  this._carousel = c }
-            data={[...this.state.paketList, ...this.state.tripList, ...this.state.tiketList, ...this.state.turList]}
-            renderItem={this._renderItem}
-            sliderWidth={width}
-            itemWidth={width * 0.4 + 15}
-            layout={'default'}
-            firstItem={0}
-            activeSlideAlignment={'start'}
-            inactiveSlideScale={1}
-            inactiveSlideOpacity={1}
-            contentContainerCustomStyle={{paddingLeft:100}}
-            containerCustomStyle={{}}
-          />
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/surabaya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Surabaya</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/bg.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Hawai</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/surabaya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Surabaya</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/bg.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Hawai</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/surabaya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Surabaya</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/bg.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Hawai</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/yogya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Jogja</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/surabaya.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Surabaya</Text>
-              </View>
-            </View>
-            <View style={{ width: width / 2, marginLeft: 15, marginRight: 15, }}>
-              <View style={{ backgroundColor: "#000", borderRadius: 5, }}>
-                <TouchableOpacity onPress={() => this._onPressProduct(1)}>
-                  <Image style={styles.thumbnailPlaces} source={require('../../assets/images/bg.jpg')} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.placeTitleContainer}>
-                <Text style={styles.placeTitle}>Hawai</Text>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-
-        <View style={styles.container}>
-          <View style={{ marginTop: 20 }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.categoryTitle}>Promo</Text>
-              </View>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                <Text style={styles.seeMore}>Lihat Semua</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={{ width: width * 0.85, marginLeft: 15, }}>
-              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo2.jpg')} />
-            </View>
-            <View style={{ width: width * 0.85, marginLeft: 15, }}>
-              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo3.jpg')} />
-            </View>
-            <View style={{ width: width * 0.85, marginLeft: 15, marginRight: 15 }}>
-              <Image style={styles.thumbnailPromo} source={require('../../assets/images/promo1.jpg')} />
-            </View>
-          </ScrollView>
-        </View>
+        {this._renderHeader({ title: 'Promo Terkini' })}
+        {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
 
         <View style={{ paddingTop: 30 }}></View>
 
@@ -427,8 +128,124 @@ export default class ExploreScreen extends React.Component {
     );
   }
 
+  _goTo = (screen, params) =>
+    this.props.navigation.navigate(screen, params);
+
+  _onPressProduct = item => this._goTo('DetailScreen', { details: item });
+  _onPressCategory = str => this._goTo('SearchActivity', { searchString: str });
+
+  _renderHeader({ title, searchUrl }) {
+    return (
+      <View style={[styles.container, { flexDirection: 'row', }]}>
+        <Text style={[{ flex: 2 }, styles.categoryTitle]}>{title}</Text>
+        {searchUrl && (
+          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}
+            onPress={() => this._onPressCategory(searchUrl)} >
+            <Text style={styles.seeMore}>Lihat Semua</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    )
+  }
+
+  _renderContent({ list, itemsPerScreen, height }) {
+    let itemWidth = ((width - 1.5 * THUMBNAIL_WS) / itemsPerScreen - THUMBNAIL_WS);
+    let style = StyleSheet.create({
+      containerThumbnail: {
+        backgroundColor: 'transparent',
+        paddingBottom: 8,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 3,
+            shadowOpacity: 0.7
+          },
+        })
+      },
+      thumbnail: {
+        backgroundColor: 'transparent',
+        resizeMode: 'cover',
+        width: itemWidth,
+        height: height,
+        borderRadius: 5,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 6,
+            shadowOpacity: 0.7
+          },
+
+        }),
+      }
+    });
+
+    let _renderItem = ({ item, index }) => {
+      console.log(item.mediaSrc);
+      return (
+        <TouchableOpacity key={item.id}
+          style={{
+            width: itemWidth,
+            marginLeft: THUMBNAIL_WS,
+
+          }}
+          activeOpacity={1}
+          onPress={() => this._onPressProduct(item)}
+        >
+          <View style={[style.containerThumbnail, { paddingTop: 10 }]}>
+            <Image
+              style={style.thumbnail}
+              source={item.mediaSrc.toString().startsWith('http') ? { uri: item.mediaSrc } : item.mediaSrc}
+            />
+          </View>
+          {item.name && (
+            <View style={{ marginTop: 5, flexDirection: 'row', paddingTop: 0 }}>
+              <View style={{
+                flex: 4,
+                paddingBottom: 30,
+                backgroundColor: 'transparent',
+              }}>
+                <Text style={styles.namaKota}>
+                  {item.city}
+                </Text>
+                <Text style={styles.activityTitle}>
+                  {item.name}
+                </Text>
+                <Text style={styles.priceTitle}>
+                  {Formatter.price(item.price)}
+                </Text>
+              </View>
+            </View>
+          )}
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+      <Carousel
+        ref={c => this._carousel = c}
+        data={list}
+        renderItem={_renderItem}
+        sliderWidth={width}
+        itemWidth={itemWidth + THUMBNAIL_WS}
+        layout={'default'}
+        firstItem={0}
+        activeSlideAlignment={'start'}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
+      />
+    );
+  }
 }
 
+const THUMBNAIL_WS = 15;
 const styles = StyleSheet.create({
   /*  slides:{
       backgroundColor:'red',
@@ -652,7 +469,7 @@ const styles = StyleSheet.create({
   },
   container: {
     // flex: 1,
-    padding: 15,
+    padding: THUMBNAIL_WS,
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {
