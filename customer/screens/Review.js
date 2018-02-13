@@ -60,8 +60,8 @@ export default class ReviewScreen extends React.Component {
         </View>
 
         <View style={styles.container}>
-          {reviews.map(review => {
-            <View style={styles.containerReview}>
+          {reviews.map((review, index) => {
+            <View style={styles.containerReview} key={index}>
               <View style={{ flexDirection: 'row' }}>
                 <Image style={styles.thumbprofile} source={review.avatar} />
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
