@@ -5,75 +5,86 @@ import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import { validatePhone } from '../../../commons/FormValidation';
-import { sendOtp } from './ResetPasswordController';
+  KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
+} from 'react-native';
+import { validatePassword } from '../../../commons/FormValidation';
+import { resetPassword } from '../ResetPasswordController';
 
-export default class ForgotPasswordScreen extends React.Component {
+export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      phone: '',
+      password: '',
+      showPassword: false,
       isLoading: false,
     }
   }
 
   static navigationOptions = {
-    title: 'Forgot Password',
+    title: 'New Password',
   }
 
   _submit = () => {
-    let {phone} = this.state;
-    let errorMessage = validatePhone(phone);
-    if (errorMessage) {
-      // this.refs.phone.focus(); //// keknya ga gitu guna
-      return this.setState({errorMessage});
+    let {password} = this.state;
+    let {phone, otp} = this.props.navigation.state.params;
+    let errorPassword = validatePassword(password);
+    if (errorPassword) {
+      this.refs.password.focus();
+      return this.setState({errorPassword});
     }
     this.setState({isLoading: true});
-    sendOtp(phone).then( response => {
-      if (response.status==200 ||
-        response.error=='ERR_TOO_MANY_SEND_SMS_IN_A_TIME')
-      {
-          this.props.navigation.navigate('OtpVerification',
-            {phone, resendCooldown: response.resendCooldown });
-      }
-      else console.log(response.error);
+    resetPassword(phone, otp, password).then( response => {
+      if (response.status == '200') this.props.navigation.pop(2);
       this.setState({isLoading: false, errorMessage:response.message});
     });
   }
 
+  _toggleShowPassword = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  }
+
   render() {
-    let {phone, isLoading, errorMessage} = this.state;
-    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
+    let {password, showPassword, isLoading, errorMessage} = this.state;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
-          <Text style={styles.categoryTitle}>Forgot Your Password ?</Text>
+          <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
         </View>
         <View style={{marginBottom:25}}>
-          <Text style={styles.mediumText}>Enter your phone to reset your password</Text>
+          <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
         </View>
         { errorMessage ?
           <View style={{alignItems:'center', marginBottom:10}}>
             <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
           </View> : null
         }
-        <TextInput
-          style={styles.searchInput}
-          underlineColorAndroid='transparent'
-          placeholder='Phone' //placeholder='Email'
-          keyboardType='phone-pad' //keyboardType='email-address'
-          returnKeyType='done'
-          autoCapitalize='none'
-          autoCorrect={false}
-          onChangeText={ phone => this.setState({
-            phone, errorMessage:null,
-          })}
-          onSubmitEditing={this._submit}
-          ref='phone'
-          selectTextOnFocus={true}
-          autoFocus={true}
-        />
+        <View>
+          <TextInput
+            style={styles.searchInput}
+            underlineColorAndroid='transparent'
+            placeholder='New Password'
+            secureTextEntry={!showPassword}
+            autoCapitalize='none'
+            autoCorrect={false}
+            blurOnSubmit={true}
+            onChangeText={ password => this.setState({
+              password, errorMessage:null,
+            })}
+            returnKeyType='done'
+            onSubmitEditing={this._submit}
+            ref='password'
+            selectTextOnFocus={true}
+            autoFocus={true}
+          />
+          <View style={{position:'absolute', right:20, top:11,}}>
+            <TouchableOpacity onPress={this._toggleShowPassword}>
+              <Icon
+                name={showPassword ? 'eye' : 'eye-with-line'}
+                type='entypo' size={22} color='#acacac'
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
         <Button
           containerStyle={{
             marginTop:40,
@@ -89,15 +100,9 @@ export default class ForgotPasswordScreen extends React.Component {
           disabled={isLoading}
           styleDisabled={{color:'#aaa'}}
         >
-          Kirim
+          Ubah Password
         </Button>
-        {loadingIndicator}
-        <View style={{alignItems:'center', marginTop:15, }}>
-          <Text style={styles.smallText}>
-            Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
-            be the most annoying cat that you can.
-          </Text>
-        </View>
+        {isLoading ? <ActivityIndicator/> : null}
       </KeyboardAvoidingView>
     );
   }

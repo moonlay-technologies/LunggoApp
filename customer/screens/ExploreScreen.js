@@ -14,6 +14,7 @@ import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
 
 const { width } = Dimensions.get('window');
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class ExploreScreen extends React.Component {
 
@@ -24,9 +25,9 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
-      isLoading: true,
-      a: 0
+      isLoading: true
     };
+    setItemAsync('isNotFirstOpen', 'true');
   }
 
   static navigationOptions = {
@@ -188,7 +189,6 @@ export default class ExploreScreen extends React.Component {
     });
 
     let _renderItem = ({ item, index }) => {
-      console.log(item.mediaSrc);
       return (
         <TouchableOpacity key={item.id}
           style={{

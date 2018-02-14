@@ -19,8 +19,6 @@ export default class MapScreen extends React.Component {
 
   render() {
     let {address, city, lat, long} = this.props.navigation.state.params;
-    console.log(lat)
-    console.log(long)
     return (
       <MapView
         style={{width:"100%", height:"100%"}}

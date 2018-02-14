@@ -1,5 +1,5 @@
 'use strict';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../../api/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 
 export async function sendOtp(phoneNumber) {
   const version = 'v1';

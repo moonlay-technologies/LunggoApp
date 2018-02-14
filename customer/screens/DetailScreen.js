@@ -551,7 +551,6 @@ class Map extends React.Component {
               ref={marker => (this.marker = marker)}
             />
           </MapView>
-          <Text>LatLong: {lat} , {long} </Text>
         </TouchableOpacity>
       </View>
     )
