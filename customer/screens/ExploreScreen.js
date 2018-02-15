@@ -14,6 +14,7 @@ import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
 
 const { width } = Dimensions.get('window');
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class ExploreScreen extends React.Component {
 
@@ -24,9 +25,9 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
-      isLoading: true,
-      a: 0
+      isLoading: true
     };
+    setItemAsync('isNotFirstOpen', 'true');
   }
 
   static navigationOptions = {
@@ -188,7 +189,6 @@ export default class ExploreScreen extends React.Component {
     });
 
     let _renderItem = ({ item, index }) => {
-      console.log(item.mediaSrc);
       return (
         <TouchableOpacity key={item.id}
           style={{
@@ -212,13 +212,13 @@ export default class ExploreScreen extends React.Component {
                 paddingBottom: 20,
                 backgroundColor: 'transparent',
               }}>
-                <Text style={styles.namaKota}>
+                <Text style={itemsPerScreen == 1 ? styles.namaKotaBig : styles.namaKota}>
                   {item.city}
                 </Text>
-                <Text style={styles.activityTitle}>
+                <Text style={itemsPerScreen == 1 ? styles.activityTitleBig : styles.activityTitle}>
                   {item.name}
                 </Text>
-                <Text style={styles.priceTitle}>
+                <Text style={itemsPerScreen == 1 ? styles.priceTitleBig : styles.priceTitle}>
                   {Formatter.price(item.price)}
                 </Text>
               </View>

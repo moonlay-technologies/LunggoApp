@@ -6,12 +6,12 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../../api/Common';
 import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
-  from '../../commons/FormValidation';
-  import globalStyles from '../../commons/globalStyles';
+  from '../../FormValidation';
+  import globalStyles from '../../globalStyles';
 
 
 export default class Registration extends React.Component {
@@ -32,18 +32,19 @@ export default class Registration extends React.Component {
   }
 
   _onRegisterPressed = () => {
-    let {name, password, email, countryCode, phone} = this.state;
-    let errorName = validateRequiredField(name);
-    let errorEmail = validateEmail(email);
-    let errorPassword = validatePassword(password);
-    let errorCountryCode = validateRequiredField(countryCode);
-    let errorPhone = validateRequiredField(phone);
-    if (!errorName && !errorEmail && !errorPassword &&
-        !errorCountryCode && !errorPhone) {
-      this._register();
-    }
-    else this.setState({errorName, errorEmail, errorPassword,
-      errorCountryCode, errorPhone});
+    this.props.navigation.goBack('BeforeLoginScreen');
+    // let {name, password, email, countryCode, phone} = this.state;
+    // let errorName = validateRequiredField(name);
+    // let errorEmail = validateEmail(email);
+    // let errorPassword = validatePassword(password);
+    // let errorCountryCode = validateRequiredField(countryCode);
+    // let errorPhone = validateRequiredField(phone);
+    // if (!errorName && !errorEmail && !errorPassword &&
+    //     !errorCountryCode && !errorPhone) {
+    //   this._register();
+    // }
+    // else this.setState({errorName, errorEmail, errorPassword,
+    //   errorCountryCode, errorPhone});
   }
 
   _register = () => {
@@ -60,7 +61,7 @@ export default class Registration extends React.Component {
     }
     fetchTravoramaApi(request).then( response => {
       if (response.status == 200) {
-        this.props.navigation.navigate('MainTabNavigator');
+        this.props.navigation.replace('MainTabNavigator');
         this.setState({isLoading:false})
       }
       else {
@@ -266,7 +267,7 @@ export default class Registration extends React.Component {
               marginTop:30, alignItems:'center'
             }}
             onPress={() =>
-              this.props.navigation.navigate('LoginScreen')
+              this.props.navigation.replace('LoginScreen')
             }
           >
             <Text style={{fontSize:14, color:'#000', fontFamily: 'Hind'}}>

@@ -97,6 +97,8 @@ export default class DetailScreen extends React.Component {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       sliderImages, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount } = this.state;
+    console.log('state');
+    console.log(this.state);
     return (
       <View>
         <ScrollView
@@ -163,7 +165,7 @@ export default class DetailScreen extends React.Component {
 
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} {...this.props} />
         {!isLoading && (
-          <Footer price={price} {...this.props} />
+          <Footer price={price} details={this.state} {...this.props}/>
         )}
 
       </View>
@@ -179,12 +181,12 @@ class Footer extends React.Component {
 
   _goToBookingDetail = async () => {
     this.setState({ isLoading: true })
-    const { requiredPaxData, price, id, availableDateTimes } = this.state;
+    const { requiredPaxData, price, id, availableDateTimes } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'LoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
-      package: this.state.package,
+      package: this.props.details.package,
       activityId: id,
     });
     this.setState({ isLoading: false })
@@ -265,9 +267,9 @@ class Header extends React.Component {
             justifyContent: 'flex-end',
             flexDirection: 'row',
           }}>
-            <TouchableOpacity style={{ marginLeft: 10 }}>
+            {/* <TouchableOpacity style={{ marginLeft: 10 }}>
               <Icon name='share' type='materialicons' size={30} color='#000' />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <WishButton wishlisted={wishlisted} id={id} big={true}
               {...this.props} style={{ marginLeft: 10 }} unwishlistedColor={'#000'} />
           </View>
@@ -551,7 +553,6 @@ class Map extends React.Component {
               ref={marker => (this.marker = marker)}
             />
           </MapView>
-          <Text>LatLong: {lat} , {long} </Text>
         </TouchableOpacity>
       </View>
     )

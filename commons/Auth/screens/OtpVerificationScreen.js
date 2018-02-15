@@ -16,7 +16,7 @@ import Button from 'react-native-button';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView,
   KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
-import { sendOtp, verifyOtp } from './ResetPasswordController';
+import { sendOtp, verifyOtp } from '../ResetPasswordController';
 
 export default class OtpVerificationScreen extends React.Component {
   constructor(props, context) {
@@ -67,7 +67,7 @@ export default class OtpVerificationScreen extends React.Component {
     verifyOtp(phone, otp).then( response => {
       if (response.status===200) {
         //go to new password inputScreen
-        this.props.navigation.navigate('NewPassword',{phone,otp});
+        this.props.navigation.replace('NewPassword',{phone,otp});
       }
       else console.log(response.error);
       this.setState({isLoading: false, errorMessage:response.message});

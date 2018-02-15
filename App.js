@@ -4,9 +4,12 @@ import Expo, { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
+    isFirstOpen: false
   };
 
   render() {
@@ -24,7 +27,7 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' &&
             <View style={styles.statusBarUnderlay} />}
-          <RootNavigation />
+          <RootNavigation isNotFirstOpen={this.state.isNotFirstOpen} />
         </View>
       );
     }
@@ -32,6 +35,7 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
+      getItemAsync('isNotFirstOpen').then(isNotFirstOpen => this.setState({ isNotFirstOpen })),
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
         require('./assets/images/robot-prod.png'),
@@ -41,7 +45,7 @@ export default class App extends React.Component {
         Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-     // { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
+        // { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
         // { 'OpenSans': require('./assets/fonts/OpenSans-Regular.ttf') },
         // { 'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf') },
         // { 'OpenSans-Bold': require('./assets/fonts/OpenSans-Bold.ttf') },

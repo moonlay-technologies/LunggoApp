@@ -20,7 +20,7 @@ export default class LoadingAnimation extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image width="40" height="40" source={require('../assets/images/loader1.gif')} />
+        <Image style={{height: 100, width:100}} source={require('../assets/images/loader1.gif')} />
       </View>
     );
   }

@@ -4,17 +4,13 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput,
   TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../api/Common';
-import { validateUserName, validatePassword } from './FormValidation';
+import { fetchTravoramaLoginApi } from '../../../api/Common'
+import { validateUserName, validatePassword } from '../../FormValidation';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
-import globalStyles from './globalStyles';
-
-
-
+import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
-import registerForPushNotificationsAsync
-  from '../api/registerForPushNotificationsAsync';
+import registerForPushNotificationsAsync from '../../../api/registerForPushNotificationsAsync';
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -68,7 +64,7 @@ _registerForPushNotifications() {
 
   _login = () => {
     this.setState({isLoading:true})
-    let {navigate, goBack} = this.props.navigation;
+    let {navigate, goBack, replace} = this.props.navigation;
     let {params} = this.props.navigation.state;
     // //// validation
     //TODO
@@ -88,13 +84,13 @@ _registerForPushNotifications() {
 
         if (params) {
           if (params.appType == 'OPERATOR') {
-            navigate('Dashboard');
+            replace('Dashboard');
           } else if (params.back == true) {
             goBack();
           } else {
-            navigate('BookingDetail',params);
+            replace('BookingDetail',params);
           }
-        } else navigate('MainTabNavigator');
+        } else replace('MainTabNavigator');
       } else {
         console.log(response);
         let error;
@@ -147,7 +143,7 @@ _registerForPushNotifications() {
         style={{ position:'absolute', bottom:20,
           alignItems:'center', width:'111%'
         }}
-        onPress={() => this.props.navigation.navigate('Registration')}
+        onPress={() => this.props.navigation.replace('Registration')}
       >
         <Text style={{fontSize:12, color:'#000', fontFamily:'Hind'}}>
           Belum punya akun? Daftar di sini

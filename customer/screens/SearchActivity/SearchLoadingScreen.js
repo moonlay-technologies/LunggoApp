@@ -18,8 +18,11 @@ export default class SearchLoadingScreen extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    title: 'nanti diganti searchHeader',
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: `Pencarian '${params.searchString}'`
+    }
   };
 
   componentDidMount() {
