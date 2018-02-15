@@ -212,13 +212,13 @@ export default class ExploreScreen extends React.Component {
                 paddingBottom: 30,
                 backgroundColor: 'transparent',
               }}>
-                <Text style={styles.namaKota}>
+                <Text style={itemsPerScreen == 1 ? styles.namaKotaBig : styles.namaKota}>
                   {item.city}
                 </Text>
-                <Text style={styles.activityTitle}>
+                <Text style={itemsPerScreen == 1 ? styles.activityTitleBig : styles.activityTitle}>
                   {item.name}
                 </Text>
-                <Text style={styles.priceTitle}>
+                <Text style={itemsPerScreen == 1 ? styles.priceTitleBig : styles.priceTitle}>
                   {Formatter.price(item.price)}
                 </Text>
               </View>

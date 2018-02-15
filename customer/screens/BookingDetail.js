@@ -45,6 +45,7 @@ export default class BookingDetail extends React.Component {
       counter, totalCount, price,
       isDateSelected: true,
       isPaxFilled: true,
+      isContactFilled: true,
       contact: {},
     };
   }
@@ -74,7 +75,7 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    // scheduleObj.isDateSelected = true;
+    scheduleObj.isContactFilled = true;
     this.setState({contact:contactObj});
   }
 
@@ -88,7 +89,8 @@ export default class BookingDetail extends React.Component {
     //// validation
     if (!pax) this.setState({isPaxFilled:false});
     if (!date) this.setState({isDateSelected:false});
-    if (!pax || !date) return;
+    if (!contact) this.setState({isContactFilled:false});
+    if (!pax || !date || !contact) return;
 
     //// prepare fetching book
     this.setState({isLoading:true});
@@ -166,7 +168,7 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let {requiredPaxData} = this.props.navigation.state.params;
-    let {price, pax, date, time, isDateSelected, isPaxFilled, contact, totalCount, counter } = this.state;
+    let {price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       Formatter.dateFullShort(date)+', pk '+ time : 'Atur Jadwal';
@@ -357,7 +359,7 @@ export default class BookingDetail extends React.Component {
                 styles.normalText : styles.warningText} >
                 {selectedDateText}
               </Text>
-              {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
+              {isDateSelected ? null : <Text style={styles.validation}>Mohon isi jadwal</Text>}
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToCalendarPicker} >
                 {addEditButton(date)}
@@ -393,13 +395,13 @@ export default class BookingDetail extends React.Component {
               paddingTop:20,
               // marginVertical:20,
             }}>
-              <Text style={this.state.isDateSelected ?
+              <Text style={this.state.isContactFilled ?
                 styles.normalText : styles.warningText} >
                 {contact.name + '\n'}
                 {contact.email+'\n'}
                 {contact.countryCallCd + ' ' + contact.phone}
               </Text>
-              {isDateSelected ? null : <Text style={styles.validation}>mohon isi jadwal</Text>}
+              {isContactFilled ? null : <Text style={styles.validation}>Mohon isi kontak</Text>}
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToBookingContact} >
                 {addEditButton(contact)}

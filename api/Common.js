@@ -142,7 +142,7 @@ export async function fetchTravoramaApi(request) {
     }
     response = await response.json();
     console.log('response from ' + url + ' :');
-    // console.log(response);
+    console.log(response);
     if (response.status != 200) {
       console.log('status is not 200! \n data:');
       console.log(request.data);

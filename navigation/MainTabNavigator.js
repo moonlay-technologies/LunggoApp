@@ -19,7 +19,7 @@ export default TabNavigator(
     Explore: { screen: Explore },
     MyBooking: { screen: MyBooking },
     Wishlist: { screen: Wishlist },
-    MessageBlank: { screen: MessageBlank },
+    // MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
   },
   {
