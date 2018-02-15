@@ -9,7 +9,8 @@ import {
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { checkUserLoggedIn, removeAccessToken } from '../../api/Common';
+import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
 
 export default class AccountScreen extends React.Component {
