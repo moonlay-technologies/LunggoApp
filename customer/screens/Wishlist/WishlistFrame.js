@@ -34,11 +34,11 @@ export default class WishlistFrame extends React.Component {
     this._getWishlist();
   }
 
-  componentWillReceiveProps({navigation}) {
+/*  componentWillReceiveProps({navigation}) {
     if (navigation.state.params.shouldRefresh) {
       this._getWishlist();
     }
-  }
+  }*/
 
   render() {
     console.log('wishlist rerendered');

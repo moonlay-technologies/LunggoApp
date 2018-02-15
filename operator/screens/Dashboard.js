@@ -408,7 +408,6 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
 
   containerDashboard:{
     padding:15,
@@ -540,6 +539,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind-SemiBold',
     fontSize: 18,
     color: '#454545',
+  },
   activityReviewButton: {
     flex:1,
     alignItems:'center',
@@ -627,8 +627,6 @@ const styles = StyleSheet.create({
       android: {
         lineHeight: 20,
         //paddingTop: 23 - (23* 1),
-
-
       },
     }),
   },
@@ -637,5 +635,4 @@ const styles = StyleSheet.create({
     padding:20,
     backgroundColor: '#f7f8fb',
   },
-
 });

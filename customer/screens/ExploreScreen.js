@@ -50,11 +50,11 @@ export default class ExploreScreen extends React.Component {
     this._refreshContents();
   }
 
-  componentWillReceiveProps({ navigation }) {
+  /*componentWillReceiveProps({ navigation }) {
     if (navigation.state.params.shouldRefresh) {
       this._refreshContents();
     }
-  }
+  }*/
 
   render() {
     let allList = [...this.state.turList, ...this.state.tripList, ...this.state.paketList, ...this.state.tiketList];

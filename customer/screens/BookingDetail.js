@@ -206,12 +206,14 @@ export default class BookingDetail extends React.Component {
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{alignItems:'center', justifyContent:'flex-end', flex:1, flexDirection:'row',}}>
-            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginRight:8, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
+            <TouchableOpacity style={{borderWidth:1, borderRadius:2, marginLeft:15, paddingVertical:5, paddingHorizontal:15, borderColor:'#f9a3a3', justifyContent:'center', alignItems:'center'}}
               onPress={()=>substract(counterObj)}
             >
               <Icon name='minus' type='entypo' size={10} color='#ff5f5f'/>
             </TouchableOpacity>
-            <Text style={styles.activityDesc}>{counterObj.count}</Text>
+
+            <Text style={styles.activityDesc, {width:35, textAlign:'center'}}>{counterObj.count}</Text>
+
             <TouchableOpacity style={{borderWidth:1, borderRadius:2, paddingVertical:5, paddingHorizontal:15, borderColor:'#ff5f5f', justifyContent:'center', alignItems:'center'}}
               onPress={()=>add(counterObj)}
             >
