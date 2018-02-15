@@ -48,7 +48,7 @@ const RootStackNavigator = StackNavigator(
     Main: {
       screen: BeforeLoginScreen
       //screen: MyBookingList
-      //screen: LoginScreen
+      //screen: Dashboard
       // screen: SubmitReview
       //screen: SubmitRating
     },

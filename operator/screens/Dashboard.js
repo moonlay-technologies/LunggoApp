@@ -18,7 +18,7 @@ export default class Dashboard extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Dashboard',
+    header: null,
   };
 
   _handleResponse = (response) => {
@@ -140,17 +140,80 @@ export default class Dashboard extends React.Component {
     const loadingIndicator = this.state.isLoading ?
       <ActivityIndicator size='large'/> : null;
     return (
-      <ScrollView style={{backgroundColor:'#fff'}}>
+      <ScrollView style={{backgroundColor:'#f7f8fb'}}>
+      <View style={{height:340}}>
+        <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
+        <View style={styles.containerDashboard}>
+          <View style={styles.containerBoxDashboard}>
+            <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
+            <View style={{marginTop:20}}>
+              <Text style={styles.namaProfile}>Ali Zainal Abidin</Text>
+            </View>
+            <View style={{}}>
+              <Text style={styles.saldo}>Rp 500.000</Text>
+            </View>
+            <View style={{flexDirection:'row', marginTop:25 }}>
+              <View style={{flex:1, alignItems:'center'}}>
+                <Text style={styles.teks1}>Activity</Text>
+                <Text style={styles.teks2}>22</Text>
+              </View>
+              <View style={{flex:1, alignItems:'center'}}>
+                <Text style={styles.teks1}>Request</Text>
+                <Text style={styles.teks2}>3</Text>
+              </View>
+              <View style={{flex:1, alignItems:'center'}}>
+                <Text style={styles.teks1}>Done</Text>
+                <Text style={styles.teks2}>12</Text>
+              </View>
+            </View>
+          </View>
+          
+        </View>
+      </View>
+      <View style={{marginTop:30, padding:15, paddingBottom:5}}>
+        <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
+      </View>
+      <View style={styles.containerRecentActivity}>
+        <View style={styles.boxRecentActivity}>
+          <View style={{flex:1,}}>
+            <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img3.jpg')}/>
+          </View>
+          <View style={{flex:1, alignItems:'flex-end'}}>
+            <Text style={styles.activityTitle}>Trip to Bandung</Text>
+            <Text style={styles.teks1}>Bandung</Text>
+            <View style={{position:'absolute', bottom:0}}>
+              <Button
+                  //containerStyle={globalStyles.ctaButton}
+                  style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                  onPress={() => this.props.navigation.goBack()}
+                >
+                  Detail
+              </Button>
+            </View>
+          </View>
+        </View>
+      </View>
 
-        <View style={styles.container}>
-          <View 
-            //style={{marginTop:40}}
-          >
+
+       {/*<View style={styles.container}>
+        <View style={{}}>
+          <Text style={styles.namaProfile}>Ali Zainal Abidin</Text>
+        </View>
+       </View>*/}
+
+        {/*<View style={styles.container}>
+          <View>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1}}>
                 <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
               </View>
-              <View style={{flex:1,alignItems:'flex-end', justifyContent:'flex-end'}}>
+              <View style={{flex:1,alignItems:'flex-start', justifyContent:'flex-start'}}>
+                <View style={{}}>
+                  <Text style={styles.categoryTitle}>Hello Mr. Fox!</Text>
+                </View>
+                <View style={{}}>
+                  <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
+                </View>
                 <Icon
                   style={{marginRight:4}}
                   name='sms'
@@ -306,7 +369,7 @@ export default class Dashboard extends React.Component {
         </View>
 
 
-        <View style={{paddingTop:30}}></View>
+        <View style={{paddingTop:30}}></View>*/}
 
       </ScrollView>
     );
@@ -315,6 +378,138 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  containerDashboard:{
+    padding:15,
+    position:'absolute',
+    top:70,
+    width:'100%'
+  },
+  containerBoxDashboard:{
+    backgroundColor:'#ffffff',
+    borderRadius:5,
+    alignItems:'center',
+    padding:10,
+    zIndex:1,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#e8f0fe',
+        shadowOffset: {
+          width: 2,
+          height: 1
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.8
+      },
+      android: {
+        elevation:2
+      },
+    }),
+  },
+  containerRecentActivity:{
+    borderRadius:20,
+  },
+  boxRecentActivity:{
+    backgroundColor:'#ffffff',
+    borderRadius:5,
+    margin:15,
+    marginTop:5,
+    padding:15,
+    flexDirection:'row', 
+    ...Platform.select({
+      ios: {
+        shadowColor: '#e8f0fe',
+        shadowOffset: {
+          width: 2,
+          height: 1
+        },
+        shadowRadius: 6,
+        shadowOpacity: 1
+      },
+      android: {
+        elevation:2
+      },
+    }),
+  },
+  avatarBig:{
+    width:90, 
+    height:90, 
+    resizeMode:'cover', 
+    borderRadius:45,
+  },
+  namaProfile :{
+    fontFamily: 'Hind-SemiBold',
+    fontSize:22,
+    color:'#454545',
+    letterSpacing:-1,
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-18
+      },
+      android: {
+
+      },
+    }),
+  },
+  imgRecentActivity:{
+    height:125,
+    width:'100%',
+    resizeMode:'cover',
+    overflow: 'hidden'
+  },
+  saldo: {
+    fontSize:14,
+    color:'#ff5f5f',
+    marginTop:2,
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-5,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks1: {
+    fontSize:14,
+    color:'#989898',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-5,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks2: {
+    fontSize:20,
+    color:'#737c84',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-5,
+      },
+      android: {
+
+      },
+    }),
+  },
+  categoryTitle: {
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 18,
+    color: '#454545',
+  },
   divider: {
     height: 1,
     width: '100%',
@@ -326,7 +521,6 @@ const styles = StyleSheet.create({
     marginLeft:5,
     fontFamily:'Hind',
     color:'#454545',
-
   },
   notification: {
     backgroundColor:'#01d4c7', 
@@ -385,52 +579,29 @@ const styles = StyleSheet.create({
     }),
   },
   activityTitle: {
-    fontWeight:'bold',
-    fontSize:15,
-    color:'#454545',
-  },
-  priceTitleBig: {
-    fontSize:14,
-    color:'#676767',
-    marginTop:2,
-    fontFamily: 'Hind',
+    fontSize: 16,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    textAlign:'right',
     ...Platform.select({
       ios: {
-        // lineHeight:19*0.8,
-        // paddingTop: 20 - (19 * 0.4),
-        marginBottom:-5,
+        lineHeight: 10,
+        paddingTop: 10,
+        marginBottom: -12,
+        //backgroundColor:'red'
       },
       android: {
+        lineHeight: 20,
+        //paddingTop: 23 - (23* 1),
+
 
       },
     }),
-  },
-  categoryTitle :{
-    fontFamily: 'Hind-Bold',
-    fontSize:20,
-    color:'#454545',
-    ...Platform.select({
-      ios: {
-        // lineHeight:19*0.8,
-        // paddingTop: 20 - (19 * 0.4),
-        marginBottom:-15,
-      },
-      android: {
-
-      },
-    }),
-  },
-  avatarBig:{
-    width:60, 
-    height:60, 
-    resizeMode:'cover', 
-    borderRadius:30
   },
   container: {
     flex: 1,
-    padding:15,
-    paddingTop:20,
-    backgroundColor: '#fff',
+    padding:20,
+    backgroundColor: '#f7f8fb',
   },
 });
 

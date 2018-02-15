@@ -122,7 +122,7 @@ export default class ExploreScreen extends React.Component {
         {this._renderHeader({ title: 'Promo Terkini' })}
         {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
 
-        <View style={{ paddingTop: 30 }}></View>
+        <View style={{ paddingTop: 10 }}></View>
 
       </ScrollView>
     );
@@ -199,7 +199,7 @@ export default class ExploreScreen extends React.Component {
           activeOpacity={1}
           onPress={() => this._onPressProduct(item)}
         >
-          <View style={[style.containerThumbnail, { paddingTop: 10 }]}>
+          <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
             <Image
               style={style.thumbnail}
               source={item.mediaSrc.toString().startsWith('http') ? { uri: item.mediaSrc } : item.mediaSrc}
@@ -209,7 +209,7 @@ export default class ExploreScreen extends React.Component {
             <View style={{ marginTop: 5, flexDirection: 'row', paddingTop: 0 }}>
               <View style={{
                 flex: 4,
-                paddingBottom: 30,
+                paddingBottom: 20,
                 backgroundColor: 'transparent',
               }}>
                 <Text style={styles.namaKota}>
