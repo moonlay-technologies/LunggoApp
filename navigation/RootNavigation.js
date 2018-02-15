@@ -55,12 +55,14 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: {
+        screen: Dashboard
         //screen: LoginScreen
-        screen: MainTabNavigator
+        //screen: MainTabNavigator
         //screen: MyBookingList
         //screen: LoginScreen
         // screen: SubmitReview
         //screen: SubmitRating
+
       },
       MainTabNavigator: { screen: MainTabNavigator },
       SearchActivity: { screen: SearchActivity },

@@ -182,21 +182,73 @@ export default class Dashboard extends React.Component {
       <View style={{marginTop:30, padding:15, paddingBottom:5}}>
         <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
       </View>
+
       <View style={styles.containerRecentActivity}>
         <View style={styles.boxRecentActivity}>
           <View style={{flex:1,}}>
             <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img3.jpg')}/>
           </View>
-          <View style={{flex:1, alignItems:'flex-end'}}>
+          <View style={{flex:1, alignItems:'flex-end',paddingLeft:15}}>
             <Text style={styles.activityTitle}>Trip to Bandung</Text>
             <Text style={styles.teks1}>Bandung</Text>
-            <View style={{position:'absolute', bottom:0}}>
+            <View style={{marginTop:5}}>
+              <Text style={styles.teks3}>30 Jan 2018</Text>
+              <Text style={styles.teks3}>10.00am - 12.00pm</Text>
+            </View>
+            <View style={{position:'absolute', bottom:0, width:'100%'}}>
               <Button
-                  //containerStyle={globalStyles.ctaButton}
-                  style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.goBack()}
+                  containerStyle={styles.ctaButton1}
+                  style={{fontSize: 12, color: '#fff',}}
                 >
-                  Detail
+                  Sedang Berjalan
+              </Button>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.containerRecentActivity}>
+        <View style={styles.boxRecentActivity}>
+          <View style={{flex:1,}}>
+            <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img2.jpg')}/>
+          </View>
+          <View style={{flex:1, alignItems:'flex-end',paddingLeft:15}}>
+            <Text style={styles.activityTitle}>Trip to Bandung</Text>
+            <Text style={styles.teks1}>Bandung</Text>
+            <View style={{marginTop:5}}>
+              <Text style={styles.teks3}>30 Jan 2018</Text>
+              <Text style={styles.teks3}>10.00am - 12.00pm</Text>
+            </View>
+            <View style={{position:'absolute', bottom:0, width:'100%'}}>
+              <Button
+                  containerStyle={styles.ctaButton2}
+                  style={{fontSize: 12, color: '#fff',}}
+                >
+                  1 hari lagi
+              </Button>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.containerRecentActivity}>
+        <View style={styles.boxRecentActivity}>
+          <View style={{flex:1,}}>
+            <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img1.jpg')}/>
+          </View>
+          <View style={{flex:1, alignItems:'flex-end',paddingLeft:15}}>
+            <Text style={styles.activityTitle}>Trip to Bandung</Text>
+            <Text style={styles.teks1}>Bandung</Text>
+            <View style={{marginTop:5}}>
+              <Text style={styles.teks3}>30 Jan 2018</Text>
+              <Text style={styles.teks3}>10.00am - 12.00pm</Text>
+            </View>
+            <View style={{position:'absolute', bottom:0, width:'100%'}}>
+              <Button
+                  containerStyle={styles.ctaButton3}
+                  style={{fontSize: 12, color: '#ff5f5f',}}
+                >
+                  5 hari lagi
               </Button>
             </View>
           </View>
@@ -425,11 +477,11 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: '#e8f0fe',
         shadowOffset: {
-          width: 2,
+          width: 0,
           height: 1
         },
-        shadowRadius: 6,
-        shadowOpacity: 0.8
+        shadowRadius: 2,
+        shadowOpacity: 0.9
       },
       android: {
         elevation:2
@@ -479,6 +531,7 @@ const styles = StyleSheet.create({
         marginBottom:-18
       },
       android: {
+        marginBottom:-5
 
       },
     }),
@@ -490,7 +543,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   saldo: {
-    fontSize:14,
+    fontSize:16,
     color:'#ff5f5f',
     marginTop:2,
     fontFamily: 'Hind-SemiBold',
@@ -535,9 +588,79 @@ const styles = StyleSheet.create({
       },
     }),
   },
+    teks3: {
+    fontSize:14,
+    color: '#454545',
+    fontFamily: 'Hind',
+    textAlign:'right',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks4: {
+    fontSize:14,
+    color: '#23d3c3',
+    fontFamily: 'Hind-SemiBold',
+    textAlign:'center',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks5: {
+    fontSize:14,
+    color: '#ff5f5f',
+    fontFamily: 'Hind-SemiBold',
+    textAlign:'center',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  ctaButton1: {
+    width: '100%',
+    paddingVertical:6,
+    overflow: 'hidden',
+    borderRadius:3,
+    backgroundColor: '#23d3c3',
+  },
+  ctaButton2: {
+    width: '100%',
+    paddingVertical:6,
+    overflow: 'hidden',
+    borderRadius:3,
+    backgroundColor: '#ff5f5f',
+  },
+    ctaButton3: {
+    width: '100%',
+    paddingVertical:6,
+    overflow: 'hidden',
+    borderRadius:3,
+    borderColor: '#ff5f5f',
+    borderWidth:1
+  },
   categoryTitle: {
     fontFamily: 'Hind-SemiBold',
-    fontSize: 18,
+    fontSize: 19,
     color: '#454545',
   },
   activityReviewButton: {

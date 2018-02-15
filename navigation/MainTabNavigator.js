@@ -58,11 +58,9 @@ export default TabNavigator(
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
-            backgroundColor: 'red',
-            paddingTop:0,
+            backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-            height:50,
-            marginTop:0
+            height:10
           },
         }),
       },
@@ -137,7 +135,6 @@ const styles = StyleSheet.create({
       android: {
         paddingRight: 23.5,
         zIndex: 100,
-        paddingTop:0,
       },
     }),
   },
@@ -189,6 +186,7 @@ const styles = StyleSheet.create({
       },
       android: {
         paddingHorizontal: 15,
+        paddingVertical: 15,
         elevation: 20,
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
