@@ -22,8 +22,8 @@ export default class MyBookingBlankScreen extends React.Component {
               <Text style={styles.textCartBesar}>Belum ada pesanan</Text>
               <View>
                 <Text style={styles.textCart}>
-                  Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}
-                  Ayo mulai mencari dan rasakan kemudahannya.
+                  Semua pesanan kamu yang sudah dibayarkan akan terdaftar di sini. {"\n"}
+                  Ayo log in sekarang untuk melihat!
                 </Text>
               </View>
             </View>
@@ -31,9 +31,9 @@ export default class MyBookingBlankScreen extends React.Component {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.goBack()}
+                  onPress={() => this.props.navigation.navigate('LoginScreen')}
                 >
-                  Jelajah Sekarang
+                  Log In
               </Button>
             </View>
           </View>

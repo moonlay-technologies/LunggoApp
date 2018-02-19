@@ -24,7 +24,7 @@ export default class SearchHeader extends React.Component {
   render() {
     let {navigate} = this.props.navigation;
     return (
-      <View style={{ backgroundColor: '#fff'}}>
+      <View style={{ elevation:0.75, backgroundColor: '#fff'}}>
         <View style={[styles.header,styles.flowRight]}>
           <View style={{flex:6,}}>
             <TextInput
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
       android: {
         paddingHorizontal:12.6,
         paddingVertical:12.6,
-        elevation: 0,        
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
 

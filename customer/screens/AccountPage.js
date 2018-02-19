@@ -11,6 +11,7 @@ import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { checkUserLoggedIn, removeAccessToken } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
+import { getProfile } from '../../commons/Auth/AuthController'  
 
 export default class AccountScreen extends React.Component {
 
@@ -19,6 +20,7 @@ export default class AccountScreen extends React.Component {
     this.state = {
       isModalVisible: false,
       isLoggedIn: null,
+      contact: {}
     }
   }
 
@@ -30,7 +32,7 @@ export default class AccountScreen extends React.Component {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then(({ contact }) => this.setState({ contact }))
+        getProfile().then(({ contact }) => this.setState({ contact })).catch(err => console.error(err));
     });
   }
 
@@ -87,7 +89,7 @@ export default class AccountScreen extends React.Component {
               </View>
               <View>
                 <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
+                  <Text style={styles.activitydetailTitle}>{this.state.contact.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={styles.textCart}>Edit Profile</Text>
@@ -98,7 +100,7 @@ export default class AccountScreen extends React.Component {
                 </View>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+            {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Text style={styles.optionProfile}>Notifikasi</Text>
               </View>
@@ -145,7 +147,7 @@ export default class AccountScreen extends React.Component {
                   size={30}
                   color='#454545' />
               </View>
-            </View>
+            </View> */}
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this._setModalVisible(true)}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>

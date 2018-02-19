@@ -105,6 +105,10 @@ export default class RootNavigator extends React.Component {
           fontFamily: 'Hind',
           marginBottom: -5
         },
+        headerStyle: {
+          elevation: 2,
+          marginTop: -20
+        }
       }),
     }
   );
@@ -118,7 +122,6 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    console.log(this.props.isNotFirstOpen);
     return <this.rootStackNavigator />;
   }
 

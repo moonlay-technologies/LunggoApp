@@ -154,7 +154,7 @@ _registerForPushNotifications() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
             <View style={{marginBottom:40}}>
-              <Text style={globalStyles.categoryTitle}>Login</Text>
+              <Text style={globalStyles.categoryTitle}>Log In</Text>
             </View>
             <View style={{marginBottom:10}}>
               <TextInput
@@ -222,7 +222,7 @@ _registerForPushNotifications() {
               disabled={isLoading}
               styleDisabled={{opacity:.7}}
             >
-              Login
+              Log In
             </Button>
             <TouchableOpacity style={{marginTop:15, alignItems:'flex-end'}}
             onPress={()=>this.props.navigation.navigate('ForgotPassword')}>

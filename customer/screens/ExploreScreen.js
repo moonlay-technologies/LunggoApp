@@ -12,6 +12,7 @@ import search from './SearchActivity/SearchController';
 import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
+import LoadingAnimation from '../components/LoadingAnimation'
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -63,10 +64,13 @@ export default class ExploreScreen extends React.Component {
     let placeList = places.map(place => { return { mediaSrc: place } });
     let promos = [require('../../assets/images/promo1.jpg'), require('../../assets/images/promo2.jpg'), require('../../assets/images/promo3.jpg')]
     let promoList = promos.map(promo => { return { mediaSrc: promo } });
-    return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
+    if (this.state.isLoading)
+      return <LoadingAnimation />
+    else
+      return (
+        <ScrollView style={{ backgroundColor: '#fff' }}>
 
-        {/*<View style={{flexDirection:'row', marginTop:20}}>
+          {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
                 <Icon
@@ -105,28 +109,28 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */}
 
-        {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
+          {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
 
-        {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
+          {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
 
-        {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
+          {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
 
-        {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
+          {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
 
-        {this._renderHeader({ title: 'Destinasi Favorit' })}
-        {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
+          {this._renderHeader({ title: 'Destinasi Favorit' })}
+          {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
 
-        {this._renderHeader({ title: 'Promo Terkini' })}
-        {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
+          {this._renderHeader({ title: 'Promo Terkini' })}
+          {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
 
-        <View style={{ paddingTop: 10 }}></View>
+          <View style={{ paddingTop: 10 }}></View>
 
-      </ScrollView>
-    );
+        </ScrollView>
+      );
   }
 
   _goTo = (screen, params) =>
