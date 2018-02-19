@@ -46,7 +46,7 @@ export async function fetchTravoramaLoginApi(userName, password) {
 
   switch (response.status + '') { //// cast to string
     case '200':
-      ({ accessToken, refreshToken, expTime } = response);
+      let { accessToken, refreshToken, expTime } = response;
       setItemAsync('accessToken', accessToken);
       setItemAsync('refreshToken', refreshToken);
       setItemAsync('authLevel', AUTH_LEVEL.User);

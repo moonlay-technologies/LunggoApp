@@ -57,12 +57,6 @@ export default class Dashboard extends React.Component {
     }
   }
 
-
-  _onActivityListPressed = () => {
-    // this.setState({ message: '', isLoading:true });
-    this._goToActivityList();
-  }
-
   _goToActivityList = () => this.props.navigation.navigate('ActivityList');
 
   _getAppointmentRequest = () => {
@@ -162,14 +156,14 @@ export default class Dashboard extends React.Component {
               <Text style={styles.saldo}>Rp 500.000</Text>
             </View>
             <View style={{flexDirection:'row', marginTop:25 }}>
-              <View style={{flex:1, alignItems:'center'}}>
+              <TouchableOpacity onPress={this._goToActivityList} style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.teks1}>Activity</Text>
                 <Text style={styles.teks2}>22</Text>
-              </View>
-              <View style={{flex:1, alignItems:'center'}}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this._onAppointmentRequestPressed} style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.teks1}>Request</Text>
                 <Text style={styles.teks2}>3</Text>
-              </View>
+              </TouchableOpacity>
               <View style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.teks1}>Done</Text>
                 <Text style={styles.teks2}>12</Text>
@@ -182,6 +176,8 @@ export default class Dashboard extends React.Component {
       <View style={{marginTop:30, padding:15, paddingBottom:5}}>
         <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
       </View>
+
+
 
       <View style={styles.containerRecentActivity}>
         <View style={styles.boxRecentActivity}>
