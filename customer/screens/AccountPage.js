@@ -12,6 +12,7 @@ import Modal from 'react-native-modal';
 import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
+import { getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 

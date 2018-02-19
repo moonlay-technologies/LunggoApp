@@ -8,7 +8,7 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform } from 'react-native';
-import { getProfile } from '../../commons/Auth/AuthController'
+import { getProfile } from '../../commons/ProfileController';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
