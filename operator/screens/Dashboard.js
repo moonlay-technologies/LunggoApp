@@ -19,7 +19,7 @@ export default class Dashboard extends React.Component {
     this.state = {
       name: '...',
       balance: 9999999,
-      profileImage: require('../../assets/images/janedoe.jpg'),
+      avatar: require('../../assets/images/janedoe.jpg'),
     };
   }
 
@@ -158,7 +158,7 @@ export default class Dashboard extends React.Component {
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
-            <Image style={styles.avatarBig} source={this.state.profileImage}/>
+            <Image style={styles.avatarBig} source={this.state.avatar}/>
             <View style={{marginTop:20}}>
               <Text style={styles.namaProfile}>{this.state.name}</Text>
             </View>

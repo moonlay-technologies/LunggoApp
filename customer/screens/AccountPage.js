@@ -21,6 +21,8 @@ export default class AccountScreen extends React.Component {
     this.state = {
       isModalVisible: false,
       isLoggedIn: null,
+      name: '...',
+      avatar: require('../../assets/images/janedoe.jpg'),
     }
   }
 
@@ -32,7 +34,7 @@ export default class AccountScreen extends React.Component {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then(({ contact }) => this.setState({ contact }))
+        getProfile().then( ({ contact }) => this.setState(contact) );
     });
   }
 
@@ -85,11 +87,11 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 40 }}>
               <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')} />
+                <Image style={styles.avatarBig} source={this.state.avatar} />
               </View>
               <View>
                 <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
+                  <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={styles.textCart}>Edit Profile</Text>
