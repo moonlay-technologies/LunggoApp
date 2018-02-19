@@ -1,18 +1,20 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Image, TextInput,
   TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../../../api/Common'
-import { validateUserName, validatePassword } from '../../FormValidation';
+import { fetchTravoramaLoginApi } from '../AuthController'
+import { validateUserName, validatePassword,
+} from '../../FormValidation';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
-import registerForPushNotificationsAsync from '../../../api/registerForPushNotificationsAsync';
+import registerForPushNotificationsAsync
+  from '../../../api/registerForPushNotificationsAsync';
 
-export default class LoginScreen extends Component {
+export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {error:[]};
@@ -33,7 +35,8 @@ export default class LoginScreen extends Component {
 
 
   componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
+    this._notificationSubscription &&
+    this._notificationSubscription.remove();
   }
 
 

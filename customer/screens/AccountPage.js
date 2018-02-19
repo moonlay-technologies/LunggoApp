@@ -9,9 +9,10 @@ import {
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { checkUserLoggedIn, removeAccessToken } from '../../api/Common';
+import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
-import { getProfile } from '../../commons/Auth/AuthController'  
+import { getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 
@@ -20,7 +21,8 @@ export default class AccountScreen extends React.Component {
     this.state = {
       isModalVisible: false,
       isLoggedIn: null,
-      contact: {}
+      name: '...',
+      avatar: require('../../assets/images/janedoe.jpg'),
     }
   }
 
@@ -32,7 +34,7 @@ export default class AccountScreen extends React.Component {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then(({ contact }) => this.setState({ contact })).catch(err => console.error(err));
+        getProfile().then( ({ contact }) => this.setState(contact) );
     });
   }
 
@@ -85,11 +87,11 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 40 }}>
               <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')} />
+                <Image style={styles.avatarBig} source={this.state.avatar} />
               </View>
               <View>
                 <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.activitydetailTitle}>{this.state.contact.name}</Text>
+                  <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={styles.textCart}>Edit Profile</Text>

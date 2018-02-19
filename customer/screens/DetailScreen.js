@@ -97,8 +97,6 @@ export default class DetailScreen extends React.Component {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       sliderImages, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount } = this.state;
-    console.log('state');
-    console.log(this.state);
     return (
       <View>
         <ScrollView
