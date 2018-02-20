@@ -153,7 +153,7 @@ export default class DetailScreen extends React.Component {
 
         </ScrollView>
 
-        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} {...this.props} />
+        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} {...this.props} />
         {!isLoading && (
           <Footer price={price} details={this.state} {...this.props} />
         )}
@@ -227,41 +227,42 @@ class Footer extends React.Component {
 class Header extends React.Component {
 
   componentWillMount() {
+    let half = [200, 400];
+    let sudden = [380, 400];
     this.setState({
-      bgColor: this.props.scrollY.interpolate({
-        inputRange: [175, 350],
-        outputRange: ['transparent', '#fff'],
+      backgroundColor: this.props.scrollY.interpolate({
+        inputRange: half,
+        outputRange: ['#fff0', '#ffff'],
         extrapolate: 'clamp',
       }),
       elevation: this.props.scrollY.interpolate({
-        inputRange: [175, 350],
+        inputRange: half,
         outputRange: [0, 2],
+        extrapolate: 'clamp',
+      }),
+      opacity: this.props.scrollY.interpolate({
+        inputRange: sudden,
+        outputRange: [0, 1],
         extrapolate: 'clamp',
       })
     });
   }
+  
+  _goBack = () => this.props.navigation.goBack()
 
   render() {
-    let { wishlisted, id } = this.props;
+    let { wishlisted, id, title } = this.props;
+    let { backgroundColor, elevation, opacity } = this.state;
     return (
-      <Animated.View style={[styles.headerBackground, { backgroundColor: this.state.bgColor, elevation: this.state.elevation }]}>
+      <Animated.View style={[styles.headerBackground, {backgroundColor, elevation} ]}>
         <View style={styles.headerContentContainer}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              alignItems: 'flex-start',
-            }}
-            onPress={() => this.props.navigation.goBack()}
-          >
+          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start'}} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
-          <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            flexDirection: 'row',
-          }}>
+          <Animated.View style={{opacity}}>
+            <Text style={[styles.activitydetailTitle,{marginTop:7}]}>{title}</Text>
+          </Animated.View>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row'}}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
               <Icon name='share' type='materialicons' size={30} color='#000' />
             </TouchableOpacity> */}
@@ -279,6 +280,7 @@ class Recommendation extends React.Component {
   render() {
     return (
       <View>
+        <View style={{ marginTop: 20 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.sectionTitle}>Similiar Activities</Text>
@@ -504,7 +506,7 @@ class MediaContents extends React.Component {
     return (
       <Swiper style={styles.wrapper} activeDot={activeDot} dot={dot} showsButtons={false}>
         {media.map(m => (
-          < View style={styles.slides} key={m} >
+          <View style={styles.slides} key={m} >
             <Image style={styles.slides} source={{ uri: m }} />
           </View>
         ))}
@@ -574,7 +576,7 @@ class ReviewAndRating extends React.Component {
             <View style={{ flexDirection: 'row', flex: 1 }}>
               <View style={{ flex: 2, flexDirection: 'row' }}>
                 <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={review.avatar || require('../../assets/images/dummyProfile.png')} />
+                  <Image style={styles.avatar} source={(review.avatar && {uri:review.avatar}) || require('../../assets/images/dummyProfile.png')} />
                 </View>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end', }}>
