@@ -181,7 +181,7 @@ class Footer extends React.Component {
     this.setState({ isLoading: true })
     const { requiredPaxData, price, id, availableDateTimes } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
-    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'LoginScreen';
+    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'BeforeLoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
       package: this.props.details.package,
@@ -263,7 +263,7 @@ class Header extends React.Component {
           >
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
+          {/* <Text style={{color: this.state.bgColor}}>this.props.details.name</Text> */}
           <View style={{
             flex: 1,
             alignItems: 'center',
@@ -646,7 +646,7 @@ class ReviewAndRating extends React.Component {
 const styles = StyleSheet.create({
   headerContentContainer: {
     padding: 10,
-    paddingTop: 20,
+    marginTop: 5,
     flexDirection: 'row',
   },
   headerBackground: {
@@ -654,7 +654,6 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     left: 0,
-    height: 60,
     borderBottomWidth: 0
   },
   container: {

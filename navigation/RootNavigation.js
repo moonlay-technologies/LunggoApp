@@ -56,8 +56,8 @@ export default class RootNavigator extends React.Component {
     {
       Main: {
         // screen: Dashboard
-        screen: LoginScreen
-        //screen: MainTabNavigator
+        // screen: LoginScreen
+        screen: MainTabNavigator
         //screen: MyBookingList
         //screen: LoginScreen
         // screen: SubmitReview
@@ -96,7 +96,8 @@ export default class RootNavigator extends React.Component {
       CancelationPolicy: { screen: CancelationPolicy },
       Settings: { screen: Settings },
       NotFound: { screen: NotFound },
-      IntroScreen: { screen: IntroScreen }
+      IntroScreen: { screen: IntroScreen },
+      BeforeLoginScreen: { screen: BeforeLoginScreen }
     },
     {
       initialRouteParams: { appType: 'OPERATOR' },

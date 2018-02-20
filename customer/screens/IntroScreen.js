@@ -13,6 +13,7 @@ import {
 import Swiper from 'react-native-swiper';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
+import BeforeLoginScreen from '../screens/BeforeLoginScreen'
 
 export default class IntroScreen extends Component {
 
@@ -76,53 +77,9 @@ export default class IntroScreen extends Component {
           <Image style={styles.slides} source={require('../../assets/images/welcome1.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome2.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome3.jpg')} />
-          <BeforeLoginScreen {...this.props} />
+          <BeforeLoginScreen {...this.props} onIntro={true} />
         </Swiper>
       </View >
-    );
-  }
-}
-
-
-class BeforeLoginScreen extends Component {
-
-  static navigationOptions = {
-    header: null
-  };
-
-  render() {
-    let { navigate, replace } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <View style={{ marginVertical: 20, }}>
-          <Text style={globalStyles.openingText}>
-            Mulai liburanmu sekarang
-          </Text>
-        </View>
-
-        <Button
-          containerStyle={{ marginTop: 30, height: 45, paddingTop: 9, overflow: 'hidden', borderRadius: 25, backgroundColor: '#fff', }}
-          style={{ fontSize: 20, color: '#01d4cb', fontFamily: 'Hind-Bold', }}
-          onPress={() => navigate('Registration')}
-        >
-          Daftar
-        </Button>
-        <TouchableOpacity style={{ marginTop: 24, alignItems: 'center' }}
-          onPress={() => navigate('LoginScreen')}
-          activeOpacity={0.7}
-        >
-          <Text style={{ fontSize: 16, color: '#fff', fontFamily: 'Hind-SemiBold' }}>
-            Sudah punya akun? Tap Disini
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ position: 'absolute', bottom: 20, alignItems: 'center', width: '111%', }}
-          onPress={() => replace('MainTabNavigator', { loggedIn: false })}
-        >
-          <Text style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind' }}>
-            Lewati
-          </Text>
-        </TouchableOpacity>
-      </View>
     );
   }
 }
