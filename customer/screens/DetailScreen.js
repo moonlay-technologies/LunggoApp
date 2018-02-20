@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Platform, StyleSheet, Text, View, Image, TextInput,
   ScrollView, TouchableOpacity, Animated
@@ -22,7 +22,7 @@ import {
 import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
 
-export default class DetailScreen extends React.Component {
+export default class DetailScreen extends Component {
 
   constructor(props) {
     super(props)
@@ -30,20 +30,20 @@ export default class DetailScreen extends React.Component {
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         isLoading: true,
-        id: 1,
-        requiredPaxData: '',
-        name: 'loading activity name...',
-        city: 'loading address...',
-        duration: { amount: 'loading ', unit: 'duration...' },
-        price: '...',
-        sliderImages: [],
-        lat: 0,
-        long: 0,
-        review: {
-          rating: 0.0,
-          reviewCount: 0
-        },
-        contents: []
+        // id: 1,
+        // requiredPaxData: '',
+        // name: 'loading activity name...',
+        // city: 'loading address...',
+        // duration: { amount: 'loading ', unit: 'duration...' },
+        // price: '...',
+        // sliderImages: [],
+        // lat: 0,
+        // long: 0,
+        // review: {
+        //   rating: 0.0,
+        //   reviewCount: 0
+        // },
+        // contents: [],
       }
     } else {
       details.sliderImages = [details.mediaSrc];
@@ -164,7 +164,7 @@ export default class DetailScreen extends React.Component {
   }
 }
 
-class Footer extends React.Component {
+class Footer extends Component {
   constructor(props) {
     super();
     this.state = { isLoading: false };
@@ -225,7 +225,7 @@ class Footer extends React.Component {
   }
 }
 
-class Header extends React.Component {
+class Header extends Component {
 
   componentWillMount() {
     let half = [200, 400];
@@ -276,7 +276,7 @@ class Header extends React.Component {
   }
 }
 
-class Recommendation extends React.Component {
+class Recommendation extends Component {
 
   render() {
     return (
@@ -408,7 +408,7 @@ class Recommendation extends React.Component {
   }
 }
 
-class Contents extends React.Component {
+class Contents extends Component {
 
   render() {
     let { contents } = this.props;
@@ -430,7 +430,7 @@ class Contents extends React.Component {
   }
 };
 
-class MainInfo extends React.Component {
+class MainInfo extends Component {
 
   render() {
     console.log('main info rerendered');
@@ -499,7 +499,7 @@ class MainInfo extends React.Component {
   }
 }
 
-class MediaContents extends React.Component {
+class MediaContents extends Component {
 
   render() {
     let activeDot = <View style={styles.activeDot} />
@@ -517,7 +517,7 @@ class MediaContents extends React.Component {
   }
 }
 
-class Map extends React.Component {
+class Map extends Component {
 
   _enlargeMapView = () => {
     let { name, address, city, lat, long } = this.props;
@@ -560,7 +560,7 @@ class Map extends React.Component {
   }
 }
 
-class ReviewAndRating extends React.Component {
+class ReviewAndRating extends Component {
 
   render() {
     let { rating, ratingCount, review, reviewCount, id } = this.props;

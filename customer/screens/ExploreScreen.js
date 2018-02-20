@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Image, Platform, ScrollView, Text, TouchableOpacity, View,
   Button, TextInput, StyleSheet, Dimensions
