@@ -92,7 +92,7 @@ class CartListItem extends React.PureComponent {
   )
 
   _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// TODO ganti jd Invoice
-  _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// TODO ganti jd INstruction
+  _showInstruction = () => this.props.navigation.navigate('PaymentScreen') /// TODO ganti jd INstruction
 
   _labelPaymentStatus = status => {
     if (status == 'SETTLED')

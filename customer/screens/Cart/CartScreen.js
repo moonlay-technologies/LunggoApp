@@ -63,7 +63,7 @@ export default class CartScreen extends React.Component {
     }).catch(error => console.error(error));
   }
 
-  _goToPayment = () => this.props.navigation.navigate('WebViewScreen', { cartId: this.state.cartId });
+  _goToPayment = () => this.props.navigation.navigate('PaymentScreen', { cartId: this.state.cartId });
 
   render() {
     let { cartId, isLoading, list, totalPrice, status } = this.state;

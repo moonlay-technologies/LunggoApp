@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 
-export default class WebViewScreen extends React.Component {
+export default class PaymentScreen extends React.Component {
 
   _backToMainTabNavigator = () => this.props.navigation.dispatch(NavigationActions.reset(
     {

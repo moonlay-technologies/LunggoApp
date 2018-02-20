@@ -12,7 +12,7 @@ import registerForPushNotificationsAsync
 
 import {
   SearchActivity, MyBooking, AddPax, DetailScreen,
-  CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
+  CalendarPicker, PaymentScreen, PaxChoice, BookingDetail,
   BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
   Review, RincianHarga,
 } from '../customer/screens/Screens';
@@ -68,7 +68,7 @@ export default class RootNavigator extends React.Component {
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
       CalendarPicker: { screen: CalendarPicker },
-      WebViewScreen: { screen: WebViewScreen },
+      PaymentScreen: { screen: PaymentScreen },
       PaxChoice: { screen: PaxChoice },
       AddPax: { screen: AddPax },
       BookingDetail: { screen: BookingDetail },

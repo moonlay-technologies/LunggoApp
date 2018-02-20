@@ -60,7 +60,7 @@ export default class Registration extends React.Component {
     }
     fetchTravoramaApi(request).then( response => {
       if (response.status == 200) {
-        this.props.navigation.replace('MainTabNavigator');
+        this.props.navigation.pop();
         this.setState({isLoading:false})
       }
       else {
