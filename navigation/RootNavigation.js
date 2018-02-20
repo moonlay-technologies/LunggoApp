@@ -109,7 +109,7 @@ export default class RootNavigator extends React.Component {
         },
         headerStyle: {
           elevation: 2,
-          marginTop: -20
+          // marginTop: -20
         }
       }),
     }

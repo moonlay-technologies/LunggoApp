@@ -22,8 +22,7 @@ export var rupiah = int => 'Rp ' + number(int);
 
 // export var dollar = int => '$' + int;
 
-//// use rupiah as default price
-export var money = money => {
-	defaultMoneyFormat = rupiah;
+export var price = money => {
+	defaultMoneyFormat = rupiah; //// use rupiah as default price
 	return defaultMoneyFormat(money);
 }

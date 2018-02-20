@@ -1,11 +1,3 @@
-/*
-
-===== FATAL ERROR ======
-bug when assign mediaSrc in constructor 
-"this.state.mediaSrc = [details.mediaSrc];"
-
-*/
-
 'use strict';
 
 import React from 'react';
@@ -287,7 +279,6 @@ class Recommendation extends React.Component {
   render() {
     return (
       <View>
-        <View style={{ marginTop: 0 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.sectionTitle}>Similiar Activities</Text>
