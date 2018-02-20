@@ -32,19 +32,18 @@ export default class Registration extends React.Component {
   }
 
   _onRegisterPressed = () => {
-    this.props.navigation.goBack('BeforeLoginScreen');
-    // let {name, password, email, countryCode, phone} = this.state;
-    // let errorName = validateRequiredField(name);
-    // let errorEmail = validateEmail(email);
-    // let errorPassword = validatePassword(password);
-    // let errorCountryCode = validateRequiredField(countryCode);
-    // let errorPhone = validateRequiredField(phone);
-    // if (!errorName && !errorEmail && !errorPassword &&
-    //     !errorCountryCode && !errorPhone) {
-    //   this._register();
-    // }
-    // else this.setState({errorName, errorEmail, errorPassword,
-    //   errorCountryCode, errorPhone});
+    let {name, password, email, countryCode, phone} = this.state;
+    let errorName = validateRequiredField(name);
+    let errorEmail = validateEmail(email);
+    let errorPassword = validatePassword(password);
+    let errorCountryCode = validateRequiredField(countryCode);
+    let errorPhone = validateRequiredField(phone);
+    if (!errorName && !errorEmail && !errorPassword &&
+        !errorCountryCode && !errorPhone) {
+      this._register();
+    }
+    else this.setState({errorName, errorEmail, errorPassword,
+      errorCountryCode, errorPhone});
   }
 
   _register = () => {
@@ -124,7 +123,7 @@ export default class Registration extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         {/*<KeyboardAwareScrollView
           style={{ backgroundColor: 'transparent' }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -260,7 +259,7 @@ export default class Registration extends React.Component {
             disabled={isLoading}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
-          Daftarkan
+            Daftarkan
           </Button>
           <TouchableOpacity
             style={{
@@ -275,7 +274,7 @@ export default class Registration extends React.Component {
             </Text>
           </TouchableOpacity>
         {/*</KeyboardAwareScrollView>*/}
-      </View>
+      </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     );
   }
