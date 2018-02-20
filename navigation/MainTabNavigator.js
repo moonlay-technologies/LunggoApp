@@ -61,12 +61,7 @@ export default TabNavigator(
             borderBottomWidth: 1,
             backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-<<<<<<< HEAD
-            height:20,
-            marginTop:0
-=======
             height:10
->>>>>>> 2ce2e500ac66dadd4961943c21e95ca5c4257218
           },
         }),
       },
@@ -192,12 +187,7 @@ const styles = StyleSheet.create({
       },
       android: {
         paddingHorizontal: 15,
-<<<<<<< HEAD
         elevation: 0,
-=======
-        paddingVertical: 15,
-        elevation: 20,
->>>>>>> 2ce2e500ac66dadd4961943c21e95ca5c4257218
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
       },

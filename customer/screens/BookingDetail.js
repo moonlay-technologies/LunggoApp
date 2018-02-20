@@ -6,17 +6,10 @@ import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
-<<<<<<< HEAD
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
-  ScrollView, Platform
-} from 'react-native';
-import { getProfile } from '../../commons/Auth/AuthController'
-=======
-import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
->>>>>>> 2ce2e500ac66dadd4961943c21e95ca5c4257218
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
