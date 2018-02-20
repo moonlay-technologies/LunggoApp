@@ -1,10 +1,6 @@
 import Moment from 'moment';
 import 'moment/locale/id';
 
-//// Format price to Rp1.000.000
-export var price = price =>
-	"Rp " + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
 export var dateFullShort = date =>
   Moment(date).format('ddd, D MMM YYYY');
 
@@ -16,3 +12,18 @@ export var date = date =>
 
 export var dateLong = date =>
 	Moment(date).format('D MMMM YYYY');
+
+
+//// Format number to "1.000.000"
+export var number = int => int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+//// Format price to "Rp 1.000.000"
+export var rupiah = int => 'Rp ' + number(int);
+
+// export var dollar = int => '$' + int;
+
+//// use rupiah as default price
+export var money = money => {
+	defaultMoneyFormat = rupiah;
+	return defaultMoneyFormat(money);
+}

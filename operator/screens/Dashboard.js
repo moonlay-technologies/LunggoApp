@@ -19,7 +19,7 @@ export default class Dashboard extends React.Component {
     this.state = {
       name: '...',
       balance: 9999999,
-      avatar: require('../../assets/images/janedoe.jpg'),
+      avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     };
   }
 
@@ -158,7 +158,7 @@ export default class Dashboard extends React.Component {
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
-            <Image style={styles.avatarBig} source={this.state.avatar}/>
+            <Image style={styles.avatarBig} source={{uri:this.state.avatar}}/>
             <View style={{marginTop:20}}>
               <Text style={styles.namaProfile}>{this.state.name}</Text>
             </View>

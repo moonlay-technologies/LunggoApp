@@ -6,7 +6,12 @@ import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
+<<<<<<< HEAD
 import { StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
+=======
+import {
+  StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
+>>>>>>> 203c3ff5f41173f578102c99d31a72813e476dce
   ScrollView, Platform } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
 

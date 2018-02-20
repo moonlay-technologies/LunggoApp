@@ -22,7 +22,7 @@ export default class AccountScreen extends React.Component {
       isModalVisible: false,
       isLoggedIn: null,
       name: '...',
-      avatar: require('../../assets/images/janedoe.jpg'),
+      avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     }
   }
 
@@ -87,9 +87,9 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 40 }}>
               <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={this.state.avatar} />
+                <Image style={styles.avatarBig} source={{uri:this.state.avatar}} />
               </View>
-              <View>
+              {/*<View>
                 <View style={{ alignItems: 'center' }}>
                   <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
                 </View>
@@ -100,9 +100,22 @@ export default class AccountScreen extends React.Component {
                   </View>
                   <Text style={styles.textCartColor}>100 point</Text>
                 </View>
-              </View>
+              </View>*/}
             </View>
             {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <View style={{ justifyContent: 'center', flex: 1 }}>
+                <Text style={styles.optionProfile}>{this.state.name}</Text>
+              </View>
+              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
+                <Icon
+                  name='ios-settings-outline'
+                  type='ionicon'
+                  size={30}
+                  color='#454545' />
+              </TouchableOpacity>
+            </View>
+
+            {/*<View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Text style={styles.optionProfile}>Notifikasi</Text>
               </View>
@@ -149,7 +162,7 @@ export default class AccountScreen extends React.Component {
                   size={30}
                   color='#454545' />
               </View>
-            </View> */}
+            </View>*/}
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this._setModalVisible(true)}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>

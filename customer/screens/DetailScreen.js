@@ -133,7 +133,7 @@ export default class DetailScreen extends React.Component {
 
                 <View style={styles.divider} />
 
-                <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} {...this.props} />
+                <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} id={id} {...this.props} />
 
                 <View style={styles.divider} />
 
@@ -567,12 +567,8 @@ class Map extends React.Component {
 
 class ReviewAndRating extends React.Component {
 
-  constructor(props) {
-    super();
-  }
-
   render() {
-    let { rating, ratingCount, review, reviewCount } = this.props;
+    let { rating, ratingCount, review, reviewCount, id } = this.props;
     return (
       <View>
         {!reviewCount && (
@@ -610,7 +606,7 @@ class ReviewAndRating extends React.Component {
         <View style={styles.divider} />
 
         {!!reviewCount && (
-          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id: id })} >
+          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', {id, rating, ratingCount})} >
             <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
               <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
                 <View>
