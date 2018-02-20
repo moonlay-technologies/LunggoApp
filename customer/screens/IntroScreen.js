@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         bottom: 15,
-        left: 20,
       },
       android: {
         bottom: 20,
@@ -117,7 +116,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         bottom: 15,
-        left: 20,
       },
       android: {
         bottom: 20,

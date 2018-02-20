@@ -1,13 +1,13 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Colors from '../../constants/Colors';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Button from 'react-native-button';
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 
-export default class BeforeLoginScreen extends Component {
+export default class BeforeLoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,12 +19,12 @@ export default class BeforeLoginScreen extends Component {
   };
 
   render() {
-    console.log(this.state.onIntro)
+    let { navigate, goBack } = this.props.navigation;
     return (
       <View style={styles.container}>
         {this.state.onIntro || (
           <TouchableOpacity style={{ alignItems: 'flex-start', marginTop:-40 }}
-            onPress={() => { this.props.navigation.goBack() }}>
+            onPress={ () => goBack() }>
             <Icon name='close' type='evilicons' size={24} />
           </TouchableOpacity>
         )}
