@@ -586,7 +586,7 @@ class ReviewAndRating extends React.Component {
             <View style={{ flexDirection: 'row', flex: 1 }}>
               <View style={{ flex: 2, flexDirection: 'row' }}>
                 <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={review.avatar || require('../../assets/images/dummyProfile.png')} />
+                  <Image style={styles.avatar} source={{uri: review.avatar} || require('../../assets/images/dummyProfile.png')} />
                 </View>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end', }}>

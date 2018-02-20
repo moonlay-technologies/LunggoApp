@@ -36,7 +36,6 @@ export default class SearchLoadingScreen extends React.Component {
   render() {
     let { isLoading, list } = this.state;
     let { props } = this;
-    props.navigation.state.key = 'SearchActivity';
     if (isLoading) { return <ActivityIndicator size='large'/> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
     else { return <Text>Sorry, we can't find the item you're looking for!</Text> }
