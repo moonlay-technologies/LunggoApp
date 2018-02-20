@@ -64,7 +64,7 @@ export default class DetailScreen extends React.Component {
       this.state.contents = [];
     }
     this.state.scrollY = new Animated.Value(0);
-    this.state.isLoading= true;
+    this.state.isLoading = true;
   }
 
   static navigationOptions = { header: null }
@@ -110,7 +110,7 @@ export default class DetailScreen extends React.Component {
           <MediaContents media={sliderImages} />
 
           <View style={styles.container}>
-            
+
 
             {isLoading && (
               <LoadingAnimation />
@@ -163,7 +163,7 @@ export default class DetailScreen extends React.Component {
 
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} {...this.props} />
         {!isLoading && (
-          <Footer price={price} details={this.state} {...this.props}/>
+          <Footer price={price} details={this.state} {...this.props} />
         )}
 
       </View>
@@ -241,13 +241,18 @@ class Header extends React.Component {
         outputRange: ['transparent', '#fff'],
         extrapolate: 'clamp',
       }),
+      elevation: this.props.scrollY.interpolate({
+        inputRange: [175, 350],
+        outputRange: [0, 2],
+        extrapolate: 'clamp',
+      })
     });
   }
 
   render() {
     let { wishlisted, id } = this.props;
     return (
-      <Animated.View style={[styles.headerBackground, { backgroundColor: this.state.bgColor }]}>
+      <Animated.View style={[styles.headerBackground, { backgroundColor: this.state.bgColor, elevation: this.state.elevation }]}>
         <View style={styles.headerContentContainer}>
           <TouchableOpacity
             style={{
@@ -552,6 +557,9 @@ class Map extends React.Component {
             />
           </MapView>
         </TouchableOpacity>
+        <Text>
+          {address}
+        </Text>
       </View>
     )
   }
@@ -575,7 +583,7 @@ class ReviewAndRating extends React.Component {
             <View style={{ flexDirection: 'row', flex: 1 }}>
               <View style={{ flex: 2, flexDirection: 'row' }}>
                 <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={review.avatar} />
+                  <Image style={styles.avatar} source={review.avatar || require('../../assets/images/dummyProfile.png')} />
                 </View>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end', }}>
@@ -585,7 +593,10 @@ class ReviewAndRating extends React.Component {
               </View>
             </View>
             <View style={{ marginTop: 10 }}>
-              <Text style={styles.activityDesc}>
+              <Text style={styles.reviewTitle}>
+                {review.name}
+              </Text>
+              <Text style={styles.isireview}>
                 {review.content}
               </Text>
             </View>
@@ -640,8 +651,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     height: 60,
-    borderBottomWidth: 0,
-    elevation: 0,
+    borderBottomWidth: 0
   },
   container: {
     padding: 15,

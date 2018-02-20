@@ -43,11 +43,13 @@ export default class WebViewScreen extends React.Component {
 
   render() {
     let { rsvNo, cartId } = this.props.navigation.state.params;
+    let url = DOMAIN + '/id/Payment/Payment?cartId=' + cartId;
+    console.log(url);
     return (
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/Payment/Payment?cartId=' + cartId,
+          uri: url,
           // uri: DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),

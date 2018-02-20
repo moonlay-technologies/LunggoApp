@@ -102,9 +102,7 @@ export default class AccountScreen extends React.Component {
                 </View>
               </View>*/}
             </View>
-
-
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+            {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Text style={styles.optionProfile}>{this.state.name}</Text>
               </View>

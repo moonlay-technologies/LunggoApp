@@ -18,7 +18,7 @@ export default class IntroScreen extends Component {
 
   constructor() {
     super();
-    this.state = { leftSkip: true, dot: this.Dot, activeDot: this.ActiveDot };
+    this.state = { notLastScreen: true, dot: this.Dot, activeDot: this.ActiveDot };
   }
 
   static navigationOptions = {
@@ -51,12 +51,18 @@ export default class IntroScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {this.state.leftSkip && (
-          <TouchableOpacity style={styles.containerNav1} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
+        {this.state.notLastScreen && (
+          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
             <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Lewati</Text>
           </TouchableOpacity>
         )}
+        {this.state.notLastScreen && (
+          <TouchableOpacity style={styles.containerRight} onPress={() => this.swiper.scrollBy(1)}>
+            <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Berikutnya</Text>
+          </TouchableOpacity>
+        )}
         <Swiper
+          ref={ref => { this.swiper = ref }}
           style={styles.wrapper}
           activeDot={this.state.activeDot}
           dot={this.state.dot}
@@ -64,8 +70,8 @@ export default class IntroScreen extends Component {
           loop={false}
           onIndexChanged={
             index => index == 3 ?
-              this.setState({ leftSkip: false, dot: <View />, activeDot: <View /> }) :
-              this.setState({ leftSkip: true, dot: this.Dot, activeDot: this.ActiveDot })}
+              this.setState({ notLastScreen: false, dot: <View />, activeDot: <View /> }) :
+              this.setState({ notLastScreen: true, dot: this.Dot, activeDot: this.ActiveDot })}
         >
           <Image style={styles.slides} source={require('../../assets/images/welcome1.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome2.jpg')} />
@@ -131,11 +137,26 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // backgroundColor: '#9DD6EB',
   },
-  containerNav1: {
+  containerLeft: {
     zIndex: 200,
     backgroundColor: 'transparent',
     position: 'absolute',
     left: 20,
+    ...Platform.select({
+      ios: {
+        bottom: 15,
+        left: 20,
+      },
+      android: {
+        bottom: 20,
+      },
+    }),
+  },
+  containerRight: {
+    zIndex: 200,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    right: 20,
     ...Platform.select({
       ios: {
         bottom: 15,

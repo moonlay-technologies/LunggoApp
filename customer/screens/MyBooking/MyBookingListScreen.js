@@ -11,17 +11,26 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
-  RefreshControl, FlatList, //TouchableOpacity
+  RefreshControl, FlatList, TouchableOpacity
 } from 'react-native';
 import { getBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 
 class ActivityListItem extends React.PureComponent {
+
+  _labelBookingStatus = status => {
+    if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
+      return 'Tiket telah terbit';
+    else
+      return 'Tiket sedang dalam proses';
+  }
+
   render() {
     let { item } = this.props;
+    console.log(item);
     return (
-      <View>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
         <View style={{ flexDirection: 'row' }}>
           <Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} />
           <View style={{ flex: 1 }}>
@@ -29,9 +38,11 @@ class ActivityListItem extends React.PureComponent {
               {item.name}
             </Text>
             <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+            <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             <Text style={styles.activityDesc}>
-              {item.paxCount.map(p => p.count + ' ' + p.type + '\n')}
-              status: {item.bookingStatus}
+              {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
+              {'\n'}
+              {_labelBookingStatus(item.BookingStatus)}
             </Text>
           </View>
         </View>
@@ -51,18 +62,20 @@ class ActivityListItem extends React.PureComponent {
               </Button>
             )}
           </View>
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Button
-              containerStyle={globalStyles.ctaButton4}
-              style={{ fontSize: 12, color: '#fff', }}
-              onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
-            >
-              Voucher
+          {(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF') && (
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Button
+                containerStyle={globalStyles.ctaButton4}
+                style={{ fontSize: 12, color: '#fff', }}
+                onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
+              >
+                Voucher
             </Button>
-          </View>
+            </View>
+          )}
         </View>
         <View style={styles.separator} />
-      </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -79,8 +92,15 @@ class CartListItem extends React.PureComponent {
     />
   )
 
-  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// ganti jd Invoice
-  _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// ganti jd INstruction
+  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// TODO ganti jd Invoice
+  _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// TODO ganti jd INstruction
+
+  _labelPaymentStatus = status => {
+    if (item.paymentStatus == 'SETTLED')
+      return 'Lunas';
+    else
+      return 'Belum Lunas';
+  }
 
   render() {
     let { item } = this.props;
@@ -97,7 +117,7 @@ class CartListItem extends React.PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.activityDesc}>Total</Text>
-              <Text style={styles.activityDesc}>Status: {item.paymentStatus}</Text>
+              <Text style={styles.activityDesc}>{_labelPaymentStatus(item.paymentStatus)}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>

@@ -20,7 +20,7 @@ export default class WishlistBlank extends React.Component {
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
               <Text style={styles.textCartBesar}>Belum ada favorit</Text>
               <View>
-                <Text style={styles.textCart}>Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya.</Text>
+                <Text style={styles.textCart}>Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya!</Text>
               </View>
             </View>
             <View style={{width:'100%', marginTop:30}}>
