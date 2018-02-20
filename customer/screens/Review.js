@@ -9,6 +9,7 @@ import {
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { MultilineText } from '../components/StyledText'
 
 export default class ReviewScreen extends React.Component {
 
@@ -24,7 +25,7 @@ export default class ReviewScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({isLoading:true});
+    this.setState({ isLoading: true });
     const version = 'v1';
     const { id } = this.props.navigation.state.params;
     let request = {
@@ -57,19 +58,19 @@ export default class ReviewScreen extends React.Component {
         </View>
 
         <View style={styles.container}>
-          {reviews.map( (review, index) =>
+          {reviews.map((review, index) =>
             <View style={styles.containerReview} key={index}>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={styles.thumbprofile} source={{uri:review.avatar}} />
+                <Image style={styles.thumbprofile} source={{ uri: review.avatar }} />
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <Text style={styles.reviewTitle}>{review.name}</Text>
                   <Text style={styles.reviewDate}>{Formatter.dateLong(review.date)}</Text>
                 </View>
               </View>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.isireview}>
+                <MultilineText style={styles.isireview}>
                   {review.content}
-                </Text>
+                </MultilineText>
               </View>
             </View>
           )}

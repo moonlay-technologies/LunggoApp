@@ -27,6 +27,7 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
 
 export default class DetailScreen extends React.Component {
@@ -418,6 +419,7 @@ class Contents extends React.Component {
 
   render() {
     let { contents } = this.props;
+    console.log(contents);
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
@@ -425,9 +427,9 @@ class Contents extends React.Component {
             <Text style={styles.sectionTitle}>
               {content.title}
             </Text>
-            <Text style={styles.activityDesc}>
+            <MultilineText style={styles.activityDesc}>
               {content.desc}
-            </Text>
+            </MultilineText>
           </View>
         ))}
       </View>) :
@@ -448,9 +450,9 @@ class MainInfo extends React.Component {
           </Text>
         </View>
         <View style={{ marginBottom: 15 }}>
-          <Text style={styles.activityDesc}>
+          <MultilineText style={styles.activityDesc}>
             {shortDesc}
-          </Text>
+          </MultilineText>
         </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
@@ -557,9 +559,9 @@ class Map extends React.Component {
             />
           </MapView>
         </TouchableOpacity>
-        <Text>
+        <MultilineText>
           {address}
-        </Text>
+        </MultilineText>
       </View>
     )
   }
@@ -569,6 +571,7 @@ class ReviewAndRating extends React.Component {
 
   render() {
     let { rating, ratingCount, review, reviewCount, id } = this.props;
+    console.log(review.avatar);
     return (
       <View>
         {!reviewCount && (
@@ -596,9 +599,9 @@ class ReviewAndRating extends React.Component {
               <Text style={styles.reviewTitle}>
                 {review.name}
               </Text>
-              <Text style={styles.isireview}>
+              <MultilineText style={styles.isireview}>
                 {review.content}
-              </Text>
+              </MultilineText>
             </View>
           </View>
         )}
@@ -606,7 +609,7 @@ class ReviewAndRating extends React.Component {
         <View style={styles.divider} />
 
         {!!reviewCount && (
-          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', {id, rating, ratingCount})} >
+          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id, rating, ratingCount })} >
             <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
               <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
                 <View>
