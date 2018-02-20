@@ -166,7 +166,7 @@ class ListItem extends React.PureComponent {
               <Text style={styles.actionText}>Edit</Text>
             </TouchableOpacity>*/}
             <TouchableOpacity onPress={this._onPressDelete}>
-              <Text style={styles.actionText}>Delete</Text>
+              <Text style={styles.actionText}>Hapus</Text>
             </TouchableOpacity>
           </View>
 
