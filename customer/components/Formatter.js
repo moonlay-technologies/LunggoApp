@@ -19,6 +19,7 @@ export var number = int => int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 //// Format price to "Rp 1.000.000"
 export var rupiah = int => 'Rp ' + number(int);
+export var price = rupiah;
 
 // export var dollar = int => '$' + int;
 

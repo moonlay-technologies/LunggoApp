@@ -61,7 +61,8 @@ export default TabNavigator(
             borderBottomWidth: 1,
             backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-            height:10
+            height:20,
+            marginTop:0
           },
         }),
       },

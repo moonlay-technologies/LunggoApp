@@ -226,6 +226,12 @@ export default class ExploreScreen extends React.Component {
                   {Formatter.price(item.price)}
                 </Text>
               </View>
+              {itemsPerScreen < 3 && (
+                <View>
+                  <WishButton wishlisted={item.wishlisted}
+                    id={item.id} big={itemsPerScreen == 1} {...this.props} />
+                </View>
+              )}
             </View>
           )}
         </TouchableOpacity>

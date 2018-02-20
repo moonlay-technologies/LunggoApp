@@ -20,10 +20,10 @@ import * as Formatter from '../../components/Formatter';
 class ActivityListItem extends React.PureComponent {
 
   _labelBookingStatus = status => {
-    if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
-      return 'Tiket telah terbit';
+    if (status == 'TKTD' || status == 'CONF')
+      return <Text style={styles.labelOk}>Tiket telah terbit</Text>;
     else
-      return 'Tiket sedang dalam proses';
+      return <Text style={styles.labelWarning}>Tiket sedang dalam proses</Text>;
   }
 
   render() {
@@ -41,9 +41,8 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             <Text style={styles.activityDesc}>
               {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
-              {'\n'}
-              {_labelBookingStatus(item.BookingStatus)}
             </Text>
+            {this._labelBookingStatus(item.BookingStatus)}
           </View>
         </View>
 
@@ -96,10 +95,10 @@ class CartListItem extends React.PureComponent {
   _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// TODO ganti jd INstruction
 
   _labelPaymentStatus = status => {
-    if (item.paymentStatus == 'SETTLED')
-      return 'Lunas';
+    if (status == 'SETTLED')
+      return <Text style={styles.labelOk}>Lunas</Text>;
     else
-      return 'Belum Lunas';
+      return <Text style={styles.labelDanger}>Belum Lunas</Text>;
   }
 
   render() {
@@ -117,7 +116,7 @@ class CartListItem extends React.PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.activityDesc}>Total</Text>
-              <Text style={styles.activityDesc}>{_labelPaymentStatus(item.paymentStatus)}</Text>
+              {this._labelPaymentStatus(item.paymentStatus)}
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
@@ -340,5 +339,27 @@ const styles = StyleSheet.create({
   invoice: {
     marginTop: 10,
     paddingVertical: 10,
+  },
+  labelDanger: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    backgroundColor: '#23d3c3',
+  },
+  labelWarning: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    backgroundColor: '#ff5f5f',
+  },
+  labelOk: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    borderColor: '#ff5f5f',
+    borderWidth: 1
   },
 });

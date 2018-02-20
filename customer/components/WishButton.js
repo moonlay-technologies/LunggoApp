@@ -8,6 +8,7 @@ import { fetchWishlist, checkUserLoggedIn } from '../../api/Common';
 import Modal from 'react-native-modal';
 import globalStyles from '../../commons/globalStyles';
 import { NavigationActions } from 'react-navigation';
+import Colors from '../../constants/Colors';
 
 export default class WishButton extends React.Component {
 
@@ -103,22 +104,22 @@ export default class WishButton extends React.Component {
           onBackdropPress={() => this._setModalVisible(false)} >
           <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
             <Text style={styles.textCart}>
-              Please Login or Register first!
+              Silakan log in terlebih dahulu
             </Text>
             <View style={{ marginVertical: 10 }}>
               <Button
                 containerStyle={globalStyles.ctaButton2}
                 style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
-                onPress={this._goToLoginScreen}>
-                Login
+                onPress={this._goToRegisterScreen}>
+                Daftar
               </Button>
             </View>
             <View style={{ marginVertical: 5 }}>
               <Button
-                containerStyle={globalStyles.ctaButton2}
-                style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
-                onPress={this._goToRegisterScreen}>
-                Register
+                containerStyle={globalStyles.ctaButton1}
+                style={{ fontSize: 14, color: Colors.primaryColor, fontFamily: 'Hind', }}
+                onPress={this._goToLoginScreen}>
+                Log in
               </Button>
             </View>
           </View>
