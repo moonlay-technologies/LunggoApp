@@ -1,15 +1,10 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import * as Formatter from '../components/Formatter';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView
+  Platform, StyleSheet, Text, View, Image, ScrollView,
 } from 'react-native';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
@@ -18,33 +13,35 @@ import {
 export default class ReviewScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Review',
+    title: 'Ulasan',
   };
 
   constructor(props) {
     super(props)
     this.state = {
-      reviews: []
+      reviews: [],
     }
   }
 
   componentDidMount() {
+    this.setState({isLoading:true});
     const version = 'v1';
-    const { id } = this.props.navigation.state;
+    const { id } = this.props.navigation.state.params;
     let request = {
-      path: `/${version}/activities/${id}/review`,
+      path: `/${version}/activities/${id}/reviews`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
     fetchTravoramaApi(request).then(response => {
-      this.setState({ reviews: response.reviews });
-      if (!response.review) {
-        console.log('REVIEW:');
-        console.log(response.reviews);
-      }
+      response.isLoading = false;
+      this.setState(response);
     }).catch(error => console.log(error));
   }
 
   render() {
+    console.log('this.state')
+    console.log(this.state)
+    let { rating, ratingCount } = this.props.navigation.state.params;
+    let { reviews } = this.state;
     return (
       <ScrollView>
 
@@ -60,10 +57,10 @@ export default class ReviewScreen extends React.Component {
         </View>
 
         <View style={styles.container}>
-          {reviews.map((review, index) => {
+          {reviews.map( (review, index) =>
             <View style={styles.containerReview} key={index}>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={styles.thumbprofile} source={review.avatar} />
+                <Image style={styles.thumbprofile} source={{uri:review.avatar}} />
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <Text style={styles.reviewTitle}>{review.name}</Text>
                   <Text style={styles.reviewDate}>{Formatter.dateLong(review.date)}</Text>
@@ -75,7 +72,7 @@ export default class ReviewScreen extends React.Component {
                 </Text>
               </View>
             </View>
-          })}
+          )}
         </View>
 
       </ScrollView>
