@@ -14,6 +14,10 @@ import globalStyles from '../../commons/globalStyles';
 
 export default class MessageBlank extends React.Component {
   
+  constructor (props) {
+    super(props);
+  }
+
   static navigationOptions = {
     title: 'Pesan',
   };;
@@ -34,7 +38,7 @@ export default class MessageBlank extends React.Component {
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.setState({open: true})}
+                  onPress={() => this.props.navigation.goBack()}
                 >
                   Jelajah Sekarang
               </Button>

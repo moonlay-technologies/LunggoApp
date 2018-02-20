@@ -17,7 +17,9 @@
       "icon": "./assets/icons/loading-icon.png"
     },
     "packagerOpts": {
-      "assetExts": ["ttf"]
+      "assetExts": [
+        "ttf"
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.sk3vy.new-project-template",

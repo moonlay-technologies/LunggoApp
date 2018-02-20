@@ -5,6 +5,7 @@ import { ActivityIndicator } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import ListScreen from './MyBookingListScreen';
 import { getBookingList } from './MyBookingController';
+import LoadingAnimation from '../../components/LoadingAnimation'
 
 
 export default class MyBookingLoadingScreen extends React.Component {
@@ -35,7 +36,7 @@ export default class MyBookingLoadingScreen extends React.Component {
     let {isLoading, list, status } = this.state;
     let {props} = this;
 
-    if (isLoading) return <ActivityIndicator size="large"/>
+    if (isLoading) return <LoadingAnimation />
     else if (status==200 && list && list.length > 0 ) return (
       <ListScreen list={list} {...props} /> )
     else return <BlankScreen {...props} />

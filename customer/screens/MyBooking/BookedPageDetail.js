@@ -21,7 +21,7 @@ export default class BookedPageDetail extends React.Component {
 
   _onContinuePaymentPressed = () => {
     this.props.navigation.navigate(
-      'WebViewScreen', {rsvNo:this.state.rsvNo}
+      'PaymentScreen', {rsvNo:this.state.rsvNo}
     );
   }
 

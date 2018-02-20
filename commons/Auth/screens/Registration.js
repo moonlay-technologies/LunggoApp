@@ -6,12 +6,12 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import {fetchTravoramaApi, AUTH_LEVEL} from '../../../api/Common';
 import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
-  from '../../commons/FormValidation';
-  import globalStyles from '../../commons/globalStyles';
+  from '../../FormValidation';
+  import globalStyles from '../../globalStyles';
 
 
 export default class Registration extends React.Component {
@@ -38,12 +38,12 @@ export default class Registration extends React.Component {
     let errorPassword = validatePassword(password);
     let errorCountryCode = validateRequiredField(countryCode);
     let errorPhone = validateRequiredField(phone);
-    this.setState({errorName, errorEmail, errorPassword,
-      errorCountryCode, errorPhone});
     if (!errorName && !errorEmail && !errorPassword &&
         !errorCountryCode && !errorPhone) {
       this._register();
     }
+    else this.setState({errorName, errorEmail, errorPassword,
+      errorCountryCode, errorPhone});
   }
 
   _register = () => {
@@ -60,7 +60,7 @@ export default class Registration extends React.Component {
     }
     fetchTravoramaApi(request).then( response => {
       if (response.status == 200) {
-        this.props.navigation.navigate('MainTabNavigator');
+        this.props.navigation.pop();
         this.setState({isLoading:false})
       }
       else {
@@ -69,8 +69,11 @@ export default class Registration extends React.Component {
         console.log(response);
         let error;
         switch (response.error) {
-          case 'ERR_ALREADY_EXIST':
-            error = 'Akun sudah pernah terdaftar';
+          case 'ERR_EMAIL_ALREADY_EXIST':
+            error = 'Email ' + this.state.email + ' sudah pernah terdaftar';
+            break;
+		  case 'ERR_PHONENUMBER_ALREADY_EXIST':
+            error = 'Nomor ' + this.state.phone + ' sudah pernah terdaftar';
             break;
           case 'ERR_INVALID_REQUEST':
             error = 'Ada kesalahan pengisian data';
@@ -120,7 +123,7 @@ export default class Registration extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         {/*<KeyboardAwareScrollView
           style={{ backgroundColor: 'transparent' }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -256,14 +259,14 @@ export default class Registration extends React.Component {
             disabled={isLoading}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >
-          Daftarkan
+            Daftarkan
           </Button>
           <TouchableOpacity
             style={{
               marginTop:30, alignItems:'center'
             }}
             onPress={() =>
-              this.props.navigation.navigate('LoginScreen')
+              this.props.navigation.replace('LoginScreen')
             }
           >
             <Text style={{fontSize:14, color:'#000', fontFamily: 'Hind'}}>
@@ -271,7 +274,7 @@ export default class Registration extends React.Component {
             </Text>
           </TouchableOpacity>
         {/*</KeyboardAwareScrollView>*/}
-      </View>
+      </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     );
   }

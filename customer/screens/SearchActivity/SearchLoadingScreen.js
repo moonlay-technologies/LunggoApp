@@ -5,6 +5,7 @@ import { Text, ActivityIndicator } from 'react-native';
 import search from './SearchController';
 import SearchHeader from './SearchHeader';
 import ListScreen from './ActivityResultScreen';
+import SearchListScreen from './SearchBlankScreen';
 
 export default class SearchLoadingScreen extends React.Component {
 
@@ -18,8 +19,11 @@ export default class SearchLoadingScreen extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    title: 'nanti diganti searchHeader',
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: `Pencarian '${params.searchString}'`
+    }
   };
 
   componentDidMount() {
@@ -33,10 +37,9 @@ export default class SearchLoadingScreen extends React.Component {
   render() {
     let { isLoading, list } = this.state;
     let { props } = this;
-    props.navigation.state.key = 'SearchActivity';
     if (isLoading) { return <ActivityIndicator size='large'/> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
-    else { return <Text>Sorry, we can't find the item you're looking for!</Text> }
+    else { return <SearchBlankScreen /> }
   }
 
 }

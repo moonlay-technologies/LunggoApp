@@ -1,7 +1,8 @@
 'use strict';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../../api/Common';
+import { fetchTravoramaApi } from '../api/Common';
+import { AUTH_LEVEL } from '../constants/env';
 
-export async function getProfile () {
+export async function getProfile() {
   const version = 'v1';
   let request = {
     path: `/${version}/profile`,

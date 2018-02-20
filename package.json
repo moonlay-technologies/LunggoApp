@@ -28,10 +28,14 @@
     "react-native-maps": "^0.17.1",
     "react-native-modal": "^4.1.1",
     "react-native-simple-modal": "^7.0.0",
+    "react-native-snap-carousel": "^3.6.0",
+    "react-native-spinkit": "^1.1.1",
+    "react-native-star-rating": "^1.0.8",
+    "react-native-svg-uri": "^1.2.3",
     "react-native-swipeout": "^2.3.1",
     "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.12"
+    "react-navigation": "^1.0.3"
   },
   "devDependencies": {
     "jest-expo": "^21.0.0"
