@@ -11,17 +11,26 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
-  RefreshControl, FlatList, //TouchableOpacity
+  RefreshControl, FlatList, TouchableOpacity
 } from 'react-native';
 import { getBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 
 class ActivityListItem extends React.PureComponent {
+
+  _labelBookingStatus = status => {
+    if (status == 'TKTD' || status == 'CONF')
+      return <Text style={styles.labelOk}>Tiket telah terbit</Text>;
+    else
+      return <Text style={styles.labelWarning}>Tiket sedang dalam proses</Text>;
+  }
+
   render() {
     let { item } = this.props;
+    console.log(item);
     return (
-      <View>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
         <View style={{ flexDirection: 'row' }}>
           <Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} />
           <View style={{ flex: 1 }}>
@@ -29,10 +38,11 @@ class ActivityListItem extends React.PureComponent {
               {item.name}
             </Text>
             <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+            <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             <Text style={styles.activityDesc}>
-              {item.paxCount.map(p => p.count + ' ' + p.type + '\n')}
-              status: {item.bookingStatus}
+              {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
             </Text>
+            {this._labelBookingStatus(item.BookingStatus)}
           </View>
         </View>
 
@@ -51,18 +61,20 @@ class ActivityListItem extends React.PureComponent {
               </Button>
             )}
           </View>
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Button
-              containerStyle={globalStyles.ctaButton4}
-              style={{ fontSize: 12, color: '#fff', }}
-              onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
-            >
-              Voucher
+          {(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF') && (
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Button
+                containerStyle={globalStyles.ctaButton4}
+                style={{ fontSize: 12, color: '#fff', }}
+                onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
+              >
+                Voucher
             </Button>
-          </View>
+            </View>
+          )}
         </View>
         <View style={styles.separator} />
-      </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -79,8 +91,15 @@ class CartListItem extends React.PureComponent {
     />
   )
 
-  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// ganti jd Invoice
-  _showInstruction = () => this.props.navigation.navigate('WebViewScreen') /// ganti jd INstruction
+  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// TODO ganti jd Invoice
+  _showInstruction = () => this.props.navigation.navigate('PaymentScreen') /// TODO ganti jd INstruction
+
+  _labelPaymentStatus = status => {
+    if (status == 'SETTLED')
+      return <Text style={styles.labelOk}>Lunas</Text>;
+    else
+      return <Text style={styles.labelDanger}>Belum Lunas</Text>;
+  }
 
   render() {
     let { item } = this.props;
@@ -97,7 +116,7 @@ class CartListItem extends React.PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.activityDesc}>Total</Text>
-              <Text style={styles.activityDesc}>Status: {item.paymentStatus}</Text>
+              {this._labelPaymentStatus(item.paymentStatus)}
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
@@ -320,5 +339,27 @@ const styles = StyleSheet.create({
   invoice: {
     marginTop: 10,
     paddingVertical: 10,
+  },
+  labelDanger: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    backgroundColor: '#23d3c3',
+  },
+  labelWarning: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    backgroundColor: '#ff5f5f',
+  },
+  labelOk: {
+    width: '100%',
+    paddingVertical: 6,
+    overflow: 'hidden',
+    borderRadius: 3,
+    borderColor: '#ff5f5f',
+    borderWidth: 1
   },
 });

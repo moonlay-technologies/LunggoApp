@@ -5,7 +5,7 @@ export SearchActivity from './SearchActivity/SearchLoadingScreen';
 export AddPax from './AddPax';
 export DetailScreen from './DetailScreen';
 export CalendarPicker from './CalendarPicker';
-export WebViewScreen from './WebViewScreen';
+export PaymentScreen from './PaymentScreen';
 export PaxChoice from './PaxChoice';
 export BookingDetail from './BookingDetail';
 export BookedPageDetail from './MyBooking/BookedPageDetail';

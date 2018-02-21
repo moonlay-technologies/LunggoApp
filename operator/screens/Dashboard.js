@@ -9,17 +9,27 @@ import Button from 'react-native-button';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
+import { getProfile } from '../../commons/ProfileController';
+import * as Formatter from '../../customer/components/Formatter';
 
 export default class Dashboard extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = {};
+    this.state = {
+      name: '...',
+      balance: 9999999,
+      avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
+    };
   }
 
   static navigationOptions = {
     header: null,
   };
+
+  componentDidMount() {
+    getProfile().then( ({ contact }) => this.setState(contact) );
+  }
 
   _handleResponse = (response) => {
     if(response) {
@@ -55,12 +65,6 @@ export default class Dashboard extends React.Component {
       this.setState({ message: 'response undefined'})
       console.log(response)
     }
-  }
-
-
-  _onActivityListPressed = () => {
-    // this.setState({ message: '', isLoading:true });
-    this._goToActivityList();
   }
 
   _goToActivityList = () => this.props.navigation.navigate('ActivityList');
@@ -154,26 +158,26 @@ export default class Dashboard extends React.Component {
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
-            <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
+            <Image style={styles.avatarBig} source={{uri:this.state.avatar}}/>
             <View style={{marginTop:20}}>
-              <Text style={styles.namaProfile}>Ali Zainal Abidin</Text>
+              <Text style={styles.namaProfile}>{this.state.name}</Text>
             </View>
             <View style={{}}>
-              <Text style={styles.saldo}>Rp 500.000</Text>
+              <Text style={styles.saldo}>{Formatter.price(this.state.balance)}</Text>
             </View>
             <View style={{flexDirection:'row', marginTop:25 }}>
-              <View style={{flex:1, alignItems:'center'}}>
+              <TouchableOpacity onPress={this._goToActivityList} style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.teks1}>Activity</Text>
                 <Text style={styles.teks2}>22</Text>
-              </View>
-              <View style={{flex:1, alignItems:'center'}}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this._onAppointmentRequestPressed} style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.teks1}>Request</Text>
                 <Text style={styles.teks2}>3</Text>
-              </View>
-              <View style={{flex:1, alignItems:'center'}}>
-                <Text style={styles.teks1}>Done</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this._onAppointmentListPressed} style={{flex:1, alignItems:'center'}}>
+                <Text style={styles.teks1}>Akan datang</Text>
                 <Text style={styles.teks2}>12</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           
@@ -182,6 +186,8 @@ export default class Dashboard extends React.Component {
       <View style={{marginTop:30, padding:15, paddingBottom:5}}>
         <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
       </View>
+
+
 
       <View style={styles.containerRecentActivity}>
         <View style={styles.boxRecentActivity}>

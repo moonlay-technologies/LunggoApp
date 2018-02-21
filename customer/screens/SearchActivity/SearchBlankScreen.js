@@ -6,31 +6,17 @@ import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
 
-export default class WishlistBlank extends React.Component {
-  
-  static navigationOptions = {
-    title: 'Favorit',
-  }
-
+export default class SearchBlankScreen extends React.Component {
   render() {
     return (
         <View style={styles.container}>
           <View style={{justifyContent:'center', alignItems:'center', flex:1}}>
-            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../../assets/images/favorit.jpg')}/>
+            <Image style={{width:180, height:180, resizeMode:'contain'}} source={require('../../assets/images/cart1.jpg')}/>
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
-              <Text style={styles.textCartBesar}>Belum ada favorit</Text>
+              <Text style={styles.textCartBesar}>Pencarian tidak ditemukan</Text>
               <View>
-                <Text style={styles.textCart}>Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya!</Text>
+                <Text style={styles.textCart}>Silakan ganti kata kunci pencarian kamu</Text>
               </View>
-            </View>
-            <View style={{width:'100%', marginTop:30}}>
-              <Button
-                  containerStyle={globalStyles.ctaButton}
-                  style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.goBack()}
-                >
-                  Jelajah Sekarang
-              </Button>
             </View>
           </View>
         </View>

@@ -13,12 +13,13 @@ import {
 import Swiper from 'react-native-swiper';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
+import BeforeLoginScreen from '../screens/BeforeLoginScreen'
 
 export default class IntroScreen extends Component {
 
   constructor() {
     super();
-    this.state = { leftSkip: true, dot: this.Dot, activeDot: this.ActiveDot };
+    this.state = { notLastScreen: true, dot: this.Dot, activeDot: this.ActiveDot };
   }
 
   static navigationOptions = {
@@ -51,12 +52,18 @@ export default class IntroScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {this.state.leftSkip && (
-          <TouchableOpacity style={styles.containerNav1} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
+        {this.state.notLastScreen && (
+          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
             <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Lewati</Text>
           </TouchableOpacity>
         )}
+        {this.state.notLastScreen && (
+          <TouchableOpacity style={styles.containerRight} onPress={() => this.swiper.scrollBy(1)}>
+            <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Berikutnya</Text>
+          </TouchableOpacity>
+        )}
         <Swiper
+          ref={ref => { this.swiper = ref }}
           style={styles.wrapper}
           activeDot={this.state.activeDot}
           dot={this.state.dot}
@@ -64,59 +71,15 @@ export default class IntroScreen extends Component {
           loop={false}
           onIndexChanged={
             index => index == 3 ?
-              this.setState({ leftSkip: false, dot: <View />, activeDot: <View /> }) :
-              this.setState({ leftSkip: true, dot: this.Dot, activeDot: this.ActiveDot })}
+              this.setState({ notLastScreen: false, dot: <View />, activeDot: <View /> }) :
+              this.setState({ notLastScreen: true, dot: this.Dot, activeDot: this.ActiveDot })}
         >
           <Image style={styles.slides} source={require('../../assets/images/welcome1.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome2.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome3.jpg')} />
-          <BeforeLoginScreen {...this.props} />
+          <BeforeLoginScreen {...this.props} onIntro={true} />
         </Swiper>
       </View >
-    );
-  }
-}
-
-
-class BeforeLoginScreen extends Component {
-
-  static navigationOptions = {
-    header: null
-  };
-
-  render() {
-    let { navigate, replace } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <View style={{ marginVertical: 20, }}>
-          <Text style={globalStyles.openingText}>
-            Mulai liburanmu sekarang
-          </Text>
-        </View>
-
-        <Button
-          containerStyle={{ marginTop: 30, height: 45, paddingTop: 9, overflow: 'hidden', borderRadius: 25, backgroundColor: '#fff', }}
-          style={{ fontSize: 20, color: '#01d4cb', fontFamily: 'Hind-Bold', }}
-          onPress={() => navigate('Registration')}
-        >
-          Daftar
-        </Button>
-        <TouchableOpacity style={{ marginTop: 24, alignItems: 'center' }}
-          onPress={() => navigate('LoginScreen')}
-          activeOpacity={0.7}
-        >
-          <Text style={{ fontSize: 16, color: '#fff', fontFamily: 'Hind-SemiBold' }}>
-            Sudah punya akun? Tap Disini
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ position: 'absolute', bottom: 20, alignItems: 'center', width: '111%', }}
-          onPress={() => replace('MainTabNavigator', { loggedIn: false })}
-        >
-          <Text style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind' }}>
-            Lewati
-          </Text>
-        </TouchableOpacity>
-      </View>
     );
   }
 }
@@ -131,7 +94,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // backgroundColor: '#9DD6EB',
   },
-  containerNav1: {
+  containerLeft: {
     zIndex: 200,
     backgroundColor: 'transparent',
     position: 'absolute',
@@ -139,7 +102,20 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         bottom: 15,
-        left: 20,
+      },
+      android: {
+        bottom: 20,
+      },
+    }),
+  },
+  containerRight: {
+    zIndex: 200,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    right: 20,
+    ...Platform.select({
+      ios: {
+        bottom: 15,
       },
       android: {
         bottom: 20,

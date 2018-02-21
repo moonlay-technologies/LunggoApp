@@ -9,8 +9,10 @@ import {
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { checkUserLoggedIn, removeAccessToken } from '../../api/Common';
+import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
+import { getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 
@@ -19,6 +21,8 @@ export default class AccountScreen extends React.Component {
     this.state = {
       isModalVisible: false,
       isLoggedIn: null,
+      name: '...',
+      avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     }
   }
 
@@ -30,7 +34,7 @@ export default class AccountScreen extends React.Component {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then(({ contact }) => this.setState({ contact }))
+        getProfile().then( ({ contact }) => this.setState(contact) );
     });
   }
 
@@ -83,11 +87,11 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 40 }}>
               <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={require('../../assets/images/dummyProfile.png')} />
+                <Image style={styles.avatarBig} source={{uri:this.state.avatar}} />
               </View>
-              <View>
+              {/*<View>
                 <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.activitydetailTitle}>nama sesuai id login</Text>
+                  <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                   <Text style={styles.textCart}>Edit Profile</Text>
@@ -96,9 +100,22 @@ export default class AccountScreen extends React.Component {
                   </View>
                   <Text style={styles.textCartColor}>100 point</Text>
                 </View>
-              </View>
+              </View>*/}
             </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+            {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <View style={{ justifyContent: 'center', flex: 1 }}>
+                <Text style={styles.optionProfile}>{this.state.name}</Text>
+              </View>
+              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
+                <Icon
+                  name='ios-settings-outline'
+                  type='ionicon'
+                  size={30}
+                  color='#454545' />
+              </TouchableOpacity>
+            </View>
+
+            {/*<View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Text style={styles.optionProfile}>Notifikasi</Text>
               </View>
@@ -145,7 +162,7 @@ export default class AccountScreen extends React.Component {
                   size={30}
                   color='#454545' />
               </View>
-            </View>
+            </View>*/}
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this._setModalVisible(true)}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>

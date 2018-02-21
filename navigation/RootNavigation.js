@@ -12,7 +12,7 @@ import registerForPushNotificationsAsync
 
 import {
   SearchActivity, MyBooking, AddPax, DetailScreen,
-  CalendarPicker, WebViewScreen, PaxChoice, BookingDetail,
+  CalendarPicker, PaymentScreen, PaxChoice, BookingDetail,
   BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
   Review, RincianHarga,
 } from '../customer/screens/Screens';
@@ -55,8 +55,6 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: {
-        //screen: DetailScreen
-        //screen: LoginScreen
         screen: MainTabNavigator
         //screen: MyBookingList
         //screen: LoginScreen
@@ -68,7 +66,7 @@ export default class RootNavigator extends React.Component {
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
       CalendarPicker: { screen: CalendarPicker },
-      WebViewScreen: { screen: WebViewScreen },
+      PaymentScreen: { screen: PaymentScreen },
       PaxChoice: { screen: PaxChoice },
       AddPax: { screen: AddPax },
       BookingDetail: { screen: BookingDetail },
@@ -96,7 +94,8 @@ export default class RootNavigator extends React.Component {
       CancelationPolicy: { screen: CancelationPolicy },
       Settings: { screen: Settings },
       NotFound: { screen: NotFound },
-      IntroScreen: { screen: IntroScreen }
+      IntroScreen: { screen: IntroScreen },
+      BeforeLoginScreen: { screen: BeforeLoginScreen }
     },
     {
       initialRouteParams: { appType: 'OPERATOR' },
@@ -107,6 +106,10 @@ export default class RootNavigator extends React.Component {
           fontFamily: 'Hind',
           marginBottom: -5
         },
+        headerStyle: {
+          elevation: 2,
+          // marginTop: -20
+        }
       }),
     }
   );
@@ -120,7 +123,6 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    console.log(this.props.isNotFirstOpen);
     return <this.rootStackNavigator />;
   }
 

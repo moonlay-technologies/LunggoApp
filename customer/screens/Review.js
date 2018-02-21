@@ -1,50 +1,48 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import * as Formatter from '../components/Formatter';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView
+  Platform, StyleSheet, Text, View, Image, ScrollView,
 } from 'react-native';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { MultilineText } from '../components/StyledText'
 
 export default class ReviewScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Review',
+    title: 'Ulasan',
   };
 
   constructor(props) {
     super(props)
     this.state = {
-      reviews: []
+      reviews: [],
     }
   }
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     const version = 'v1';
-    const { id } = this.props.navigation.state;
+    const { id } = this.props.navigation.state.params;
     let request = {
-      path: `/${version}/activities/${id}/review`,
+      path: `/${version}/activities/${id}/reviews`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
     fetchTravoramaApi(request).then(response => {
-      this.setState({ reviews: response.reviews });
-      if (!response.review) {
-        console.log('REVIEW:');
-        console.log(response.reviews);
-      }
+      response.isLoading = false;
+      this.setState(response);
     }).catch(error => console.log(error));
   }
 
   render() {
+    console.log('this.state')
+    console.log(this.state)
+    let { rating, ratingCount } = this.props.navigation.state.params;
+    let { reviews } = this.state;
     return (
       <ScrollView>
 
@@ -60,22 +58,22 @@ export default class ReviewScreen extends React.Component {
         </View>
 
         <View style={styles.container}>
-          {reviews.map((review, index) => {
+          {reviews.map((review, index) =>
             <View style={styles.containerReview} key={index}>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={styles.thumbprofile} source={review.avatar} />
+                <Image style={styles.thumbprofile} source={{ uri: review.avatar }} />
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <Text style={styles.reviewTitle}>{review.name}</Text>
                   <Text style={styles.reviewDate}>{Formatter.dateLong(review.date)}</Text>
                 </View>
               </View>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.isireview}>
+                <MultilineText style={styles.isireview}>
                   {review.content}
-                </Text>
+                </MultilineText>
               </View>
             </View>
-          })}
+          )}
         </View>
 
       </ScrollView>
@@ -89,18 +87,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   reviewTitle: {
-    fontSize: 20,
-    color: '#454545',
     fontFamily: 'Hind-SemiBold',
+    fontSize: 17,
+    color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight: 6,
-        paddingTop: 20,
-        marginBottom: -30,
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: -15,
+        //backgroundColor:'red'
       },
       android: {
-        //lineHeight:24
+        lineHeight: 24
         //paddingTop: 23 - (23* 1),
+
       },
     }),
   },
@@ -116,9 +116,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   thumbprofile: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: 45,
+    width: 45,
+    borderRadius: 22.5,
     marginRight: 15,
   },
   hyperlink: {
@@ -144,8 +144,9 @@ const styles = StyleSheet.create({
     }),
   },
   reviewDate: {
-    fontSize: 12,
-    color: '#9a9a9a'
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop:5
   },
   containerInfoReview: {
     backgroundColor: '#f7f7f7',

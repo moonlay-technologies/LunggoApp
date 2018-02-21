@@ -9,7 +9,7 @@ export default class SearchHeader extends React.Component {
     super(props)
     this.state = {
       searchString:'',
-      placeholder: 'Try "snorkeling"...',
+      placeholder: 'Try "trip"...',
     };
   }
 
@@ -24,7 +24,7 @@ export default class SearchHeader extends React.Component {
   render() {
     let {navigate} = this.props.navigation;
     return (
-      <View style={{ backgroundColor: '#fff'}}>
+      <View style={{ elevation:0.75, backgroundColor: '#fff'}}>
         <View style={[styles.header,styles.flowRight]}>
           <View style={{flex:6,}}>
             <TextInput
@@ -36,21 +36,19 @@ export default class SearchHeader extends React.Component {
               underlineColorAndroid='transparent'
               selectTextOnFocus={true}
             />
-            <TouchableOpacity onPress={this._goToSearchActivity}
+            <View //TouchableOpacity onPress={this._goToSearchActivity}
               style={{position:'absolute', left:5, top:-3, padding:9}}
             >
               <Icon name='magnifying-glass' type='entypo' size={20}
                 color='#ccc' />
-            </TouchableOpacity>
+            </View>
           </View>
-          <View style={{flex:1,alignItems:'center',}}>
-            <TouchableOpacity onPress={this._goToCart} activeOpacity={0.8} >
-              <Icon name='shopping-basket' type='entypo' size={26} color='#23d3c3' />
-            </TouchableOpacity>
+          <TouchableOpacity style={{flex:1,alignItems:'center',}} onPress={this._goToCart} activeOpacity={0.8} >
+            <Icon name='shopping-basket' type='entypo' size={26} color='#23d3c3' />
             {/*<View style={styles.notification}>
               <Text style={styles.txtNotification}>5</Text>
             </View>*/}
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -108,7 +106,6 @@ const styles = StyleSheet.create({
       android: {
         paddingHorizontal:12.6,
         paddingVertical:12.6,
-        elevation: 0,        
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
 

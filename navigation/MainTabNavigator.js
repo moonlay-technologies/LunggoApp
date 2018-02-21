@@ -24,17 +24,15 @@ export default TabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
-      headerRight:
+      /*headerRight:
         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-          {/*<Ionicons name={'md-cart'} size={28} style={{marginRight: 10}} />*/}
           <View style={styles.containerCart}>
-            <Entypo name='shopping-basket' size={26} color='#23d3c3' style={{/* marginRight:0*/ }} />
-            {/*<View style={styles.notification}>
-            <Text style={styles.txtNotification}>5</Text>
-          </View>*/}
+            <Entypo name='shopping-basket' size={26} color='#23d3c3' />
+            <View style={styles.notification}>
+              <Text style={styles.txtNotification}>5</Text>
+            </View>
           </View>
-        </TouchableOpacity>,
-
+        </TouchableOpacity>,*/
       headerStyle: {
         backgroundColor: '#fff',
         ...Platform.select({
@@ -55,12 +53,14 @@ export default TabNavigator(
             //paddingHorizontal:12.6,
             //paddingVertical:12.6,
             //paddingRight:25,
+            backgroundColor:'cyan',
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
             backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-            height:10
+            height:20,
+            marginTop:0
           },
         }),
       },
@@ -117,7 +117,7 @@ export default TabNavigator(
     tabBarPosition: 'bottom',
     //initialLayout: {width:100, height:300},
     animationEnabled: true,
-    swipeEnabled: true,
+    swipeEnabled: false,
     tabBarOptions: {
       activeTintColor: Colors.bottomTabSelected,
       style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec' }
@@ -186,8 +186,7 @@ const styles = StyleSheet.create({
       },
       android: {
         paddingHorizontal: 15,
-        paddingVertical: 15,
-        elevation: 20,
+        elevation: 0,
         borderBottomColor: "#ececec",
         borderBottomWidth: 1,
       },

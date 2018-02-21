@@ -1,14 +1,6 @@
-/*
-
-===== FATAL ERROR ======
-bug when assign mediaSrc in constructor 
-"this.state.mediaSrc = [details.mediaSrc];"
-
-*/
-
 'use strict';
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Platform, StyleSheet, Text, View, Image, TextInput,
   ScrollView, TouchableOpacity, Animated
@@ -27,9 +19,10 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
+import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
 
-export default class DetailScreen extends React.Component {
+export default class DetailScreen extends Component {
 
   constructor(props) {
     super(props)
@@ -37,20 +30,20 @@ export default class DetailScreen extends React.Component {
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         isLoading: true,
-        id: 1,
-        requiredPaxData: '',
-        name: 'loading activity name...',
-        city: 'loading address...',
-        duration: { amount: 'loading ', unit: 'duration...' },
-        price: '...',
-        mediaSrc: [],
-        lat: 0,
-        long: 0,
-        review: {
-          rating: 0.0,
-          reviewCount: 0
-        },
-        contents: []
+        // id: 1,
+        // requiredPaxData: '',
+        // name: 'loading activity name...',
+        // city: 'loading address...',
+        // duration: { amount: 'loading ', unit: 'duration...' },
+        // price: '...',
+        // sliderImages: [],
+        // lat: 0,
+        // long: 0,
+        // review: {
+        //   rating: 0.0,
+        //   reviewCount: 0
+        // },
+        // contents: [],
       }
     } else {
       details.mediaSrc = [details.mediaSrc];
@@ -64,7 +57,7 @@ export default class DetailScreen extends React.Component {
       this.state.contents = [];
     }
     this.state.scrollY = new Animated.Value(0);
-    this.state.isLoading= true;
+    this.state.isLoading = true;
   }
 
   static navigationOptions = { header: null }
@@ -97,8 +90,6 @@ export default class DetailScreen extends React.Component {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount } = this.state;
-    console.log('state');
-    console.log(this.state);
     return (
       <View>
         <ScrollView
@@ -112,7 +103,7 @@ export default class DetailScreen extends React.Component {
           <MediaContents media={mediaSrc} />
 
           <View style={styles.container}>
-            
+
 
             {isLoading && (
               <LoadingAnimation />
@@ -122,8 +113,6 @@ export default class DetailScreen extends React.Component {
               <View>
                 <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} />
                 <Contents contents={contents} />
-
-                <View style={styles.divider} />
 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
                   <View style={styles.containerdescriptionActivity}>
@@ -135,7 +124,7 @@ export default class DetailScreen extends React.Component {
 
                 <View style={styles.divider} />
 
-                <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} {...this.props} />
+                <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} id={id} {...this.props} />
 
                 <View style={styles.divider} />
 
@@ -163,9 +152,9 @@ export default class DetailScreen extends React.Component {
 
         </ScrollView>
 
-        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} {...this.props} />
+        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} {...this.props} />
         {!isLoading && (
-          <Footer price={price} details={this.state} {...this.props}/>
+          <Footer price={price} details={this.state} {...this.props} />
         )}
 
       </View>
@@ -173,7 +162,7 @@ export default class DetailScreen extends React.Component {
   }
 }
 
-class Footer extends React.Component {
+class Footer extends Component {
   constructor(props) {
     super();
     this.state = { isLoading: false };
@@ -183,7 +172,7 @@ class Footer extends React.Component {
     this.setState({ isLoading: true })
     const { requiredPaxData, price, id, availableDateTimes } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
-    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'LoginScreen';
+    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'BeforeLoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
       package: this.props.details.package,
@@ -234,39 +223,45 @@ class Footer extends React.Component {
   }
 }
 
-class Header extends React.Component {
+class Header extends Component {
 
   componentWillMount() {
+    let half = [200, 400];
+    let sudden = [380, 400];
     this.setState({
-      bgColor: this.props.scrollY.interpolate({
-        inputRange: [175, 350],
-        outputRange: ['transparent', '#fff'],
+      backgroundColor: this.props.scrollY.interpolate({
+        inputRange: half,
+        outputRange: ['#fff0', '#ffff'],
         extrapolate: 'clamp',
       }),
+      elevation: this.props.scrollY.interpolate({
+        inputRange: half,
+        outputRange: [0, 2],
+        extrapolate: 'clamp',
+      }),
+      opacity: this.props.scrollY.interpolate({
+        inputRange: sudden,
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      })
     });
   }
+  
+  _goBack = () => this.props.navigation.goBack()
 
   render() {
-    let { wishlisted, id } = this.props;
+    let { wishlisted, id, title } = this.props;
+    let { backgroundColor, elevation, opacity } = this.state;
     return (
-      <Animated.View style={[styles.headerBackground, { backgroundColor: this.state.bgColor }]}>
+      <Animated.View style={[styles.headerBackground, {backgroundColor, elevation} ]}>
         <View style={styles.headerContentContainer}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              alignItems: 'flex-start',
-            }}
-            onPress={() => this.props.navigation.goBack()}
-          >
+          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start'}} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          {/*<Text style={{color:this.state.headerTextColor}}>Tiket Dufan</Text>*/}
-          <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            flexDirection: 'row',
-          }}>
+          <Animated.View style={{opacity}}>
+            <Text style={[styles.activitydetailTitle,{marginTop:7}]}>{title}</Text>
+          </Animated.View>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row'}}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
               <Icon name='share' type='materialicons' size={30} color='#000' />
             </TouchableOpacity> */}
@@ -279,7 +274,7 @@ class Header extends React.Component {
   }
 }
 
-/*class Recommendation extends React.Component {
+/*class Recommendation extends Component {
 
   render() {
     return (
@@ -409,23 +404,24 @@ class Header extends React.Component {
   }
 }*/
 
-class Contents extends React.Component {
+class Contents extends Component {
 
   render() {
     let { contents } = this.props;
+    console.log(contents);
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
-          <View>
-            <View style={styles.containerdescriptionActivity} key={index}>
-              <Text style={styles.sectionTitle}>
-                {content.title}
-              </Text>
-              <Text style={styles.activityDesc}>
-                {content.desc}
-              </Text>
-            </View>
-            <View style={styles.divider} />
+          <View key={index}>
+          <View style={styles.containerdescriptionActivity} >
+            <Text style={styles.sectionTitle}>
+              {content.title}
+            </Text>
+            <MultilineText style={styles.activityDesc}>
+              {content.desc}
+            </MultilineText>
+          </View>
+          <View style={styles.divider} />
           </View>
         ))}
 
@@ -434,23 +430,23 @@ class Contents extends React.Component {
   }
 };
 
-class MainInfo extends React.Component {
+class MainInfo extends Component {
 
   render() {
     console.log('main info rerendered');
     let { name, shortDesc, city, duration } = this.props;
     return (
       <View>
-        <View style={{paddingBottom:30}}>
+        <View style={{paddingTop:10, paddingBottom:20}}>
           <View style={{ marginBottom: 10 }}>
             <Text style={styles.activitydetailTitle}>
               {name}
             </Text>
           </View>
           <View style={{ marginBottom: 15 }}>
-            <Text style={styles.activityDesc}>
+            <MultilineText style={styles.activityDesc}>
               {shortDesc}
-            </Text>
+            </MultilineText>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
@@ -500,7 +496,7 @@ class MainInfo extends React.Component {
   }
 }
 
-class MediaContents extends React.Component {
+class MediaContents extends Component {
 
   render() {
     let activeDot = <View style={styles.activeDot} />
@@ -508,17 +504,17 @@ class MediaContents extends React.Component {
     let { media } = this.props;
     return (
       <Swiper style={styles.wrapper} activeDot={activeDot} dot={dot} showsButtons={false}>
-        { media.map( m =>
+        {media.map(m => (
           <View style={styles.slides} key={m} >
             <Image style={styles.slides} source={{ uri: m }} />
           </View>
-        )}
+        ))}
       </Swiper>
     )
   }
 }
 
-class Map extends React.Component {
+class Map extends Component {
 
   _enlargeMapView = () => {
     let { name, address, city, lat, long } = this.props;
@@ -553,19 +549,19 @@ class Map extends React.Component {
             />
           </MapView>
         </TouchableOpacity>
+        <MultilineText>
+          {address}
+        </MultilineText>
       </View>
     )
   }
 }
 
-class ReviewAndRating extends React.Component {
-
-  constructor(props) {
-    super();
-  }
+class ReviewAndRating extends Component {
 
   render() {
-    let { rating, ratingCount, review, reviewCount } = this.props;
+    let { rating, ratingCount, review, reviewCount, id } = this.props;
+    console.log(review.avatar);
     return (
       <View > 
         {!reviewCount && (
@@ -580,19 +576,28 @@ class ReviewAndRating extends React.Component {
             <View style={{ flexDirection: 'row', flex: 1 }}>
               <View style={{ flex: 2, flexDirection: 'row' }}>
                 <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={review.avatar} />
+                  <Image style={styles.avatar} source={(review.avatar && {uri:review.avatar}) || require('../../assets/images/dummyProfile.png')} />
+                </View>
+                <View style={{justifyContent:'center'}}>
+                  <Text style={styles.reviewTitle}>
+                    {review.name}
+                  </Text>
+                  <Text style={styles.reviewDate}>
+                    {Formatter.dateLong(review.date)}
+                  </Text>
                 </View>
               </View>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
+              {/*<View style={{ flex: 1, alignItems: 'flex-end', justifyContent:'center' }}>
                 <Text style={styles.reviewDate}>
                   {Formatter.dateLong(review.date)}
                 </Text>
-              </View>
+              </View>*/}
             </View>
             <View style={{ marginTop: 10 }}>
-              <Text style={styles.activityDesc}>
+              
+              <MultilineText style={styles.isireview}>
                 {review.content}
-              </Text>
+              </MultilineText>
             </View>
           </View>
         )}
@@ -600,7 +605,7 @@ class ReviewAndRating extends React.Component {
         <View style={styles.divider} />
 
         {!!reviewCount && (
-          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id: id })} >
+          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id, rating, ratingCount })} >
             <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
               <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
                 <View>
@@ -636,7 +641,7 @@ class ReviewAndRating extends React.Component {
 const styles = StyleSheet.create({
   headerContentContainer: {
     padding: 10,
-    paddingTop: 20,
+    marginTop: 5,
     flexDirection: 'row',
   },
   headerBackground: {
@@ -644,9 +649,7 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     left: 0,
-    height: 60,
-    borderBottomWidth: 0,
-    elevation: 0,
+    borderBottomWidth: 0
   },
   container: {
     padding: 15,
@@ -676,10 +679,10 @@ const styles = StyleSheet.create({
     color: '#454545',
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
     resizeMode: 'cover',
-    borderRadius: 20
+    borderRadius: 22.5
   },
   activityTitle: {
     fontFamily: 'Hind-Bold',
@@ -743,8 +746,8 @@ const styles = StyleSheet.create({
     }),
   },
   containerdescriptionActivity: {
-    marginVertical:25,
-    flex: 1
+    flex: 1,
+    paddingVertical:20
   },
   containersimiliarActivity: {
     marginBottom: 20,
@@ -757,15 +760,28 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     color: '#454545',
   },
-
   reviewTitle: {
-    fontSize: 15,
-    marginBottom: 5,
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 17,
     color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: -15,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight: 24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   reviewDate: {
-    fontSize: 12,
-    color: '#cecece'
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop:5
 
   },
   hyperlink: {
@@ -775,8 +791,21 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   isireview: {
-    fontSize: 11,
-    marginTop: 10,
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   thumbprofile: {
     height: 30,

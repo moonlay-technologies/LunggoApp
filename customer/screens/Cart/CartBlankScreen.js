@@ -22,14 +22,14 @@ export default class CartBlankScreen extends React.Component {
             <View style={{marginTop:20, justifyContent:'center', alignItems:'center',}}>
               <Text style={styles.textCartBesar}>Keranjang kamu kosong</Text>
               <View>
-                <Text style={styles.textCart}>Semua pesanan perjalanan kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya.</Text>
+                <Text style={styles.textCart}>Semua pesanan kamu akan masuk keranjang. {"\n"}Ayo mulai mencari dan jelajahi dunia!</Text>
               </View>
             </View>
             <View style={{width:'100%', marginTop:30}}>
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
-                  onPress={() => this.props.navigation.navigate('MainTabNavigator')}
+                  onPress={() => this.props.navigation.goBack()}
                 >
                   Jelajah Sekarang
               </Button>

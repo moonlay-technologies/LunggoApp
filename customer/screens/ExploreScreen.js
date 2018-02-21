@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Image, Platform, ScrollView, Text, TouchableOpacity, View,
   Button, TextInput, StyleSheet, Dimensions
@@ -12,6 +12,7 @@ import search from './SearchActivity/SearchController';
 import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
+import LoadingAnimation from '../components/LoadingAnimation'
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -50,11 +51,11 @@ export default class ExploreScreen extends React.Component {
     this._refreshContents();
   }
 
-  /*componentWillReceiveProps({ navigation }) {
+  componentWillReceiveProps({ navigation }) {
     if (navigation.state.params.shouldRefresh) {
       this._refreshContents();
     }
-  }*/
+  }
 
   render() {
     let allList = [...this.state.turList, ...this.state.tripList, ...this.state.paketList, ...this.state.tiketList];
@@ -63,10 +64,13 @@ export default class ExploreScreen extends React.Component {
     let placeList = places.map(place => { return { mediaSrc: place } });
     let promos = [require('../../assets/images/promo1.jpg'), require('../../assets/images/promo2.jpg'), require('../../assets/images/promo3.jpg')]
     let promoList = promos.map(promo => { return { mediaSrc: promo } });
-    return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
+    if (this.state.isLoading)
+      return <LoadingAnimation />
+    else
+      return (
+        <ScrollView style={{ backgroundColor: '#fff' }}>
 
-        {/*<View style={{flexDirection:'row', marginTop:20}}>
+          {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
                 <Icon
@@ -105,28 +109,28 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */}
 
-        {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
+          {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
 
-        {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
+          {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
 
-        {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
+          {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
 
-        {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-        {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
+          {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
+          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
 
-        {this._renderHeader({ title: 'Destinasi Favorit' })}
-        {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
+          {this._renderHeader({ title: 'Destinasi Favorit' })}
+          {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
 
-        {this._renderHeader({ title: 'Promo Terkini' })}
-        {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
+          {this._renderHeader({ title: 'Promo Terkini' })}
+          {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
 
-        <View style={{ paddingTop: 10 }}></View>
+          <View style={{ paddingTop: 10 }}></View>
 
-      </ScrollView>
-    );
+        </ScrollView>
+      );
   }
 
   _goTo = (screen, params) =>
@@ -222,6 +226,12 @@ export default class ExploreScreen extends React.Component {
                   {Formatter.price(item.price)}
                 </Text>
               </View>
+              {itemsPerScreen < 3 && (
+                <View>
+                  <WishButton wishlisted={item.wishlisted}
+                    id={item.id} big={itemsPerScreen == 1} {...this.props} />
+                </View>
+              )}
             </View>
           )}
         </TouchableOpacity>
