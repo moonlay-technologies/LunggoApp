@@ -43,7 +43,7 @@ export default class DetailScreen extends React.Component {
         city: 'loading address...',
         duration: { amount: 'loading ', unit: 'duration...' },
         price: '...',
-        sliderImages: [],
+        mediaSrc: [],
         lat: 0,
         long: 0,
         review: {
@@ -53,7 +53,7 @@ export default class DetailScreen extends React.Component {
         contents: []
       }
     } else {
-      details.sliderImages = [details.mediaSrc];
+      details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
       this.state.review = {
         rating: 0.0,
@@ -95,7 +95,7 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      sliderImages, address, lat, long, wishlisted, shortDesc, contents,
+      mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount } = this.state;
     console.log('state');
     console.log(this.state);
@@ -109,7 +109,7 @@ export default class DetailScreen extends React.Component {
           scrollEventThrottle={16}
         >
 
-          <MediaContents media={sliderImages} />
+          <MediaContents media={mediaSrc} />
 
           <View style={styles.container}>
             
@@ -126,8 +126,8 @@ export default class DetailScreen extends React.Component {
                 <View style={styles.divider} />
 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
-                  <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
-                    <Text style={{ color: '#000', fontSize: 16, }}>
+                  <View style={styles.containerdescriptionActivity}>
+                    <Text style={styles.sectionTitle}>
                       Ketentuan Pembatalan
                 </Text>
                   </View>
@@ -155,11 +155,11 @@ export default class DetailScreen extends React.Component {
                       content: 'Lorem ipsum...',
                     },
                   ]} />
-                <Recommendation />
+               {/*<Recommendation />*/} 
               </View>
             )}
           </View>
-          <View style={{ paddingBottom: 65 }}></View>
+          <View style={{ paddingBottom: 95 }}></View>
 
         </ScrollView>
 
@@ -279,12 +279,12 @@ class Header extends React.Component {
   }
 }
 
-class Recommendation extends React.Component {
+/*class Recommendation extends React.Component {
 
   render() {
     return (
       <View>
-        <View style={{ marginTop: 0 }}>
+        <View style={{ marginTop: 30 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.sectionTitle}>Similiar Activities</Text>
@@ -294,8 +294,6 @@ class Recommendation extends React.Component {
             </View>
           </View>
         </View>
-
-
 
         <View style={{ flex: 1, flexDirection: 'row', }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -409,7 +407,7 @@ class Recommendation extends React.Component {
       </View>
     );
   }
-}
+}*/
 
 class Contents extends React.Component {
 
@@ -418,15 +416,19 @@ class Contents extends React.Component {
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
-          <View style={styles.containerdescriptionActivity} key={index}>
-            <Text style={styles.sectionTitle}>
-              {content.title}
-            </Text>
-            <Text style={styles.activityDesc}>
-              {content.desc}
-            </Text>
+          <View>
+            <View style={styles.containerdescriptionActivity} key={index}>
+              <Text style={styles.sectionTitle}>
+                {content.title}
+              </Text>
+              <Text style={styles.activityDesc}>
+                {content.desc}
+              </Text>
+            </View>
+            <View style={styles.divider} />
           </View>
         ))}
+
       </View>) :
       null;
   }
@@ -439,63 +441,60 @@ class MainInfo extends React.Component {
     let { name, shortDesc, city, duration } = this.props;
     return (
       <View>
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.activitydetailTitle}>
-            {name}
-          </Text>
-        </View>
-        <View style={{ marginBottom: 15 }}>
-          <Text style={styles.activityDesc}>
-            {shortDesc}
-          </Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              {city}
+        <View style={{paddingBottom:30}}>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.activitydetailTitle}>
+              {name}
             </Text>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
+          <View style={{ marginBottom: 15 }}>
             <Text style={styles.activityDesc}>
-              DUMMY Maksimum 6 orang
-                </Text>
+              {shortDesc}
+            </Text>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              DUMMY Khusus hari minggu
-                </Text>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                {city}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              DUMMY Untuk usia diatas 10 tahun
-                </Text>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Maksimum 6 orang
+                  </Text>
+            </View>
           </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Khusus hari minggu
+                  </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Untuk usia diatas 10 tahun
+                  </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='md-alarm' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                {duration.amount + " " + duration.unit}
+              </Text>
+            </View>
+          </View>
+          
         </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Image style={styles.icon}
-            source={require('../assets/icons/time.png')}
-          />
-          <Text style={styles.timeActivity}>
-            {duration.amount + " " + duration.unit}
-          </Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Image style={styles.icon}
-            source={require('../assets/icons/person.png')} />
-          <Text style={styles.timeActivity}>
-            DUMMY **20 orang**
-          </Text>
-        </View>
+        <View style={styles.divider} />
       </View>
     );
   }
@@ -509,11 +508,11 @@ class MediaContents extends React.Component {
     let { media } = this.props;
     return (
       <Swiper style={styles.wrapper} activeDot={activeDot} dot={dot} showsButtons={false}>
-        {media.map(m => (
-          < View style={styles.slides} key={m} >
+        { media.map( m =>
+          <View style={styles.slides} key={m} >
             <Image style={styles.slides} source={{ uri: m }} />
           </View>
-        ))}
+        )}
       </Swiper>
     )
   }
@@ -568,10 +567,10 @@ class ReviewAndRating extends React.Component {
   render() {
     let { rating, ratingCount, review, reviewCount } = this.props;
     return (
-      <View>
+      <View > 
         {!reviewCount && (
-          <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
-            <Text style={{ color: '#000', fontSize: 16, }}>
+          <View style={styles.containerdescriptionActivity}>
+            <Text style={styles.sectionTitle}>
               Belum ada review
             </Text>
           </View>
@@ -744,8 +743,7 @@ const styles = StyleSheet.create({
     }),
   },
   containerdescriptionActivity: {
-    marginBottom: 30,
-    marginTop: 30,
+    marginVertical:25,
     flex: 1
   },
   containersimiliarActivity: {
