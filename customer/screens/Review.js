@@ -87,18 +87,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   reviewTitle: {
-    fontSize: 20,
-    color: '#454545',
     fontFamily: 'Hind-SemiBold',
+    fontSize: 17,
+    color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight: 6,
-        paddingTop: 20,
-        marginBottom: -30,
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: -15,
+        //backgroundColor:'red'
       },
       android: {
-        //lineHeight:24
+        lineHeight: 13
         //paddingTop: 23 - (23* 1),
+
       },
     }),
   },
@@ -114,9 +116,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   thumbprofile: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: 45,
+    width: 45,
+    borderRadius: 22.5,
     marginRight: 15,
   },
   hyperlink: {
@@ -142,8 +144,9 @@ const styles = StyleSheet.create({
     }),
   },
   reviewDate: {
-    fontSize: 12,
-    color: '#9a9a9a'
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop:5
   },
   containerInfoReview: {
     backgroundColor: '#f7f7f7',

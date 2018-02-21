@@ -49,7 +49,7 @@ export default class DetailScreen extends Component {
         // contents: [],
       }
     } else {
-      details.sliderImages = [details.mediaSrc];
+      details.mediaSrc = [details.mediaSrc];
       this.state = details; //// prevent error when params == undefined
       this.state.review = {
         rating: 0.0,
@@ -95,7 +95,7 @@ export default class DetailScreen extends Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      sliderImages, address, lat, long, wishlisted, shortDesc, contents,
+      mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount } = this.state;
     return (
       <View>
@@ -107,7 +107,7 @@ export default class DetailScreen extends Component {
           scrollEventThrottle={16}
         >
 
-          <MediaContents media={sliderImages} />
+          <MediaContents media={mediaSrc} />
 
           <View style={styles.container}>
 
@@ -121,11 +121,9 @@ export default class DetailScreen extends Component {
                 <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} />
                 <Contents contents={contents} />
 
-                <View style={styles.divider} />
-
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
-                  <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
-                    <Text style={{ color: '#000', fontSize: 16, }}>
+                  <View style={styles.containerdescriptionActivity}>
+                    <Text style={styles.sectionTitle}>
                       Ketentuan Pembatalan
                 </Text>
                   </View>
@@ -153,11 +151,11 @@ export default class DetailScreen extends Component {
                       content: 'Lorem ipsum...',
                     },
                   ]} />
-                <Recommendation />
+                {/*<Recommendation />*/}
               </View>
             )}
           </View>
-          <View style={{ paddingBottom: 65 }}></View>
+          <View style={{ paddingBottom: 95 }}></View>
 
         </ScrollView>
 
@@ -271,7 +269,7 @@ class Header extends Component {
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
           <Animated.View style={{ opacity }}>
-            <Text style={[styles.activitydetailTitle, { marginTop: 7 }]}>{title}</Text>
+            <Text style={[styles.activitydetailTitle, { marginTop: 3 }]}>{title}</Text>
           </Animated.View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
@@ -286,12 +284,12 @@ class Header extends Component {
   }
 }
 
-class Recommendation extends Component {
+/*class Recommendation extends Component {
 
   render() {
     return (
       <View>
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 30 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.sectionTitle}>Similiar Activities</Text>
@@ -301,8 +299,6 @@ class Recommendation extends Component {
             </View>
           </View>
         </View>
-
-
 
         <View style={{ flex: 1, flexDirection: 'row', }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -416,7 +412,7 @@ class Recommendation extends Component {
       </View>
     );
   }
-}
+}*/
 
 class Contents extends Component {
 
@@ -426,15 +422,19 @@ class Contents extends Component {
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
-          <View style={styles.containerdescriptionActivity} key={index}>
-            <Text style={styles.sectionTitle}>
-              {content.title}
-            </Text>
-            <MultilineText style={styles.activityDesc}>
-              {content.desc}
-            </MultilineText>
+          <View key={index}>
+            <View style={styles.containerdescriptionActivity} >
+              <Text style={styles.sectionTitle}>
+                {content.title}
+              </Text>
+              <MultilineText style={styles.activityDesc}>
+                {content.desc}
+              </MultilineText>
+            </View>
+            <View style={styles.divider} />
           </View>
         ))}
+
       </View>) :
       null;
   }
@@ -447,63 +447,60 @@ class MainInfo extends Component {
     let { name, shortDesc, city, duration } = this.props;
     return (
       <View>
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.activitydetailTitle}>
-            {name}
-          </Text>
-        </View>
-        <View style={{ marginBottom: 15 }}>
-          <MultilineText style={styles.activityDesc}>
-            {shortDesc}
-          </MultilineText>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              {city}
+        <View style={{ paddingTop: 10, paddingBottom: 20 }}>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.activitydetailTitle}>
+              {name}
             </Text>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              DUMMY Maksimum 6 orang
-                </Text>
+          <View style={{ marginBottom: 15 }}>
+            <MultilineText style={styles.activityDesc}>
+              {shortDesc}
+            </MultilineText>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              DUMMY Khusus hari minggu
-                </Text>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                {city}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-          <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
-          <View style={{ marginTop: 1, marginLeft: 10 }}>
-            <Text style={styles.activityDesc}>
-              DUMMY Untuk usia diatas 10 tahun
-                </Text>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Maksimum 6 orang
+                  </Text>
+            </View>
           </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Khusus hari minggu
+                  </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                DUMMY Untuk usia diatas 10 tahun
+                  </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <Icon name='md-alarm' type='ionicon' size={18} color='#454545' />
+            <View style={{ marginTop: 1, marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                {duration.amount + " " + duration.unit}
+              </Text>
+            </View>
+          </View>
+
         </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Image style={styles.icon}
-            source={require('../assets/icons/time.png')}
-          />
-          <Text style={styles.timeActivity}>
-            {duration.amount + " " + duration.unit}
-          </Text>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Image style={styles.icon}
-            source={require('../assets/icons/person.png')} />
-          <Text style={styles.timeActivity}>
-            DUMMY **20 orang**
-          </Text>
-        </View>
+        <View style={styles.divider} />
       </View>
     );
   }
@@ -576,10 +573,10 @@ class ReviewAndRating extends Component {
     let { rating, ratingCount, review, reviewCount, id } = this.props;
     console.log(review.avatar);
     return (
-      <View>
+      <View >
         {!reviewCount && (
-          <View style={{ flex: 1, marginTop: 15, marginBottom: 15, }}>
-            <Text style={{ color: '#000', fontSize: 16, }}>
+          <View style={styles.containerdescriptionActivity}>
+            <Text style={styles.sectionTitle}>
               Belum ada review
             </Text>
           </View>
@@ -591,17 +588,23 @@ class ReviewAndRating extends Component {
                 <View style={{ marginRight: 10 }}>
                   <Image style={styles.avatar} source={(review.avatar && { uri: review.avatar }) || require('../../assets/images/dummyProfile.png')} />
                 </View>
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={styles.reviewTitle}>
+                    {review.name}
+                  </Text>
+                  <Text style={styles.reviewDate}>
+                    {Formatter.dateLong(review.date)}
+                  </Text>
+                </View>
               </View>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
+              {/*<View style={{ flex: 1, alignItems: 'flex-end', justifyContent:'center' }}>
                 <Text style={styles.reviewDate}>
                   {Formatter.dateLong(review.date)}
                 </Text>
-              </View>
+              </View>*/}
             </View>
             <View style={{ marginTop: 10 }}>
-              <Text style={styles.reviewTitle}>
-                {review.name}
-              </Text>
+
               <MultilineText style={styles.isireview}>
                 {review.content}
               </MultilineText>
@@ -686,10 +689,10 @@ const styles = StyleSheet.create({
     color: '#454545',
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
     resizeMode: 'cover',
-    borderRadius: 20
+    borderRadius: 22.5
   },
   activityTitle: {
     fontFamily: 'Hind-Bold',
@@ -753,9 +756,8 @@ const styles = StyleSheet.create({
     }),
   },
   containerdescriptionActivity: {
-    marginBottom: 30,
-    marginTop: 30,
-    flex: 1
+    flex: 1,
+    paddingVertical: 20
   },
   containersimiliarActivity: {
     marginBottom: 20,
@@ -768,15 +770,28 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     color: '#454545',
   },
-
   reviewTitle: {
-    fontSize: 15,
-    marginBottom: 5,
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 17,
     color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: -15,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight: 13
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   reviewDate: {
-    fontSize: 12,
-    color: '#cecece'
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop: 5
 
   },
   hyperlink: {
@@ -786,8 +801,21 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   isireview: {
-    fontSize: 11,
-    marginTop: 10,
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   thumbprofile: {
     height: 30,

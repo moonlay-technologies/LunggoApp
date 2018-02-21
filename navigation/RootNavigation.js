@@ -55,8 +55,6 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: {
-        // screen: Dashboard
-        // screen: LoginScreen
         screen: MainTabNavigator
         //screen: MyBookingList
         //screen: LoginScreen
@@ -110,7 +108,7 @@ export default class RootNavigator extends React.Component {
         },
         headerStyle: {
           elevation: 2,
-          // marginTop: -20
+          marginTop: -20
         }
       }),
     }

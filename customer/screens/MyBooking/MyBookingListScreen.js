@@ -161,15 +161,17 @@ export default class MyBookingListScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Pesananku',
-  };
-
-  _onRefresh = () => {
-    this.setState({ isRefreshing: true });
-    getBookingList().then(response => {
-      console.log(response)
-      this.setState({ isRefreshing: false });
-    });
   }
+
+  // _onRefresh = () => {
+  //   this.setState({ isRefreshing: true });
+  //   getBookingList().then(response => {
+  //     console.warn('TODO: response nya jangan lupa dipake')
+  //     console.log(response)
+  //     //// TODO: response nya jgn lupa dipake
+  //     this.setState({ isRefreshing: false });
+  //   });
+  // }
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -189,12 +191,12 @@ export default class MyBookingListScreen extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this._onRefresh.bind(this)}
-          />
-        }
+        //refreshControl={
+        //  <RefreshControl
+        //    refreshing={this.state.isRefreshing}
+         //   onRefresh={this._onRefresh.bind(this)}
+         // />
+        //}
       >
         <FlatList
           data={this.state.bookingList}
