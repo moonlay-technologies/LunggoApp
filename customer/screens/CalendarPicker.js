@@ -1,3 +1,9 @@
+/* BUGS:
+    when user repeatedly tap date, selectedDate pointer will gone
+*/
+
+'use strict';
+
 import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
 import { StyleSheet, Platform, View, Text, TouchableOpacity,
@@ -13,7 +19,7 @@ export default class CalendarPicker extends Component {
     super(props)
     let { selectedDate, selectedTime, availableDateTimes, price } =
       this.props.navigation.state.params;
-    let markedDates = [];
+    let markedDates = {};
     availableDateTimes && availableDateTimes.map( item => {
       markedDates[item.date] = {disabled: false};
       if (item.availableHours) {
@@ -33,29 +39,30 @@ export default class CalendarPicker extends Component {
 
   static navigationOptions = {
     title: 'Pilih Tanggal',
-  };
+  }
 
   _checkIsDateAvailable = dateString => {
     //// if clicked date is available, return true
     return !!this.state.markedDates[dateString];
   }
 
-
-  //// TODO: sometimes all state has already changed but the ui only
-  //// partly updated
-  //// (only text is updated, CalendarList's marked date isn't)
   _selectDate = dateString => {
-    let { selectedDate } = this.state;
-    let markedDates = {...this.state.markedDates};
-    //// set remove prev selectedDate from markedDates
-    if (selectedDate) markedDates[selectedDate].selected = false;
-    
-    //// set selectedDate
-    selectedDate = dateString;
-    markedDates[dateString].selected = true;
+    let prevSelectedDate = this.state.selectedDate;
+    let {markedDates} = this.state;
+    let changedDate = {
+      [prevSelectedDate]: { ...markedDates[prevSelectedDate] },
+      [dateString]: { ...markedDates[dateString] , selected:true}
+    };
 
-    this.setState({ markedDates, selectedDate });
-    return;
+    //// if there's previous selectedDate, remove the selected flag
+    if (prevSelectedDate) changedDate[prevSelectedDate].selected = false;
+
+    // changedDate[dateString].selected = true;
+
+    this.setState({
+      markedDates:{...markedDates, ...changedDate },
+      selectedDate: dateString
+    });
   }
 
   _return = () => {
@@ -109,7 +116,8 @@ export default class CalendarPicker extends Component {
             >
               <Text style={{marginTop:5}}>{currValue}</Text>
             </TouchableOpacity>
-        ) : '';
+        )
+        : null;
 
     return(
       <View>
