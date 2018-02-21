@@ -36,12 +36,14 @@ export default class WishButton extends React.Component {
     //// negate wishlisted state
     let wishlisted = !this.state.wishlisted;
     this.setState({ wishlisted })
-    setTimeout(() => this.props.onPress({ id: this.props.id, wishlisted }), 0);
+    if (this.props.onPress)
+      setTimeout(() => this.props.onPress({ id: this.props.id, wishlisted }), 0);
 
     let isLoggedIn = await checkUserLoggedIn();
     if (!isLoggedIn) { //// if guest:
       return this.setState({ isModalVisible: true, wishlisted: false });
-      setTimeout(() => this.props.onPress({ id: this.props.id, wishlisted: false }), 0);
+      if (this.props.onPress)
+        setTimeout(() => this.props.onPress({ id: this.props.id, wishlisted: false }), 0);
     }
 
     await toggleWishlist(this.props.id, wishlisted);

@@ -65,19 +65,11 @@ export default class ActivityResultScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this._onWishlist = this._onWishlist.bind(this);
     this.state = { list: this.props.list };
   }
 
   componentWillReceiveProps({ list }) {
     this.setState({ list });
-  }
-
-  _onWishlist = async ({ id, wishlisted }) => {
-    if (!wishlisted) {
-      let list = this.state.list.filter(l => l.id != id);
-      this.setState({ list });
-    }
   }
 
   _keyExtractor = (item, index) => index;
@@ -87,7 +79,7 @@ export default class ActivityResultScreen extends React.Component {
       <ListItem
         item={item}
         index={index}
-        onWishlist={this._onWishlist}
+        onWishlist={this.props.onWishlist}
         {...this.props}
       />);
   }
