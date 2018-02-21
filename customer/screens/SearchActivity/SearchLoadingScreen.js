@@ -5,7 +5,8 @@ import { Text, ActivityIndicator } from 'react-native';
 import search from './SearchController';
 import SearchHeader from './SearchHeader';
 import ListScreen from './ActivityResultScreen';
-import SearchListScreen from './SearchBlankScreen';
+import SearchBlankScreen from './SearchBlankScreen';
+import LoadingAnimation from '../../components/LoadingAnimation';
 
 export default class SearchLoadingScreen extends React.Component {
 
@@ -37,7 +38,7 @@ export default class SearchLoadingScreen extends React.Component {
   render() {
     let { isLoading, list } = this.state;
     let { props } = this;
-    if (isLoading) { return <ActivityIndicator size='large'/> }
+    if (isLoading) { return <LoadingAnimation /> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
     else { return <SearchBlankScreen /> }
   }
