@@ -29,12 +29,19 @@ export default class ExploreScreen extends React.Component {
       isLoading: true
     };
     setItemAsync('isNotFirstOpen', 'true');
+    this._onWishlist = this._onWishlist.bind(this)
   }
 
   static navigationOptions = {
     title: 'Jelajah',
     header: (props) => <SearchHeader {...props} />
   };
+
+  _getWishlist = async () => {
+    let activityList = JSON.parse(await getItemAsync('wishlist'));
+    let wishlistIds = activityList.map(act => act.id);
+    this.setState({ wishlistIds });
+  }
 
   _refreshContents = () => {
     Promise.all([
@@ -49,12 +56,13 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
+    this.props.navigation.addListener('didFocus', this._getWishlist);
   }
 
-  componentWillReceiveProps({ navigation }) {
-    if (navigation.state.params.shouldRefresh) {
-      this._refreshContents();
-    }
+  _onWishlist = async ({id, wishlisted}) => {
+    let wishlistIds = this.state.wishlistIds;
+    wishlistIds = wishlisted ? [...wishlistIds, id] : wishlistIds.filter(x => x != id);
+    this.setState({ wishlistIds });
   }
 
   render() {
@@ -228,7 +236,7 @@ export default class ExploreScreen extends React.Component {
               </View>
               {itemsPerScreen < 3 && (
                 <View>
-                  <WishButton wishlisted={item.wishlisted}
+                  <WishButton wishlisted={this.state.wishlistIds.includes(item.id)} onPress={this._onWishlist}
                     id={item.id} big={itemsPerScreen == 1} {...this.props} />
                 </View>
               )}

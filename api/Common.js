@@ -5,6 +5,8 @@ import { getAuthAccess } from '../commons/Auth/AuthController';
 export { checkUserLoggedIn } from '../commons/Auth/AuthController';
 export { AUTH_LEVEL } from '../constants/env';
 
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+
 //// fetch API
 export async function fetchTravoramaApi(request) {
   try {
@@ -61,18 +63,27 @@ export async function fetchTravoramaApi(request) {
   }
 }
 
-export async function fetchWishlist(activityId = null, isAddingToWishlist = true) {
+export async function toggleWishlist(activityId, isEnabled = true) {
   const version = 'v1';
   let request = {
     path: `/${version}/activities/wishlist`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
-  if (activityId === null) request.method = 'GET';
-  else {
-    request.path += `/${activityId}`
-    request.method = (isAddingToWishlist) ? 'PUT' : 'DELETE';
+  request.path += `/${activityId}`
+  request.method = (isEnabled) ? 'PUT' : 'DELETE';
+  let response = await fetchTravoramaApi(request);
+  // if (response.status == 401) throw 'blom login!! nanti munculin modal';
+  await fetchWishlist();
+}
+
+export async function fetchWishlist() {
+  const version = 'v1';
+  let request = {
+    path: `/${version}/activities/wishlist`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+    method: 'GET'
   }
   let response = await fetchTravoramaApi(request);
   // if (response.status == 401) throw 'blom login!! nanti munculin modal';
-  return response;
+  await setItemAsync('wishlist', JSON.stringify(response.activityList));
 }

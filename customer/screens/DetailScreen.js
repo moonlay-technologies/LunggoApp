@@ -22,11 +22,14 @@ import {
 import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
 
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+
 export default class DetailScreen extends Component {
 
   constructor(props) {
-    super(props)
-    let { details, id } = this.props.navigation.state.params || {};;
+    super(props);
+    this._onWishlist = this._onWishlist.bind(this);
+    let { details, id } = this.props.navigation.state.params || {};
     if (!details) {   //// if params.details doesnt exist,
       this.state = {  //// use default state object
         isLoading: true,
@@ -84,6 +87,10 @@ export default class DetailScreen extends Component {
       this.setState(response);
       // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
+  }
+
+  _onWishlist = async ({ wishlisted }) => {
+    this.setState({ wishlisted });
   }
 
   render() {
@@ -154,7 +161,7 @@ export default class DetailScreen extends Component {
 
         </ScrollView>
 
-        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} {...this.props} />
+        <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
         {!isLoading && (
           <Footer price={price} details={this.state} {...this.props} />
         )}
@@ -226,6 +233,9 @@ class Footer extends Component {
 }
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   componentWillMount() {
     let half = [200, 400];
@@ -248,26 +258,26 @@ class Header extends Component {
       })
     });
   }
-  
+
   _goBack = () => this.props.navigation.goBack()
 
   render() {
     let { wishlisted, id, title } = this.props;
     let { backgroundColor, elevation, opacity } = this.state;
     return (
-      <Animated.View style={[styles.headerBackground, {backgroundColor, elevation} ]}>
+      <Animated.View style={[styles.headerBackground, { backgroundColor, elevation }]}>
         <View style={styles.headerContentContainer}>
-          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start'}} onPress={this._goBack}>
+          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          <Animated.View style={{opacity}}>
-            <Text style={[styles.activitydetailTitle,{marginTop:7}]}>{title}</Text>
+          <Animated.View style={{ opacity }}>
+            <Text style={[styles.activitydetailTitle, { marginTop: 7 }]}>{title}</Text>
           </Animated.View>
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row'}}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
               <Icon name='share' type='materialicons' size={30} color='#000' />
             </TouchableOpacity> */}
-            <WishButton wishlisted={wishlisted} id={id} big={true}
+            <WishButton wishlisted={wishlisted} id={id} big={true} onPress={this.props._onWishlist}
               {...this.props} style={{ marginLeft: 10 }} unwishlistedColor={'#000'} />
           </View>
         </View>
@@ -579,7 +589,7 @@ class ReviewAndRating extends Component {
             <View style={{ flexDirection: 'row', flex: 1 }}>
               <View style={{ flex: 2, flexDirection: 'row' }}>
                 <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={(review.avatar && {uri:review.avatar}) || require('../../assets/images/dummyProfile.png')} />
+                  <Image style={styles.avatar} source={(review.avatar && { uri: review.avatar }) || require('../../assets/images/dummyProfile.png')} />
                 </View>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end', }}>

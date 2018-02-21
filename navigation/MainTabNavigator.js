@@ -10,7 +10,7 @@ import Explore from '../customer/screens/ExploreScreen';
 import MyBooking from '../customer/screens/MyBooking/MyBookingLoadingScreen';
 // import LinksScreen from '../customer/screens/LinksScreen';
 // import SettingsScreen from '../customer/screens/SettingsScreen';
-import Wishlist from '../customer/screens/Wishlist/WishlistFrame';
+import Wishlist from '../customer/screens/Wishlist/WishlistScreen';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
 

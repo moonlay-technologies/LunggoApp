@@ -15,6 +15,7 @@ import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
+import { fetchWishlist } from '../../../api/Common';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -80,6 +81,7 @@ export default class LoginScreen extends React.Component {
         this.setState({ isLoading: false });
         if (response.status == 200) {
           this._notificationSubscription = this._registerForPushNotifications();
+          fetchWishlist();
           pop();
         } else {
           console.log(response);

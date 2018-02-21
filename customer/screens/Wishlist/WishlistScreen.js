@@ -4,10 +4,10 @@ import React from 'react';
 import LoadingAnimation from '../../components/LoadingAnimation';
 import BlankScreen from './WishlistBlankScreen';
 import ListScreen from '../SearchActivity/ActivityResultScreen';
-import { fetchWishlist } from '../../../api/Common';
 
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-export default class WishlistFrame extends React.Component {
+export default class WishlistScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -15,38 +15,30 @@ export default class WishlistFrame extends React.Component {
       isLoading: false,
       list: [],
     };
+    this._getWishlist = this._getWishlist.bind(this);
   }
 
   static navigationOptions = {
     title: 'Wishlist',
   };
 
-  _getWishlist = () => {
-    this.setState({ isLoading: true });
-    fetchWishlist().then(({ activityList, status }) => {
-      this.setState({ list: activityList, status, isLoading: false });
-    }).catch(error => console.log(error));
+  _getWishlist = async () => {
+    let activityList = JSON.parse(await getItemAsync('wishlist'));
+    this.setState({ list: activityList });
   }
 
   componentDidMount() {
     let { params } = this.props.navigation.state;
     if (params && !params.loggedIn) return;
-    this._getWishlist();
-  }
-
-  componentWillReceiveProps({ navigation }) {
-    if (navigation.state.params.shouldRefresh) {
-      this._getWishlist();
-    }
+    this.props.navigation.addListener('didFocus', this._getWishlist);
   }
 
   render() {
-    console.log('wishlist rerendered');
-    let { isLoading, list, status } = this.state;
+    let { isLoading, list } = this.state;
     let { props } = this;
     if (isLoading) return <LoadingAnimation />
-    else if (status == 200 && list && list.length > 0)
-      return <ListScreen list={list} {...props} />
+    else if (list && list.length > 0)
+      return <ListScreen list={list} isWishlist={true} {...props} />
     else return <BlankScreen {...props} />
   }
 }
