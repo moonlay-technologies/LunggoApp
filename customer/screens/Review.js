@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         //backgroundColor:'red'
       },
       android: {
-        lineHeight: 24
+        lineHeight: 13
         //paddingTop: 23 - (23* 1),
 
       },

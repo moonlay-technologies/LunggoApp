@@ -259,7 +259,7 @@ class Header extends Component {
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
           <Animated.View style={{opacity}}>
-            <Text style={[styles.activitydetailTitle,{marginTop:7}]}>{title}</Text>
+            <Text style={[styles.activitydetailTitle,{marginTop:3}]}>{title}</Text>
           </Animated.View>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row'}}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
@@ -772,7 +772,7 @@ const styles = StyleSheet.create({
         //backgroundColor:'red'
       },
       android: {
-        lineHeight: 24
+        lineHeight: 13
         //paddingTop: 23 - (23* 1),
 
       },
