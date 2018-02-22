@@ -76,14 +76,17 @@ export async function toggleWishlist(activityId, isEnabled = true) {
   await fetchWishlist();
 }
 
-export async function fetchWishlist() {
-  const version = 'v1';
-  let request = {
-    path: `/${version}/activities/wishlist`,
-    requiredAuthLevel: AUTH_LEVEL.User,
-    method: 'GET'
-  }
-  let response = await fetchTravoramaApi(request);
-  // if (response.status == 401) throw 'blom login!! nanti munculin modal';
-  await setItemAsync('wishlist', JSON.stringify(response.activityList));
+export function fetchWishlist() {
+  new Promise(() => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/wishlist`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+      method: 'GET'
+    }
+    let response = fetchTravoramaApi(request).then(response => {
+      // if (response.status == 401) throw 'blom login!! nanti munculin modal';
+      setItemAsync('wishlist', JSON.stringify(response.activityList));
+    });
+  });
 }

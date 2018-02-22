@@ -1,17 +1,17 @@
 'use strict';
 
 import React from 'react';
-import Colors from '../../constants/Colors';
+import Colors from '../../../constants/Colors';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Button from 'react-native-button';
-import globalStyles from '../../commons/globalStyles';
+import globalStyles from '../../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 
 export default class BeforeLoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { onIntro: false || !!this.props.onIntro };
+    this.params = props.onIntro ? { resetAfter: true } : { thruBeforeLogin: true };
   }
 
   static navigationOptions = {
@@ -22,9 +22,9 @@ export default class BeforeLoginScreen extends React.Component {
     let { navigate, goBack } = this.props.navigation;
     return (
       <View style={styles.container}>
-        {this.state.onIntro || (
-          <TouchableOpacity style={{ alignItems: 'flex-start', marginTop:-40 }}
-            onPress={ () => goBack() }>
+        {!!this.props.onIntro || (
+          <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: -40 }}
+            onPress={() => goBack()}>
             <Icon name='close' type='evilicons' size={24} />
           </TouchableOpacity>
         )}
@@ -37,19 +37,19 @@ export default class BeforeLoginScreen extends React.Component {
         <Button
           containerStyle={{ marginTop: 30, height: 45, paddingTop: 9, overflow: 'hidden', borderRadius: 25, backgroundColor: '#fff', }}
           style={{ fontSize: 20, color: '#01d4cb', fontFamily: 'Hind-Bold', }}
-          onPress={() => navigate('Registration')}
+          onPress={() => navigate('Registration', this.params)}
         >
           Daftar
         </Button>
         <TouchableOpacity style={{ marginTop: 24, alignItems: 'center' }}
-          onPress={() => navigate('LoginScreen')}
+          onPress={() => navigate('LoginScreen', this.params)}
           activeOpacity={0.7}
         >
           <Text style={{ fontSize: 16, color: '#fff', fontFamily: 'Hind-SemiBold' }}>
             Sudah punya akun? Tap di sini
           </Text>
         </TouchableOpacity>
-        {this.state.onIntro && (
+        {!!this.props.onIntro && (
           <TouchableOpacity style={{ position: 'absolute', bottom: 20, alignItems: 'center', width: '111%', }}
             onPress={() => navigate('MainTabNavigator', { loggedIn: false })}
           >

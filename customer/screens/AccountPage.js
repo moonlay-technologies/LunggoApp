@@ -34,14 +34,13 @@ export default class AccountScreen extends React.Component {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then( ({ contact }) => this.setState(contact) );
+        getProfile().then(({ contact }) => this.setState(contact));
     });
   }
 
   _setModalVisible = vis => this.setState({ isModalVisible: vis });
 
   _logout = () => {
-    this.setState({ isModalVisible: false });
     removeAccessToken().then(() =>
       this.props.navigation.dispatch(NavigationActions.reset(
         {
@@ -61,22 +60,22 @@ export default class AccountScreen extends React.Component {
           onBackdropPress={() => this._setModalVisible(false)} >
           <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
             <Text style={styles.textCart}>
-              Are you sure you want to log out?
+              Apakah kamu yakin mau log out?
             </Text>
             <View style={{ marginVertical: 10 }}>
               <Button
                 containerStyle={globalStyles.ctaButton2}
                 style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
-                onPress={this._logout}>
-                Yes
+                onPress={() => this._setModalVisible(false)}>
+                Tidak
               </Button>
             </View>
             <View>
               <Button
                 containerStyle={globalStyles.ctaButton3}
                 style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
-                onPress={() => this._setModalVisible(false)}>
-                No
+                onPress={this._logout}>
+                Ya
               </Button>
             </View>
           </View>
@@ -87,7 +86,7 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 40 }}>
               <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={{uri:this.state.avatar}} />
+                <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
               </View>
               {/*<View>
                 <View style={{ alignItems: 'center' }}>
@@ -181,7 +180,7 @@ export default class AccountScreen extends React.Component {
           :
           <View style={styles.container}>
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen')}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>
                   <Text style={styles.optionProfile}>Log In</Text>
                 </View>
@@ -195,7 +194,7 @@ export default class AccountScreen extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration')}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>
                   <Text style={styles.optionProfile}>Daftar</Text>
                 </View>

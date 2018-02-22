@@ -29,10 +29,12 @@ export default class WishlistScreen extends React.Component {
   }
 
   _onWishlist = async ({ id, wishlisted }) => {
-    if (!wishlisted) {
-      let list = this.state.list.filter(l => l.id != id);
-      this.setState({ list });
-    }
+    new Promise(() => {
+      if (!wishlisted) {
+        let list = this.state.list.filter(l => l.id != id);
+        this.setState({ list });
+      }
+    });
   }
 
   componentDidMount() {

@@ -10,6 +10,5 @@ export PaxChoice from './PaxChoice';
 export BookingDetail from './BookingDetail';
 export BookedPageDetail from './MyBooking/BookedPageDetail';
 export AdvanceSearch from './AdvanceSearch';
-export BeforeLoginScreen from './BeforeLoginScreen';
 export Review from './Review';
 export RincianHarga from './RincianHarga';

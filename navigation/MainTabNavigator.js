@@ -117,7 +117,7 @@ export default TabNavigator(
     tabBarPosition: 'bottom',
     //initialLayout: {width:100, height:300},
     animationEnabled: true,
-    swipeEnabled: false,
+    swipeEnabled: true,
     tabBarOptions: {
       activeTintColor: Colors.bottomTabSelected,
       style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec' }

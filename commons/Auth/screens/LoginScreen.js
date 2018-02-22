@@ -16,6 +16,7 @@ import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
 import { fetchWishlist } from '../../../api/Common';
+import { NavigationActions } from 'react-navigation';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -31,17 +32,18 @@ export default class LoginScreen extends React.Component {
     if (!errorUserName && !errorPassword) this._login();
   }
 
-
-
-
-
-
-
   componentWillUnmount() {
     this._notificationSubscription &&
       this._notificationSubscription.remove();
   }
 
+  _resetToMainTab = () => {
+    const reset = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })],
+    });
+    this.props.navigation.dispatch(reset);
+  }
 
   _registerForPushNotifications() {
     // Send our push token over to our backend so we can receive notifications
@@ -62,27 +64,24 @@ export default class LoginScreen extends React.Component {
     );
   };
 
-
-
-
-
-
-
   _login = () => {
     this.setState({ isLoading: true })
     let { navigate, goBack, replace, pop } = this.props.navigation;
     let { params } = this.props.navigation.state;
-    // //// validation
-    //TODO
 
-    //// if validation passed, POST to API
     fetchTravoramaLoginApi(this.state.userName, this.state.password)
       .then(response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {
-          this._notificationSubscription = this._registerForPushNotifications();
+          // this._notificationSubscription = this._registerForPushNotifications();
           fetchWishlist();
-          pop();
+          let { resetAfter, thruBeforeLogin } = params;
+          if (resetAfter)
+            this._resetToMainTab();
+          else if (thruBeforeLogin)
+            pop(2);
+          else
+            pop();
         } else {
           console.log(response);
           let error;
@@ -136,7 +135,7 @@ export default class LoginScreen extends React.Component {
             position: 'absolute', bottom: 20,
             alignItems: 'center', width: '111%'
           }}
-          onPress={() => this.props.navigation.replace('Registration')}
+          onPress={() => this.props.navigation.replace('Registration', params)}
         >
           <Text style={{ fontSize: 12, color: '#000', fontFamily: 'Hind' }}>
             Belum punya akun? Daftar di sini

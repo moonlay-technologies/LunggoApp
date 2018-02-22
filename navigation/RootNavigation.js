@@ -13,8 +13,7 @@ import registerForPushNotificationsAsync
 import {
   SearchActivity, MyBooking, AddPax, DetailScreen,
   CalendarPicker, PaymentScreen, PaxChoice, BookingDetail,
-  BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga,
+  BookedPageDetail, AdvanceSearch, Review, RincianHarga,
 } from '../customer/screens/Screens';
 
 import {
@@ -30,11 +29,10 @@ import AccountPage from '../customer/screens/AccountPage';
 import SubmitReview from '../customer/screens/SubmitReviewScreen';
 import SubmitRating from '../customer/screens/SubmitRatingScreen';
 import AddBookingContact from '../customer/screens/AddBookingContact';
-import ForgotPassword from '../commons/Auth/screens/ForgotPasswordScreen';
-import OtpVerification from '../commons/Auth/screens/OtpVerificationScreen';
-import NewPassword from '../commons/Auth/screens/NewPasswordScreen';
-import Registration from '../commons/Auth/screens/Registration';
-import LoginScreen from '../commons/Auth/screens/LoginScreen';
+import {
+  ForgotPassword, OtpVerification, NewPassword,
+  Registration, LoginScreen, BeforeLoginScreen
+} from '../commons/Auth/screens/Screens';
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 

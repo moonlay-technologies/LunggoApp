@@ -59,7 +59,7 @@ export default class ExploreScreen extends React.Component {
     this.props.navigation.addListener('didFocus', this._getWishlist);
   }
 
-  _onWishlist = async ({id, wishlisted}) => {
+  _onWishlist = async ({ id, wishlisted }) => {
     let wishlistIds = this.state.wishlistIds;
     wishlistIds = wishlisted ? [...wishlistIds, id] : wishlistIds.filter(x => x != id);
     this.setState({ wishlistIds });

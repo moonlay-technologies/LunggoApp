@@ -13,7 +13,7 @@ import {
 import Swiper from 'react-native-swiper';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
-import BeforeLoginScreen from '../screens/BeforeLoginScreen'
+import BeforeLoginScreen from '../../commons/Auth/screens/BeforeLoginScreen'
 
 export default class IntroScreen extends Component {
 

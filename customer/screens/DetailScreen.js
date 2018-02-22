@@ -90,7 +90,9 @@ export default class DetailScreen extends Component {
   }
 
   _onWishlist = async ({ wishlisted }) => {
-    this.setState({ wishlisted });
+    new Promise(() => {
+      this.setState({ wishlisted });
+    });
   }
 
   render() {
