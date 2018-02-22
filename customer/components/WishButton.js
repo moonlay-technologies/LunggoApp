@@ -59,7 +59,9 @@ export default class WishButton extends React.Component {
     this.props.navigation.navigate('Registration', { back: true });
   }
 
-  _setModalVisible = vis => this.setState({ isModalVisible: vis });
+  _setModalVisible = vis => this.setState({ isModalVisible: vis })
+
+  _closeModal = () => this._setModalVisible(false)
 
   render() {
     return (
@@ -74,7 +76,9 @@ export default class WishButton extends React.Component {
         </TouchableOpacity>
 
         <Modal isVisible={this.state.isModalVisible}
-          onBackdropPress={() => this._setModalVisible(false)} >
+          onBackdropPress={this._closeModal}
+          onBackButtonPress={this._closeModal}
+        >
           <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
             <Text style={styles.textCart}>
               Silakan log in terlebih dahulu
