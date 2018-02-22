@@ -46,7 +46,6 @@ export var validatePhone_Indonesia = testInput => /(0|[+]?62)\d{9,}/.test(testIn
 export var validateKTP = testInput => /\d{16}/.test(testInput);
 
 
-//// format no handphone separator ' ', '-'
 //// validasi no kartu kredit
 //// masa berlaku kartu kredit
 //// no CCV
