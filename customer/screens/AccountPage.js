@@ -38,7 +38,7 @@ export default class AccountScreen extends React.Component {
     });
   }
 
-  _setModalVisible = vis => this.setState({ isModalVisible: vis });
+  _setModalVisible = vis => this.setState({ isModalVisible: vis })
 
   _logout = () => {
     removeAccessToken().then(() =>
@@ -51,13 +51,17 @@ export default class AccountScreen extends React.Component {
     );
   }
 
+  _closeModal = () => this._setModalVisible(false)
+
   render() {
     let { navigate } = this.props.navigation;
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
         <Modal isVisible={this.state.isModalVisible}
-          onBackdropPress={() => this._setModalVisible(false)} >
+          onBackdropPress={this._closeModal}
+          onBackButtonPress={this._closeModal}
+        >
           <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
             <Text style={styles.textCart}>
               Apakah kamu yakin mau log out?
@@ -66,7 +70,7 @@ export default class AccountScreen extends React.Component {
               <Button
                 containerStyle={globalStyles.ctaButton2}
                 style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
-                onPress={() => this._setModalVisible(false)}>
+                onPress={this._closeModal}>
                 Tidak
               </Button>
             </View>
