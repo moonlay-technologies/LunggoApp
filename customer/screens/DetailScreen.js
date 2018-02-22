@@ -637,7 +637,14 @@ class ReviewAndRating extends Component {
 const styles = StyleSheet.create({
   headerContentContainer: {
     padding: 10,
-    marginTop: 5,
+    ...Platform.select({
+      ios: {
+        marginTop: 18
+      },
+      android: {
+        marginTop: 5
+      }
+    }),
     flexDirection: 'row',
   },
   headerBackground: {

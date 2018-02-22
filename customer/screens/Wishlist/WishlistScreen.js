@@ -24,8 +24,11 @@ export default class WishlistScreen extends React.Component {
   };
 
   _getWishlist = async () => {
-    let activityList = JSON.parse(await getItemAsync('wishlist'));
-    this.setState({ list: activityList });
+    let wishlistItems = await getItemAsync('wishlist');
+    if (wishlistItems != null) {
+      let activityList = JSON.parse(wishlistItems);
+      this.setState({ list: activityList });
+    }
   }
 
   _onWishlist = async ({ id, wishlisted }) => {

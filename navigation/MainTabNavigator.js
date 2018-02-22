@@ -18,7 +18,7 @@ export default TabNavigator(
   {
     Explore: { screen: Explore },
     MyBooking: { screen: MyBooking },
-    Wishlist: { screen: Wishlist },
+    Favorit: { screen: Wishlist },
     // MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
   },
@@ -78,7 +78,7 @@ export default TabNavigator(
               ? `ios-paper${focused ? '' : '-outline'}`
               : 'ios-paper-outline';
             break;
-          case 'Wishlist':
+          case 'Favorit':
             iconName = Platform.OS === 'ios'
               ? `ios-heart${focused ? '' : '-outline'}`
               : 'ios-heart-outline';
@@ -106,7 +106,7 @@ export default TabNavigator(
         let focused = scene.focused;
         let route = scene.route.routeName;
         if (!focused) {
-          // if (route == 'Wishlist') {
+          // if (route == 'Favorit') {
           //   navigation.setParams({ shouldRefresh: true });
           // }
           navigation.navigate(route);
