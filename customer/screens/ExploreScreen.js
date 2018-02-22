@@ -26,7 +26,8 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
-      isLoading: true
+      isLoading: true,
+      wishlistIds: [],
     };
     setItemAsync('isNotFirstOpen', 'true');
     this._onWishlist = this._onWishlist.bind(this)

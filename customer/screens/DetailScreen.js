@@ -29,38 +29,23 @@ export default class DetailScreen extends Component {
   constructor(props) {
     super(props);
     this._onWishlist = this._onWishlist.bind(this);
-    let { details, id } = this.props.navigation.state.params || {};
-    if (!details) {   //// if params.details doesnt exist,
-      this.state = {  //// use default state object
-        isLoading: true,
-        // id: 1,
-        // requiredPaxData: '',
-        // name: 'loading activity name...',
-        // city: 'loading address...',
-        // duration: { amount: 'loading ', unit: 'duration...' },
-        // price: '...',
-        // sliderImages: [],
-        // lat: 0,
-        // long: 0,
-        // review: {
-        //   rating: 0.0,
-        //   reviewCount: 0
-        // },
-        // contents: [],
-      }
-    } else {
-      details.mediaSrc = [details.mediaSrc];
-      this.state = details; //// prevent error when params == undefined
-      this.state.review = {
+    let { details, id } = this.props.navigation.state.params;
+
+    let item = {...details}
+    if (!Array.isArray(item.mediaSrc) )
+      item.mediaSrc = [details.mediaSrc];
+
+    this.state = {
+      ...item,
+      review: {
         rating: 0.0,
         reviewCount: 0,
-      };
-      this.state.lat = 0;
-      this.state.long = 0;
-      this.state.contents = [];
-    }
-    this.state.scrollY = new Animated.Value(0);
-    this.state.isLoading = true;
+      },
+      lat: 0, lng: 0,
+      contents: [],
+      scrollY: new Animated.Value(0),
+      isLoading: true,
+    };
   }
 
   static navigationOptions = { header: null }
@@ -573,7 +558,6 @@ class ReviewAndRating extends Component {
 
   render() {
     let { rating, ratingCount, review, reviewCount, id } = this.props;
-    console.log(review.avatar);
     return (
       <View >
         {!reviewCount && (
