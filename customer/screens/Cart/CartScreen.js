@@ -26,7 +26,7 @@ export default class CartScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Cart',
+    title: 'Keranjang',
   };
 
   componentDidMount() {
@@ -41,6 +41,7 @@ export default class CartScreen extends React.Component {
     <ListItem
       item={item}
       index={index}
+      onPress={this._onPressItem}
       onPressDelete={this._onPressDelete}
     />
   );
@@ -122,6 +123,7 @@ class ListItem extends React.PureComponent {
   render() {
     const { item } = this.props;
     const { date, selectedSession } = item.selectedDateTime;
+    console.log(selectedSession);
     let timeText = (!!selectedSession) ? ' - ' + selectedSession : '';
     const selectedDateTimeText =
       Formatter.dateFullShort(date) + timeText;
@@ -130,30 +132,32 @@ class ListItem extends React.PureComponent {
     return (
       <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#ececec', marginBottom: 15 }}>
 
-        <View style={{ flexDirection: 'row', padding: 10 }}>
-          <View style={{ flex: 1 }}>
-            <Image style={{ width: 70, height: 70, resizeMode: 'cover' }}
-              source={{ uri: item.activityDetail.mediaSrc[0] }} />
-          </View>
-          <View style={{ flex: 3, paddingLeft: 15 }}>
-            <View>
-              <Text style={styles.activitydetailTitle}>
-                {item.activityDetail.name}
-              </Text>
+        <TouchableOpacity onPress={() => this.props.onPress(this.props)}>
+          <View style={{ flexDirection: 'row', padding: 10 }}>
+            <View style={{ flex: 1 }}>
+              <Image style={{ width: 70, height: 70, resizeMode: 'cover' }}
+                source={{ uri: item.activityDetail.mediaSrc[0] }} />
             </View>
-            <View style={{ marginTop: 5 }}>
-              <Text style={styles.infoActivity}>
-                {item.activityDetail.city}
-              </Text>
-              <Text style={styles.infoActivity}>
-                {selectedDateTimeText}
-              </Text>
-              <Text style={styles.infoActivity}>
-                {item.ticketCount.map((t) => `${t.count} ${t.type}`).join(', ')}
-              </Text>
+            <View style={{ flex: 3, paddingLeft: 15 }}>
+              <View>
+                <Text style={styles.activitydetailTitle}>
+                  {item.activityDetail.name}
+                </Text>
+              </View>
+              <View style={{ marginTop: 5 }}>
+                <Text style={styles.infoActivity}>
+                  {item.activityDetail.city}
+                </Text>
+                <Text style={styles.infoActivity}>
+                  {selectedDateTimeText}
+                </Text>
+                <Text style={styles.infoActivity}>
+                  {item.ticketCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <View style={{ paddingVertical: 15, paddingHorizontal: 10, borderTopWidth: 1, borderTopColor: '#ececec', flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
