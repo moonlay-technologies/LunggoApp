@@ -75,6 +75,8 @@ export default class CalendarPicker extends Component {
   
   _setModalVisible = vis => this.setState({isModalVisible: vis})
 
+  _closeModal = () => this._setModalVisible(false)
+
   _onDayPressed = selectedDate => {
     let markedDates = {...this.state.markedDates}
     //// if the date is unavailable (disabled), do nothing
@@ -133,9 +135,11 @@ export default class CalendarPicker extends Component {
 
         <Modal
           style={styles.modal}
-          animationType="fade"
           transparent={true}
           isVisible={this.state.isModalVisible}
+          onBackdropPress={this._closeModal}
+          onBackButtonPress={this._closeModal}
+
         >
           <View style={{flex:1}} />
           <View style={{flex:1, backgroundColor:'white', padding:20,}}>
