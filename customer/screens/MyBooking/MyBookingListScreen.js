@@ -19,11 +19,19 @@ import * as Formatter from '../../components/Formatter';
 
 class ActivityListItem extends React.PureComponent {
 
-  _labelBookingStatus = status => {
+  _voucherButton = status => {
     if (status == 'TKTD' || status == 'CONF')
-      return <Text style={styles.labelOk}>Tiket telah terbit</Text>;
+      return (<View style={styles.labelWarning}>
+                  <Button
+                    containerStyle={{alignItems:'center',}}
+                    style={{ fontSize: 12, color: '#fff', fontWeight:'bold', textAlign:'center'}}
+                    onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
+                  >
+                    Lihat Voucher
+                </Button>
+                </View>);
     else
-      return <Text style={styles.labelWarning}>Tiket sedang dalam proses</Text>;
+      return <View><Text style={styles.labelText}>Memproses tiket</Text></View>;
   }
 
   render() {
@@ -31,27 +39,30 @@ class ActivityListItem extends React.PureComponent {
     console.log(item);
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} />
-          <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row',}}>
+          <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+          <View style={{ flex: 1.8 }}>
             <Text style={styles.activityTitle}>
               {item.name}
             </Text>
-            <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
-            <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+            <View style={{flexDirection:'row',}}>
+              <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+              <Text style={styles.activityDesc}>, </Text>
+              <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+            </View>
             <Text style={styles.activityDesc}>
               {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
             </Text>
-            {this._labelBookingStatus(item.BookingStatus)}
+            {this._voucherButton(item.bookingStatus)}
           </View>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 15 }}>
+        <View style={{marginTop: 25 }}>
           <View style={{ flex: 1 }}>
             {(item.requestRating || item.requestReview) && (
               <Button
-                containerStyle={globalStyles.ctaButton5}
-                style={{ fontSize: 12, color: '#777', }}
+                containerStyle={globalStyles.ctaButtonReview}
+                style={{ fontSize: 12, color: '#000', fontWeight:'bold' }}
                 onPress={
                   () => item.requestRating ?
                     this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
@@ -60,18 +71,7 @@ class ActivityListItem extends React.PureComponent {
                 {item.requestRating ? 'Beri Rating' : 'Beri Review'}
               </Button>
             )}
-          </View>
-          {(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF') && (
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Button
-                containerStyle={globalStyles.ctaButton4}
-                style={{ fontSize: 12, color: '#fff', }}
-                onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
-              >
-                Voucher
-            </Button>
-            </View>
-          )}
+          </View>  
         </View>
         <View style={styles.separator} />
       </TouchableOpacity>
@@ -96,9 +96,9 @@ class CartListItem extends React.PureComponent {
 
   _labelPaymentStatus = status => {
     if (status == 'SETTLED')
-      return <Text style={styles.labelOk}>Lunas</Text>;
+      return <View style={styles.labelOk}><Text style={styles.labelTextLunas}>Lunas</Text></View>;
     else
-      return <Text style={styles.labelDanger}>Belum Lunas</Text>;
+      return <View> style={styles.labelDanger}><Text style={styles.labelTextBelumLunas}>Belum Lunas</Text></View>;
   }
 
   render() {
@@ -115,11 +115,12 @@ class CartListItem extends React.PureComponent {
         <View style={styles.total}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.activityDesc}>Total</Text>
-              {this._labelPaymentStatus(item.paymentStatus)}
+              <Text style={styles.totalText}>Total</Text>
+              
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={styles.activityDesc}>{Formatter.price(item.totalFinalPrice)}</Text>
+              <Text style={styles.totalText}>{Formatter.price(item.totalFinalPrice)}</Text>
+              {this._labelPaymentStatus(item.paymentStatus)}
             </View>
           </View>
         </View>
@@ -129,7 +130,7 @@ class CartListItem extends React.PureComponent {
             <View style={{ flex: 1 }}>
               <Button
                 containerStyle={globalStyles.ctaButton6}
-                style={{ fontSize: 12, color: '#fff', }}
+                style={{ fontSize: 12, color: '#fff', fontWeight:'bold' }}
                 onPress={
                   (item.paymentStatus == 'SETTLED') ?
                     this._showInvoice :
@@ -143,6 +144,7 @@ class CartListItem extends React.PureComponent {
             </View>
           </View>
         </View>
+
 
       </View>
     )
@@ -248,27 +250,27 @@ export default class MyBookingListScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
     flex: 1,
-    backgroundColor: '#f7f9fc',
+    paddingTop:0,
+    backgroundColor: '#f7f8fb',
   },
   cartbox: {
     backgroundColor: '#fff',
     padding: 15,
-    marginBottom: 20,
-    borderRadius: 3,
+    marginVertical:15,
+    borderRadius: 5,
     ...Platform.select({
       ios: {
-        shadowColor: '#000000',
+        shadowColor: '#e8f0fe',
         shadowOffset: {
           width: 0,
           height: 1
         },
-        shadowRadius: 6,
-        shadowOpacity: 0.1
+        shadowRadius: 2,
+        shadowOpacity: 0.9
       },
       android: {
-        elevation: 2,
+        elevation: 5,
       },
     }),
   },
@@ -323,9 +325,8 @@ const styles = StyleSheet.create({
     }),
   },
   thumbprofile: {
-    height: 70,
-    width: 70,
-    marginRight: 10
+    height: 90,
+    width: 90,
   },
   separator: {
     backgroundColor: '#ececec',
@@ -338,6 +339,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ececec'
   },
+  totalText: {
+    fontSize: 16,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
   invoice: {
     marginTop: 10,
     paddingVertical: 10,
@@ -349,19 +367,57 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: '#23d3c3',
   },
-  labelWarning: {
-    width: '100%',
-    paddingVertical: 6,
-    overflow: 'hidden',
-    borderRadius: 3,
-    backgroundColor: '#ff5f5f',
+  labelWarning: { 
+    backgroundColor:'#ff5f5f',
+    padding:5,
+    borderRadius:3,
+    marginTop:5
+  },
+  labelText:{
+    color:'#18b0a2',
+    fontSize:13,
+    textAlign:'left',
+    fontWeight:'bold'
+  },
+  labelTextLunas:{
+    color:'#5ba1ff',
+    fontSize:14,
+    textAlign:'right',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  labelTextBelumLunas:{
+    color:'#f74d4d',
+    fontSize:14,
+    textAlign:'right',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   labelOk: {
-    width: '100%',
-    paddingVertical: 6,
-    overflow: 'hidden',
-    borderRadius: 3,
-    borderColor: '#ff5f5f',
-    borderWidth: 1
+    alignItems:'flex-end',
+    justifyContent:'flex-end'
   },
+
 });

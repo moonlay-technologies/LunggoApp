@@ -51,7 +51,17 @@ export default StyleSheet.create({
     paddingBottom: 10,
     overflow: 'hidden',
     borderRadius:2,
-    backgroundColor: '#ff5f5f',
+    backgroundColor: '#23d3c3',
+  },
+  ctaButtonReview: {
+    width: '100%',
+    paddingTop: 8,
+    paddingBottom: 8,
+    overflow: 'hidden',
+    borderRadius:3,
+    backgroundColor: '#ffc300',
+    borderWidth:1,
+    borderColor:'#ffc300'
   },
   bottomCtaBarContainer: {
     flexDirection: 'row',
