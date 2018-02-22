@@ -2,7 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, Platform } from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
@@ -107,8 +107,15 @@ export default class RootNavigator extends React.Component {
           marginBottom: -5
         },
         headerStyle: {
-          elevation: 2,
-          marginTop: -20
+           ...Platform.select({
+          ios: {
+          },
+          android: {
+            elevation: 2,
+            marginTop:-20
+
+          },
+        }),
         }
       }),
     }
