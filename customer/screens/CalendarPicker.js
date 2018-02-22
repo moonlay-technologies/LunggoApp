@@ -6,8 +6,9 @@
 
 import React, { Component } from 'react';
 import { CalendarList } from 'react-native-calendars';
-import { StyleSheet, Platform, View, Text, TouchableOpacity,
-          TouchableHighlight } from 'react-native';
+import {
+  StyleSheet, Platform, View, Text, TouchableOpacity,
+} from 'react-native';
 import globalStyles from '../../commons/globalStyles';
 import Modal from 'react-native-modal';
 import Button from 'react-native-button';
@@ -56,8 +57,6 @@ export default class CalendarPicker extends Component {
 
     //// if there's previous selectedDate, remove the selected flag
     if (prevSelectedDate) changedDate[prevSelectedDate].selected = false;
-
-    // changedDate[dateString].selected = true;
 
     this.setState({
       markedDates:{...markedDates, ...changedDate },
@@ -141,12 +140,11 @@ export default class CalendarPicker extends Component {
           onBackButtonPress={this._closeModal}
 
         >
-          <View style={{flex:1}} />
-          <View style={{flex:1, backgroundColor:'white', padding:20,}}>
+          <View style={{ backgroundColor:'white', padding:20,}}>
             <Text style={styles.activityTitle}>
               Choose activity time
             </Text>
-            <Text style={styles.activityDesc}>
+            <Text style={[styles.activityDesc,{marginBottom:20}]}>
               {Formatter.dateFullLong(this.state.tempSelectedDate)}
             </Text>
             {availableHoursList}
@@ -214,10 +212,9 @@ var styles = StyleSheet.create({
   availableHoursItem: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 1,
-    paddingTop: 15,
-    paddingBottom: 15,
+    borderTopColor: '#efefef',
+    borderTopWidth: 1,
+    paddingVertical: 10,
   }
   // theme: { dayTextColor: '#d9e1e8', textDisabledColor: '#2d4150',},
 });
