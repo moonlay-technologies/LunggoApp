@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   statusBarUnderlay: {
-    height: 24,
-    backgroundColor: Colors.bottomTabSelected,
+    height: Expo.Constants.statusBarHeight,
+    backgroundColor: Colors.statusBar,
   },
 });
