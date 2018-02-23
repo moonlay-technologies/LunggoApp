@@ -115,7 +115,20 @@ export default class CalendarPicker extends Component {
               key={index} style={styles.availableHoursItem}
               onPress={ () => this._onAvailableHoursClicked(index) }
             >
-              <Text style={{marginTop:5}}>{currValue}</Text>
+              <View style={{flexDirection:'row', flex:1}}>
+                <View style={{flex:1}}>
+                  <Text style={{marginTop:5, color:'#454545'}}>{currValue}</Text>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 14, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              
             </TouchableOpacity>
         )
         : null;
@@ -214,7 +227,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopColor: '#efefef',
     borderTopWidth: 1,
-    paddingVertical: 10,
+    paddingVertical: 15,
   }
   // theme: { dayTextColor: '#d9e1e8', textDisabledColor: '#2d4150',},
 });
