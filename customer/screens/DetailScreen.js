@@ -31,8 +31,8 @@ export default class DetailScreen extends Component {
     this._onWishlist = this._onWishlist.bind(this);
     let { details, id } = this.props.navigation.state.params;
 
-    let item = {...details}
-    if (!Array.isArray(item.mediaSrc) )
+    let item = { ...details }
+    if (!Array.isArray(item.mediaSrc))
       item.mediaSrc = [details.mediaSrc];
 
     this.state = {
@@ -494,20 +494,35 @@ class MainInfo extends Component {
 }
 
 class MediaContents extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  ActiveDot = <View style={styles.activeDot} />;
+  Dot = <View style={styles.dot} />;
 
   render() {
-    let activeDot = <View style={styles.activeDot} />
-    let dot = <View style={styles.dot} />
     let { media } = this.props;
-    return (
-      <Swiper style={styles.wrapper} activeDot={activeDot} dot={dot} showsButtons={false}>
-        {media.map(m => (
-          <View style={styles.slides} key={m} >
-            <Image style={styles.slides} source={{ uri: m }} />
-          </View>
-        ))}
-      </Swiper>
-    )
+    return media.length == 1
+      ?
+      <View style={styles.wrapper}>
+        <Image style={styles.slides} source={{ uri: media[0] }} />
+      </View>
+      : (
+        <Swiper
+          style={styles.wrapper}
+          activeDot={this.ActiveDot}
+          dot={this.Dot}
+          showsButtons={false}
+          autoplay={true}
+          autoplayTimeout={3.5}
+          loop={false}
+        >
+          {media.map((m, idx) => (
+            <Image style={styles.slides} source={{ uri: m }} key={idx} />
+          ))}
+        </Swiper>
+      )
   }
 }
 
