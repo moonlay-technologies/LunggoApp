@@ -40,10 +40,10 @@ export default StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     overflow: 'hidden',
-    borderRadius:2,
+    borderRadius:4,
     backgroundColor: '#fff',
     borderWidth:1,
-    borderColor:'#23d3c3'
+    borderColor:'#23d3c3',
   },
   ctaButton6: {
     width: '100%',
@@ -51,6 +51,14 @@ export default StyleSheet.create({
     paddingBottom: 10,
     overflow: 'hidden',
     borderRadius:2,
+    backgroundColor: '#23d3c3',
+  },
+  ctaButton7: {
+    width: '70%',
+    paddingTop: 5,
+    paddingBottom: 5,
+    overflow: 'hidden',
+    borderRadius:3,
     backgroundColor: '#23d3c3',
   },
   ctaButtonReview: {
