@@ -81,7 +81,7 @@ export default class WishButton extends React.Component {
         >
           <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
             <Text style={styles.textCart}>
-              Silakan log in terlebih dahulu
+              Silakan login terlebih dahulu
             </Text>
             <View style={{ marginVertical: 10 }}>
               <Button
@@ -96,7 +96,7 @@ export default class WishButton extends React.Component {
                 containerStyle={globalStyles.ctaButton1}
                 style={{ fontSize: 14, color: Colors.primaryColor, fontFamily: 'Hind', }}
                 onPress={this._goToLoginScreen}>
-                Log in
+                Login
               </Button>
             </View>
           </View>

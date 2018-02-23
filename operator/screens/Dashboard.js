@@ -11,6 +11,7 @@ import { MonoText } from '../components/StyledText';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import { getProfile } from '../../commons/ProfileController';
 import * as Formatter from '../../customer/components/Formatter';
+import LoadingAnimation from '../../customer/components/LoadingAnimation'
 
 export default class Dashboard extends React.Component {
 
@@ -151,7 +152,7 @@ export default class Dashboard extends React.Component {
 
   render() {
     const loadingIndicator = this.state.isLoading ?
-      <ActivityIndicator size='large'/> : null;
+      <LoadingAnimation /> : null;
     return (
       <ScrollView style={{backgroundColor:'#f7f8fb'}}>
       <View style={{height:340}}>

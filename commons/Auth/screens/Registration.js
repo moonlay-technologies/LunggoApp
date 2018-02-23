@@ -7,14 +7,14 @@ import {
   Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
-import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
+import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL } from '../../../api/Common';
 import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
   from '../../FormValidation';
 import globalStyles from '../../globalStyles';
-import {NavigationActions} from 'react-navigation';
-
+import { NavigationActions } from 'react-navigation';
+import { fetchTravoramaLoginApi } from '../AuthController'
 
 export default class Registration extends React.Component {
   constructor(props, context) {
@@ -62,10 +62,8 @@ export default class Registration extends React.Component {
     let { navigate, goBack, replace, pop } = this.props.navigation;
     let { params } = this.props.navigation.state;
     this.setState({ isLoading: true })
-    // //// validation
-    //TODO
+    console.log('1111');
 
-    //// if validation passed, POST to API
     let request = {
       path: '/v1/register',
       method: 'POST',
@@ -74,14 +72,35 @@ export default class Registration extends React.Component {
     }
     fetchTravoramaApi(request).then(response => {
       if (response.status == 200) {
-        let { resetAfter, thruBeforeLogin } = params;
-        if (resetAfter)
-          this._resetToMainTab();
-        else if (thruBeforeLogin)
-          pop(2);
-        else
-          pop();
-        this.setState({ isLoading: false })
+        console.log('2222');
+        fetchTravoramaLoginApi(this.state.email || this.state.phone, this.state.password)
+          .then(response => {
+            console.log('3333');
+            if (response.status == 200) {
+              console.log('4444');
+              // this._notificationSubscription = this._registerForPushNotifications();
+              fetchWishlist();
+              let { resetAfter, thruBeforeLogin } = params;
+              console.log('5555');
+              if (resetAfter)
+                this._resetToMainTab();
+              else if (thruBeforeLogin)
+                pop(2);
+              else
+                pop();
+              this.setState({ isLoading: false })
+              console.log('6666');
+            } else {
+              console.log(response);
+              let error = 'Terjadi kesalahan pada server';
+            }
+            this.setState({ error });
+          }
+          ).catch(error => {
+            this.setState({ isLoading: false });
+            console.log("Login error!!");
+            console.log(error);
+          })
       }
       else {
         this.setState({ isLoading: false });
