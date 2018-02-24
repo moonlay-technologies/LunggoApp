@@ -8,6 +8,7 @@ import { Platform, StyleSheet, FlatList, RefreshControl, Text, View,
 import { getBookingList } from './MyBookingController';
 import { Icon } from 'react-native-elements';
 import * as Formatter from '../../components/Formatter';
+import Colors from '../../../constants/Colors';
 
 class ListItem extends React.PureComponent {
 
@@ -148,7 +149,7 @@ export default class MyBookingListScreen extends React.Component {
               marginRight:3,
               height:40, width:120, paddingTop:10, paddingBottom:10,
               overflow:'hidden', borderRadius:4,
-              backgroundColor: '#437ef7'
+              backgroundColor: Colors.primary2
             }}
             style={{fontSize: 14, color: '#ffffff'}}
             onPress={() => this._handlePress()}>
@@ -158,9 +159,9 @@ export default class MyBookingListScreen extends React.Component {
             containerStyle={{ height:40, width:120, paddingTop:10,
               paddingBottom:10, overflow:'hidden', borderRadius:4,
               borderWidth: 1,
-              borderColor: '#437ef7',backgroundColor: '#ffffff'
+              borderColor: Colors.primary2,backgroundColor: '#ffffff'
             }}
-            style={{fontSize: 14, color: '#437ef7'}}
+            style={{fontSize: 14, color: Colors.primary2}}
             onPress={() => this._handlePress()}>
             History 
           </Button>
@@ -207,7 +208,7 @@ const styles = StyleSheet.create({
     color:'#454545',
   },
   status: {
-    color:'#01d4cb',
+    color:Colors.primary2,
     fontSize:12,
   },
   icon: {

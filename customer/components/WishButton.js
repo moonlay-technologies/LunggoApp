@@ -94,7 +94,7 @@ export default class WishButton extends React.Component {
             <View style={{ marginVertical: 5 }}>
               <Button
                 containerStyle={globalStyles.ctaButton1}
-                style={{ fontSize: 14, color: Colors.primaryColor, fontFamily: 'Hind', }}
+                style={{ fontSize: 14, color: Colors.primary2, fontFamily: 'Hind', }}
                 onPress={this._goToLoginScreen}>
                 Login
               </Button>

@@ -1,3 +1,5 @@
+import Colors from "../../constants/Colors";
+
 <Modal
   offset={this.state.offset}
   open={this.state.open}
@@ -18,7 +20,7 @@
     <View >
       <Button
         containerStyle={globalStyles.ctaButton3}
-        style={{fontSize: 14, color: '#ff5f5f', fontFamily:'Hind',}}
+        style={{fontSize: 14, color: Colors.primary3, fontFamily:'Hind',}}
         onPress={() => this.setState({open: false})}
       >
         Tambah Activity Lainnya

@@ -11,6 +11,7 @@ import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 import { validateEmail, validatePassword, validateRequiredField,
 } from '../../commons/FormValidation';
 import globalStyles from '../../commons/globalStyles';
+import Colors from '../../constants/Colors';
 
 
 export default class AddBookingContact extends React.Component {
@@ -56,27 +57,27 @@ export default class AddBookingContact extends React.Component {
 
     let errorMessageName = errorName ?
       <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorName}</Text>
+        <Text style={{color:Colors.secondary1}}>{errorName}</Text>
       </View> : null;
 
     let errorMessageEmail = errorEmail ?
       <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorEmail}</Text>
+        <Text style={{color:Colors.secondary1}}>{errorEmail}</Text>
       </View> : null;
 
     let errorMessagecountryCallCd = errorcountryCallCd ?
       <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorcountryCallCd}</Text>
+        <Text style={{color:Colors.secondary1}}>{errorcountryCallCd}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
       <View style={{alignItems:'center', marginBottom:10}}>
-        <Text style={{color:'#fc2b4e'}}>{errorPhone}</Text>
+        <Text style={{color:Colors.secondary1}}>{errorPhone}</Text>
       </View> : null;
 
     let errorMessage = error ?
       <View style={{alignItems:'center', marginTop:10}}>
-        <Text style={{color:'#fc2b4e'}}>{error}</Text>
+        <Text style={{color:Colors.secondary1}}>{error}</Text>
       </View> : null;
 
     return (
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: Colors.secondary1,
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',

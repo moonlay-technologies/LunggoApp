@@ -8,6 +8,7 @@ import { Platform, StyleSheet, TouchableOpacity, Text, View, Image,
   TextInput, ScrollView, } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
+import Colors from '../../../constants/Colors';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -142,7 +143,7 @@ export default class BookedPageDetail extends React.Component {
               </View>
               <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
                 <Button
-                  containerStyle={{height:35, width:'70%', paddingTop:10, paddingBottom:10, borderRadius:4, backgroundColor: '#00c8be'}}
+                  containerStyle={{height:35, width:'70%', paddingTop:10, paddingBottom:10, borderRadius:4, backgroundColor: Colors.primary2}}
                   style={{fontSize: 12, color: '#fff', fontWeight:'bold'}}
                   onPress={this._onContinuePaymentPressed}
                 >
@@ -165,7 +166,7 @@ export default class BookedPageDetail extends React.Component {
                 <Text style={{fontSize:12, color:'#454545',}}>Sisa waktu pembayaran</Text>
               </View>
               <View style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end'}}>
-                <Text style={{fontSize:12, color:'#00c8be'}}>
+                <Text style={{fontSize:12, color:Colors.primary2}}>
                   {timeLeft}
                 </Text>
               </View>
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
     color:'#454545',
   },
   status:{
-    color:'#f19a4b',
+    color:Colors.primary2,
     fontSize:12,
     marginTop:2,
   },

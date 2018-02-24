@@ -15,6 +15,7 @@ import {
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 import LoadingAnimation from '../components/LoadingAnimation'
+import Colors from '../../constants/Colors';
 
 export default class ExploreScreen extends React.Component {
 
@@ -93,16 +94,16 @@ export default class ExploreScreen extends React.Component {
         <View style={{flexDirection:'row', marginTop:10, padding:15,paddingTop:0,}}>
           <TouchableOpacity
             style={{
-              flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2
+              flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:Colors.primary2, borderWidth:2
             }}
           >
             <Text style={{color:'#676767', fontSize:11}}>You have</Text>
-            <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>12</Text>
+            <Text style={{color:Colors.primary2, fontWeight:'bold', fontSize:29}}>12</Text>
             <Text style={{color:'#676767', fontSize:11}}>Pending Requests</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2, marginLeft:6}}>
+          <TouchableOpacity style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:Colors.primary2, borderWidth:2, marginLeft:6}}>
             <Text style={{color:'#676767', fontSize:11}}>You have</Text>
-            <Text style={{color:'#01d4cb', fontWeight:'bold', fontSize:29}}>3</Text>
+            <Text style={{color:Colors.primary2, fontWeight:'bold', fontSize:29}}>3</Text>
             <Text style={{color:'#676767', fontSize:11}}>Appointments</Text>
           </TouchableOpacity>
         </View>
@@ -124,19 +125,19 @@ export default class ExploreScreen extends React.Component {
           <View style={{marginTop:0}}>
             <View style={{flexDirection:'row'}}>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>2</Text>
+                <Text style={{fontWeight:'bold', fontSize:26,color:Colors.primary2}}>2</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Activities</Text>
               </View>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>13</Text>
+                <Text style={{fontWeight:'bold', fontSize:26,color:Colors.primary2}}>13</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Deals</Text>
               </View>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>107</Text>
+                <Text style={{fontWeight:'bold', fontSize:26,color:Colors.primary2}}>107</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Views</Text>
               </View>
               <View style={{flex:1, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:26,color:'#01d4cb'}}>14</Text>
+                <Text style={{fontWeight:'bold', fontSize:26,color:Colors.primary2}}>14</Text>
                 <Text style={{fontSize: 12, color: '#676767', marginTop:2}}>Review</Text>
               </View>
             </View>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
   },
   notification: {
-    backgroundColor:'#01d4c7', 
+    backgroundColor:Colors.primary2, 
     alignItems:'center', 
     padding:3, 
     width:20, 

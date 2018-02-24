@@ -36,7 +36,7 @@ export default class BeforeLoginScreen extends React.Component {
 
         <Button
           containerStyle={{ marginTop: 30, height: 45, paddingTop: 9, overflow: 'hidden', borderRadius: 25, backgroundColor: '#fff', }}
-          style={{ fontSize: 20, color: '#01d4cb', fontFamily: 'Hind-Bold', }}
+          style={{ fontSize: 20, color: Colors.primary2, fontFamily: 'Hind-Bold', }}
           onPress={() => navigate('Registration', this.params)}
         >
           Daftar
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     paddingTop: 60,
-    backgroundColor: '#23d3c3',
+    backgroundColor: Colors.primary2,
   },
 });

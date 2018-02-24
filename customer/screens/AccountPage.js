@@ -13,6 +13,7 @@ import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/Auth
 import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
 import { fetchProfile } from '../../commons/ProfileController';
+import Colors from '../../constants/Colors';
 
 export default class AccountScreen extends React.Component {
 
@@ -82,7 +83,7 @@ export default class AccountScreen extends React.Component {
             <View>
               <Button
                 containerStyle={globalStyles.ctaButton3}
-                style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
+                style={{ fontSize: 14, color: Colors.secondary1, fontFamily: 'Hind', }}
                 onPress={this._logout}>
                 Ya
               </Button>
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
   },
   textCartColor: {
     fontFamily: 'Hind',
-    color: '#ff5f5f',
+    color: Colors.secondary1,
     fontSize: 14,
     textAlign: 'center',
     ...Platform.select({

@@ -13,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
 import LoadingAnimation from '../components/LoadingAnimation'
+import Colors from '../../constants/Colors';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -83,7 +84,7 @@ export default class ExploreScreen extends React.Component {
         <ScrollView style={{ backgroundColor: '#fff' }}>
 
           {/*<View style={{flexDirection:'row', marginTop:20}}>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
+            <View style={{flex:1, padding:10, borderColor:Colors.primary2, backgroundColor:Colors.primary2, borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
                 <Icon
                 name='md-pin'
@@ -95,25 +96,25 @@ export default class ExploreScreen extends React.Component {
                 <Text style={{color:'#fff', fontSize:18,}}>Activity</Text>
               </View>
             </View>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center', marginLeft:10, marginRight:10,}}>
+            <View style={{flex:1, padding:10, borderColor:Colors.primary2, backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center', marginLeft:10, marginRight:10,}}>
               <View>
                 <Icon
                 name='flight'
                 type='materialicon'
                 size={20}
-                color='#3adfb5'/>
+                color=Colors.primary2/>
               </View>
               <View style={{marginLeft:5}}>
                 <Text style={{color:'#acacac', fontSize:18, }}>Flight</Text>
               </View>
             </View>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
+            <View style={{flex:1, padding:10, borderColor:Colors.primary2, backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
                 <Icon
                 name='hotel'
                 type='materialicons'
                 size={20}
-                color='#3adfb5'/>
+                color=Colors.primary2/>
               </View>
               <View style={{marginLeft:5}}>
                 <Text style={{color:'#acacac', fontSize:18,}}>Hotel</Text>

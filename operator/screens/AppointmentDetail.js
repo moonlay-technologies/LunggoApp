@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
+import Colors from '../../constants/Colors';
 
 export default class AppointmentDetail extends Component {
 
@@ -83,7 +84,7 @@ export default class AppointmentDetail extends Component {
                     <Text style={styles.activityTitle}>Guest 1</Text>
                   </View>
                   <View>
-                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:Colors.primary2, fontSize:13, fontStyle:'italic'}}>Verified</Text>
                     <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
                   </View>
                 </View>
@@ -108,7 +109,7 @@ export default class AppointmentDetail extends Component {
                     <Text style={styles.activityTitle}>Guest 2</Text>
                   </View>
                   <View>
-                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:Colors.primary2, fontSize:13, fontStyle:'italic'}}>Verified</Text>
                     <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
                   </View>
                 </View>
@@ -133,7 +134,7 @@ export default class AppointmentDetail extends Component {
                     <Text style={styles.activityTitle}>Guest 3</Text>
                   </View>
                   <View>
-                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
+                    <Text style={{color:Colors.primary2, fontSize:13, fontStyle:'italic'}}>Verified</Text>
                     <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
                   </View>
                 </View>
@@ -157,7 +158,7 @@ export default class AppointmentDetail extends Component {
                     <Icon
                       name='check'
                       type='entypo'
-                      color='#517fa4'
+                      color=Colors.primary3
                       size={15}
                     />
                   </View>
@@ -170,7 +171,7 @@ export default class AppointmentDetail extends Component {
                     <Icon
                       name='check'
                       type='entypo'
-                      color='#517fa4'
+                      color=Colors.primary3
                       size={15}
                     />
                   </View>
@@ -206,7 +207,7 @@ export default class AppointmentDetail extends Component {
                       paddingBottom :10,
                       overflow: 'hidden',
                       borderRadius: 20,
-                      backgroundColor: '#00d5cb',
+                      backgroundColor: Colors.primary2,
                     }}
                     style={{fontSize: 14, color: '#ffffff'}}
                     >
@@ -224,7 +225,7 @@ export default class AppointmentDetail extends Component {
                       paddingBottom :10,
                       overflow: 'hidden',
                       borderRadius: 50,
-                      backgroundColor: '#437ef7',
+                      backgroundColor: Colors.primary2,
                     }}
                     style={{fontSize: 14, color: '#ffffff'}}
                   >

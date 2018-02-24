@@ -17,6 +17,7 @@ import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
 import { fetchWishlist } from '../../../api/Common';
 import { NavigationActions } from 'react-navigation';
+import Colors from '../../../constants/Colors';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -115,17 +116,17 @@ export default class LoginScreen extends React.Component {
 
     let errorMessageUserName = errorUserName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorUserName}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorUserName}</Text>
       </View> : null;
 
     let errorMessagePassword = errorPassword ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorPassword}</Text>
       </View> : null;
 
     let errorMessage = error ?
       <View style={{ alignItems: 'center', marginTop: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{error}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{error}</Text>
       </View> : null;
 
     let registerHereButton =
@@ -207,7 +208,7 @@ export default class LoginScreen extends React.Component {
               paddingBottom: 10,
               overflow: 'hidden',
               borderRadius: 25,
-              backgroundColor: '#01d4cb',
+              backgroundColor: Colors.primary2,
             }}
             style={{ fontSize: 16, color: '#ffffff', fontFamily: 'Hind-Bold' }}
             onPress={this._onLoginPressed}
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: Colors.secondary1,
     borderRadius: 25,
     color: '#acacac',
     backgroundColor: '#f5f5f5',

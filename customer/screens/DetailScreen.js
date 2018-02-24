@@ -158,7 +158,7 @@ export default class DetailScreen extends Component {
 
 class Footer extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = { isLoading: false };
   }
 
@@ -169,7 +169,7 @@ class Footer extends Component {
     let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'BeforeLoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
-      package: this.props.details.package,
+      package: this.props.details.package, media: this.props.details.mediaSrc[0],
       activityId: id,
     });
     this.setState({ isLoading: false })
@@ -190,7 +190,7 @@ class Footer extends Component {
       <View style={globalStyles.bottomCtaBarContainer}>
         <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
           <View >
-            <Text style={{ fontSize: 12, color: '#676767', }}>Start from</Text>
+            <Text style={{ fontSize: 12, color: '#676767', }}>Mulai dari</Text>
           </View>
           <View>
             <Text style={{
@@ -453,7 +453,7 @@ class MainInfo extends Component {
               </Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
             <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
@@ -476,7 +476,7 @@ class MainInfo extends Component {
                 DUMMY Untuk usia diatas 10 tahun
                   </Text>
             </View>
-          </View>
+          </View> */}
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
             <Icon name='md-alarm' type='ionicon' size={18} color='#454545' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
@@ -622,7 +622,7 @@ class ReviewAndRating extends Component {
                 <View>
                   <Text style={{ color: '#454545', fontSize: 18, fontWeight: 'bold' }}>{rating}</Text>
                 </View>
-                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
+                <Icon name='star' type='fontawesome' size={20} color={Colors.primary2} />
               </View>
 
               <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', flex: 2 }}>
@@ -637,7 +637,7 @@ class ReviewAndRating extends Component {
                     name='chevron-right'
                     type='entypo'
                     size={24}
-                    color='#00c5bc' />
+                    color={Colors.primary2} />
                 </View>
 
               </View>
@@ -805,7 +805,7 @@ const styles = StyleSheet.create({
   hyperlink: {
     fontSize: 11,
     marginTop: 8,
-    color: '#437ef7',
+    color: Colors.primary2,
     textDecorationLine: 'underline',
   },
   isireview: {
@@ -873,7 +873,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   activeDot: {
-    backgroundColor: '#01aebc',
+    backgroundColor: Colors.primary2,
     width: 8,
     height: 8,
     borderRadius: 4,

@@ -7,6 +7,7 @@ import { Platform, StyleSheet, FlatList, Text, View, Image,
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
 import Moment from 'moment';
 import 'moment/locale/id';
+import Colors from '../../constants/Colors';
 
 
 class ListItem extends React.PureComponent {
@@ -22,7 +23,7 @@ class ListItem extends React.PureComponent {
           onPress={this._onPressItem}
           underlayColor='#ddd'
         >
-          <View style={{flex:1},styles.containerListAppointment}>
+          <View style={[{flex:1},styles.containerListAppointment]}>
 
             <View style={{flex:3}}>
               <Text style={styles.activityTitle}>Ali Zainal</Text>
@@ -71,7 +72,7 @@ class ListItem extends React.PureComponent {
                   paddingTop:6,
                   overflow:'hidden',
                   borderRadius:4,
-                  backgroundColor: '#00c8be'
+                  backgroundColor: Colors.primary2
                 }}
                 style={{fontSize: 14, color: '#fff'}}
                 onPress={() => this._onPressAccept()}

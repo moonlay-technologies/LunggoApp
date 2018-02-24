@@ -16,6 +16,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class Filter extends React.Component {
 
@@ -89,7 +90,7 @@ export default class Filter extends React.Component {
 
 
             <Button
-              containerStyle={{height:35, flex:1, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+              containerStyle={{height:35, flex:1, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: Colors.secondary1}}
               style={{fontSize: 12, color: '#ffffff'}}
               // onPress={() => this._handlePress()}
               onPress={() => this.props.navigation.navigate(

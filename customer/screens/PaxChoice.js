@@ -9,6 +9,7 @@ import {
   Platform, StyleSheet,
   Text, View, Image, TextInput, FlatList, TouchableOpacity
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class PaxChoice extends Component {
 
@@ -102,7 +103,7 @@ export default class PaxChoice extends Component {
               paddingBottom:10,
               overflow:'hidden',
               borderRadius:4,
-              backgroundColor: '#437ef7'
+              backgroundColor: Colors.secondary1
             }}
             onPress={ () => navigation.navigate( "AddPax", {
               addPaxListItem: this.addPaxListItem,
@@ -113,7 +114,7 @@ export default class PaxChoice extends Component {
               name='plus'
               type='evilicon'
               size={26}
-              color='#01d4cb'
+              color={Colors.primary2}
             />
           </TouchableOpacity>
         </View>         
@@ -159,7 +160,7 @@ export default class PaxChoice extends Component {
                 paddingBottom: 13,
                 overflow: 'hidden',
                 borderRadius:25,
-                backgroundColor: '#01d4cb',
+                backgroundColor: Colors.primary2,
               }}
               style={{fontSize: 16, fontWeight:'bold', color: '#fff'}}
               onPress={this._return}

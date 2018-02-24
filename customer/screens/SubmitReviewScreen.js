@@ -16,6 +16,7 @@ import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
+import Colors from '../../constants/Colors';
 
 export default class SubmitReviewScreen extends React.Component {
 
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7f9fc',
   },
   containerSubmit: {
-    backgroundColor: '#23d3c3',
+    backgroundColor: Colors.primary2,
     paddingVertical: 20,
     alignItems: 'center',
     position: 'absolute',

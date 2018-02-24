@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { StyleSheet, Text, View, TextInput, } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class AddPax extends Component {
 
@@ -157,7 +158,7 @@ export default class AddPax extends Component {
               paddingBottom:10,
               overflow:'hidden',
               borderRadius:25,
-              backgroundColor: '#23d3c3',
+              backgroundColor: Colors.primary2,
               width:'100%', 
             }}
             style={{fontSize: 16, color: '#ffffff', fontFamily:'Hind-Bold'}}
@@ -207,7 +208,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: Colors.secondary1,
     borderRadius: 25,
     color: '#acacac',
     backgroundColor:'#f5f5f5',

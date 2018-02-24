@@ -9,6 +9,7 @@ import {
   View,
   Image,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class RincianHarga extends Component {
   
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   hyperlink: {
     fontSize:11,
     marginTop:5,
-    color:'#437ef7',
+    color:Colors.primary2,
   },
   isireview: {
     fontSize:13,

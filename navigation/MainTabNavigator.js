@@ -27,7 +27,7 @@ export default TabNavigator(
       /*headerRight:
         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
           <View style={styles.containerCart}>
-            <Entypo name='shopping-basket' size={26} color='#23d3c3' />
+            <Entypo name='shopping-basket' size={26} color={Colors.primary2} />
             <View style={styles.notification}>
               <Text style={styles.txtNotification}>5</Text>
             </View>
@@ -98,7 +98,7 @@ export default TabNavigator(
             name={iconName}
             size={28}
             style={{ marginBottom: -4, }}
-            color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
+            color={focused ? Colors.primary2 : '#ccc'}
           />
         );
       },
@@ -119,7 +119,7 @@ export default TabNavigator(
     animationEnabled: true,
     swipeEnabled: true,
     tabBarOptions: {
-      activeTintColor: Colors.bottomTabSelected,
+      activeTintColor: Colors.primary2,
       style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec' }
     },
   }

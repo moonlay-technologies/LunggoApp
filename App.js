@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
   },
   statusBarUnderlay: {
     height: Expo.Constants.statusBarHeight,
-    backgroundColor: Colors.statusBar,
+    backgroundColor: Colors.primary1,
   },
 });

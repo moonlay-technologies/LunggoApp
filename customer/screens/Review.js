@@ -10,6 +10,7 @@ import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { MultilineText } from '../components/StyledText'
+import Colors from '../../constants/Colors';
 
 export default class ReviewScreen extends React.Component {
 
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
   hyperlink: {
     fontSize: 11,
     marginTop: 5,
-    color: '#437ef7',
+    color: Colors.primary2,
   },
   isireview: {
     fontSize: 15,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   },
   nilaiBesar: {
     fontSize: 60,
-    color: '#ff5f5f',
+    color: Colors.secondary1,
     fontFamily: 'Hind-Light',
     ...Platform.select({
       ios: {

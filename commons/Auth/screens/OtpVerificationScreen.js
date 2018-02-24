@@ -18,6 +18,7 @@ import { StyleSheet, Text, View, Image, TextInput, ScrollView,
 } from 'react-native';
 import { sendOtp, verifyOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import Colors from '../../../constants/Colors';
 
 export default class OtpVerificationScreen extends React.Component {
   constructor(props, context) {
@@ -114,7 +115,7 @@ export default class OtpVerificationScreen extends React.Component {
           </View>
           { errorMessage ?
             <View style={{alignItems:'center', marginBottom:10}}>
-              <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+              <Text style={{color:Colors.secondary2}}>{errorMessage}</Text>
             </View> : null
           }
           <View style={{flexDirection:'row'}}>
@@ -201,7 +202,7 @@ export default class OtpVerificationScreen extends React.Component {
             </View>
           </View>
           <Button
-            containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: '#01d4cb',}}
+            containerStyle={{marginTop:50, height:45, paddingTop:13, paddingBottom:10, overflow:'hidden', borderRadius:25, backgroundColor: Colors.primary2,}}
             style={{fontSize: 16, color: '#ffffff'}}
             onPress={this._verifyOtp}
             disabled={isLoading}
@@ -215,7 +216,7 @@ export default class OtpVerificationScreen extends React.Component {
           >
             <Text style={{
               textAlign:'center',
-              color: cooldown ? 'gray' : '#01d4cb',
+              color: cooldown ? 'gray' : Colors.primary2,
             }}>
               Kirim ulang kode verifikasi
               {showCooldown? `\n(tunggu ${cooldown} detik)` : null}

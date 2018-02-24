@@ -11,6 +11,7 @@ import {
   ScrollView, Platform
 } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
+import Colors from '../../constants/Colors';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -77,7 +78,7 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    scheduleObj.isContactFilled = true;
+    contactObj.isContactFilled = true;
     this.setState({ contact: contactObj });
   }
 
@@ -146,9 +147,9 @@ export default class BookingDetail extends React.Component {
   _goToCalendarPicker = () => {
     let { navigation } = this.props;
     let { availableDateTimes } = navigation.state.params;
-    let { price } = this.state;
+    let { price, totalCount } = this.state;
     navigation.navigate('CalendarPicker', {
-      price, availableDateTimes,
+      price, availableDateTimes, totalCount,
       setSchedule: this.setSchedule,
       selectedDate: this.state.date,
     });
@@ -176,9 +177,9 @@ export default class BookingDetail extends React.Component {
       Formatter.dateFullShort(date) + ', pk ' + time : 'Atur Jadwal';
 
     let addEditButton = isEdit => !!isEdit ?
-      <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>
+      <Text style={{ fontSize: 12, color: Colors.primary2 }}> Ubah </Text>
       :
-      <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
+      <Icon name='plus' type='evilicon' size={26} color={Colors.primary2} />
 
     let counterButtons = counterArr => {
       let add = counterObj => {
@@ -208,7 +209,7 @@ export default class BookingDetail extends React.Component {
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#f9a3a3', justifyContent: 'center', alignItems: 'center' }}
+            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: Colors.secondary2, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => substract(counterObj)}
             >
               <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
@@ -246,7 +247,7 @@ export default class BookingDetail extends React.Component {
             <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
               {isPaxFilled ? null : <Text style={styles.validation}>Mohon isi peserta</Text>}
             </View>
-            <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
+            <Icon name='plus' type='evilicon' size={26} color={Colors.primary2} />
           </View>
 
         </TouchableOpacity>
@@ -276,7 +277,7 @@ export default class BookingDetail extends React.Component {
             </Text>
           </View>
           <View style={{ marginTop: 4 }} >
-            <Text style={{ fontSize: 11, color: '#01d4cb', fontWeight: 'bold' }}>
+            <Text style={{ fontSize: 11, color: Colors.primary2, fontWeight: 'bold' }}>
               Lihat Rincian Harga
             </Text>
           </View>
@@ -448,7 +449,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     overflow: 'hidden',
     borderRadius: 4,
-    backgroundColor: '#437ef7',
+    backgroundColor: Colors.primary3,
   },
   thumb: {
     resizeMode: 'cover',
@@ -540,7 +541,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   validation: {
-    color: '#fc2b4e',
+    color: Colors.secondary1,
     fontSize: 12
   },
   warningText: {

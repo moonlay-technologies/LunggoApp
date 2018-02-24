@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
+import Colors from '../../constants/Colors';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -187,6 +188,6 @@ const styles = StyleSheet.create({
   },
   helpLinkText: {
     fontSize: 14,
-    color: '#2e78b7',
+    color: Colors.primary2,
   },
 });

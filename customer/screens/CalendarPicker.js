@@ -16,13 +16,13 @@ import * as Formatter from '../components/Formatter';
 
 export default class CalendarPicker extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    let { selectedDate, selectedTime, availableDateTimes, price } =
+    let { selectedDate, selectedTime, availableDateTimes, price, totalCount } =
       this.props.navigation.state.params;
     let markedDates = {};
-    availableDateTimes && availableDateTimes.map( item => {
-      markedDates[item.date] = {disabled: false};
+    availableDateTimes && availableDateTimes.map(item => {
+      markedDates[item.date] = { disabled: false };
       if (item.availableHours) {
         markedDates[item.date].availableHours = item.availableHours;
       }
@@ -30,9 +30,9 @@ export default class CalendarPicker extends Component {
     if (selectedDate) markedDates[selectedDate].selected = true;
 
     this.state = {
-      selectedDate, selectedTime, price, markedDates,
+      selectedDate, selectedTime, price, markedDates, totalCount,
       // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
-      minDate : Date(),
+      minDate: Date(),
       isModalVisible: false,
       tempSelectedDate: null,
     };
@@ -49,17 +49,17 @@ export default class CalendarPicker extends Component {
 
   _selectDate = dateString => {
     let prevSelectedDate = this.state.selectedDate;
-    let {markedDates} = this.state;
+    let { markedDates } = this.state;
     let changedDate = {
       [prevSelectedDate]: { ...markedDates[prevSelectedDate] },
-      [dateString]: { ...markedDates[dateString] , selected:true}
+      [dateString]: { ...markedDates[dateString], selected: true }
     };
 
     //// if there's previous selectedDate, remove the selected flag
     if (prevSelectedDate) changedDate[prevSelectedDate].selected = false;
 
     this.setState({
-      markedDates:{...markedDates, ...changedDate },
+      markedDates: { ...markedDates, ...changedDate },
       selectedDate: dateString
     });
   }
@@ -71,38 +71,38 @@ export default class CalendarPicker extends Component {
     })
     this.props.navigation.goBack()
   }
-  
-  _setModalVisible = vis => this.setState({isModalVisible: vis})
+
+  _setModalVisible = vis => this.setState({ isModalVisible: vis })
 
   _closeModal = () => this._setModalVisible(false)
 
   _onDayPressed = selectedDate => {
-    let markedDates = {...this.state.markedDates}
+    let markedDates = { ...this.state.markedDates }
     //// if the date is unavailable (disabled), do nothing
     if (this._checkIsDateAvailable(selectedDate) == false) return;
 
     //// choose session, if any
     if (!!markedDates[selectedDate].availableHours) {
-      this.setState({tempSelectedDate: selectedDate})
+      this.setState({ tempSelectedDate: selectedDate })
       this._setModalVisible(true);
     } else {
-    //// if not, change marked date immediately
+      //// if not, change marked date immediately
       this._selectDate(selectedDate);
     }
   }
 
   _onAvailableHoursClicked = index => {
-    let { tempSelectedDate} = this.state;
-    let markedDates = {...this.state.markedDates};
+    let { tempSelectedDate } = this.state;
+    let markedDates = { ...this.state.markedDates };
     let selectedTime = markedDates[tempSelectedDate].availableHours[index]
-    this.setState({selectedTime});
+    this.setState({ selectedTime });
     this._selectDate(tempSelectedDate);
     this._setModalVisible(false);
   }
 
   render() {
-    let {selectedDate, selectedTime, tempSelectedDate} = this.state;
-    let markedDates = {...this.state.markedDates};
+    let { selectedDate, selectedTime, tempSelectedDate } = this.state;
+    let markedDates = { ...this.state.markedDates };
     let date = (selectedDate)
       ? Formatter.dateFullShort(selectedDate)
       : "Pilih Tanggal";
@@ -111,38 +111,39 @@ export default class CalendarPicker extends Component {
       (!!tempSelectedDate && !!markedDates[tempSelectedDate].availableHours) ?
         markedDates[tempSelectedDate].availableHours.map(
           (currValue, index) =>
-            <TouchableOpacity
+            <View
               key={index} style={styles.availableHoursItem}
-              onPress={ () => this._onAvailableHoursClicked(index) }
+
             >
-              <View style={{flexDirection:'row', flex:1}}>
-                <View style={{flex:1}}>
-                  <Text style={{marginTop:5, color:'#454545'}}>{currValue}</Text>
+              <View style={{ flexDirection: 'row', flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ marginTop: 5, color: '#454545' }}>{currValue}</Text>
                 </View>
-                <View style={{flex:1, alignItems:'flex-end'}}>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Button
                     containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 14, color: '#fff'}}
+                    style={{ fontSize: 14, color: '#fff' }}
+                    onPress={() => this._onAvailableHoursClicked(index)}
                   >
                     Pilih
                   </Button>
                 </View>
               </View>
-              
-            </TouchableOpacity>
+
+            </View>
         )
         : null;
 
-    return(
+    return (
       <View>
         <CalendarList
           minDate={this.state.minDate}
           markedDates={markedDates}
           disabledByDefault={true}
-          onDayPress={ day => this._onDayPressed(day.dateString)}
+          onDayPress={day => this._onDayPressed(day.dateString)}
           pastScrollRange={0}
           futureScrollRange={6}
-          //theme={styles.theme}
+        //theme={styles.theme}
         />
 
         <Modal
@@ -153,11 +154,11 @@ export default class CalendarPicker extends Component {
           onBackButtonPress={this._closeModal}
 
         >
-          <View style={{ backgroundColor:'white', padding:20,}}>
+          <View style={{ backgroundColor: 'white', padding: 20, }}>
             <Text style={styles.activityTitle}>
               Choose activity time
             </Text>
-            <Text style={[styles.activityDesc,{marginBottom:20}]}>
+            <Text style={[styles.activityDesc, { marginBottom: 20 }]}>
               {Formatter.dateFullLong(this.state.tempSelectedDate)}
             </Text>
             {availableHoursList}
@@ -169,28 +170,28 @@ export default class CalendarPicker extends Component {
             <Text>{date}</Text>
             <Text>{selectedTime}</Text>
           </View>
-          <View style={{flexDirection:'row'}}>
-            <View style={{alignItems: 'flex-start', flex:1.5}}>
-              <View style={{marginTop:3}}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
+              <View style={{ marginTop: 3 }}>
                 <Text style={{
-                  color:'#000',
+                  color: '#000',
                   fontWeight: 'bold',
-                  fontSize:17,
-                }}>{ Formatter.price(this.state.price) }</Text>
+                  fontSize: 17,
+                }}>{Formatter.price(this.state.price)}</Text>
                 {/*<Text>/ 2 orang</Text>*/}
               </View>
-              <Text style={{fontSize:15, color:'#000',}}>
-                ???????per orang????)
+              <Text style={{ fontSize: 15, color: '#000', }}>
+                {Formatter.price(this.state.price / this.state.totalCount)} per orang
                 {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-              </Text> 
+              </Text>
             </View>
-            <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
+            <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
               <Button
                 containerStyle={globalStyles.ctaButton}
-                style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
+                style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
                 onPress={this._return}
               >
-              Pilih
+                Pilih
               </Button>
             </View>
           </View>
@@ -202,14 +203,14 @@ export default class CalendarPicker extends Component {
 
 var styles = StyleSheet.create({
   activityTitle: {
-    fontWeight:'bold',
-    fontSize:15,
-    color:'#454545',
-    marginBottom:5
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#454545',
+    marginBottom: 5
   },
   activityDesc: {
-    fontSize:14,
-    color:'#454545',
+    fontSize: 14,
+    color: '#454545',
     lineHeight: 20,
   },
   modal: {

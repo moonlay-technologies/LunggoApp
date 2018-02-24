@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     paddingTop: 60,
-    backgroundColor: '#23d3c3',
+    backgroundColor: Colors.primary2,
   },
 });

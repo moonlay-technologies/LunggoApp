@@ -1,10 +1,13 @@
-const primaryColor = '#ff5f5f';
-
 export default {
-  primaryColor,
-  bottomTabBlurred: '#ccc',
-  bottomTabSelected: "#23d3c3",
-  statusBar: "#1bada0",
+  primary1: '#00d3c5',
+  primary2: '#35eac6',
+  primary3: '#6affc6',
+  secondary1: '#f57b76',
+  secondary2: '#fa8f83',
+  secondary3: '#f3b7b5',
+  // bottomTabBlurred: '#ccc',
+  // bottomTabSelected: "#23d3c3",
+  // statusBar: "#1bada0",
   // tabBar: '#fefefe',
   // errorBackground: 'red',
   // errorText: '#fff',

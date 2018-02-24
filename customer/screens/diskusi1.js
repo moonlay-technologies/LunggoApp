@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class LoginScreen extends Component<{}> {
   constructor(props, context) {
@@ -20,7 +21,7 @@ export default class LoginScreen extends Component<{}> {
     return (
       <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor:'#ffffff'}}>
         <Button
-          containerStyle={{ marginRight:10, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: '#437ef7'}}
+          containerStyle={{ marginRight:10, height:40, width:120, paddingTop:10, paddingBottom:10, overflow:'hidden', borderRadius:4, backgroundColor: Colors.primary2}}
           style={{fontSize: 14, color: '#ffffff'}}
           onPress={() => this._handlePress()}>
           Mulai Diskusi

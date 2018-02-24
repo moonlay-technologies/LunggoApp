@@ -56,7 +56,7 @@ export default class ForgotPasswordScreen extends React.Component {
         </View>
         { errorMessage ?
           <View style={{alignItems:'center', marginBottom:10}}>
-            <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+            <Text style={{color:Colors.secondary1}}>{errorMessage}</Text>
           </View> : null
         }
         <TextInput
@@ -83,7 +83,7 @@ export default class ForgotPasswordScreen extends React.Component {
             paddingBottom:10,
             overflow:'hidden',
             borderRadius:25,
-            backgroundColor: Colors.primaryColor,
+            backgroundColor: Colors.primary2,
           }}
           style={{fontSize: 16, color: '#fff'}}
           onPress={this._submit}

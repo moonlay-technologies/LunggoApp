@@ -15,6 +15,7 @@ import { validateEmail, validatePassword, validateRequiredField }
 import globalStyles from '../../globalStyles';
 import { NavigationActions } from 'react-navigation';
 import { fetchTravoramaLoginApi } from '../AuthController'
+import Colors from '../../../constants/Colors';
 
 export default class Registration extends React.Component {
   constructor(props, context) {
@@ -132,32 +133,32 @@ export default class Registration extends React.Component {
 
     let errorMessageName = errorName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorName}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorName}</Text>
       </View> : null;
 
     let errorMessageEmail = errorEmail ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorEmail}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorEmail}</Text>
       </View> : null;
 
     let errorMessagePassword = errorPassword ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorPassword}</Text>
       </View> : null;
 
     let errorMessageCountryCode = errorCountryCode ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorCountryCode}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorCountryCode}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorPhone}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{errorPhone}</Text>
       </View> : null;
 
     let errorMessage = error ?
       <View style={{ alignItems: 'center', marginTop: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{error}</Text>
+        <Text style={{ color: Colors.secondary1 }}>{error}</Text>
       </View> : null;
 
     return (
@@ -291,7 +292,7 @@ export default class Registration extends React.Component {
               paddingBottom: 10,
               overflow: 'hidden',
               borderRadius: 25,
-              backgroundColor: '#23d3c3',
+              backgroundColor: Colors.primary2,
             }}
             style={{ fontSize: 16, color: '#ffffff', fontFamily: 'Hind-Bold' }}
             onPress={this._onRegisterPressed}
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: Colors.secondary1,
     borderRadius: 25,
     color: '#acacac',
     backgroundColor: '#f5f5f5',

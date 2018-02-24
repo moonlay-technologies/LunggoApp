@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class LoginScreen extends Component<{}> {
   
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   hyperlink: {
     fontSize:11,
     marginTop:5,
-    color:'#437ef7',
+    color:Colors.primary2,
   },
   isireview: {
     fontSize:15,

@@ -16,6 +16,7 @@ import {
 import { getBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
+import Colors from '../../../constants/Colors';
 
 class ActivityListItem extends React.PureComponent {
 
@@ -222,7 +223,7 @@ export default class MyBookingListScreen extends React.Component {
               marginRight:3,
               height:40, width:120, paddingTop:10, paddingBottom:10,
               overflow:'hidden', borderRadius:4,
-              backgroundColor: '#437ef7'
+              backgroundColor: Colors.primary2
             }}
             style={{fontSize: 14, color: '#ffffff'}}
             onPress={() => this._handlePress()}>
@@ -232,9 +233,9 @@ export default class MyBookingListScreen extends React.Component {
             containerStyle={{ height:40, width:120, paddingTop:10,
               paddingBottom:10, overflow:'hidden', borderRadius:4,
               borderWidth: 1,
-              borderColor: '#437ef7',backgroundColor: '#ffffff'
+              borderColor: Colors.primary2,backgroundColor: '#ffffff'
             }}
-            style={{fontSize: 14, color: '#437ef7'}}
+            style={{fontSize: 14, color: Colors.primary2}}
             onPress={() => this._handlePress()}>
             History 
           </Button>
@@ -365,16 +366,16 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     overflow: 'hidden',
     borderRadius: 3,
-    backgroundColor: '#23d3c3',
+    backgroundColor: Colors.primary2,
   },
   labelWarning: { 
-    backgroundColor:'#ff5f5f',
+    backgroundColor:Colors.secondary1,
     padding:5,
     borderRadius:3,
     marginTop:5
   },
   labelText:{
-    color:'#18b0a2',
+    color:Colors.primary2,
     fontSize:13,
     textAlign:'left',
     fontWeight:'bold'

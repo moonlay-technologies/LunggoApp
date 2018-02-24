@@ -9,6 +9,7 @@ import {
   View,
   Image,
 } from 'react-native';
+import Colors from '../../constants/Colors';
 
 export default class LoginScreen extends Component<{}> {
   render() {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   hyperlink: {
     fontSize:11,
     marginTop:5,
-    color:'#437ef7',
+    color:Colors.primary2,
     textDecorationLine: 'underline'
   },
   isireview: {
