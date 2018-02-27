@@ -11,6 +11,7 @@ import {
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
 import { NavigationActions } from 'react-navigation';
+import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 
 export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -23,7 +24,7 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'New Password',
+    title: 'Reset Password',
   }
 
   _resetToMainTab = () => {
@@ -112,7 +113,7 @@ export default class NewPasswordScreen extends React.Component {
         >
           Ubah Password
         </Button>
-        {isLoading ? <ActivityIndicator /> : null}
+        {isLoading ? <LoadingAnimation /> : null}
       </KeyboardAvoidingView>
     );
   }

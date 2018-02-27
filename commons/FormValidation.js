@@ -14,7 +14,7 @@ export function validateUserName (userNameString) {
 
 export function validateEmail (emailString) {
   if (!emailString) return 'Wajib diisi';
-  if (!emailString.match(Regex.email)) return 'Email/nomor telepon belum benar';
+  if (!emailString.match(Regex.email)) return 'Email belum benar';
   return null;
 }
 
@@ -33,7 +33,7 @@ export function validatePhone (phoneNumber) {
   //// blom bisa validasi + (+62...)
  if ( !isNaN(phoneNumber) && phoneNumber!='' && phoneNumber!=false
     && phoneNumber >= 100000000 ) return null;
-  return 'Email/nomor telepon belum benar';
+  return 'Nomor telepon belum benar';
 }
 
 // //// phone number validation with 10 or more digits

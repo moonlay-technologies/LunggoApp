@@ -11,6 +11,8 @@ import { MonoText } from '../components/StyledText';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import { getProfile } from '../../commons/ProfileController';
 import * as Formatter from '../../customer/components/Formatter';
+import Modal from 'react-native-modal';
+import LoadingAnimation from '../../customer/components/LoadingAnimation'
 
 export default class Dashboard extends React.Component {
 
@@ -139,7 +141,7 @@ export default class Dashboard extends React.Component {
     this.setState({ searchString: event.nativeEvent.text });
   }
 
-  _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
+  // _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
@@ -149,15 +151,58 @@ export default class Dashboard extends React.Component {
   _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
+  _setModalVisible = vis => this.setState({ isModalVisible: vis })
+  _closeModal = () => this._setModalVisible(false)
+  _openModal = () => this._setModalVisible(true)
+
   render() {
     const loadingIndicator = this.state.isLoading ?
-      <ActivityIndicator size='large'/> : null;
+      <LoadingAnimation /> : null;
     return (
       <ScrollView style={{backgroundColor:'#f7f8fb'}}>
       <View style={{height:340}}>
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
+            <View style={{position:'absolute', flexDirection:'row', right:15, top:15}}>
+              <TouchableOpacity>
+                <Icon
+                  style={{marginRight:4}}
+                  name='ios-paper-plane'
+                  type='ionicon'
+                  size={26}
+                  color='#454545'/>
+                {/*<View style={styles.notification}>
+                  <Text style={{color:'#fff', fontWeight:'bold', fontSize:11}}>5</Text>
+                </View>*/}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginLeft:15}}
+                onPress={this._openModal}
+                >
+                <Icon
+                  name='md-more'
+                  type='ionicon'
+                  size={26}
+                  color='#454545'/>
+              </TouchableOpacity>
+            </View>
+
+            <Modal style={styles.modalMenu}
+              animationIn='fadeIn'
+              animationOut='fadeOut'
+              backdropOpacity={0}
+              isVisible={this.state.isModalVisible}
+              onBackdropPress={this._closeModal}
+              onBackButtonPress={this._closeModal}
+            >
+              <Text style={styles.teks3a}>Ubah Profil</Text>
+              <View style={styles.separatorOption}></View>
+              <Text style={styles.teks3a}>Ubah Activity</Text>
+              <View style={styles.separatorOption}></View>
+              <Text style={styles.teks3a}>Keluar Akun</Text>
+            </Modal>
+
             <Image style={styles.avatarBig} source={{uri:this.state.avatar}}/>
             <View style={{marginTop:20}}>
               <Text style={styles.namaProfile}>{this.state.name}</Text>
@@ -180,8 +225,8 @@ export default class Dashboard extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          
         </View>
+
       </View>
       <View style={{marginTop:30, padding:15, paddingBottom:5}}>
         <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
@@ -268,7 +313,7 @@ export default class Dashboard extends React.Component {
         </View>
        </View>*/}
 
-        {/*<View style={styles.container}>
+       {/* <View style={styles.container}>
           <View>
             <View style={{flexDirection:'row'}}>
               <TouchableOpacity
@@ -276,6 +321,7 @@ export default class Dashboard extends React.Component {
                 onPress={this._goToAccountScreen}
               >
                 <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
+              </TouchableOpacity>
               </View>
               <View style={{flex:1,alignItems:'flex-start', justifyContent:'flex-start'}}>
                 <View style={{}}>
@@ -284,7 +330,7 @@ export default class Dashboard extends React.Component {
                 <View style={{}}>
                   <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
                 </View>
-              </TouchableOpacity>
+              <TouchableOpacity>
                 <Icon
                   style={{marginRight:4}}
                   name='sms'
@@ -466,7 +512,32 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  modalMenu:{
+    backgroundColor:'#fff',
+    width:160,
+    padding:10,
+    position:'absolute',
+    right:10,
+    top:80,
+    zIndex:100,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 4,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation:2
+      },
+    }),
+  },
+  separatorOption:{
+    marginVertical:10
+  },
   containerDashboard:{
     padding:15,
     position:'absolute',
@@ -581,7 +652,7 @@ const styles = StyleSheet.create({
   },
   teks2: {
     fontSize:20,
-    color:'#737c84',
+    color:'#454545',
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
       ios: {
@@ -599,6 +670,22 @@ const styles = StyleSheet.create({
     color: '#454545',
     fontFamily: 'Hind',
     textAlign:'right',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks3a: {
+    fontSize:15,
+    color: '#454545',
+    fontFamily: 'Hind',
+    textAlign:'left',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -693,8 +780,8 @@ const styles = StyleSheet.create({
     height:20, 
     borderRadius:20, 
     position:'absolute', 
-    right:0, 
-    bottom:20
+    right:-5, 
+    bottom:13
   },
   textKecil: {
     fontSize: 12, 

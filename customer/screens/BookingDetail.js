@@ -8,7 +8,8 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
-  ScrollView, Platform } from 'react-native';
+  ScrollView, Platform
+} from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
@@ -213,7 +214,7 @@ export default class BookingDetail extends React.Component {
               <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
             </TouchableOpacity>
 
-            <Text style={[styles.activityDesc, {width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
+            <Text style={[styles.activityDesc, { width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
 
             <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
               onPress={() => add(counterObj)}

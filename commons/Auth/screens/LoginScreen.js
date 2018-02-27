@@ -146,7 +146,7 @@ export default class LoginScreen extends React.Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
           <View style={{ marginBottom: 40 }}>
-            <Text style={globalStyles.categoryTitle}>Log In</Text>
+            <Text style={globalStyles.categoryTitle}>Login</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
             <TextInput
@@ -214,12 +214,12 @@ export default class LoginScreen extends React.Component {
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
           >
-            Log In
+            Login
             </Button>
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
             <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
-              Lupa Password ?
+              Lupa Password?
               </Text>
           </TouchableOpacity>
           {registerHereButton}

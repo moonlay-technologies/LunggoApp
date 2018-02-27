@@ -17,6 +17,7 @@ import { StyleSheet, Text, View, Image, TextInput, ScrollView,
   KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { sendOtp, verifyOtp } from '../ResetPasswordController';
+import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 
 export default class OtpVerificationScreen extends React.Component {
   constructor(props, context) {
@@ -104,7 +105,7 @@ export default class OtpVerificationScreen extends React.Component {
 
   render() {
     let {inputs, isLoading, errorMessage, cooldown, showCooldown} = this.state;
-    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
+    let loadingIndicator = isLoading ? <LoadingAnimation /> : null;
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="position">

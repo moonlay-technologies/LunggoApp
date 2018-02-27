@@ -12,7 +12,7 @@ import Modal from 'react-native-modal';
 import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { removeAccessToken } from '../../commons/Auth/AuthController';
 import { NavigationActions } from 'react-navigation';
-import { getProfile } from '../../commons/ProfileController';
+import { fetchProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 
@@ -21,7 +21,7 @@ export default class AccountScreen extends React.Component {
     this.state = {
       isModalVisible: false,
       isLoggedIn: null,
-      name: '...',
+      contact: {},
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     }
   }
@@ -31,10 +31,14 @@ export default class AccountScreen extends React.Component {
   };
 
   componentDidMount() {
+    this.props.navigation.addListener('didFocus', this._getProfile);
+  }
+
+  _getProfile = () => {
     checkUserLoggedIn().then(isLoggedIn => {
       this.setState({ isLoggedIn });
       if (isLoggedIn)
-        getProfile().then(({ contact }) => this.setState(contact));
+        fetchProfile().then(({ contact }) => this.setState({ contact }));
     });
   }
 
@@ -55,6 +59,7 @@ export default class AccountScreen extends React.Component {
 
   render() {
     let { navigate } = this.props.navigation;
+    let { contact } = this.state;
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
@@ -104,6 +109,42 @@ export default class AccountScreen extends React.Component {
                   <Text style={styles.textCartColor}>100 point</Text>
                 </View>
               </View>*/}
+            </View>
+            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <View style={{ justifyContent: 'center', flex: 1 }}>
+                <Text style={styles.optionProfile}>{contact.name}</Text>
+              </View>
+              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
+                {/* <Icon
+                  name='ios-settings-outline'
+                  type='ionicon'
+                  size={30}
+                  color='#454545' /> */}
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <View style={{ justifyContent: 'center', flex: 1 }}>
+                <Text style={styles.optionProfile}>{contact.email}</Text>
+              </View>
+              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
+                {/* <Icon
+                  name='ios-settings-outline'
+                  type='ionicon'
+                  size={30}
+                  color='#454545' /> */}
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <View style={{ justifyContent: 'center', flex: 1 }}>
+                <Text style={styles.optionProfile}>+{contact.countryCallCd} {contact.phone}</Text>
+              </View>
+              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
+                {/* <Icon
+                  name='ios-settings-outline'
+                  type='ionicon'
+                  size={30}
+                  color='#454545' /> */}
+              </TouchableOpacity>
             </View>
             {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
@@ -186,7 +227,7 @@ export default class AccountScreen extends React.Component {
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>
-                  <Text style={styles.optionProfile}>Log In</Text>
+                  <Text style={styles.optionProfile}>Login</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 1 }}>
                   <Icon

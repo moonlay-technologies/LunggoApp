@@ -8,6 +8,7 @@ import { StyleSheet, Text, View, Image, TextInput, ScrollView,
   KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
+import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 
 export default class ForgotPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -19,7 +20,7 @@ export default class ForgotPasswordScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Forgot Password',
+    title: 'Lupa Password',
   }
 
   _submit = () => {
@@ -44,14 +45,14 @@ export default class ForgotPasswordScreen extends React.Component {
 
   render() {
     let {phone, isLoading, errorMessage} = this.state;
-    let loadingIndicator = isLoading ? <ActivityIndicator/> : null;
+    let loadingIndicator = isLoading ? <LoadingAnimation/> : null;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
         <View style={{marginBottom:15}}>
-          <Text style={styles.categoryTitle}>Forgot Your Password ?</Text>
+          <Text style={styles.categoryTitle}>Lupa Password?</Text>
         </View>
         <View style={{marginBottom:25}}>
-          <Text style={styles.mediumText}>Enter your phone to reset your password</Text>
+          <Text style={styles.mediumText}>Masukkan nomor telepon kamu untuk mereset password</Text>
         </View>
         { errorMessage ?
           <View style={{alignItems:'center', marginBottom:10}}>
@@ -61,7 +62,7 @@ export default class ForgotPasswordScreen extends React.Component {
         <TextInput
           style={styles.searchInput}
           underlineColorAndroid='transparent'
-          placeholder='Phone' //placeholder='Email'
+          placeholder='Nomor telepon'
           keyboardType='phone-pad' //keyboardType='email-address'
           returnKeyType='done'
           autoCapitalize='none'
@@ -92,12 +93,6 @@ export default class ForgotPasswordScreen extends React.Component {
           Kirim
         </Button>
         {loadingIndicator}
-        <View style={{alignItems:'center', marginTop:15, }}>
-          <Text style={styles.smallText}>
-            Stare at ceiling light roll over and sun my belly but purr as loud as possible, 
-            be the most annoying cat that you can.
-          </Text>
-        </View>
       </KeyboardAvoidingView>
     );
   }
