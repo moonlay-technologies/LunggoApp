@@ -23,7 +23,7 @@ export default class MyBookingBlankScreen extends React.Component {
               <View>
                 <Text style={styles.textCart}>
                   Semua pesanan kamu yang sudah dibayarkan akan terdaftar di sini. {"\n"}
-                  Ayo log in sekarang untuk melihat!
+                  Ayo login sekarang untuk melihat!
                 </Text>
               </View>
             </View>
@@ -33,7 +33,7 @@ export default class MyBookingBlankScreen extends React.Component {
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
                   onPress={() => this.props.navigation.navigate('LoginScreen')}
                 >
-                  Log In
+                  Login
               </Button>
             </View>
           </View>
