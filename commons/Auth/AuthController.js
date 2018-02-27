@@ -56,15 +56,14 @@ async function waitFetchingAuth() {
   }
 
   while (global.isFetchingAuth) {
-    await sleep(1000);
+    await sleep(10);
     // console.log('still waiting for global.isFetchingAuth')
   }
   return;
 }
 
 export async function getAuthAccess() {
-  // console.log('global.isFetchingAuth')
-  // console.log(global.isFetchingAuth)
+  // console.log('global.isFetchingAuth: ' + global.isFetchingAuth)
   if (global.isFetchingAuth) {
     await waitFetchingAuth();
     let { accessToken, authLevel } = global;
@@ -85,6 +84,7 @@ export async function getAuthAccess() {
         'session not expired, continue the request...'
       )
       //already logged in, go to next step
+      global.isFetchingAuth = false;
       return { accessToken, authLevel };
     } //// if it's not, then token is expired or client doesnt have expTime
     else/**/ if (refreshToken) {
