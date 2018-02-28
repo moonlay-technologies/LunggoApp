@@ -44,7 +44,7 @@ export default class SearchHeader extends React.Component {
             </View>
           </View>
           <TouchableOpacity style={{flex:1,alignItems:'center',}} onPress={this._goToCart} activeOpacity={0.8} >
-            <Icon name='shopping-basket' type='entypo' size={26} color='#23d3c3' />
+            <Icon name='shopping-basket' type='entypo' size={26} color='#00d3c5' />
             {/*<View style={styles.notification}>
               <Text style={styles.txtNotification}>5</Text>
             </View>*/}
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 14,
     borderWidth: 1,
-    borderColor: '#23d3c3',
+    borderColor: '#00d3c5',
     borderRadius: 20,
     color: '#acacac',
     backgroundColor:'#ffffff',

@@ -207,12 +207,12 @@ export default class LoginScreen extends React.Component {
               paddingBottom: 10,
               overflow: 'hidden',
               borderRadius: 25,
-              backgroundColor: '#01d4cb',
+              backgroundColor: '#00d3c5',
             }}
             style={{ fontSize: 16, color: '#ffffff', fontFamily: 'Hind-Bold' }}
             onPress={this._onLoginPressed}
             disabled={isLoading}
-            styleDisabled={{ opacity: .7 }}
+            styleDisabled={{ opacity: .9 }}
           >
             Login
             </Button>

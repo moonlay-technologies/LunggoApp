@@ -164,20 +164,20 @@ export default class Dashboard extends React.Component {
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
-            <View style={{position:'absolute', flexDirection:'row', right:15, top:15}}>
+            <View style={{position:'absolute', flexDirection:'row', right:15, top:15,}}>
               <TouchableOpacity>
                 <Icon
-                  style={{marginRight:4}}
+                  style={{width:45, alignItems:'center',}}
                   name='ios-paper-plane'
                   type='ionicon'
                   size={26}
                   color='#454545'/>
-                {/*<View style={styles.notification}>
-                  <Text style={{color:'#fff', fontWeight:'bold', fontSize:11}}>5</Text>
-                </View>*/}
+                <View style={styles.notification}>
+                  <Text style={{color:'#fff', fontWeight:'bold', fontSize:10}}>5</Text>
+                </View>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{marginLeft:15}}
+                style={{width:25, alignItems:'center',}}
                 onPress={this._openModal}
                 >
                 <Icon
@@ -297,7 +297,7 @@ export default class Dashboard extends React.Component {
             <View style={{position:'absolute', bottom:0, width:'100%'}}>
               <Button
                   containerStyle={styles.ctaButton3}
-                  style={{fontSize: 12, color: '#ff5f5f',}}
+                  style={{fontSize: 12, color: '#f57b76',}}
                 >
                   5 hari lagi
               </Button>
@@ -621,7 +621,7 @@ const styles = StyleSheet.create({
   },
   saldo: {
     fontSize:16,
-    color:'#ff5f5f',
+    color:'#f57b76',
     marginTop:2,
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
@@ -715,7 +715,7 @@ const styles = StyleSheet.create({
   },
   teks5: {
     fontSize:14,
-    color: '#ff5f5f',
+    color: '#f57b76',
     fontFamily: 'Hind-SemiBold',
     textAlign:'center',
     ...Platform.select({
@@ -734,14 +734,14 @@ const styles = StyleSheet.create({
     paddingVertical:6,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: '#23d3c3',
+    backgroundColor:'#00d3c5',
   },
   ctaButton2: {
     width: '100%',
     paddingVertical:6,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: '#ff5f5f',
+    backgroundColor: '#f57b76',
   },
     ctaButton3: {
     width: '100%',
@@ -773,15 +773,24 @@ const styles = StyleSheet.create({
     color:'#454545',
   },
   notification: {
-    backgroundColor:'#01d4c7', 
+    backgroundColor:'#00d3c5', 
     alignItems:'center', 
-    padding:3, 
-    width:20, 
-    height:20, 
+    padding:1, 
+    width:15, 
+    height:15, 
     borderRadius:20, 
     position:'absolute', 
-    right:-5, 
-    bottom:13
+    
+    ...Platform.select({
+      ios: {
+        right:3, 
+        bottom:14,
+      },
+      android: {
+        right:3, 
+        bottom:11,
+      },
+    }),
   },
   textKecil: {
     fontSize: 12, 
