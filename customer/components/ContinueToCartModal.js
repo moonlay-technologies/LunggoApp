@@ -10,6 +10,11 @@ import { backToMainTab } from '../../api/Common';
 
 export default class ContinueToCartModal extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {};
+  }
+
   componentWillReceiveProps({ isVisible }) {
     this.setState({ isVisible });
   }
@@ -30,7 +35,8 @@ export default class ContinueToCartModal extends React.Component {
         isVisible={this.state.isVisible}
         onBackButtonPress={this._goToCart}
       >
-        <View style={{paddingHorizontal:10,paddingVertical:15, }}>
+      <View style={{flex:1}}></View>
+        <View style={styles.modalContentContainer}>
           <Text style={styles.textCart}>
             Pesananmu sudah masuk keranjang
           </Text>
@@ -53,12 +59,21 @@ export default class ContinueToCartModal extends React.Component {
             </Button>
           </View>
         </View>
+        <View style={{flex:1}}></View>
       </Modal>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  modalContentContainer: {
+    backgroundColor: 'white',
+    // height: 300,
+    // width: 300,
+    // flex: 1,
+    paddingHorizontal:10,paddingVertical:15,
+    // justifyContent: 'flex-end'
+  },
   textCart: {
     fontFamily: 'Hind', 
     color:'#454545', 
