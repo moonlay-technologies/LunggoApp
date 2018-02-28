@@ -9,9 +9,8 @@ import {
 import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { checkUserLoggedIn, backToMainTab } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { removeAccessToken } from '../../commons/Auth/AuthController';
-import { NavigationActions } from 'react-navigation';
 import { fetchProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
@@ -42,19 +41,12 @@ export default class AccountScreen extends React.Component {
     });
   }
 
-  _setModalVisible = vis => this.setState({ isModalVisible: vis })
-
   _logout = () => {
-    removeAccessToken().then(() =>
-      this.props.navigation.dispatch(NavigationActions.reset(
-        {
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })]
-        }
-      ))
-    );
+    removeAccessToken()
+      .then( () => backToMainTab(this.props.navigation));
   }
 
+  _setModalVisible = vis => this.setState({ isModalVisible: vis })
   _closeModal = () => this._setModalVisible(false)
 
   render() {

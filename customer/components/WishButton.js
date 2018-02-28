@@ -1,13 +1,13 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Platform, InteractionManager } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Platform,
+  InteractionManager } from 'react-native';
 import Button from 'react-native-button';
 import { Icon } from 'react-native-elements';
 import { toggleWishlist, checkUserLoggedIn } from '../../api/Common';
 import Modal from 'react-native-modal';
 import globalStyles from '../../commons/globalStyles';
-import { NavigationActions } from 'react-navigation';
 import Colors from '../../constants/Colors';
 
 export default class WishButton extends React.Component {

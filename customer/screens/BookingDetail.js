@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
+import { AUTH_LEVEL, fetchTravoramaApi, backToMainTab } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
@@ -11,6 +11,7 @@ import {
   ScrollView, Platform
 } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
+import ContinueToCartModal from '../components/ContinueToCartModal';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -77,13 +78,14 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    scheduleObj.isContactFilled = true;
+    contactObj.isContactFilled = true;
     this.setState({ contact: contactObj });
   }
 
   _book = async () => {
     let { /*pax,*/ date, counter, totalCount, contact, time } = this.state;
-    let { params } = this.props.navigation.state;
+    let { navigation } = this.props;
+    let { params } = navigation.state;
 
     //// counting pax
     let pax = totalCount;
@@ -128,7 +130,7 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         this.setState({ isLoading: false });
         return;
-      } else this.props.navigation.navigate('Cart'); //TODO: ask user before navigate
+      } else this.setState({ isContinueToCartModalVisible: true });
       this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
@@ -430,6 +432,10 @@ export default class BookingDetail extends React.Component {
           </View>
         </View>
         {/*bottom CTA button*/}
+        <ContinueToCartModal
+          isVisible={this.state.isContinueToCartModalVisible}
+          {...this.props}
+        />
       </ScrollView>
     );
   }

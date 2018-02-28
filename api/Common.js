@@ -1,6 +1,7 @@
 'use strict';
 import { API_DOMAIN, AUTH_LEVEL, } from '../constants/env';
 import { getAuthAccess } from '../commons/Auth/AuthController';
+import { NavigationActions } from 'react-navigation';
 
 export { checkUserLoggedIn } from '../commons/Auth/AuthController';
 export { AUTH_LEVEL } from '../constants/env';
@@ -89,4 +90,13 @@ export function fetchWishlist() {
       setItemAsync('wishlist', JSON.stringify(response.activityList));
     });
   });
+}
+
+export function backToMainTab ( navigation ) {
+  let {reset, navigate} = NavigationActions;
+  const action = reset({
+    index: 0,
+    actions: [navigate({ routeName: 'Main' })],
+  });
+  navigation.dispatch(action);
 }

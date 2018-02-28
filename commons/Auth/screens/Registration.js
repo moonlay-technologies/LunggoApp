@@ -7,13 +7,12 @@ import {
   Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
-import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL } from '../../../api/Common';
+import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMainTab } from '../../../api/Common';
 import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
   from '../../FormValidation';
 import globalStyles from '../../globalStyles';
-import { NavigationActions } from 'react-navigation';
 import { fetchTravoramaLoginApi } from '../AuthController'
 
 export default class Registration extends React.Component {
@@ -31,14 +30,6 @@ export default class Registration extends React.Component {
       left: 0,
       right: 0,
     },
-  }
-
-  _resetToMainTab = () => {
-    const reset = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })],
-    });
-    this.props.navigation.dispatch(reset);
   }
 
   _onRegisterPressed = () => {
@@ -83,7 +74,7 @@ export default class Registration extends React.Component {
               let { resetAfter, thruBeforeLogin } = params;
               console.log('5555');
               if (resetAfter)
-                this._resetToMainTab();
+                backToMainTab(this.props.navigation);
               else if (thruBeforeLogin)
                 pop(2);
               else
