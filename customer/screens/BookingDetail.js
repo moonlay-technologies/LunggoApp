@@ -204,9 +204,7 @@ export default class BookingDetail extends React.Component {
         let { maxCount = 100 } = counterObj;
         if (counterObj.count < maxCount) {
           counterObj.count++;
-          this.state.totalCount++;
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: ++this.state.totalCount, price: this.state.price + counterObj.amount });
         }
       }
       let substract = counterObj => {
@@ -215,9 +213,7 @@ export default class BookingDetail extends React.Component {
         let { minCount = 0 } = counterObj;
         if (counterObj.count > minCount) {
           counterObj.count = DECREMENT(counterObj.count);
-          this.state.totalCount = DECREMENT(this.state.totalCount);
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: DECREMENT(this.state.totalCount), price: this.state.price - counterObj.amount });
         }
       }
       return counterArr.map((counterObj, index) =>
