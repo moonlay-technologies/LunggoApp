@@ -33,7 +33,7 @@ export default StyleSheet.create({
     paddingBottom: 5,
     overflow: 'hidden',
     borderRadius:2,
-    backgroundColor: '#23d3c3',
+    backgroundColor: '#00d3c5',
   },
   ctaButton5: {
     width: '85%',
@@ -43,7 +43,7 @@ export default StyleSheet.create({
     borderRadius:4,
     backgroundColor: '#fff',
     borderWidth:1,
-    borderColor:'#23d3c3',
+    borderColor:'#00d3c5',
   },
   ctaButton6: {
     width: '100%',
@@ -51,7 +51,7 @@ export default StyleSheet.create({
     paddingBottom: 10,
     overflow: 'hidden',
     borderRadius:2,
-    backgroundColor: '#23d3c3',
+    backgroundColor: '#00d3c5',
   },
   ctaButton7: {
     width: '70%',
@@ -59,7 +59,7 @@ export default StyleSheet.create({
     paddingBottom: 5,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: '#23d3c3',
+    backgroundColor: '#00d3c5',
   },
   ctaButtonReview: {
     width: '100%',
