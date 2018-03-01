@@ -27,7 +27,7 @@ export default class ExploreScreen extends React.Component {
       tripList: [],
       turList: [],
       isLoading: true,
-      wishlistIds: [],
+      wishlists: {},
     };
     setItemAsync('isNotFirstOpen', 'true');
     this._onWishlist = this._onWishlist.bind(this)
@@ -39,12 +39,16 @@ export default class ExploreScreen extends React.Component {
   };
 
   _getWishlist = async () => {
-    let wishlistItems = await getItemAsync('wishlist');
-    if (wishlistItems != null) {
-      let activityList = JSON.parse(wishlistItems);
-      let wishlistIds = activityList.map(act => act.id);
-      this.setState({ wishlistIds });
-    }
+    setTimeout(async () => {
+      let wishlistItems = await getItemAsync('wishlist');
+      if (wishlistItems != null) {
+        let activityList = JSON.parse(wishlistItems);
+        let wishlists = this.state.wishlists;
+        for (var act in activityList)
+          wishlists[act.id] = true;
+        this.setState({ wishlists });
+      }
+    }, 0);
   }
 
   _refreshContents = () => {
@@ -64,9 +68,9 @@ export default class ExploreScreen extends React.Component {
   }
 
   _onWishlist = async ({ id, wishlisted }) => {
-    let wishlistIds = this.state.wishlistIds;
-    wishlistIds = wishlisted ? [...wishlistIds, id] : wishlistIds.filter(x => x != id);
-    this.setState({ wishlistIds });
+    let wishlists = this.state.wishlists;
+    wishlists[id] = wishlisted;
+    this.setState({ wishlists });
   }
 
   render() {
@@ -240,7 +244,7 @@ export default class ExploreScreen extends React.Component {
               </View>
               {itemsPerScreen < 3 && (
                 <View>
-                  <WishButton wishlisted={this.state.wishlistIds.includes(item.id)} onPress={this._onWishlist}
+                  <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
                     id={item.id} big={itemsPerScreen == 1} {...this.props} />
                 </View>
               )}
