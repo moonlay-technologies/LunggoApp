@@ -168,6 +168,24 @@ export default class BookingDetail extends React.Component {
     })
   }
 
+  _goToRincian = () => {
+    let params = this.props.navigation.state.params;
+    let title = params.title;
+    let total = this.state.price;
+    let breakdown =
+      [{
+        details: this.state.counter.map(ctr => {
+          return {
+            unit: ctr.type,
+            count: ctr.count,
+            unitPrice: ctr.amount,
+            totalPrice: ctr.count * ctr.amount
+          }
+        })
+      }];
+    this.props.navigation.navigate('RincianHarga', { title, breakdown, total })
+  }
+
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
     let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, contact, totalCount, counter } = this.state;
@@ -186,9 +204,7 @@ export default class BookingDetail extends React.Component {
         let { maxCount = 100 } = counterObj;
         if (counterObj.count < maxCount) {
           counterObj.count++;
-          this.state.totalCount++;
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: ++this.state.totalCount, price: this.state.price + counterObj.amount });
         }
       }
       let substract = counterObj => {
@@ -197,9 +213,7 @@ export default class BookingDetail extends React.Component {
         let { minCount = 0 } = counterObj;
         if (counterObj.count > minCount) {
           counterObj.count = DECREMENT(counterObj.count);
-          this.state.totalCount = DECREMENT(this.state.totalCount);
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: DECREMENT(this.state.totalCount), price: this.state.price - counterObj.amount });
         }
       }
       return counterArr.map((counterObj, index) =>
@@ -259,11 +273,10 @@ export default class BookingDetail extends React.Component {
         marginVertical: 20,
       }}>
         {counterButtons(counter)}
-      </View>
+      </View>;
 
     let rincianHarga = (date) ?
-      <TouchableOpacity style={{ flex: 1.5 }} onPress={
-        () => this.props.navigation.navigate('RincianHarga')}>
+      <TouchableOpacity style={{ flex: 1.5 }} onPress={this._goToRincian}>
         <View style={{ alignItems: 'flex-start' }}>
           <View>
             <Text style={{ fontSize: 15, color: '#000', }}>

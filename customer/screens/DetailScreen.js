@@ -164,13 +164,13 @@ class Footer extends Component {
 
   _goToBookingDetail = async () => {
     this.setState({ isLoading: true })
-    const { requiredPaxData, price, id, availableDateTimes } = this.props.details;
+    const { requiredPaxData, price, id, availableDateTimes, name } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
     let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'BeforeLoginScreen';
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
       package: this.props.details.package,
-      activityId: id,
+      activityId: id, title: name
     });
     this.setState({ isLoading: false })
   }

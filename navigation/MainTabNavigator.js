@@ -53,14 +53,14 @@ export default TabNavigator(
             //paddingHorizontal:12.6,
             //paddingVertical:12.6,
             //paddingRight:25,
-            backgroundColor:'cyan',
+            backgroundColor: 'cyan',
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
             backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-            height:20,
-            marginTop:0
+            height: 20,
+            marginTop: 0
           },
         }),
       },
@@ -69,29 +69,19 @@ export default TabNavigator(
         let iconName;
         switch (routeName) {
           case 'Explore':
-            iconName = Platform.OS === 'ios'
-              ? `ios-search${focused ? '' : '-outline'}`
-              : 'ios-search-outline';
+            iconName = `ios-search${focused ? '' : '-outline'}`;
             break;
           case 'MyBooking':
-            iconName = Platform.OS === 'ios'
-              ? `ios-paper${focused ? '' : '-outline'}`
-              : 'ios-paper-outline';
+            iconName = `ios-paper${focused ? '' : '-outline'}`;
             break;
           case 'Favorit':
-            iconName = Platform.OS === 'ios'
-              ? `ios-heart${focused ? '' : '-outline'}`
-              : 'ios-heart-outline';
+            iconName = `ios-heart${focused ? '' : '-outline'}`;
             break;
           case 'MessageBlank':
-            iconName = Platform.OS === 'ios'
-              ? `ios-mail-open${focused ? '' : '-outline'}`
-              : 'ios-mail-open-outline';
+            iconName = `ios-mail-open${focused ? '' : '-outline'}`;
             break;
           case 'AccountPage':
-            iconName = Platform.OS === 'ios'
-              ? `ios-person${focused ? '' : '-outline'}`
-              : 'ios-person-outline';
+            iconName = `ios-person${focused ? '' : '-outline'}`;
         }
         return (
           <Ionicons

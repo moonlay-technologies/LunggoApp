@@ -22,14 +22,14 @@ class ActivityListItem extends React.PureComponent {
   _voucherButton = status => {
     if (status == 'TKTD' || status == 'CONF')
       return (<View style={styles.labelWarning}>
-                  <Button
-                    containerStyle={{alignItems:'center',}}
-                    style={{ fontSize: 12, color: '#fff', fontWeight:'bold', textAlign:'center'}}
-                    onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
-                  >
-                    Lihat Voucher
+        <Button
+          containerStyle={{ alignItems: 'center', }}
+          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+          onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
+        >
+          Lihat Voucher
                 </Button>
-                </View>);
+      </View>);
     else
       return <View><Text style={styles.labelText}>Memproses tiket</Text></View>;
   }
@@ -39,13 +39,13 @@ class ActivityListItem extends React.PureComponent {
     console.log(item);
     return (
       <TouchableOpacity onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
-        <View style={{ flexDirection: 'row',}}>
+        <View style={{ flexDirection: 'row', }}>
           <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 1.8 }}>
             <Text style={styles.activityTitle}>
               {item.name}
             </Text>
-            <View style={{flexDirection:'row',}}>
+            <View style={{ flexDirection: 'row', }}>
               <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
               <Text style={styles.activityDesc}>, </Text>
               <Text style={styles.activityDesc}>{item.selectedSession}</Text>
@@ -57,12 +57,12 @@ class ActivityListItem extends React.PureComponent {
           </View>
         </View>
 
-        <View style={{marginTop: 25 }}>
-          <View style={{ flex: 1 }}>
-            {(item.requestRating || item.requestReview) && (
+        {(item.requestRating || item.requestReview) && (
+          <View style={{ marginTop: 25 }}>
+            <View style={{ flex: 1 }}>
               <Button
                 containerStyle={globalStyles.ctaButtonReview}
-                style={{ fontSize: 12, color: '#000', fontWeight:'bold' }}
+                style={{ fontSize: 12, color: '#000', fontWeight: 'bold' }}
                 onPress={
                   () => item.requestRating ?
                     this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
@@ -70,9 +70,9 @@ class ActivityListItem extends React.PureComponent {
               >
                 {item.requestRating ? 'Beri Rating' : 'Beri Review'}
               </Button>
-            )}
-          </View>  
-        </View>
+            </View>
+          </View>
+        )}
         <View style={styles.separator} />
       </TouchableOpacity>
     )
@@ -91,7 +91,29 @@ class CartListItem extends React.PureComponent {
     />
   )
 
-  _showInvoice = () => this.props.navigation.navigate('RincianHarga') //// TODO ganti jd Invoice
+  _showInvoice = () => {
+    let { item } = this.props;
+    console.log(item);
+    let title = "DUMMY Cart no #" + item.cartId;
+    let total = item.totalFinalPrice;
+    let breakdown = item.activities.map(rsv => {
+      return {
+        name: rsv.name,
+        details: rsv.paxCount.filter(pax => pax.count).map(pax => {
+          return {
+            unit: pax.type,
+            count: pax.count,
+            unitPrice: pax.totalPrice / pax.count,
+            totalPrice: pax.totalPrice
+          }
+        })
+      }
+    });
+    console.log(breakdown);
+    (item.totalDiscount != 0) && breakdown.push({ details: [{ unit: "Diskon", totalPrice: item.totalDiscount }] });
+    (item.totalUniqueCode != 0) && breakdown.push({ details: [{ unit: "Kode unik", totalPrice: item.totalUniqueCode }] });
+    this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
+  }
   _showInstruction = () => this.props.navigation.navigate('PaymentScreen') /// TODO ganti jd INstruction
 
   _labelPaymentStatus = status => {
@@ -116,7 +138,7 @@ class CartListItem extends React.PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.totalText}>Total</Text>
-              
+
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <Text style={styles.totalText}>{Formatter.price(item.totalFinalPrice)}</Text>
@@ -130,7 +152,7 @@ class CartListItem extends React.PureComponent {
             <View style={{ flex: 1 }}>
               <Button
                 containerStyle={globalStyles.ctaButton6}
-                style={{ fontSize: 12, color: '#fff', fontWeight:'bold' }}
+                style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
                 onPress={
                   (item.paymentStatus == 'SETTLED') ?
                     this._showInvoice :
@@ -193,12 +215,12 @@ export default class MyBookingListScreen extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}
-        //refreshControl={
-        //  <RefreshControl
-        //    refreshing={this.state.isRefreshing}
-         //   onRefresh={this._onRefresh.bind(this)}
-         // />
-        //}
+      //refreshControl={
+      //  <RefreshControl
+      //    refreshing={this.state.isRefreshing}
+      //   onRefresh={this._onRefresh.bind(this)}
+      // />
+      //}
       >
         <FlatList
           data={this.state.bookingList}
@@ -251,13 +273,13 @@ export default class MyBookingListScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:0,
+    paddingTop: 0,
     backgroundColor: '#f7f8fb',
   },
   cartbox: {
     backgroundColor: '#fff',
     padding: 15,
-    marginVertical:15,
+    marginVertical: 15,
     borderRadius: 5,
     ...Platform.select({
       ios: {
@@ -367,22 +389,22 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: '#23d3c3',
   },
-  labelWarning: { 
-    backgroundColor:'#ff5f5f',
-    padding:5,
-    borderRadius:3,
-    marginTop:5
+  labelWarning: {
+    backgroundColor: '#ff5f5f',
+    padding: 5,
+    borderRadius: 3,
+    marginTop: 5
   },
-  labelText:{
-    color:'#18b0a2',
-    fontSize:13,
-    textAlign:'left',
-    fontWeight:'bold'
+  labelText: {
+    color: '#18b0a2',
+    fontSize: 13,
+    textAlign: 'left',
+    fontWeight: 'bold'
   },
-  labelTextLunas:{
-    color:'#5ba1ff',
-    fontSize:14,
-    textAlign:'right',
+  labelTextLunas: {
+    color: '#5ba1ff',
+    fontSize: 14,
+    textAlign: 'right',
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
       ios: {
@@ -397,10 +419,10 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  labelTextBelumLunas:{
-    color:'#f74d4d',
-    fontSize:14,
-    textAlign:'right',
+  labelTextBelumLunas: {
+    color: '#f74d4d',
+    fontSize: 14,
+    textAlign: 'right',
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
       ios: {
@@ -416,8 +438,8 @@ const styles = StyleSheet.create({
     }),
   },
   labelOk: {
-    alignItems:'flex-end',
-    justifyContent:'flex-end'
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
   },
 
 });
