@@ -57,9 +57,9 @@ class ActivityListItem extends React.PureComponent {
           </View>
         </View>
 
-        <View style={{ marginTop: 25 }}>
-          <View style={{ flex: 1 }}>
-            {(item.requestRating || item.requestReview) && (
+        {(item.requestRating || item.requestReview) && (
+          <View style={{ marginTop: 25 }}>
+            <View style={{ flex: 1 }}>
               <Button
                 containerStyle={globalStyles.ctaButtonReview}
                 style={{ fontSize: 12, color: '#000', fontWeight: 'bold' }}
@@ -70,9 +70,9 @@ class ActivityListItem extends React.PureComponent {
               >
                 {item.requestRating ? 'Beri Rating' : 'Beri Review'}
               </Button>
-            )}
+            </View>
           </View>
-        </View>
+        )}
         <View style={styles.separator} />
       </TouchableOpacity>
     )
