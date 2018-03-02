@@ -45,7 +45,8 @@ export default class WishlistScreen extends React.Component {
   componentDidMount() {
     let { params } = this.props.navigation.state;
     if (params && !params.loggedIn) return;
-    this.props.navigation.addListener('didFocus', this._getWishlist);
+    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this._getWishlist();
   }
 
   render() {

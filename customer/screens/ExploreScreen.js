@@ -64,7 +64,8 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
-    this.props.navigation.addListener('didFocus', this._getWishlist);
+    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this._getWishlist();
   }
 
   _onWishlist = async ({ id, wishlisted }) => {

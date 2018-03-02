@@ -4,11 +4,11 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import ListScreen from './MyBookingListScreen';
-import { getBookingList } from './MyBookingController';
+import { getMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
 
 
-export default class MyBookingLoadingScreen extends React.Component {
+export default class MyBookingScreen extends React.Component {
 
   constructor (props) {
     super(props);
@@ -27,7 +27,7 @@ export default class MyBookingLoadingScreen extends React.Component {
     if (params && !params.loggedIn) {
       return this.setState({isLoading:false});
     }
-    getBookingList().then( ({ list, status }) => {
+    getMyBookingList().then( ({ list, status }) => {
       this.setState({list, status, isLoading: false});
     });
   }

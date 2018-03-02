@@ -13,19 +13,23 @@ import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
   RefreshControl, FlatList, TouchableOpacity
 } from 'react-native';
-import { getBookingList } from './MyBookingController';
+import { getMyBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 
 class ActivityListItem extends React.PureComponent {
 
-  _voucherButton = status => {
-    if (status == 'TKTD' || status == 'CONF')
+  _voucherButton = item => {
+    if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
       return (<View style={styles.labelWarning}>
         <Button
           containerStyle={{ alignItems: 'center', }}
           style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
-          onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}
+          onPress={() =>
+            true
+              ? this.props.navigation.navigate('PdfViewer', { title: item.name, uri: item.pdfUrl })
+              : this.props.navigation.navigate('BookedPageDetail', { details: item })
+          }
         >
           Lihat Voucher
                 </Button>
@@ -53,7 +57,7 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>
               {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
             </Text>
-            {this._voucherButton(item.bookingStatus)}
+            {this._voucherButton(item)}
           </View>
         </View>
 
@@ -189,7 +193,7 @@ export default class MyBookingListScreen extends React.Component {
 
   // _onRefresh = () => {
   //   this.setState({ isRefreshing: true });
-  //   getBookingList().then(response => {
+  //   getMyBookingList().then(response => {
   //     console.warn('TODO: response nya jangan lupa dipake')
   //     console.log(response)
   //     //// TODO: response nya jgn lupa dipake

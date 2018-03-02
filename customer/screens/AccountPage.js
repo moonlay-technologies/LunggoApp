@@ -31,7 +31,8 @@ export default class AccountScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.navigation.addListener('didFocus', this._getProfile);
+    this.props.navigation.addListener('willFocus', this._getProfile);
+    this._getProfile();
   }
 
   _getProfile = () => {

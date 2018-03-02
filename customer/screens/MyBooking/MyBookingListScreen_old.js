@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, FlatList, RefreshControl, Text, View,
   Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
-import { getBookingList } from './MyBookingController';
+import { getMyBookingList } from './MyBookingController';
 import { Icon } from 'react-native-elements';
 import * as Formatter from '../../components/Formatter';
 
@@ -116,7 +116,7 @@ export default class MyBookingListScreen extends React.Component {
   };
   _onRefresh = () => {
     this.setState({isRefreshing: true});
-    getBookingList().then( () => {
+    getMyBookingList().then( () => {
       this.setState({isRefreshing: false});
     });
   }
