@@ -13,12 +13,20 @@ async function fetchAuth(data) {
     body: JSON.stringify(data)
   }).catch(console.error);
   response = await response.json();
-  // __DEV__ && console.log('AUTH response:');
-  // __DEV__ && console.log(response);
+  __DEV__ && console.log('AUTH response:');
+  __DEV__ && console.log(response);
   return response;
 }
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+
+async function setAccessToken (tokenData) {
+  let { accessToken, refreshToken, expTime, authLevel } = tokenData;
+  setItemAsync('accessToken', accessToken);
+  setItemAsync('refreshToken', refreshToken);
+  setItemAsync('authLevel', authLevel);
+  setItemAsync('expTime', expTime);
+}
 
 export async function fetchTravoramaLoginApi(userName, password) {
   let data = { clientId, clientSecret, deviceId, userName, password };
@@ -28,11 +36,8 @@ export async function fetchTravoramaLoginApi(userName, password) {
 
   switch (response.status + '') { //// cast to string
     case '200':
-      let { accessToken, refreshToken, expTime } = response;
-      setItemAsync('accessToken', accessToken);
-      setItemAsync('refreshToken', refreshToken);
-      setItemAsync('authLevel', AUTH_LEVEL.User);
-      setItemAsync('expTime', expTime);
+      response.authLevel = AUTH_LEVEL.User;
+      setAccessToken(response);
       break;
     case '400':
     case '500':
@@ -45,7 +50,26 @@ export async function fetchTravoramaLoginApi(userName, password) {
   return response;
 }
 
+async function waitFetchingAuth() {
+  let sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  while (global.isFetchingAuth) {
+    await sleep(10);
+    // console.log('still waiting for global.isFetchingAuth')
+  }
+  return;
+}
+
 export async function getAuthAccess() {
+  // console.log('global.isFetchingAuth: ' + global.isFetchingAuth)
+  if (global.isFetchingAuth) {
+    await waitFetchingAuth();
+    let { accessToken, authLevel } = global;
+    return { accessToken, authLevel };
+  }
+  global.isFetchingAuth = true;
   try {
     let [accessToken, refreshToken, expTime, authLevel] =
       await Promise.all([
@@ -53,14 +77,17 @@ export async function getAuthAccess() {
         getItemAsync('expTime'), getItemAsync('authLevel')
       ]);
     let data = { clientId, clientSecret, deviceId };
-    if ( new Date(expTime) > new Date() ) { //// token not expired
+
+    // console.warn('sengaja ditutup dulu validasi expTimenya buat testing refreshToken')
+    /**/if ( new Date(expTime) > new Date() ) { //// token not expired
       console.log(
         'session not expired, continue the request...'
       )
       //already logged in, go to next step
+      global.isFetchingAuth = false;
       return { accessToken, authLevel };
-    } //// else then token is expired or client dont have expTime
-    else if (refreshToken) {
+    } //// if it's not, then token is expired or client doesnt have expTime
+    else/**/ if (refreshToken) {
       console.log('....     prepare login by refreshToken')
       data.refreshToken = refreshToken;
     } else {
@@ -69,14 +96,12 @@ export async function getAuthAccess() {
     }
 
     let response = await fetchAuth(data);
+    global.isFetchingAuth = false;
     
     switch (response.status + '') { //// cast to string
       case '200':
-        ({ accessToken, refreshToken, expTime } = response);
-        setItemAsync('accessToken', accessToken);
-        setItemAsync('refreshToken', refreshToken);
-        setItemAsync('expTime', expTime);
-        setItemAsync('authLevel', authLevel);
+        response.authLevel = authLevel;
+        setAccessToken(response);
         break;
       case '400':
       case '500':
@@ -88,7 +113,6 @@ export async function getAuthAccess() {
   } catch (error) {
     console.log('get auth access error');
     console.log(error);
-    // console.error('get auth access error');
   }
 }
 

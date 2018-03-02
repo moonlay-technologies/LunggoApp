@@ -1,13 +1,11 @@
 'use strict';
 
-import React, { Component } from 'react';
-import { WebView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { WebView } from 'react-native';
 import { clientId, clientSecret } from '../../../constants/env';
-import { NavigationActions } from 'react-navigation';
 import { DOMAIN } from '../../../constants/env';
-import { Icon } from 'react-native-elements';
 
-export default class CancelationPolicy extends Component {
+export default class CancelationPolicy extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
     title: 'Ketentuan Pembatalan',

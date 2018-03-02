@@ -24,6 +24,7 @@ export async function fetchProfile() {
 
 export async function getProfile() {
   let contactJson = await getItemAsync('profile');
+  if (!contactJson) return { contact:{} };
   let contact = JSON.parse(contactJson);
   return { contact };
 }

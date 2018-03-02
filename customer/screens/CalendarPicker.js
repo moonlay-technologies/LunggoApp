@@ -111,9 +111,8 @@ export default class CalendarPicker extends Component {
       (!!tempSelectedDate && !!markedDates[tempSelectedDate].availableHours) ?
         markedDates[tempSelectedDate].availableHours.map(
           (currValue, index) =>
-            <TouchableOpacity
+            <View
               key={index} style={styles.availableHoursItem}
-              onPress={ () => this._onAvailableHoursClicked(index) }
             >
               <View style={{flexDirection:'row', flex:1}}>
                 <View style={{flex:1}}>
@@ -123,13 +122,14 @@ export default class CalendarPicker extends Component {
                   <Button
                     containerStyle={globalStyles.ctaButton7}
                     style={{fontSize: 14, color: '#fff'}}
+                    onPress={ () => this._onAvailableHoursClicked(index) }
                   >
                     Pilih
                   </Button>
                 </View>
               </View>
               
-            </TouchableOpacity>
+            </View>
         )
         : null;
 
