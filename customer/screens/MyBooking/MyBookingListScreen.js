@@ -22,8 +22,10 @@ import { WebBrowser } from 'expo';
 class ActivityListItem extends React.PureComponent {
 
   _viewPdfVoucher = async item => {
-    let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
-    WebBrowser.openBrowserAsync(localUri || item.pdfUrl);
+    // TODO uncomment this buat local PDF
+    // let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
+    // WebBrowser.openBrowserAsync(localUri || item.pdfUrl);
+    WebBrowser.openBrowserAsync(item.pdfUrl);
   }
 
   _voucherButton = item => {
