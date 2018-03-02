@@ -11,6 +11,7 @@ import {
   ScrollView, Platform
 } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
+import Accordion from 'react-native-collapsible/Accordion';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -32,6 +33,7 @@ async function fetchTravoramaBookApi(data) {
   });
   return response;
 }
+
 
 export default class BookingDetail extends React.Component {
 
@@ -55,6 +57,7 @@ export default class BookingDetail extends React.Component {
   static navigationOptions = {
     title: 'Detail Pesanan'
   };
+
 
   componentDidMount() {
     getProfile().then(({ contact }) => {
@@ -307,9 +310,9 @@ export default class BookingDetail extends React.Component {
               source={require('../../assets/images/detailimg3.jpg')}
             />
           </View>*/}
-          <Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
-            Trip to Sahara Desert
-          </Text>
+          {/*<Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
+            Paket Tour
+          </Text>*/}
           {/*<View style={{flexDirection: 'row', marginBottom:5}}>
             <Rating
               // startingValue={3.6}
@@ -323,7 +326,7 @@ export default class BookingDetail extends React.Component {
             elit, sed do eiusmod tempor incididunt ut labore et 
             dolore magna aliqua. Ut enim ad minim veniam.
           </Text>*/}
-          <View style={{ marginTop: 15 }}>
+          {/*<View style={{ marginTop: 15 }}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
               <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
               <View style={{ marginTop: 1, marginLeft: 10 }}>
@@ -356,8 +359,96 @@ export default class BookingDetail extends React.Component {
                 </Text>
               </View>
             </View>
+          </View>*/}
+          <Text style={styles.activityTitle}>Paket Tur</Text>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={{marginTop:10}}>
+              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+            </View>
+          </View>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={{marginTop:10}}>
+              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+            </View>
+          </View>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={styles.containerMoreDescription}>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #1
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #2
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #3
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
+
         <View style={styles.divider} />
 
         <View style={styles.container}>
@@ -454,6 +545,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1
   },
+  containerPackage:{
+    backgroundColor:'#fff',
+    borderRadius:3,
+    padding:10,
+    marginTop:15,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 2,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
   addButton: {
     height: 35,
     width: '100%',
@@ -482,7 +593,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 15 * 0.8,
         paddingTop: 20 - (19 * 0.4),
-        //backgroundColor:'red'
+        marginBottom:-10,
       },
       android: {
         lineHeight: 24
@@ -526,6 +637,57 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  activityDesc1: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  hargaDesc: {
+    fontSize: 14,
+    color: '#f57b76',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  moreDesc: {
+    fontSize: 12,
+    color: '#818181',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
   activityDescNumb: {
     fontSize: 14,
     color: '#454545',
@@ -548,7 +710,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#efefef',
+    backgroundColor: '#e3e3e3',
     marginTop: 5,
     marginBottom: 5,
   },
@@ -558,5 +720,11 @@ const styles = StyleSheet.create({
   },
   warningText: {
     color: 'red',
-  }
+  },
+  containerMoreDescription:{
+    borderTopWidth:1,
+    borderTopColor:'#e3e3e3',
+    paddingTop:15,
+    marginTop:15
+  },
 });
