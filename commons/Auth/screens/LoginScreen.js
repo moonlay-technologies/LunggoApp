@@ -15,8 +15,7 @@ import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
-import { fetchWishlist } from '../../../api/Common';
-import { NavigationActions } from 'react-navigation';
+import { fetchWishlist, backToMainTab } from '../../../api/Common';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -35,14 +34,6 @@ export default class LoginScreen extends React.Component {
   componentWillUnmount() {
     this._notificationSubscription &&
       this._notificationSubscription.remove();
-  }
-
-  _resetToMainTab = () => {
-    const reset = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })],
-    });
-    this.props.navigation.dispatch(reset);
   }
 
   _registerForPushNotifications() {
@@ -77,7 +68,7 @@ export default class LoginScreen extends React.Component {
           fetchWishlist();
           let { resetAfter, thruBeforeLogin } = params;
           if (resetAfter)
-            this._resetToMainTab();
+            backToMainTab(this.props.navigation);
           else if (thruBeforeLogin)
             pop(2);
           else

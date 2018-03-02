@@ -92,16 +92,16 @@ export default TabNavigator(
           />
         );
       },
-      tabBarOnPress: ({ scene }) => {
-        let focused = scene.focused;
-        let route = scene.route.routeName;
-        if (!focused) {
-          // if (route == 'Favorit') {
-          //   navigation.setParams({ shouldRefresh: true });
-          // }
-          navigation.navigate(route);
-        }
-      }
+      // tabBarOnPress: ({ scene }) => {
+      //   let focused = scene.focused;
+      //   let route = scene.route.routeName;
+      //   if (!focused) {
+      //     if (route == 'Favorit') {
+      //       navigation.setParams({ shouldRefresh: true });
+      //     }
+      //     navigation.navigate(route);
+      //   }
+      // }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',

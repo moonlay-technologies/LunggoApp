@@ -20,15 +20,17 @@ export default class WishlistScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Wishlist',
+    title: 'Favorit',
   };
 
   _getWishlist = async () => {
-    let wishlistItems = await getItemAsync('wishlist');
-    if (wishlistItems != null) {
-      let activityList = JSON.parse(wishlistItems);
-      this.setState({ list: activityList });
-    }
+    setTimeout(async () => {
+      let wishlistItems = await getItemAsync('wishlist');
+      if (wishlistItems != null) {
+        let activityList = JSON.parse(wishlistItems);
+        this.setState({ list: activityList });
+      }
+    }, 0);
   }
 
   _onWishlist = async ({ id, wishlisted }) => {

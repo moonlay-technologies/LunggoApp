@@ -60,7 +60,6 @@ export default class RootNavigator extends React.Component {
         //screen: SubmitRating
 
       },
-      MainTabNavigator: { screen: MainTabNavigator },
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
       CalendarPicker: { screen: CalendarPicker },

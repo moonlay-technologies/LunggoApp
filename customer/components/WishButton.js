@@ -1,13 +1,13 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Platform, InteractionManager } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Platform,
+  InteractionManager } from 'react-native';
 import Button from 'react-native-button';
 import { Icon } from 'react-native-elements';
 import { toggleWishlist, checkUserLoggedIn } from '../../api/Common';
 import Modal from 'react-native-modal';
 import globalStyles from '../../commons/globalStyles';
-import { NavigationActions } from 'react-navigation';
 import Colors from '../../constants/Colors';
 
 export default class WishButton extends React.Component {
@@ -43,7 +43,7 @@ export default class WishButton extends React.Component {
     if (!isLoggedIn) { //// if guest:
       return this.setState({ isModalVisible: true, wishlisted: false });
       if (this.props.onPress)
-        this.props.onPress({ id: this.props.id, wishlisted: false });
+        setTimeout(() => this.props.onPress({ id: this.props.id, wishlisted: false }), 0);
     }
 
     await toggleWishlist(this.props.id, wishlisted);

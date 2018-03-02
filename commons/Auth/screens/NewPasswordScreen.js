@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
-import { NavigationActions } from 'react-navigation';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import { fetchWishlist, backToMainTab } from '../../../api/Common';
 
 export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -27,14 +27,6 @@ export default class NewPasswordScreen extends React.Component {
     title: 'Reset Password',
   }
 
-  _resetToMainTab = () => {
-    const reset = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })],
-    });
-    this.props.navigation.dispatch(reset);
-  }
-
   _submit = () => {
     let { password } = this.state;
     let { phone, otp } = this.props.navigation.state.params;
@@ -45,8 +37,9 @@ export default class NewPasswordScreen extends React.Component {
     }
     this.setState({ isLoading: true });
     resetPassword(phone, otp, password).then(response => {
-      if (response.status == '200') this._resetToMainTab();
-      this.setState({ isLoading: false, errorMessage: response.message });
+      let { status, message } = response;
+      if (status == 200) backToMainTab(this.props.navigation);
+      this.setState({ isLoading: false, errorMessage: message });
     });
   }
 
