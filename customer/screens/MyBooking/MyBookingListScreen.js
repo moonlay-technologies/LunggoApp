@@ -11,13 +11,20 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
-  RefreshControl, FlatList, TouchableOpacity
+  RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback
 } from 'react-native';
 import { getMyBookingList } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+import { WebBrowser } from 'expo';
 
 class ActivityListItem extends React.PureComponent {
+
+  _viewPdfVoucher = async item => {
+    let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
+    WebBrowser.openBrowserAsync(localUri || item.pdfUrl);
+  }
 
   _voucherButton = item => {
     if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
@@ -26,8 +33,8 @@ class ActivityListItem extends React.PureComponent {
           containerStyle={{ alignItems: 'center', }}
           style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
           onPress={() =>
-            true
-              ? this.props.navigation.navigate('PdfViewer', { title: item.name, uri: item.pdfUrl })
+            item.hasPdfVoucher
+              ? this._viewPdfVoucher(item)
               : this.props.navigation.navigate('BookedPageDetail', { details: item })
           }
         >
@@ -40,9 +47,8 @@ class ActivityListItem extends React.PureComponent {
 
   render() {
     let { item } = this.props;
-    console.log(item);
     return (
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
+      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
         <View style={{ flexDirection: 'row', }}>
           <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 1.8 }}>
@@ -180,26 +186,12 @@ class CartListItem extends React.PureComponent {
 export default class MyBookingListScreen extends React.Component {
 
   constructor(props) {
-    super(props)
-    this.state = {
-      bookingList: props.list,
-      isRefreshing: false
-    };
+    super(props);
   }
 
   static navigationOptions = {
     title: 'Pesananku',
   }
-
-  // _onRefresh = () => {
-  //   this.setState({ isRefreshing: true });
-  //   getMyBookingList().then(response => {
-  //     console.warn('TODO: response nya jangan lupa dipake')
-  //     console.log(response)
-  //     //// TODO: response nya jgn lupa dipake
-  //     this.setState({ isRefreshing: false });
-  //   });
-  // }
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -210,24 +202,12 @@ export default class MyBookingListScreen extends React.Component {
       navigation={this.props.navigation}
     />
   )
-  // _onPressItem = (item) => {
-  //   this.props.navigation.navigate(
-  //     'BookedPageDetail',{details: item}
-  //   );
-  // };
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}
-      //refreshControl={
-      //  <RefreshControl
-      //    refreshing={this.state.isRefreshing}
-      //   onRefresh={this._onRefresh.bind(this)}
-      // />
-      //}
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         <FlatList
-          data={this.state.bookingList}
+          data={this.props.list}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />

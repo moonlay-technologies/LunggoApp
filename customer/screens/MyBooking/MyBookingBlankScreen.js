@@ -6,14 +6,34 @@ import {
   Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
+import { checkUserLoggedIn } from '../../../commons/Auth/AuthController';
 
 export default class MyBookingBlankScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { isLoggedIn: false };
+  }
 
   static navigationOptions = {
     title: 'Pesananku',
   };
 
+  _checkLoggedIn = async () => {
+    let isLoggedIn = await checkUserLoggedIn();
+    this.setState({ isLoggedIn });
+  }
+
+  componentDidMount() {
+    this._checkLoggedIn();
+  }
+
+  componentWillReceiveProps() {
+    this._checkLoggedIn();
+  }
+
   render() {
+    let { isLoggedIn } = this.state;
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
@@ -24,18 +44,21 @@ export default class MyBookingBlankScreen extends React.Component {
             <View>
               <Text style={styles.textCart}>
                 Semua pesanan kamu yang sudah dibayarkan akan terdaftar di sini. {"\n"}
-                Ayo login sekarang untuk melihat!
-                </Text>
+                {isLoggedIn ? '' : 'Ayo login sekarang untuk melihat!'}
+              </Text>
             </View>
           </View>
           <View style={{ width: '100%', marginTop: 30 }}>
             <Button
               containerStyle={globalStyles.ctaButton}
               style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
-              onPress={() => this.props.navigation.navigate('LoginScreen', { resetAfter: true })}
+              onPress={() => isLoggedIn
+                ? this.props.navigation.goBack()
+                : this.props.navigation.navigate('LoginScreen', { resetAfter: true })
+              }
             >
-              Login
-              </Button>
+              {isLoggedIn ? 'Jelajah Sekarang' : 'Login'}
+            </Button>
           </View>
         </View>
       </View>

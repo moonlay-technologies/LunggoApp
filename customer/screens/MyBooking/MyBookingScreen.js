@@ -10,11 +10,11 @@ import LoadingAnimation from '../../components/LoadingAnimation'
 
 export default class MyBookingScreen extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      list:[],
+      list: [],
     };
   }
 
@@ -23,22 +23,22 @@ export default class MyBookingScreen extends React.Component {
   };
 
   componentDidMount() {
-    let {params} = this.props.navigation.state;
+    let { params } = this.props.navigation.state;
     if (params && !params.loggedIn) {
-      return this.setState({isLoading:false});
+      return this.setState({ isLoading: false });
     }
-    getMyBookingList().then( ({ list, status }) => {
-      this.setState({list, status, isLoading: false});
+    getMyBookingList().then(list => {
+      this.setState({ list, isLoading: false });
     });
   }
 
   render() {
-    let {isLoading, list, status } = this.state;
-    let {props} = this;
+    let { isLoading, list, status } = this.state;
+    let { props } = this;
 
     if (isLoading) return <LoadingAnimation />
-    else if (status==200 && list && list.length > 0 ) return (
-      <ListScreen list={list} {...props} /> )
+    else if (list && list.length > 0) return (
+      <ListScreen list={list} {...props} />)
     else return <BlankScreen {...props} />
   }
 }
