@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Colors from '../../../constants/Colors';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Button from 'react-native-button';
 import globalStyles from '../../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
@@ -21,7 +21,8 @@ export default class BeforeLoginScreen extends React.Component {
   render() {
     let { navigate, goBack } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      /*{<View style={{flex:1}}>
+      
         {!!this.props.onIntro || (
           <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: -40 }}
             onPress={() => goBack()}>
@@ -58,7 +59,40 @@ export default class BeforeLoginScreen extends React.Component {
             </Text>
           </TouchableOpacity>
         )}
-      </View>
+      </View>}*/
+      <Image style={styles.bgImg} source={require('../../../assets/images/bglogin2.jpg')}>
+
+        {!!this.props.onIntro || (
+          <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: -40 }}
+            onPress={() => goBack()}>
+            <Icon name='close' type='evilicons' size={24} color='#ffffff' />
+          </TouchableOpacity>
+        )}
+
+        <View style={{alignItems:'center'}}>
+          <Image style={{width:280, height:280, marginTop:80,}} source={require('../../../assets/images/logobaru.png')}/>
+        </View>
+        <View style={{position:'absolute', bottom:40, alignItems:'center', width:'100%'}}>
+
+          <Button
+            containerStyle={{ marginTop: 30, height: 45, paddingTop: 9, overflow: 'hidden', borderRadius: 25, backgroundColor: '#01bcb0', width:'90%' }}
+            style={{ fontSize: 18, color: '#ffffff', fontFamily: 'Hind-SemiBold', }}
+            onPress={() => navigate('Registration', this.params)}
+          >
+            Daftar
+          </Button>
+
+          <TouchableOpacity style={{ marginTop: 30, alignItems: 'center' }}
+            onPress={() => navigate('LoginScreen', this.params)}
+            activeOpacity={0.7}
+            >
+            <Text style={{ fontSize: 16, color: '#fff', fontFamily: 'Hind', backgroundColor:'transparent' }}>
+              Sudah punya akun? Tap di sini
+            </Text>
+          </TouchableOpacity>
+
+        </View>
+      </Image>
     );
   }
 }
@@ -69,5 +103,11 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingTop: 60,
     backgroundColor: '#23d3c3',
+  },
+  bgImg: {
+    resizeMode:'cover', 
+    flex:1, 
+    width:null, 
+    height:null,
   },
 });

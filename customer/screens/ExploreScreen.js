@@ -53,10 +53,10 @@ export default class ExploreScreen extends React.Component {
 
   _refreshContents = () => {
     Promise.all([
-      search('tiket').then(tiketList => this.setState({ tiketList })),
-      search('paket').then(paketList => this.setState({ paketList })),
-      search('trip').then(tripList => this.setState({ tripList })),
-      search('tur').then(turList => this.setState({ turList }))
+      // search('tiket').then(tiketList => this.setState({ tiketList })),
+      // search('paket').then(paketList => this.setState({ paketList })),
+      // search('trip').then(tripList => this.setState({ tripList })),
+      // search('tur').then(turList => this.setState({ turList }))
     ]).then(response => {
       this.setState({ isLoading: false });
     });
@@ -64,7 +64,8 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
-    this.props.navigation.addListener('didFocus', this._getWishlist);
+    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this._getWishlist();
   }
 
   _onWishlist = async ({ id, wishlisted }) => {

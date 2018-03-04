@@ -14,7 +14,7 @@
       "color": "#000000"
     },
     "splash": {
-      "image": "./assets/icons/loading-icon.jpg",
+      "image": "./assets/icons/loading-icon.png",
       "resizeMode": "cover"
     },
     "packagerOpts": {
