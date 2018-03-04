@@ -14,7 +14,7 @@ export function validateUserName (userNameString) {
 
 export function validateEmail (emailString) {
   if (!emailString) return 'Wajib diisi';
-  if (!emailString.match(Regex.email)) return 'Email belum benar';
+  if (!Regex.email.test(emailString)) return 'Email belum benar';
   return null;
 }
 
@@ -37,25 +37,40 @@ export function validatePhone (phoneNumber) {
 }
 
 // //// phone number validation with 10 or more digits
-// export var validatePhone = testInput => /\d{10,}/.test(testInput);
+// export var validatePhone = testInput => /^\d{9,}$/.test(testInput);
 
 //// phone number validation starts with 0 | +62 followed by another 9 or more numbers
-export var validatePhone_Indonesia = testInput => /(0|[+]?62)\d{9,}/.test(testInput);
+export var validatePhone_Indonesia = testInput => /^(0|[+]?62)\d{9,}$/.test(testInput);
 
 //// validasi no KTP: length == 16
-export var validateKTP = testInput => /\d{16}/.test(testInput);
+export var validateKTP = testInput => /^\d{16}$/.test(testInput);
 
+//// passport no consist of 6 to 9 alphanumeric and/or underscore
+export var validatePassportNo = testInput => /^\w{6,9}$/.test(testInput);
 
-//// validasi no kartu kredit
-//// masa berlaku kartu kredit
-//// no CCV
-//// kode pos
-//// no passport
-//// no STNK
-//// NIK/NIM
-//// no NPWP
-//// gmaps lat / lng
-//// no RT/RW
+//// validate no NPWP
+export var validateNpwp = testInput => /^\d{15}$/.test(testInput);
 
-//// province
-//// city
+//// postal code consist of 5 digit of numbers
+export var validatePostalCode = testInput => /^\d{5}$/.test(testInput);
+
+//// Credit Card Number format
+export var validateCreditCardFormat = testInput => /^\d{13,19}$/.test(testInput);
+
+//// CVV number consist of 3 to 4 digit of numbers
+export var validateCvvFormat = testInput => /^\d{3,4}$/.test(testInput);
+
+//// validate credit card's expiry date
+export var validateExpiryDate = (month, year) => {
+  if ( month<1 || month>12 || !year || isNaN(month) || isNaN(year) ) {
+    return {error:'INVALID_INPUT'};
+  }
+  let now = new Date();
+  var currentYear = now.getFullYear();
+  var currentMonth = now.getMonth() + 1; //// by default, 0=January, so we change this with +1
+  year += 2000;
+  if (year < currentYear || (year == currentYear && month < currentMonth) ) {
+    return {error:'CARD_EXPIRED'};
+  }
+  return true;
+}
