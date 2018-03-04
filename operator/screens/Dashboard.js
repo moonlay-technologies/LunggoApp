@@ -11,8 +11,15 @@ import { MonoText } from '../components/StyledText';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import { getProfile } from '../../commons/ProfileController';
 import * as Formatter from '../../customer/components/Formatter';
-import Modal from 'react-native-modal';
-import LoadingAnimation from '../../customer/components/LoadingAnimation'
+import Modal from '../../commons/components/Modal';
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
+import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
+
+
+// import globalStyles from '../../commons/globalStyles';
+// // import Modal from '../../commons/components/Modal';
+// import { removeAccessToken } from '../../commons/Auth/AuthController';
+// import { backToMainTab } from '../../api/Common'; //'../../commons/Auth/AuthController';
 
 export default class Dashboard extends React.Component {
 
@@ -69,7 +76,10 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  _goToActivityList = () => this.props.navigation.navigate('ActivityList');
+  _goToActivityList = () => {
+    this._closeSettingModal();
+    this.props.navigation.navigate('ActivityList');
+  }
 
   _getAppointmentRequest = () => {
     const version = 'v1';
@@ -87,6 +97,7 @@ export default class Dashboard extends React.Component {
       console.log(error);
     });
   }
+
   _getAppointmentList = () => {
     const version = 'v1';
     const path = `/${version}/operator/appointments`;
@@ -147,13 +158,20 @@ export default class Dashboard extends React.Component {
 
   _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
   _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
-  _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
-  _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
+  _goToProfile = () => {
+    this._closeSettingModal();
+    'TODO'
+    console.log('TODO: Dashboard.js _goToProfile')
+  }
 
-  _setModalVisible = vis => this.setState({ isModalVisible: vis })
-  _closeModal = () => this._setModalVisible(false)
-  _openModal = () => this._setModalVisible(true)
+  _openSettingModal = () => this.refs.settingModal.openModal()
+  _closeSettingModal = () => this.refs.settingModal.closeModal()
+  _openLogoutModal = () => this.refs.logoutModal.openModal()
+
+  _askLogout = () => this._openLogoutModal()
 
   render() {
     const loadingIndicator = this.state.isLoading ?
@@ -177,8 +195,8 @@ export default class Dashboard extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{width:25, alignItems:'center',}}
-                onPress={this._openModal}
+                style={{width:25, alignItems:'center'}}
+                onPress={this._openSettingModal}
                 >
                 <Icon
                   name='md-more'
@@ -188,19 +206,26 @@ export default class Dashboard extends React.Component {
               </TouchableOpacity>
             </View>
 
-            <Modal style={styles.modalMenu}
+            <Modal ref='settingModal'
+              style={styles.modalMenu}
               animationIn='fadeIn'
               animationOut='fadeOut'
               backdropOpacity={0}
-              isVisible={this.state.isModalVisible}
-              onBackdropPress={this._closeModal}
-              onBackButtonPress={this._closeModal}
             >
-              <Text style={styles.teks3a}>Ubah Profil</Text>
+
+              <LogoutConfirmationModal ref='logoutModal' {...this.props}/>
+
+              <TouchableOpacity onPress={this._goToProfile}>
+                <Text style={styles.teks3a}>Ubah Profil</Text>
+              </TouchableOpacity>
               <View style={styles.separatorOption}></View>
-              <Text style={styles.teks3a}>Ubah Activity</Text>
+              <TouchableOpacity onPress={this._goToActivityList}>
+                <Text style={styles.teks3a}>Ubah Activity</Text>
+              </TouchableOpacity>
               <View style={styles.separatorOption}></View>
-              <Text style={styles.teks3a}>Keluar Akun</Text>
+              <TouchableOpacity onPress={this._askLogout}>
+                <Text style={styles.teks3a}>Log Out Akun</Text>
+              </TouchableOpacity>
             </Modal>
 
             <Image style={styles.avatarBig} source={{uri:this.state.avatar}}/>
@@ -536,7 +561,7 @@ const styles = StyleSheet.create({
     }),
   },
   separatorOption:{
-    marginVertical:10
+    paddingVertical:10
   },
   containerDashboard:{
     padding:15,

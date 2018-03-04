@@ -16,16 +16,22 @@ export default class Modal extends React.Component {
     this.setState({ isVisible });
   }
 
-  _setModalVisible = vis => this.setState({ isVisible: vis })
-  _closeModal = () => this._setModalVisible(false)
-  // _openModal = () => this._setModalVisible(true)
+  setVisibility = vis => this.setState({ isVisible: vis })
+  closeModal = () => this.setVisibility(false)
+  openModal = () => this.setVisibility(true)
+  toggleVisibility = () => this.setVisibility(!this.state.isVisible)
 
   render() {
+    let {props} = this;
     return (
       <ModalPlugin
+        style={props.style}
+        animationIn={props.animationIn}
+        animationOut={props.animationOut}
+        backdropOpacity={props.backdropOpacity}
         isVisible={this.state.isVisible}
-        onBackdropPress={this._closeModal}
-        onBackButtonPress={this._closeModal}
+        onBackdropPress={props.onBackdropPress || this.closeModal}
+        onBackButtonPress={props.onBackButtonPress || this.closeModal}
       >
         {this.props.children}
       </ModalPlugin>

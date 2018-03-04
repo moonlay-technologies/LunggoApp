@@ -10,7 +10,7 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
-    isFirstOpen: false
+    isNotFirstOpen: false
   };
 
   render() {
