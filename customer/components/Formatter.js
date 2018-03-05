@@ -39,11 +39,11 @@ export var phoneWithoutCountryCode_Indonesia = phone => {
 
 
 //// format no handphone separator '0812-3456-789'
-export var phoneWithSeparator = (phone, separator='-') => {
-  // TODO: validate if phone input is a valid phone number
-  let regex = /\B(?<=^(0|[+]?62))(?=(\d{3})+(?!\d))/
-  return (phone + '').replace(regex,separator);
-}
+// export var phoneWithSeparator = (phone, separator='-') => {
+//   // TODO: validate if phone input is a valid phone number
+//   let regex = /\B(?<=^(0|[+]?62))(?=(\d{3})+(?!\d))/
+//   return (phone + '').replace(regex,separator);
+// }
 
 //// 24h-time formatter
 export var time24h = (time, separator=':', showSecond=false) => {
