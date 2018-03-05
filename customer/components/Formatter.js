@@ -51,6 +51,11 @@ export var time24h = (time, separator=':', showSecond=false) => {
   return time.getHours() + separator + time.getMinutes() + seconds;
 }
 
+const kosaKataAngka = ['nol', 'satu', 'dua', 'tiga', 'empat',
+              'lima', 'enam', 'tujuh', 'delapan', 'sembilan'];
+const kosaKataUkuran = ['', 'puluh', 'ratus', 'ribu', 'juta',
+              'miliar', 'triliun'];
+
 //// format 'terbilang' (uang)
 //// format 1.570.000 or 1570000, to 'sejuta lima ratus tujuh puluh ribu'
 export var terbilang = int => {
