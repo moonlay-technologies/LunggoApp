@@ -5,35 +5,54 @@ import Button from 'react-native-button';
 import * as Formatter from '../../components/Formatter';
 import { Icon } from 'react-native-elements';
 import { Platform, StyleSheet, TouchableOpacity, Text, View, Image,
-  TextInput, ScrollView, } from 'react-native';
-import Moment from 'moment';
-import 'moment/locale/id';
+  TextInput, ScrollView, Linking } from 'react-native';
+import Maps from '../../components/Maps';
+// import Moment from 'moment';
+// import 'moment/locale/id';
 
 export default class BookedPageDetail extends React.Component {
 
   constructor (props) {
-    super(props)
-    // const { details } = this.props.navigation.state.params;
-    // this.state = details;
-    this.state = this.props.navigation.state.params.details;
-    this.state.timeLeft = Moment(this.state.timeLimit).toNow();
-    console.log(this.state)
+    super(props);
+    this.details = props.navigation.state.params.details;
+    this.details.totalPaxCount = 0;
+    this.details.paxCount.map( categ => {
+      this.details.totalPaxCount += categ.count;
+    });
+    // this.state = {
+    //   timeLeft: Moment(this.details.timeLimit).toNow(),
+    // };
+    console.warn('call and sms operator blom di tes');
+    console.warn('avatar operator dan pax list masih dummy / blm jln');
   }
 
-  _onContinuePaymentPressed = () => {
-    this.props.navigation.navigate(
-      'PaymentScreen', {rsvNo:this.state.rsvNo}
-    );
+  // _onContinuePaymentPressed = () => {
+  //   this.props.navigation.navigate(
+  //     'PaymentScreen', {rsvNo:this.details.rsvNo}
+  //   );
+  // }
+
+  _viewActivityDetail = () => {
+    this.props.navigation.navigate('DetailScreen', {
+      details:{
+        id: this.details.activityId,
+        ...this.details,
+      }
+    });
   }
+
+  _callOperator = () => Linking.openURL('tel:'+this.details.operatorPhone)
+  _smsOperator = () => Linking.openURL('sms:'+this.details.operatorPhone)
 
   render() {
-    let {name, mediaSrc, date, bookingStatus, price, timeLeft, city,
-          selectedSession, rsvNo, operatorName, operatorPhone,
-          operatorEmail } = this.state;
-    let bookingStatusText = bookingStatus;
-    // switch (bookingStatus) {
-    //   case 'PROC': bookingStatusText = 'dalam progres'; break;
-    // }
+    let { name, mediaSrc, date, price, city, address, //bookingStatus,
+          selectedSession, operatorName, operatorPhone,
+          operatorEmail, totalPaxCount, latitude, longitude, paxes,
+        } = this.details;
+    // let bookingStatusText = bookingStatus;
+        // switch (bookingStatus) {
+        //   case 'PROC': bookingStatusText = 'dalam progres'; break;
+        // }
     return (
       <ScrollView style={{flex:1, backgroundColor:'#fff'}}>
         <View style={[styles.container,{flexDirection:'row'}]}>
@@ -79,9 +98,11 @@ export default class BookedPageDetail extends React.Component {
               </Text>
             </View>
           </View>
-          <Text style={{flex:0.5, alignItems:'flex-end',fontSize:12, color:'#676767',}}>
-            Detail
-          </Text>
+          <TouchableOpacity onPress={this._viewActivityDetail}>
+            <Text style={{flex:0.5, alignItems:'flex-end',fontSize:12, color:'#676767',}}>
+              Detail
+            </Text>
+          </TouchableOpacity>
         </View>{/* end container */}
         <View style={styles.divider}/>
         <View style={styles.container}>
@@ -90,12 +111,12 @@ export default class BookedPageDetail extends React.Component {
               Operator Detail
             </Text>
             <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
-              {/*<TouchableOpacity>*/}
+              <TouchableOpacity onPress={this._callOperator}>
                 <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../../assets/images/phone.png')}/>
-              {/*</TouchableOpacity>
-              <TouchableOpacity>*/}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this._smsOperator}>
                 <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../../assets/images/sms.png')}/>
-              {/*</TouchableOpacity>*/}
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{flex:1, flexDirection:'row'}}>
@@ -110,7 +131,7 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>
         </View>{/* end container */}
-        <View style={styles.divider}/>
+        {/*<View style={styles.divider}/>
         <View style={styles.container}>
           <View style={{flex:1, flexDirection:'row',}}>
             <View>
@@ -144,11 +165,11 @@ export default class BookedPageDetail extends React.Component {
               Sisa waktu pembayaran
             </Text>
             <Text style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end',fontSize:12, color:'#00c8be'}}>
-              {timeLeft}
+              {this.state.timeLeft}
             </Text>
           </View>
         </View>{/* end container */}
-        <View style={styles.divider}/>
+        {/*<View style={styles.divider}/>
         <View style={styles.container}>
           <View style={{flex:1,}}>
             <Text style={styles.activityTitle}>
@@ -158,7 +179,7 @@ export default class BookedPageDetail extends React.Component {
               <Image style={[{marginTop:30, marginBottom:10},styles.barcode]}
                 source={require('../../../assets/images/barcode.jpg')} />
               <Text style={{fontWeight:'bold', fontSize:16}}>
-                Rsv No: {rsvNo}
+                DUMMYNO J092374932
               </Text>
             </View>
           </View>
@@ -168,47 +189,41 @@ export default class BookedPageDetail extends React.Component {
           <Text style={styles.activityTitle}>
             Lokasi Appointment
           </Text>
-          <Text style={{marginTop:10}}>Disini ada maps</Text>
+          <Maps lat={latitude} long={longitude} name={name}
+            address={address} city={city} {...this.props} />
         </View>{/* end container */}
         <View style={styles.divider}/>
         <View style={styles.container}>
           <View>
             <Text style={[styles.activityTitle,{marginBottom:10}]}>
-              Guest List (2)
+              Peserta: {totalPaxCount} orang
             </Text>
-            <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
-              <Text>Guest 1</Text>
-              <Icon
-                name='chevron-thin-right'
-                type='entypo'
-                size={20}
-                color='#707070'/>
-            </View>
-            <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
-              <Text>Guest 2</Text>
-              <Icon
-                name='chevron-thin-right'
-                type='entypo'
-                size={20}
-                color='#707070'/>
-            </View>
-            <View style={{flexDirection:'row', justifyContent: 'space-between', borderBottomColor: '#efefef', borderBottomWidth:1, paddingBottom:20, marginTop:20}}>
-              <Text>Guest 3</Text>
-              <Icon
-                name='chevron-thin-right'
-                type='entypo'
-                size={20}
-                color='#707070'/>
-            </View>
+            {paxes && paxes.map( pax =>
+              <TouchableOpacity style={{
+                flexDirection:'row',
+                justifyContent: 'space-between',
+                borderBottomColor: '#efefef',
+                borderBottomWidth:1,
+                paddingBottom:20,
+                marginTop:20
+              }}>
+                <Text>{pax.firstName + ' ' + pax.lastName}</Text>
+                <Icon
+                  name='chevron-thin-right'
+                  type='entypo'
+                  size={20}
+                  color='#707070'/>
+              </TouchableOpacity>
+            )}
           </View>
-          <View style={{marginTop:25,}}>
+          {/*<View style={{marginTop:25,}}>
             <Text style={styles.activityTitle}>
               Hal yang Perlu Diperhatikan
             </Text>
             <Text style={{marginTop:8,fontSize:13, color:'#454545',}}>
               Arung jeram dapat diikuti oleh peserta dewasa, remaja dana anak-anak berusia di atas 12 tahun.
             </Text>
-          </View>
+          </View>*/}
         </View>{/* end container */}
       </ScrollView>
     );
