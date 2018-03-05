@@ -53,7 +53,7 @@ export default class IntroScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         {this.state.notLastScreen && (
-          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
+          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('Main')}>
             <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Lewati</Text>
           </TouchableOpacity>
         )}

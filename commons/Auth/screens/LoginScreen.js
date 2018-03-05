@@ -15,7 +15,8 @@ import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
-import { fetchWishlist, backToMainTab } from '../../../api/Common';
+import { fetchWishlist, backToMain } from '../../../api/Common';
+const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -64,15 +65,20 @@ export default class LoginScreen extends React.Component {
       .then(response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {
+          setItemAsync('isLoggedIn', 'true');
+          if (params && params.appType == 'OPERATOR') {
+            backToMain(this.props.navigation);
+          } else {
           // this._notificationSubscription = this._registerForPushNotifications();
-          fetchWishlist();
-          let { resetAfter, thruBeforeLogin } = params;
-          if (resetAfter)
-            backToMainTab(this.props.navigation);
-          else if (thruBeforeLogin)
-            pop(2);
-          else
-            pop();
+            fetchWishlist();
+            let { resetAfter, thruBeforeLogin } = params;
+            if (resetAfter)
+              backToMain(this.props.navigation);
+            else if (thruBeforeLogin)
+              pop(2);
+            else
+              pop();
+          }
         } else {
           console.log(response);
           let error;
@@ -203,7 +209,7 @@ export default class LoginScreen extends React.Component {
             style={{ fontSize: 16, color: '#ffffff', fontFamily: 'Hind-Bold' }}
             onPress={this._onLoginPressed}
             disabled={isLoading}
-            styleDisabled={{ opacity: .9 }}
+            styleDisabled={{ opacity: .7 }}
           >
             Login
             </Button>

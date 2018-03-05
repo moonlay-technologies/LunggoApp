@@ -124,7 +124,13 @@ export async function checkUserLoggedIn(request) {
 export async function removeAccessToken() {
   await Promise.all([
     deleteItemAsync('accessToken'), deleteItemAsync('refreshToken'),
-    deleteItemAsync('expTime'), deleteItemAsync('authLevel')
+    deleteItemAsync('expTime'), deleteItemAsync('authLevel'),
   ]);
   return;
+}
+
+export async function logout() {
+  return await Promise.all([
+    deleteItemAsync('isLoggedIn'), removeAccessToken(),
+  ]);
 }

@@ -7,7 +7,7 @@ import {
   Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity,
 } from 'react-native';
 import {
-  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMainTab,
+  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMain,
 } from '../../api/Common';
 
 export default class SubmitReviewScreen extends React.Component {
@@ -38,7 +38,7 @@ export default class SubmitReviewScreen extends React.Component {
       method: 'POST'
     };
     fetchTravoramaApi(request).catch(error => console.log(error));
-    backToMainTab(this.props.navigation);
+    backToMain(this.props.navigation);
   }
 
   render() {

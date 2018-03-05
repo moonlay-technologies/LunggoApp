@@ -8,14 +8,13 @@ import {
 } from 'react-native';
 import globalStyles from '../../commons/globalStyles';
 import Modal from './Modal';
-import { removeAccessToken } from '../../commons/Auth/AuthController';
-import { backToMainTab } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { logout } from '../../commons/Auth/AuthController';
+import { backToMain } from '../../api/Common';
 
 export default class LogoutConfirmationModal extends React.Component {
 
   _logout = () => {
-    removeAccessToken()
-      .then( () => backToMainTab(this.props.navigation));
+    logout().then( () => backToMain(this.props.navigation));
   }
 
   openModal = () => this.refs.modal.openModal()

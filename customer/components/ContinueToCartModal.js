@@ -6,7 +6,7 @@ import { Platform, StyleSheet, Text, View, } from 'react-native';
 import globalStyles from '../../commons/globalStyles';
 // import Modal from '../../commons/components/Modal';
 import Modal from 'react-native-modal';
-import { backToMainTab } from '../../api/Common';
+import { backToMain } from '../../api/Common';
 
 export default class ContinueToCartModal extends React.Component {
 
@@ -26,7 +26,7 @@ export default class ContinueToCartModal extends React.Component {
 
   _seeMoreActivity = () => {
     this.setState({ isVisible: false });
-    backToMainTab(this.props.navigation);
+    backToMain(this.props.navigation);
   }
 
   render() {

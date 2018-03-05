@@ -7,7 +7,7 @@ import {
   Platform, StyleSheet, TouchableOpacity,
   Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
-import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMainTab } from '../../../api/Common';
+import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
 import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
@@ -74,7 +74,7 @@ export default class Registration extends React.Component {
               let { resetAfter, thruBeforeLogin } = params;
               console.log('5555');
               if (resetAfter)
-                backToMainTab(this.props.navigation);
+                backToMain(this.props.navigation);
               else if (thruBeforeLogin)
                 pop(2);
               else

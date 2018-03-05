@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
-  TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet
+  TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
@@ -16,11 +16,6 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 
 
-// import globalStyles from '../../commons/globalStyles';
-// // import Modal from '../../commons/components/Modal';
-// import { removeAccessToken } from '../../commons/Auth/AuthController';
-// import { backToMainTab } from '../../api/Common'; //'../../commons/Auth/AuthController';
-
 export default class Dashboard extends React.Component {
 
   constructor (props) {
@@ -30,6 +25,7 @@ export default class Dashboard extends React.Component {
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     };
+    console.warn('TODO: can\'t navigate to LoginScreen properly when logout');
   }
 
   static navigationOptions = {
@@ -164,7 +160,7 @@ export default class Dashboard extends React.Component {
   _goToProfile = () => {
     this._closeSettingModal();
     'TODO'
-    console.log('TODO: Dashboard.js _goToProfile')
+    console.warn('TODO: Dashboard.js _goToProfile')
   }
 
   _openSettingModal = () => this.refs.settingModal.openModal()

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { AUTH_LEVEL, fetchTravoramaApi, backToMainTab } from '../../api/Common';
+import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';

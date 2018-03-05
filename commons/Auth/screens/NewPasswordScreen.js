@@ -11,7 +11,7 @@ import {
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation'
-import { fetchWishlist, backToMainTab } from '../../../api/Common';
+import { fetchWishlist, backToMain } from '../../../api/Common';
 
 export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -38,7 +38,7 @@ export default class NewPasswordScreen extends React.Component {
     this.setState({ isLoading: true });
     resetPassword(phone, otp, password).then(response => {
       let { status, message } = response;
-      if (status == 200) backToMainTab(this.props.navigation);
+      if (status == 200) backToMain(this.props.navigation);
       this.setState({ isLoading: false, errorMessage: message });
     });
   }

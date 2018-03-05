@@ -29,7 +29,7 @@ export default class ExploreScreen extends React.Component {
       isLoading: true,
       wishlists: {},
     };
-    setItemAsync('isNotFirstOpen', 'true');
+    setItemAsync('skipIntro', 'true');
     this._onWishlist = this._onWishlist.bind(this)
   }
 

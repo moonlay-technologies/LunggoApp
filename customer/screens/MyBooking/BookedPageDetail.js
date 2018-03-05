@@ -207,7 +207,7 @@ export default class BookedPageDetail extends React.Component {
                 paddingBottom:20,
                 marginTop:20
               }}>
-                <Text>{pax.firstName + ' ' + pax.lastName}</Text>
+                <Text>{pax.name}</Text>
                 <Icon
                   name='chevron-thin-right'
                   type='entypo'
