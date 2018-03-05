@@ -11,7 +11,7 @@ export default class SearchHeader extends React.Component {
     super(props)
     this.state = {
       searchString: '',
-      placeholder: 'Try "trip"...',
+      placeholder: 'Cari petualanganmu berikutnya...',
     };
   }
 

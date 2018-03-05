@@ -13,7 +13,7 @@ import {
 export default class SubmitReviewScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'SubmitReview',
+    title: 'Beri Review',
   };
 
   constructor(props) {

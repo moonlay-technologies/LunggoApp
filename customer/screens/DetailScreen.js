@@ -190,7 +190,7 @@ class Footer extends Component {
       <View style={globalStyles.bottomCtaBarContainer}>
         <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
           <View >
-            <Text style={{ fontSize: 12, color: '#676767', }}>Start from</Text>
+            <Text style={{ fontSize: 12, color: '#676767', }}>Mulai dari</Text>
           </View>
           <View>
             <Text style={{
