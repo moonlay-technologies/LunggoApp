@@ -225,19 +225,15 @@ class Header extends Component {
   componentWillMount() {
     let half = [200, 400];
     let sudden = [380, 400];
-    let { interpolate } = this.props.scrollY;
     this.setState({
-      backgroundColor: interpolate({
         inputRange: half,
         outputRange: ['#fff0', '#ffff'],
         extrapolate: 'clamp',
       }),
-      elevation: interpolate({
         inputRange: half,
         outputRange: [0, 2],
         extrapolate: 'clamp',
       }),
-      opacity: interpolate({
         inputRange: sudden,
         outputRange: [0, 1],
         extrapolate: 'clamp',
