@@ -5,30 +5,18 @@ import { WebView, TouchableOpacity } from 'react-native';
 // import {SHA1} from 'crypto-js';
 // import Base64 from 'crypto-js/enc-base64';
 import { clientId, clientSecret } from '../../constants/env';
-import { NavigationActions } from 'react-navigation';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
+import { backToMain } from '../../api/Common';
 
 export default class PaymentScreen extends React.Component {
-
-  _backToMainTabNavigator = () => this.props.navigation.dispatch(NavigationActions.reset(
-    {
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })]
-    }
-  ));
 
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Pembayaran',
       headerLeft: (
         <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => navigation.dispatch(NavigationActions.reset(
-            {
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })]
-            }
-          ))}>
+          onPress={() => backToMain(navigation) }>
           <Icon name='close' type='evilicons' size={20} />
         </TouchableOpacity>
       ),
@@ -37,7 +25,7 @@ export default class PaymentScreen extends React.Component {
 
   _onMessage = event => {
     if (event.nativeEvent.data == 'ExploreScreen') {
-      return this._backToMainTabNavigator();
+      return backToMain(this.props.navigation);
     }
   }
 

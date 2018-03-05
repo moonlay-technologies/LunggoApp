@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
+import LoadingAnimation from '../components/LoadingAnimation'
 
 export default class ExploreScreen extends React.Component {
 
@@ -27,7 +28,7 @@ export default class ExploreScreen extends React.Component {
 
   render() {
     const loadingIndicator = this.state.isLoading ?
-      <ActivityIndicator size='large'/> : null;
+      <LoadingAnimation /> : null;
     return (
       <ScrollView style={{backgroundColor:'#fff'}}>
 

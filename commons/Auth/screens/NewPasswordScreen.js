@@ -4,11 +4,14 @@ import React from 'react';
 import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
-import { StyleSheet, Text, View, Image, TextInput, ScrollView,
+import {
+  StyleSheet, Text, View, Image, TextInput, ScrollView,
   KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
+import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import { fetchWishlist, backToMain } from '../../../api/Common';
 
 export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -21,21 +24,22 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'New Password',
+    title: 'Reset Password',
   }
 
   _submit = () => {
-    let {password} = this.state;
-    let {phone, otp} = this.props.navigation.state.params;
+    let { password } = this.state;
+    let { phone, otp } = this.props.navigation.state.params;
     let errorPassword = validatePassword(password);
     if (errorPassword) {
       this.refs.password.focus();
-      return this.setState({errorPassword});
+      return this.setState({ errorPassword });
     }
-    this.setState({isLoading: true});
-    resetPassword(phone, otp, password).then( response => {
-      if (response.status == '200') this.props.navigation.pop(2);
-      this.setState({isLoading: false, errorMessage:response.message});
+    this.setState({ isLoading: true });
+    resetPassword(phone, otp, password).then(response => {
+      let { status, message } = response;
+      if (status == 200) backToMain(this.props.navigation);
+      this.setState({ isLoading: false, errorMessage: message });
     });
   }
 
@@ -44,18 +48,18 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   render() {
-    let {password, showPassword, isLoading, errorMessage} = this.state;
+    let { password, showPassword, isLoading, errorMessage } = this.state;
     return (
       <KeyboardAvoidingView behavior="position" style={styles.container}>
-        <View style={{marginBottom:15}}>
+        <View style={{ marginBottom: 15 }}>
           <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
         </View>
-        <View style={{marginBottom:25}}>
+        <View style={{ marginBottom: 25 }}>
           <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
         </View>
-        { errorMessage ?
-          <View style={{alignItems:'center', marginBottom:10}}>
-            <Text style={{color:'#fc2b4e'}}>{errorMessage}</Text>
+        {errorMessage ?
+          <View style={{ alignItems: 'center', marginBottom: 10 }}>
+            <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
           </View> : null
         }
         <View>
@@ -67,8 +71,8 @@ export default class NewPasswordScreen extends React.Component {
             autoCapitalize='none'
             autoCorrect={false}
             blurOnSubmit={true}
-            onChangeText={ password => this.setState({
-              password, errorMessage:null,
+            onChangeText={password => this.setState({
+              password, errorMessage: null,
             })}
             returnKeyType='done'
             onSubmitEditing={this._submit}
@@ -76,7 +80,7 @@ export default class NewPasswordScreen extends React.Component {
             selectTextOnFocus={true}
             autoFocus={true}
           />
-          <View style={{position:'absolute', right:20, top:11,}}>
+          <View style={{ position: 'absolute', right: 20, top: 11, }}>
             <TouchableOpacity onPress={this._toggleShowPassword}>
               <Icon
                 name={showPassword ? 'eye' : 'eye-with-line'}
@@ -87,22 +91,22 @@ export default class NewPasswordScreen extends React.Component {
         </View>
         <Button
           containerStyle={{
-            marginTop:40,
-            height:45,
-            paddingTop:13,
-            paddingBottom:10,
-            overflow:'hidden',
-            borderRadius:25,
+            marginTop: 40,
+            height: 45,
+            paddingTop: 13,
+            paddingBottom: 10,
+            overflow: 'hidden',
+            borderRadius: 25,
             backgroundColor: Colors.primaryColor,
           }}
-          style={{fontSize: 16, color: '#fff'}}
+          style={{ fontSize: 16, color: '#fff' }}
           onPress={this._submit}
           disabled={isLoading}
-          styleDisabled={{color:'#aaa'}}
+          styleDisabled={{ color: '#aaa' }}
         >
           Ubah Password
         </Button>
-        {isLoading ? <ActivityIndicator/> : null}
+        {isLoading ? <LoadingAnimation /> : null}
       </KeyboardAvoidingView>
     );
   }
@@ -111,23 +115,23 @@ export default class NewPasswordScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:15,
-    paddingTop:60,
+    padding: 15,
+    paddingTop: 60,
     backgroundColor: '#fff',
   },
-  categoryTitle :{
-    fontWeight:'bold',
-    fontSize:26,
-    color:'#454545',
+  categoryTitle: {
+    fontWeight: 'bold',
+    fontSize: 26,
+    color: '#454545',
   },
   mediumText: {
-    fontSize:15,
-    color:'#454545',
+    fontSize: 15,
+    color: '#454545',
   },
   smallText: {
-    fontSize:13,
-    color:'#afafaf',
-    textAlign:'justify',
+    fontSize: 13,
+    color: '#afafaf',
+    textAlign: 'justify',
   },
   loginemail: {
     backgroundColor: 'transparent',
@@ -143,9 +147,9 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 45,
-    paddingLeft:15,
-    paddingTop:10,
-    paddingBottom:10,
+    paddingLeft: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
     marginRight: 5,
     flexGrow: 1,
     fontSize: 16,
@@ -153,6 +157,6 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     borderRadius: 25,
     color: '#acacac',
-    backgroundColor:'#f5f5f5',
+    backgroundColor: '#f5f5f5',
   },
 });

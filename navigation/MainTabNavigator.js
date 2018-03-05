@@ -7,10 +7,10 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../customer/screens/HomeScreen';
 import Explore from '../customer/screens/ExploreScreen';
-import MyBooking from '../customer/screens/MyBooking/MyBookingLoadingScreen';
+import MyBooking from '../customer/screens/MyBooking/MyBookingScreen';
 // import LinksScreen from '../customer/screens/LinksScreen';
 // import SettingsScreen from '../customer/screens/SettingsScreen';
-import Wishlist from '../customer/screens/Wishlist/WishlistFrame';
+import Wishlist from '../customer/screens/Wishlist/WishlistScreen';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
 
@@ -18,7 +18,7 @@ export default TabNavigator(
   {
     Explore: { screen: Explore },
     MyBooking: { screen: MyBooking },
-    Wishlist: { screen: Wishlist },
+    Favorit: { screen: Wishlist },
     // MessageBlank: { screen: MessageBlank },
     AccountPage: { screen: AccountPage },
   },
@@ -53,14 +53,14 @@ export default TabNavigator(
             //paddingHorizontal:12.6,
             //paddingVertical:12.6,
             //paddingRight:25,
-            backgroundColor:'cyan',
+            backgroundColor: 'cyan',
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
             backgroundColor: '#fbfbfb',
             borderBottomColor: '#ececec',
-            height:20,
-            marginTop:0
+            height: 20,
+            marginTop: 0
           },
         }),
       },
@@ -69,29 +69,19 @@ export default TabNavigator(
         let iconName;
         switch (routeName) {
           case 'Explore':
-            iconName = Platform.OS === 'ios'
-              ? `ios-search${focused ? '' : '-outline'}`
-              : 'ios-search-outline';
+            iconName = `ios-search${focused ? '' : '-outline'}`;
             break;
           case 'MyBooking':
-            iconName = Platform.OS === 'ios'
-              ? `ios-paper${focused ? '' : '-outline'}`
-              : 'ios-paper-outline';
+            iconName = `ios-paper${focused ? '' : '-outline'}`;
             break;
-          case 'Wishlist':
-            iconName = Platform.OS === 'ios'
-              ? `ios-heart${focused ? '' : '-outline'}`
-              : 'ios-heart-outline';
+          case 'Favorit':
+            iconName = `ios-heart${focused ? '' : '-outline'}`;
             break;
           case 'MessageBlank':
-            iconName = Platform.OS === 'ios'
-              ? `ios-mail-open${focused ? '' : '-outline'}`
-              : 'ios-mail-open-outline';
+            iconName = `ios-mail-open${focused ? '' : '-outline'}`;
             break;
           case 'AccountPage':
-            iconName = Platform.OS === 'ios'
-              ? `ios-person${focused ? '' : '-outline'}`
-              : 'ios-person-outline';
+            iconName = `ios-person${focused ? '' : '-outline'}`;
         }
         return (
           <Ionicons
@@ -102,25 +92,40 @@ export default TabNavigator(
           />
         );
       },
-      tabBarOnPress: ({ scene }) => {
-        let focused = scene.focused;
-        let route = scene.route.routeName;
-        if (!focused) {
-          // if (route == 'Wishlist') {
-          //   navigation.setParams({ shouldRefresh: true });
-          // }
-          navigation.navigate(route);
-        }
-      }
+      // tabBarOnPress: ({ scene }) => {
+      //   let focused = scene.focused;
+      //   let route = scene.route.routeName;
+      //   if (!focused) {
+      //     if (route == 'Favorit') {
+      //       navigation.setParams({ shouldRefresh: true });
+      //     }
+      //     navigation.navigate(route);
+      //   }
+      // }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     //initialLayout: {width:100, height:300},
     animationEnabled: true,
-    swipeEnabled: false,
+    swipeEnabled: true,
+
     tabBarOptions: {
       activeTintColor: Colors.bottomTabSelected,
-      style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec' }
+      labelStyle: {
+        fontSize: 12,
+        fontFamily:'Hind-SemiBold',
+        ...Platform.select({
+          ios: {
+            marginBottom: -8,
+          },
+          android: {
+            lineHeight: 18,
+            //paddingTop: 23 - (23* 1),
+
+          },
+        }),
+        },
+      style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec',}
     },
   }
 );

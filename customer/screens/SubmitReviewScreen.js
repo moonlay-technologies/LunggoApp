@@ -4,23 +4,16 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity
+  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity,
 } from 'react-native';
 import {
-  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
+  AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMain,
 } from '../../api/Common';
-import { NavigationActions } from 'react-navigation';
 
 export default class SubmitReviewScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'SubmitReview',
+    title: 'Beri Review',
   };
 
   constructor(props) {
@@ -44,13 +37,8 @@ export default class SubmitReviewScreen extends React.Component {
       },
       method: 'POST'
     };
-    fetchTravoramaApi(request)
-      .catch(error => console.log(error));
-    this.props.navigation.dispatch(NavigationActions.reset(
-      {
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'MainTabNavigator' })]
-      }));
+    fetchTravoramaApi(request).catch(error => console.log(error));
+    backToMain(this.props.navigation);
   }
 
   render() {

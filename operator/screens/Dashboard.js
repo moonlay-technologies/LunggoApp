@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Image, Platform, ScrollView, Text, TouchableOpacity, View,
-  TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet
+  TextInput, ActivityIndicator, TouchableNativeFeedback, StyleSheet,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
@@ -11,6 +11,10 @@ import { MonoText } from '../components/StyledText';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import { getProfile } from '../../commons/ProfileController';
 import * as Formatter from '../../customer/components/Formatter';
+import Modal from '../../commons/components/Modal';
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
+import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
+
 
 export default class Dashboard extends React.Component {
 
@@ -21,6 +25,7 @@ export default class Dashboard extends React.Component {
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     };
+    console.warn('TODO: can\'t navigate to LoginScreen properly when logout');
   }
 
   static navigationOptions = {
@@ -67,7 +72,10 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  _goToActivityList = () => this.props.navigation.navigate('ActivityList');
+  _goToActivityList = () => {
+    this._closeSettingModal();
+    this.props.navigation.navigate('ActivityList');
+  }
 
   _getAppointmentRequest = () => {
     const version = 'v1';
@@ -85,6 +93,7 @@ export default class Dashboard extends React.Component {
       console.log(error);
     });
   }
+
   _getAppointmentList = () => {
     const version = 'v1';
     const path = `/${version}/operator/appointments`;
@@ -139,25 +148,82 @@ export default class Dashboard extends React.Component {
     this.setState({ searchString: event.nativeEvent.text });
   }
 
-  _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
+  // _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
   _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
   _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
-  _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
-  _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
+  _goToProfile = () => {
+    this._closeSettingModal();
+    'TODO'
+    console.warn('TODO: Dashboard.js _goToProfile')
+  }
+
+  _openSettingModal = () => this.refs.settingModal.openModal()
+  _closeSettingModal = () => this.refs.settingModal.closeModal()
+  _openLogoutModal = () => this.refs.logoutModal.openModal()
+
+  _askLogout = () => this._openLogoutModal()
 
   render() {
     const loadingIndicator = this.state.isLoading ?
-      <ActivityIndicator size='large'/> : null;
+      <LoadingAnimation /> : null;
     return (
       <ScrollView style={{backgroundColor:'#f7f8fb'}}>
       <View style={{height:340}}>
         <Image style={{height:250, resizeMode:'cover'}} source={require('../../assets/images/bg1.jpg')}/>
         <View style={styles.containerDashboard}>
           <View style={styles.containerBoxDashboard}>
+            <View style={{position:'absolute', flexDirection:'row', right:15, top:15,}}>
+              <TouchableOpacity>
+                <Icon
+                  style={{width:45, alignItems:'center',}}
+                  name='ios-paper-plane'
+                  type='ionicon'
+                  size={26}
+                  color='#454545'/>
+                <View style={styles.notification}>
+                  <Text style={{color:'#fff', fontWeight:'bold', fontSize:10}}>5</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{width:25, alignItems:'center'}}
+                onPress={this._openSettingModal}
+                >
+                <Icon
+                  name='md-more'
+                  type='ionicon'
+                  size={26}
+                  color='#454545'/>
+              </TouchableOpacity>
+            </View>
+
+            <Modal ref='settingModal'
+              style={styles.modalMenu}
+              animationIn='fadeIn'
+              animationOut='fadeOut'
+              backdropOpacity={0}
+            >
+
+              <LogoutConfirmationModal ref='logoutModal' {...this.props}/>
+
+              <TouchableOpacity onPress={this._goToProfile}>
+                <Text style={styles.teks3a}>Ubah Profil</Text>
+              </TouchableOpacity>
+              <View style={styles.separatorOption}></View>
+              <TouchableOpacity onPress={this._goToActivityList}>
+                <Text style={styles.teks3a}>Ubah Activity</Text>
+              </TouchableOpacity>
+              <View style={styles.separatorOption}></View>
+              <TouchableOpacity onPress={this._askLogout}>
+                <Text style={styles.teks3a}>Log Out Akun</Text>
+              </TouchableOpacity>
+            </Modal>
+
             <Image style={styles.avatarBig} source={{uri:this.state.avatar}}/>
             <View style={{marginTop:20}}>
               <Text style={styles.namaProfile}>{this.state.name}</Text>
@@ -180,8 +246,8 @@ export default class Dashboard extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          
         </View>
+
       </View>
       <View style={{marginTop:30, padding:15, paddingBottom:5}}>
         <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
@@ -252,7 +318,7 @@ export default class Dashboard extends React.Component {
             <View style={{position:'absolute', bottom:0, width:'100%'}}>
               <Button
                   containerStyle={styles.ctaButton3}
-                  style={{fontSize: 12, color: '#ff5f5f',}}
+                  style={{fontSize: 12, color: '#f57b76',}}
                 >
                   5 hari lagi
               </Button>
@@ -268,7 +334,7 @@ export default class Dashboard extends React.Component {
         </View>
        </View>*/}
 
-        {/*<View style={styles.container}>
+       {/* <View style={styles.container}>
           <View>
             <View style={{flexDirection:'row'}}>
               <TouchableOpacity
@@ -276,6 +342,7 @@ export default class Dashboard extends React.Component {
                 onPress={this._goToAccountScreen}
               >
                 <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
+              </TouchableOpacity>
               </View>
               <View style={{flex:1,alignItems:'flex-start', justifyContent:'flex-start'}}>
                 <View style={{}}>
@@ -284,7 +351,7 @@ export default class Dashboard extends React.Component {
                 <View style={{}}>
                   <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
                 </View>
-              </TouchableOpacity>
+              <TouchableOpacity>
                 <Icon
                   style={{marginRight:4}}
                   name='sms'
@@ -466,7 +533,32 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  modalMenu:{
+    backgroundColor:'#fff',
+    width:160,
+    padding:10,
+    position:'absolute',
+    right:10,
+    top:80,
+    zIndex:100,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 4,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation:2
+      },
+    }),
+  },
+  separatorOption:{
+    paddingVertical:10
+  },
   containerDashboard:{
     padding:15,
     position:'absolute',
@@ -550,7 +642,7 @@ const styles = StyleSheet.create({
   },
   saldo: {
     fontSize:16,
-    color:'#ff5f5f',
+    color:'#f57b76',
     marginTop:2,
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
@@ -581,7 +673,7 @@ const styles = StyleSheet.create({
   },
   teks2: {
     fontSize:20,
-    color:'#737c84',
+    color:'#454545',
     fontFamily: 'Hind-SemiBold',
     ...Platform.select({
       ios: {
@@ -599,6 +691,22 @@ const styles = StyleSheet.create({
     color: '#454545',
     fontFamily: 'Hind',
     textAlign:'right',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom:-10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  teks3a: {
+    fontSize:15,
+    color: '#454545',
+    fontFamily: 'Hind',
+    textAlign:'left',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -628,7 +736,7 @@ const styles = StyleSheet.create({
   },
   teks5: {
     fontSize:14,
-    color: '#ff5f5f',
+    color: '#f57b76',
     fontFamily: 'Hind-SemiBold',
     textAlign:'center',
     ...Platform.select({
@@ -647,14 +755,14 @@ const styles = StyleSheet.create({
     paddingVertical:6,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: '#23d3c3',
+    backgroundColor:'#00d3c5',
   },
   ctaButton2: {
     width: '100%',
     paddingVertical:6,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: '#ff5f5f',
+    backgroundColor: '#f57b76',
   },
     ctaButton3: {
     width: '100%',
@@ -686,15 +794,24 @@ const styles = StyleSheet.create({
     color:'#454545',
   },
   notification: {
-    backgroundColor:'#01d4c7', 
+    backgroundColor:'#00d3c5', 
     alignItems:'center', 
-    padding:3, 
-    width:20, 
-    height:20, 
+    padding:1, 
+    width:15, 
+    height:15, 
     borderRadius:20, 
     position:'absolute', 
-    right:0, 
-    bottom:20
+    
+    ...Platform.select({
+      ios: {
+        right:3, 
+        bottom:14,
+      },
+      android: {
+        right:3, 
+        bottom:11,
+      },
+    }),
   },
   textKecil: {
     fontSize: 12, 

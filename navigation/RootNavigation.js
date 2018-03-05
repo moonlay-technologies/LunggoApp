@@ -2,24 +2,23 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
+import { View, Image, Text, StyleSheet, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
+import { APP_TYPE } from '../constants/env';
 
 import {
-  SearchActivity, MyBooking, AddPax, DetailScreen,
-  CalendarPicker, PaymentScreen, PaxChoice, BookingDetail,
-  BookedPageDetail, AdvanceSearch, BeforeLoginScreen,
-  Review, RincianHarga,
+  SearchActivity, MyBooking, BookedPageDetail, DetailScreen, Review,
+  PaymentScreen, PaxChoice, BookingDetail, AddPax, CalendarPicker,
+  AdvanceSearch, RincianHarga,
 } from '../customer/screens/Screens';
 
 import {
-  Dashboard, Mutasi, AppointmentList, AppointmentDetail,
-  AppointmentRequest, ActivityList
+  Dashboard, AppointmentList, AppointmentDetail, AppointmentRequest,
+  ActivityList, Mutasi,
 } from '../operator/screens/Screens';
 
 import EditActivity from '../operator/screens/EditActivity';
@@ -30,11 +29,10 @@ import AccountPage from '../customer/screens/AccountPage';
 import SubmitReview from '../customer/screens/SubmitReviewScreen';
 import SubmitRating from '../customer/screens/SubmitRatingScreen';
 import AddBookingContact from '../customer/screens/AddBookingContact';
-import ForgotPassword from '../commons/Auth/screens/ForgotPasswordScreen';
-import OtpVerification from '../commons/Auth/screens/OtpVerificationScreen';
-import NewPassword from '../commons/Auth/screens/NewPasswordScreen';
-import Registration from '../commons/Auth/screens/Registration';
-import LoginScreen from '../commons/Auth/screens/LoginScreen';
+import {
+  ForgotPassword, OtpVerification, NewPassword,
+  Registration, LoginScreen, BeforeLoginScreen
+} from '../commons/Auth/screens/Screens';
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 
@@ -48,23 +46,18 @@ import Settings from '../customer/screens/SettingsScreen';
 import NotFound from '../commons/NotFoundScreen';
 
 export default class RootNavigator extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   rootStackNavigator = StackNavigator(
     {
-      Main: {
-        // screen: Dashboard
-        // screen: LoginScreen
+      Main: __DEV__ ? {
+        // screen:BeforeLoginScreen
+        //screen: Dashboard
         screen: MainTabNavigator
-        //screen: MyBookingList
         //screen: LoginScreen
-        // screen: SubmitReview
-        //screen: SubmitRating
 
+      } : {
+        screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
-      MainTabNavigator: { screen: MainTabNavigator },
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
       CalendarPicker: { screen: CalendarPicker },
@@ -76,7 +69,7 @@ export default class RootNavigator extends React.Component {
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
       AppointmentList: { screen: AppointmentList },
-      Dashboard: { screen: Dashboard },
+      // Dashboard: { screen: Dashboard },
       AppointmentDetail: { screen: AppointmentDetail },
       AppointmentRequest: { screen: AppointmentRequest },
       ActivityList: { screen: ActivityList },
@@ -100,8 +93,9 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen }
     },
     {
-      initialRouteParams: { appType: 'OPERATOR' },
-      initialRouteName: this.props.isNotFirstOpen ? 'Main' : 'IntroScreen',
+      initialRouteParams: { appType: APP_TYPE },
+      initialRouteName: (this.props.skipIntro || this.props.isLoggedIn) ?
+        'Main' : (APP_TYPE=='OPERATOR') ? 'LoginScreen' : 'IntroScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',
@@ -109,8 +103,15 @@ export default class RootNavigator extends React.Component {
           marginBottom: -5
         },
         headerStyle: {
-          elevation: 2,
-          // marginTop: -20
+           ...Platform.select({
+          ios: {
+          },
+          android: {
+            elevation: 2,
+            marginTop:-20
+
+          },
+        }),
         }
       }),
     }

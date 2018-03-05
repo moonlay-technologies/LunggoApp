@@ -4,7 +4,7 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import ListScreen from './ActivityList';
-
+import LoadingAnimation from '../../customer/components/LoadingAnimation'
 
 async function getActivityList () {
   const version = 'v1';
@@ -51,7 +51,7 @@ export default class ActivityListLoadingScreen extends React.Component {
   render() {
     let { isLoading, list } = this.state;
     let { props } = this;
-    if (isLoading) { return <ActivityIndicator size='large'/> }
+    if (isLoading) { return <LoadingAnimation /> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
     else { return <Text>You don't have any activity product!</Text> }
   }

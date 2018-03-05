@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 
 export default class AccordionView extends Component {
@@ -15,9 +15,11 @@ export default class AccordionView extends Component {
   _renderHeader(section, isActive) {
     let icon = isActive ? this.icons['up'] : this.icons['down'];
     return (
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{section.title}</Text>
-          <Image style={styles.buttonImage} source={icon}/>
+      <View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{section.title}</Text>
+            <Image style={styles.buttonImage} source={icon}/>
+        </View>
       </View>
     );
   }
@@ -25,7 +27,7 @@ export default class AccordionView extends Component {
   _renderContent(section) {
     return (
       <View style={styles.content}>
-        <Text>{section.content}</Text>
+        <Text style={styles.activityDesc}>{section.content}</Text>
       </View>
     );
   }
@@ -35,6 +37,7 @@ export default class AccordionView extends Component {
       <Accordion
         style={styles.container}
         sections={this.props.sections}
+        underlayColor={'transparent'}
         renderHeader={(section, index, isActive) =>
           this._renderHeader(section,isActive)
         }
@@ -52,24 +55,44 @@ const styles = StyleSheet.create({
     // overflow: 'hidden'
   },
   titleContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginVertical:20,
   },
   title: {
     flex    : 1,
-    padding : 10,
-    color   : '#2a2f43',
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 16,
+    color: '#454545',
   },
   buttonImage: {
     width : 20,
     height: 20
   },
   content: {
-    padding   : 10,
-    paddingTop: 0,
-    borderBottomColor: "#cdcdcd",
-    borderBottomWidth: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    paddingBottom:30
   },
+    divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#efefef',
+  },
+  activityDesc: {
+    fontSize: 16,
+    color: '#454545',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+
 })

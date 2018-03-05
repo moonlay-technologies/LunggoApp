@@ -8,8 +8,10 @@ import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
-  ScrollView, Platform } from 'react-native';
+  ScrollView, Platform
+} from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
+import ContinueToCartModal from '../components/ContinueToCartModal';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -31,6 +33,7 @@ async function fetchTravoramaBookApi(data) {
   });
   return response;
 }
+
 
 export default class BookingDetail extends React.Component {
 
@@ -55,6 +58,7 @@ export default class BookingDetail extends React.Component {
     title: 'Detail Pesanan'
   };
 
+
   componentDidMount() {
     getProfile().then(({ contact }) => {
       this.setState({ contact });
@@ -76,13 +80,14 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    scheduleObj.isContactFilled = true;
+    contactObj.isContactFilled = true;
     this.setState({ contact: contactObj });
   }
 
   _book = async () => {
     let { /*pax,*/ date, counter, totalCount, contact, time } = this.state;
-    let { params } = this.props.navigation.state;
+    let { navigation } = this.props;
+    let { params } = navigation.state;
 
     //// counting pax
     let pax = totalCount;
@@ -127,7 +132,7 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         this.setState({ isLoading: false });
         return;
-      } else this.props.navigation.navigate('Cart'); //TODO: ask user before navigate
+      } else this.setState({ isContinueToCartModalVisible: true });
       this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
@@ -167,6 +172,24 @@ export default class BookingDetail extends React.Component {
     })
   }
 
+  _goToRincian = () => {
+    let params = this.props.navigation.state.params;
+    let title = params.title;
+    let total = this.state.price;
+    let breakdown =
+      [{
+        details: this.state.counter.map(ctr => {
+          return {
+            unit: ctr.type,
+            count: ctr.count,
+            unitPrice: ctr.amount,
+            totalPrice: ctr.count * ctr.amount
+          }
+        })
+      }];
+    this.props.navigation.navigate('RincianHarga', { title, breakdown, total })
+  }
+
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
     let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, contact, totalCount, counter } = this.state;
@@ -185,9 +208,7 @@ export default class BookingDetail extends React.Component {
         let { maxCount = 100 } = counterObj;
         if (counterObj.count < maxCount) {
           counterObj.count++;
-          this.state.totalCount++;
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: ++this.state.totalCount, price: this.state.price + counterObj.amount });
         }
       }
       let substract = counterObj => {
@@ -196,9 +217,7 @@ export default class BookingDetail extends React.Component {
         let { minCount = 0 } = counterObj;
         if (counterObj.count > minCount) {
           counterObj.count = DECREMENT(counterObj.count);
-          this.state.totalCount = DECREMENT(this.state.totalCount);
-          this.state.price = counterObj.count * counterObj.amount;
-          this.forceUpdate();
+          this.setState({ totalCount: DECREMENT(this.state.totalCount), price: this.state.price - counterObj.amount });
         }
       }
       return counterArr.map((counterObj, index) =>
@@ -213,7 +232,7 @@ export default class BookingDetail extends React.Component {
               <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
             </TouchableOpacity>
 
-            <Text style={[styles.activityDesc, {width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
+            <Text style={[styles.activityDesc, { width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
 
             <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
               onPress={() => add(counterObj)}
@@ -258,11 +277,10 @@ export default class BookingDetail extends React.Component {
         marginVertical: 20,
       }}>
         {counterButtons(counter)}
-      </View>
+      </View>;
 
     let rincianHarga = (date) ?
-      <TouchableOpacity style={{ flex: 1.5 }} onPress={
-        () => this.props.navigation.navigate('RincianHarga')}>
+      <TouchableOpacity style={{ flex: 1.5 }} onPress={this._goToRincian}>
         <View style={{ alignItems: 'flex-start' }}>
           <View>
             <Text style={{ fontSize: 15, color: '#000', }}>
@@ -293,9 +311,9 @@ export default class BookingDetail extends React.Component {
               source={require('../../assets/images/detailimg3.jpg')}
             />
           </View>*/}
-          <Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
-            Trip to Sahara Desert
-          </Text>
+          {/*<Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
+            Paket Tour
+          </Text>*/}
           {/*<View style={{flexDirection: 'row', marginBottom:5}}>
             <Rating
               // startingValue={3.6}
@@ -309,7 +327,7 @@ export default class BookingDetail extends React.Component {
             elit, sed do eiusmod tempor incididunt ut labore et 
             dolore magna aliqua. Ut enim ad minim veniam.
           </Text>*/}
-          <View style={{ marginTop: 15 }}>
+          {/*<View style={{ marginTop: 15 }}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
               <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
               <View style={{ marginTop: 1, marginLeft: 10 }}>
@@ -342,8 +360,96 @@ export default class BookingDetail extends React.Component {
                 </Text>
               </View>
             </View>
+          </View>*/}
+          <Text style={styles.activityTitle}>Paket Tur</Text>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={{marginTop:10}}>
+              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+            </View>
+          </View>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={{marginTop:10}}>
+              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+            </View>
+          </View>
+          <View style={styles.containerPackage}>
+            <View style={{ flexDirection:'row'}}>
+              <View style={{flex:1.6}}>
+                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+              </View>
+              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                <Button
+                  containerStyle={globalStyles.ctaButton7}
+                  style={{fontSize: 12, color: '#fff'}}
+                >
+                  Pilih
+                </Button>
+              </View>
+            </View>
+            <View style={styles.containerMoreDescription}>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #1
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #2
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.activityDesc1}>
+                  Hightlight #3
+                </Text>
+                <Text style={styles.activityDesc}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit, sed do eiusmod tempor incididunt ut labore et 
+                  dolore magna aliqua. Ut enim ad minim veniam.
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
+
         <View style={styles.divider} />
 
         <View style={styles.container}>
@@ -429,6 +535,10 @@ export default class BookingDetail extends React.Component {
           </View>
         </View>
         {/*bottom CTA button*/}
+        <ContinueToCartModal
+          isVisible={this.state.isContinueToCartModalVisible}
+          {...this.props}
+        />
       </ScrollView>
     );
   }
@@ -439,6 +549,26 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     flex: 1
+  },
+  containerPackage:{
+    backgroundColor:'#fff',
+    borderRadius:3,
+    padding:10,
+    marginTop:15,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 2,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   addButton: {
     height: 35,
@@ -468,7 +598,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 15 * 0.8,
         paddingTop: 20 - (19 * 0.4),
-        //backgroundColor:'red'
+        marginBottom:-10,
       },
       android: {
         lineHeight: 24
@@ -512,6 +642,57 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  activityDesc1: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  hargaDesc: {
+    fontSize: 14,
+    color: '#f57b76',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  moreDesc: {
+    fontSize: 12,
+    color: '#818181',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
   activityDescNumb: {
     fontSize: 14,
     color: '#454545',
@@ -534,7 +715,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#efefef',
+    backgroundColor: '#e3e3e3',
     marginTop: 5,
     marginBottom: 5,
   },
@@ -544,5 +725,11 @@ const styles = StyleSheet.create({
   },
   warningText: {
     color: 'red',
-  }
+  },
+  containerMoreDescription:{
+    borderTopWidth:1,
+    borderTopColor:'#e3e3e3',
+    paddingTop:15,
+    marginTop:15
+  },
 });

@@ -56,7 +56,7 @@ export async function verifyOtp(phoneNumber, otp) {
           case 'ERR_OTP_NOT_VALID':
             response.message = 'Kode verifikasi tidak cocok!'; break;
           case 'ERR_OTP_EXPIRED':
-            response.message = 'Masa kode verifikasi telah habis!'; break;
+            response.message = 'Masa berlaku kode verifikasi telah habis!'; break;
           default:
             response.message = 'Terjadi kesalahan pada server';
             console.warning(response);
@@ -93,7 +93,7 @@ export async function resetPassword(phoneNumber, otp, newPassword) {
           case 'ERR_OTP_NOT_VALID':
             response.message = 'Kode verifikasi tidak cocok!'; break;
           case 'ERR_OTP_EXPIRED':
-            response.message = 'Masa kode verifikasi telah habis!'; break;
+            response.message = 'Masa berlaku kode verifikasi telah habis!'; break;
           default: response.message = 'Terjadi kesalahan pada server';
         }
       }

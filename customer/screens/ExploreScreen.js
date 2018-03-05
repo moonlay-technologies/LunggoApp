@@ -26,9 +26,11 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
-      isLoading: true
+      isLoading: true,
+      wishlists: {},
     };
-    setItemAsync('isNotFirstOpen', 'true');
+    setItemAsync('skipIntro', 'true');
+    this._onWishlist = this._onWishlist.bind(this)
   }
 
   static navigationOptions = {
@@ -36,12 +38,25 @@ export default class ExploreScreen extends React.Component {
     header: (props) => <SearchHeader {...props} />
   };
 
+  _getWishlist = async () => {
+    setTimeout(async () => {
+      let wishlistItems = await getItemAsync('wishlist');
+      if (wishlistItems != null) {
+        let activityList = JSON.parse(wishlistItems);
+        let wishlists = this.state.wishlists;
+        for (var act in activityList)
+          wishlists[act.id] = true;
+        this.setState({ wishlists });
+      }
+    }, 0);
+  }
+
   _refreshContents = () => {
     Promise.all([
-      search('tiket').then(tiketList => this.setState({ tiketList })),
-      search('paket').then(paketList => this.setState({ paketList })),
-      search('trip').then(tripList => this.setState({ tripList })),
-      search('tur').then(turList => this.setState({ turList }))
+      // search('tiket').then(tiketList => this.setState({ tiketList })),
+      // search('paket').then(paketList => this.setState({ paketList })),
+      // search('trip').then(tripList => this.setState({ tripList })),
+      // search('tur').then(turList => this.setState({ turList }))
     ]).then(response => {
       this.setState({ isLoading: false });
     });
@@ -49,12 +64,14 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
+    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this._getWishlist();
   }
 
-  componentWillReceiveProps({ navigation }) {
-    if (navigation.state.params.shouldRefresh) {
-      this._refreshContents();
-    }
+  _onWishlist = async ({ id, wishlisted }) => {
+    let wishlists = this.state.wishlists;
+    wishlists[id] = wishlisted;
+    this.setState({ wishlists });
   }
 
   render() {
@@ -228,7 +245,7 @@ export default class ExploreScreen extends React.Component {
               </View>
               {itemsPerScreen < 3 && (
                 <View>
-                  <WishButton wishlisted={item.wishlisted}
+                  <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
                     id={item.id} big={itemsPerScreen == 1} {...this.props} />
                 </View>
               )}

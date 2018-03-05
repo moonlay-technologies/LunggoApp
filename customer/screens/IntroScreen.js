@@ -13,7 +13,7 @@ import {
 import Swiper from 'react-native-swiper';
 import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
-import BeforeLoginScreen from '../screens/BeforeLoginScreen'
+import BeforeLoginScreen from '../../commons/Auth/screens/BeforeLoginScreen'
 
 export default class IntroScreen extends Component {
 
@@ -53,7 +53,7 @@ export default class IntroScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         {this.state.notLastScreen && (
-          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('MainTabNavigator')}>
+          <TouchableOpacity style={styles.containerLeft} onPress={() => this.props.navigation.replace('Main')}>
             <Text style={{ color: '#01aebc', fontFamily: 'Hind' }}>Lewati</Text>
           </TouchableOpacity>
         )}
