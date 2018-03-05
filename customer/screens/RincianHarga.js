@@ -8,6 +8,7 @@ import {
   Text,
   View,
   Image,
+  ScrollView
 } from 'react-native';
 import * as Formatter from '../components/Formatter'
 
@@ -26,52 +27,53 @@ export default class RincianHarga extends Component {
   };
 
   render() {
-    console.log(this.breakdown);
     return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.categoryTitle}>Rincian Harga</Text>
-        </View>
-        <View style={{ marginTop: 3 }}>
-          <Text style={{ color: '#454545', fontSize: 13, letterSpacing: .8, }}>{this.title}</Text>
-        </View>
-        <View style={{ marginTop: 20 }}>
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.name &&
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }}>
-                  <View style={{ flex: 2, paddingRight: 0 }}>
-                    <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>{bd.name}</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.categoryTitle}>Rincian Harga</Text>
+          </View>
+          <View style={{ marginTop: 3 }}>
+            <Text style={{ color: '#454545', fontSize: 13, letterSpacing: .8, }}>{this.title}</Text>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            {this.breakdown.map((bd, i) =>
+              <View key={i}>
+                {bd.name &&
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }}>
+                    <View style={{ flex: 2, paddingRight: 0 }}>
+                      <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>{bd.name}</Text>
+                    </View>
+                  </View>}
+                {bd.details.map((det, j) =>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }} key={j}>
+                    <View style={{ flex: 2, paddingRight: 5 }}>
+                      <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>
+                        {det.count ? det.count + 'x ' : ''}{det.unit}{det.unitPrice ? ' @ ' + Formatter.price(det.unitPrice) : ''}
+                      </Text>
+                    </View>
+                    {det.description &&
+                      <View style={{ marginTop: 6 }}>
+                        <Text style={{ color: '#454545', fontSize: 11, letterSpacing: .8, lineHeight: 14 }}>det.description</Text>
+                      </View>}
+                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                      <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>{Formatter.price(det.totalPrice)}</Text>
+                    </View>
                   </View>
-                </View>}
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }} key={j}>
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>
-                      {det.count ? det.count + 'x ' : ''}{det.unit}{det.unitPrice ? ' @ ' + Formatter.price(det.unitPrice) : ''}
-                    </Text>
-                  </View>
-                  {det.description &&
-                    <View style={{ marginTop: 6 }}>
-                      <Text style={{ color: '#454545', fontSize: 11, letterSpacing: .8, lineHeight: 14 }}>det.description</Text>
-                    </View>}
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>{Formatter.price(det.totalPrice)}</Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          )}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 20 }}>
-            <View style={{ flex: 1, paddingRight: 5 }}>
-              <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>Total</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, fontWeight: 'bold' }}>{Formatter.price(this.total)}</Text>
+                )}
+              </View>
+            )}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 20 }}>
+              <View style={{ flex: 1, paddingRight: 5 }}>
+                <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, }}>Total</Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={{ color: '#454545', fontSize: 14, letterSpacing: .8, fontWeight: 'bold' }}>{Formatter.price(this.total)}</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

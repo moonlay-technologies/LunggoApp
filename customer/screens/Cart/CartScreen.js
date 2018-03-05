@@ -35,6 +35,26 @@ export default class CartScreen extends React.Component {
     }).catch(error => console.log(error));
   }
 
+  _goToRincian = () => {
+    let { cartId, list, totalPrice, status} = this.state;
+    let title = "DUMMY Cart no #" + cartId;
+    let total = totalPrice;
+    let breakdown = list.map(rsv => {
+      return {
+        name: rsv.activityDetail.name,
+        details: rsv.ticketCount.filter(pax => pax.count).map(pax => {
+          return {
+            unit: pax.type,
+            count: pax.count,
+            unitPrice: pax.totalPrice / pax.count,
+            totalPrice: pax.totalPrice
+          }
+        })
+      }
+    });
+    this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
+  }
+
   _keyExtractor = (item, index) => index;
 
   _renderItem = ({ item, index }) => (
@@ -86,16 +106,23 @@ export default class CartScreen extends React.Component {
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>
           <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
-            <View>
-              <Text style={{ fontSize: 12, color: '#676767', }}>Total</Text>
-            </View>
-            <View>
-              <Text style={{
-                color: '#000',
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}>{Formatter.price(this.state.totalPrice)}</Text>
-            </View>
+            <TouchableOpacity onPress={this._goToRincian}>
+              <View>
+                <Text style={{ fontSize: 12, color: '#676767', }}>Total</Text>
+              </View>
+              <View>
+                <Text style={{
+                  color: '#000',
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                }}>{Formatter.price(this.state.totalPrice)}</Text>
+              </View>
+              <View style={{ marginTop: 4 }} >
+                <Text style={{ fontSize: 11, color: '#01d4cb', fontWeight: 'bold' }}>
+                  Lihat Rincian Harga
+            </Text>
+              </View>
+            </TouchableOpacity>
 
           </View>
           <View style={{ alignItems: 'flex-end', flex: 1 }}>
