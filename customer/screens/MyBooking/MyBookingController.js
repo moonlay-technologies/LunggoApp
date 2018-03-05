@@ -13,7 +13,7 @@ export async function getMyBookingList() {
     let myBookingsJson = await JSON.stringify(fetched.myBookings);
     await setItemAsync('myBookings', myBookingsJson);
 
-    return myBookings;
+    return fetched.myBookings;
   } else {
     let myBookings = await JSON.parse(myBookingsJson);
     let bookings = myBookings.reduce((a, b) => a.concat(b.activities), []);
