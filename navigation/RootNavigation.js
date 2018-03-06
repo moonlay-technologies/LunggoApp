@@ -2,7 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import { View, Image, Text, StyleSheet, Platform } from 'react-native';
+import { View, Image, Text, StyleSheet, Platform, Keyboard } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
@@ -54,7 +54,7 @@ export default class RootNavigator extends React.Component {
         // screen:BeforeLoginScreen
         //screen: Dashboard
         //screen: MainTabNavigator
-        screen: Dashboard
+        screen: MainTabNavigator
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : LoginScreen
       },
@@ -115,6 +115,7 @@ export default class RootNavigator extends React.Component {
         }),
         }
       }),
+      onTransitionStart: () => Keyboard.dismiss()
     }
   );
 

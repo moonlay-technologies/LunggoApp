@@ -18,7 +18,8 @@ export default class LogoutConfirmationModal extends React.Component {
   _logout = () => {
     logout().then(() => {
       if (APP_TYPE != 'OPERATOR')
-        backToMain(this.props.navigation)
+        backToMain(this.props.navigation);
+        
       let { reset, navigate } = NavigationActions;
       const action = reset({
         index: 0,
