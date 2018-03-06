@@ -10,7 +10,6 @@ import globalStyles from '../../commons/globalStyles';
 import Colors from '../../constants/Colors';
 import ImageSlider from 'react-native-image-slider';
 import Accordion from '../components/Accordion';
-import MapView, { Marker } from 'react-native-maps';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
@@ -21,6 +20,7 @@ import {
 } from '../../api/Common';
 import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
+import Maps from '../components/Maps';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -122,7 +122,7 @@ export default class DetailScreen extends Component {
 
                 <View style={styles.divider} />
 
-                <Map lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+                <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
                 <Accordion style={styles.containerdescriptionActivity}
                   sections={[
                     {
@@ -190,7 +190,7 @@ class Footer extends Component {
       <View style={globalStyles.bottomCtaBarContainer}>
         <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
           <View >
-            <Text style={{ fontSize: 12, color: '#676767', }}>Start from</Text>
+            <Text style={{ fontSize: 12, color: '#676767', }}>Mulai dari</Text>
           </View>
           <View>
             <Text style={{
@@ -225,18 +225,19 @@ class Header extends Component {
   componentWillMount() {
     let half = [200, 400];
     let sudden = [380, 400];
+    let { scrollY } = this.props;
     this.setState({
-      backgroundColor: this.props.scrollY.interpolate({
+      backgroundColor: scrollY.interpolate({
         inputRange: half,
         outputRange: ['#fff0', '#ffff'],
         extrapolate: 'clamp',
       }),
-      elevation: this.props.scrollY.interpolate({
+      elevation: scrollY.interpolate({
         inputRange: half,
         outputRange: [0, 2],
         extrapolate: 'clamp',
       }),
-      opacity: this.props.scrollY.interpolate({
+      opacity: scrollY.interpolate({
         inputRange: sudden,
         outputRange: [0, 1],
         extrapolate: 'clamp',
@@ -255,8 +256,14 @@ class Header extends Component {
           <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          <Animated.View style={{ opacity }}>
-            <Text style={[styles.activitydetailTitle, { marginTop: 3 }]}>{title}</Text>
+          <Animated.View style={{ opacity , flex:6.5}}>
+            <Text
+              style={[styles.activitydetailTitle,
+                { marginTop: 6.5, textAlign: 'center'}]}
+              numberOfLines={1}
+            >
+              {title}
+            </Text>
           </Animated.View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
             {/* <TouchableOpacity style={{ marginLeft: 10 }}>
@@ -431,7 +438,7 @@ class MainInfo extends Component {
 
   render() {
     console.log('main info rerendered');
-    let { name, shortDesc, city, duration } = this.props;
+    let { name, shortDesc, city, duration = {} } = this.props;
     return (
       <View>
         <View style={{ paddingTop: 10, paddingBottom: 20 }}>
@@ -523,49 +530,6 @@ class MediaContents extends Component {
           ))}
         </Swiper>
       )
-  }
-}
-
-class Map extends Component {
-
-  _enlargeMapView = () => {
-    let { name, address, city, lat, long } = this.props;
-    this.props.navigation.navigate('MapScreen',
-      { name, address, city, lat, long }
-    );
-  }
-
-  render() {
-    let { name, address, city, lat, long } = this.props;
-    return (
-      <View style={styles.containerdescriptionActivity}>
-        <TouchableOpacity onPress={this._enlargeMapView}>
-          <MapView
-            style={{ width: "100%", height: 150 }}
-            region={{
-              latitude: lat,
-              longitude: long,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            zoomEnabled={false}
-            rotateEnabled={false}
-            scrollEnabled={false}
-            pitchEnabled={false}
-          >
-            <Marker
-              coordinate={{ latitude: lat, longitude: long }}
-              title={address}
-              description={city}
-              ref={marker => (this.marker = marker)}
-            />
-          </MapView>
-        </TouchableOpacity>
-        <MultilineText>
-          {address}
-        </MultilineText>
-      </View>
-    )
   }
 }
 

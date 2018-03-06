@@ -22,8 +22,10 @@ import { WebBrowser } from 'expo';
 class ActivityListItem extends React.PureComponent {
 
   _viewPdfVoucher = async item => {
-    let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
-    WebBrowser.openBrowserAsync(localUri || item.pdfUrl);
+    // TODO uncomment this buat local PDF
+    // let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
+    // WebBrowser.openBrowserAsync(localUri || item.pdfUrl);
+    WebBrowser.openBrowserAsync(item.pdfUrl);
   }
 
   _voucherButton = item => {
@@ -103,7 +105,6 @@ class CartListItem extends React.PureComponent {
 
   _showInvoice = () => {
     let { item } = this.props;
-    console.log(item);
     let title = "DUMMY Cart no #" + item.cartId;
     let total = item.totalFinalPrice;
     let breakdown = item.activities.map(rsv => {
@@ -119,7 +120,6 @@ class CartListItem extends React.PureComponent {
         })
       }
     });
-    console.log(breakdown);
     (item.totalDiscount != 0) && breakdown.push({ details: [{ unit: "Diskon", totalPrice: item.totalDiscount }] });
     (item.totalUniqueCode != 0) && breakdown.push({ details: [{ unit: "Kode unik", totalPrice: item.totalUniqueCode }] });
     this.props.navigation.navigate('RincianHarga', { title, total, breakdown });

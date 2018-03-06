@@ -3,22 +3,22 @@
 import { Notifications } from 'expo';
 import React from 'react';
 import { View, Image, Text, StyleSheet, Platform } from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
+import { APP_TYPE } from '../constants/env';
 
 import {
-  SearchActivity, MyBooking, AddPax, DetailScreen,
-  CalendarPicker, PaymentScreen, PaxChoice, BookingDetail,
-  BookedPageDetail, AdvanceSearch, Review, RincianHarga,
+  SearchActivity, MyBooking, BookedPageDetail, DetailScreen, Review,
+  PaymentScreen, PaxChoice, BookingDetail, AddPax, CalendarPicker,
+  AdvanceSearch, RincianHarga,
 } from '../customer/screens/Screens';
 
 import {
-  Dashboard, Mutasi, AppointmentList, AppointmentDetail,
-  AppointmentRequest, ActivityList
+  Dashboard, AppointmentList, AppointmentDetail, AppointmentRequest,
+  ActivityList, Mutasi,
 } from '../operator/screens/Screens';
 
 import EditActivity from '../operator/screens/EditActivity';
@@ -46,20 +46,17 @@ import Settings from '../customer/screens/SettingsScreen';
 import NotFound from '../commons/NotFoundScreen';
 
 export default class RootNavigator extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   rootStackNavigator = StackNavigator(
     {
-      Main: {
-        //screen:BeforeLoginScreen
+      Main: __DEV__ ? {
+        // screen:BeforeLoginScreen
         //screen: Dashboard
         screen: MainTabNavigator
         //screen: LoginScreen
-        // screen: SubmitReview
-        //screen: SubmitRating
 
+      } : {
+        screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
@@ -72,7 +69,7 @@ export default class RootNavigator extends React.Component {
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
       AppointmentList: { screen: AppointmentList },
-      Dashboard: { screen: Dashboard },
+      // Dashboard: { screen: Dashboard },
       AppointmentDetail: { screen: AppointmentDetail },
       AppointmentRequest: { screen: AppointmentRequest },
       ActivityList: { screen: ActivityList },
@@ -96,8 +93,9 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen }
     },
     {
-      initialRouteParams: { appType: 'OPERATOR' },
-      initialRouteName: this.props.isNotFirstOpen ? 'Main' : 'IntroScreen',
+      initialRouteParams: { appType: APP_TYPE },
+      initialRouteName: (this.props.skipIntro || this.props.isLoggedIn) ?
+        'Main' : (APP_TYPE=='OPERATOR') ? 'LoginScreen' : 'IntroScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',

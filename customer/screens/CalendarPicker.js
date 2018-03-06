@@ -155,7 +155,7 @@ export default class CalendarPicker extends Component {
         >
           <View style={{ backgroundColor:'white', padding:20,}}>
             <Text style={styles.activityTitle}>
-              Choose activity time
+              Pilih jadwal
             </Text>
             <Text style={[styles.activityDesc,{marginBottom:20}]}>
               {Formatter.dateFullLong(this.state.tempSelectedDate)}

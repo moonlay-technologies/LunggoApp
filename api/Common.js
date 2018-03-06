@@ -92,7 +92,7 @@ export function fetchWishlist() {
   });
 }
 
-export function backToMainTab ( navigation ) {
+export function backToMain ( navigation ) {
   let {reset, navigate} = NavigationActions;
   const action = reset({
     index: 0,

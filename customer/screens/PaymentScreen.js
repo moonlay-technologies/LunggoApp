@@ -7,7 +7,7 @@ import { WebView, TouchableOpacity } from 'react-native';
 import { clientId, clientSecret } from '../../constants/env';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
-import { backToMainTab } from '../../api/Common';
+import { backToMain } from '../../api/Common';
 
 export default class PaymentScreen extends React.Component {
 
@@ -16,7 +16,7 @@ export default class PaymentScreen extends React.Component {
       title: 'Pembayaran',
       headerLeft: (
         <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => backToMainTab(this.props.navigation) }>
+          onPress={() => backToMain(navigation) }>
           <Icon name='close' type='evilicons' size={20} />
         </TouchableOpacity>
       ),
@@ -25,7 +25,7 @@ export default class PaymentScreen extends React.Component {
 
   _onMessage = event => {
     if (event.nativeEvent.data == 'ExploreScreen') {
-      return backToMainTab(this.props.navigation);
+      return backToMain(this.props.navigation);
     }
   }
 

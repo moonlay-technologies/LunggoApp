@@ -27,7 +27,6 @@ export default class RincianHarga extends Component {
   };
 
   render() {
-    console.log(this.breakdown);
     return (
       <ScrollView style={styles.container}>
         <View style={{paddingHorizontal:20}}>
@@ -207,7 +206,6 @@ export default class RincianHarga extends Component {
         </View>
 
         <View style={{paddingBottom:40}}></View>
-
       </ScrollView>
     );
   }

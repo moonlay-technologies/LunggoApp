@@ -21,7 +21,7 @@ import Swiper from 'react-native-swiper';
 export default class SubmitRatingScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'SubmitRating',
+    title: 'Beri Rating',
   };
 
   constructor(props) {

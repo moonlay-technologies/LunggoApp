@@ -6,11 +6,9 @@ import {
   Platform, StyleSheet, Text, View, Image, TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import globalStyles from '../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
-import Modal from 'react-native-modal';
-import { checkUserLoggedIn, backToMainTab } from '../../api/Common'; //'../../commons/Auth/AuthController';
-import { removeAccessToken } from '../../commons/Auth/AuthController';
+import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
+import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
@@ -18,7 +16,6 @@ export default class AccountScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isModalVisible: false,
       isLoggedIn: null,
       contact: {},
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
@@ -42,13 +39,7 @@ export default class AccountScreen extends React.Component {
     });
   }
 
-  _logout = () => {
-    removeAccessToken()
-      .then( () => backToMainTab(this.props.navigation));
-  }
-
-  _setModalVisible = vis => this.setState({ isModalVisible: vis })
-  _closeModal = () => this._setModalVisible(false)
+  _openModal = () => this.refs.modal.openModal()
 
   render() {
     let { navigate } = this.props.navigation;
@@ -56,32 +47,7 @@ export default class AccountScreen extends React.Component {
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
-        <Modal isVisible={this.state.isModalVisible}
-          onBackdropPress={this._closeModal}
-          onBackButtonPress={this._closeModal}
-        >
-          <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: '#fff' }}>
-            <Text style={styles.textCart}>
-              Apakah kamu yakin mau log out?
-            </Text>
-            <View style={{ marginVertical: 10 }}>
-              <Button
-                containerStyle={globalStyles.ctaButton2}
-                style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
-                onPress={this._closeModal}>
-                Tidak
-              </Button>
-            </View>
-            <View>
-              <Button
-                containerStyle={globalStyles.ctaButton3}
-                style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
-                onPress={this._logout}>
-                Ya
-              </Button>
-            </View>
-          </View>
-        </Modal>
+        <LogoutConfirmationModal ref='modal' {...this.props}/>
 
         {this.state.isLoggedIn ?
 
@@ -201,7 +167,7 @@ export default class AccountScreen extends React.Component {
               </View>
             </View>*/}
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this._setModalVisible(true)}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
                 <View style={{ justifyContent: 'center', flex: 1 }}>
                   <Text style={styles.optionProfile}>Log Out</Text>
                 </View>
@@ -279,54 +245,6 @@ const styles = StyleSheet.create({
     height: 90,
     resizeMode: 'cover',
     borderRadius: 45
-  },
-  textCartBesar: {
-    fontFamily: 'Hind-Bold',
-    color: '#454545',
-    fontSize: 19,
-    ...Platform.select({
-      ios: {
-        lineHeight: 25,
-        paddingTop: 0,
-      },
-      android: {},
-    }),
-  },
-  textCart: {
-    fontFamily: 'Hind-Light',
-    color: '#454545',
-    fontSize: 14,
-    textAlign: 'center',
-    ...Platform.select({
-      ios: {
-        lineHeight: 12,
-        paddingTop: 4,
-        marginBottom: -5,
-        marginTop: 8
-      },
-      android: {
-        marginTop: 5
-
-      },
-    }),
-  },
-  textCartColor: {
-    fontFamily: 'Hind',
-    color: '#ff5f5f',
-    fontSize: 14,
-    textAlign: 'center',
-    ...Platform.select({
-      ios: {
-        lineHeight: 12,
-        paddingTop: 4,
-        marginBottom: -5,
-        marginTop: 8
-      },
-      android: {
-        marginTop: 5
-
-      },
-    }),
   },
   optionProfile: {
     fontFamily: 'Hind-Light',

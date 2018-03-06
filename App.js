@@ -8,10 +8,15 @@ import Colors from './constants/Colors';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-    isFirstOpen: false
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingComplete: false,
+      skipIntro: false,
+      isLoggedIn: false,
+    };
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -26,9 +31,11 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' &&
-            <View style={styles.statusBarUnderlay} />}
-          <RootNavigation isNotFirstOpen={this.state.isNotFirstOpen} />
+          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+          <RootNavigation
+            skipIntro={this.state.skipIntro}
+            isLoggedIn={this.state.isLoggedIn}
+          />
         </View>
       );
     }
@@ -36,7 +43,8 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      getItemAsync('isNotFirstOpen').then(isNotFirstOpen => this.setState({ isNotFirstOpen })),
+      getItemAsync('skipIntro').then(res => this.setState({ skipIntro:res })),
+      getItemAsync('isLoggedIn').then(isLoggedIn => this.setState({ isLoggedIn })),
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
         require('./assets/images/robot-prod.png'),
