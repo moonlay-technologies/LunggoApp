@@ -105,7 +105,7 @@ class CartListItem extends React.PureComponent {
 
   _showInvoice = () => {
     let { item } = this.props;
-    let title = "DUMMY Cart no #" + item.cartId;
+    let title = "Nomor Keranjang #" + item.cartId;
     let total = item.totalFinalPrice;
     let breakdown = item.activities.map(rsv => {
       return {
@@ -120,9 +120,10 @@ class CartListItem extends React.PureComponent {
         })
       }
     });
-    (item.totalDiscount != 0) && breakdown.push({ details: [{ unit: "Diskon", totalPrice: item.totalDiscount }] });
-    (item.totalUniqueCode != 0) && breakdown.push({ details: [{ unit: "Kode unik", totalPrice: item.totalUniqueCode }] });
-    this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
+    let modifiers = [];
+    (item.totalDiscount != 0) && modifiers.push({ name: "Diskon", amount: -item.totalDiscount });
+    (item.totalUniqueCode != 0) && modifiers.push({ name: "Kode unik", amount: item.totalUniqueCode });
+    this.props.navigation.navigate('RincianHarga', { title, total, breakdown, modifiers });
   }
   _showInstruction = () => this.props.navigation.navigate('PaymentScreen') /// TODO ganti jd INstruction
 

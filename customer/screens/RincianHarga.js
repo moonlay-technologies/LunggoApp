@@ -18,7 +18,8 @@ export default class RincianHarga extends Component {
     super(props);
     let params = this.props.navigation.state.params;
     this.title = params.title;
-    this.breakdown = params.breakdown;
+    this.breakdown = params.breakdown || [];
+    this.modifiers = params.modifiers || [];
     this.total = params.total;
   }
 
@@ -29,175 +30,65 @@ export default class RincianHarga extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <View style={{paddingHorizontal:20}}>
+        <View style={{ paddingHorizontal: 20 }}>
           <Text style={styles.categoryTitle}>Rincian Harga</Text>
         </View>
-        <View style={{ marginTop: 3, paddingHorizontal:20}}>
-          <Text style={{ color: '#454545', fontSize: 13, letterSpacing: .8, }}>#kode23408123</Text>
+        <View style={{ marginTop: 3, paddingHorizontal: 20 }}>
+          <Text style={{ color: '#454545', fontSize: 13, letterSpacing: .8, }}>{this.title}</Text>
         </View>
 
-        <View style={styles.containerRincian}>
-          <View style={{marginBottom:10}}>
-            <Text style={styles.activityTitle}>Paket perjalanan ke Hongkong</Text>
-          </View>
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.name &&
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0 }}>
-                  <View style={{ flex: 2, paddingRight: 0 }}>
-                    <Text style={styles.activityDesc}>{bd.name}</Text>
-                  </View>
-                </View>}
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0}} key={j}>
-
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={styles.activityDesc}>
-                      {det.count ? det.count + 'x ' : ''}{det.unit}{det.unitPrice ? ' @ ' + Formatter.price(det.unitPrice) : ''}
-                    </Text>
-                  </View>
-                  {det.description &&
-                    <View style={{ marginTop: 6 }}>
-                      <Text style={{ color: '#454545', fontSize: 11, letterSpacing: .8, lineHeight: 14 }}>det.description</Text>
-                    </View>}
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.activityDesc}>{Formatter.price(det.totalPrice)}</Text>
-                  </View>
-
-                </View> 
-              )}
+        {this.breakdown.map((bd, i) =>
+          <View style={styles.containerRincian} key={i}>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.activityTitle}>{bd.name}</Text>
             </View>
-          )} 
 
-           <View style={{marginVertical:5}}></View>
+            {bd.details.map((det, j) =>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0 }} key={j}>
 
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.name &&
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }}>
-                  <View style={{ flex: 2, paddingRight: 0 }}>
-                    <Text style={styles.activityDesc}>{bd.name}</Text>
-                  </View>
-                </View>}
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical:0}} key={j}>
+                <View style={{ flex: 2, paddingRight: 5 }}>
+                  <Text style={styles.activityDesc}>
+                    {det.count ? det.count + 'x ' : ''}{det.unit}{det.unitPrice ? ' @ ' + Formatter.price(det.unitPrice) : ''}
+                  </Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={styles.activityDesc}>{Formatter.price(det.totalPrice)}</Text>
+                </View>
+              </View>
+            )}
 
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={styles.activityDesc}>
-                      1x Child @ Rp 200.000
-                    </Text>
-                  </View>
-                  {det.description &&
-                    <View style={{ marginTop: 6 }}>
-                      <Text style={{ color: '#454545', fontSize: 11, letterSpacing: .8, lineHeight: 14 }}>det.description</Text>
-                    </View>}
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.activityDesc}>Rp 200.000</Text>
-                  </View>
+            <View style={{ marginVertical: 5 }}></View>
 
-                </View> 
-              )}
-            </View>
-          )} 
-          
-          <View style={{marginVertical:5}}></View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>
-            <View style={{ flex: 1, paddingRight: 5 }}>
-              <Text style={styles.activityDesc}>Total</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={styles.activityDesc}>{Formatter.price(this.total)}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>
+              <View style={{ flex: 1, paddingRight: 5 }}>
+                <Text style={styles.activityDesc}>Total</Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={styles.activityDesc}>{Formatter.price(bd.details.reduce((sum, det) => sum + det.totalPrice, 0))}</Text>
+              </View>
             </View>
           </View>
-        </View>
+        )}
 
         <View style={styles.containerRincian}>
-          <View style={{marginBottom:10}}>
-            <Text style={styles.activityTitle}>Paket perjalanan ke Inggeris</Text>
-          </View>
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.name &&
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0 }}>
-                  <View style={{ flex: 2, paddingRight: 0 }}>
-                    <Text style={styles.activityDesc}>{bd.name}</Text>
-                  </View>
-                </View>}
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0}} key={j}>
+          {this.modifiers.map((mod, i) =>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0 }} key={i}>
+              <View style={{ flex: 2, paddingRight: 5 }}>
+                <Text style={styles.activityDesc}>
+                  {mod.name}
+                </Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={styles.activityDesc}>{Formatter.price(mod.amount)}</Text>
+              </View>
 
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={styles.activityDesc}>
-                      {det.count ? det.count + 'x ' : ''}{det.unit}{det.unitPrice ? ' @ ' + Formatter.price(det.unitPrice) : ''}
-                    </Text>
-                  </View>
-                  {det.description &&
-                    <View style={{ marginTop: 6 }}>
-                      <Text style={{ color: '#454545', fontSize: 11, letterSpacing: .8, lineHeight: 14 }}>det.description</Text>
-                    </View>}
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.activityDesc}>{Formatter.price(det.totalPrice)}</Text>
-                  </View>
-
-                </View> 
-              )}
             </View>
-          )} 
-          <View style={{marginVertical:5}}></View>
+          )}
+          {!!this.modifiers.length && <View style={{ marginVertical: 5 }}></View>}
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: this.modifiers.length ? 1 : 0, borderTopColor: '#efefef', paddingTop: this.modifiers.length ? 15 : 0 }}>
             <View style={{ flex: 1, paddingRight: 5 }}>
-              <Text style={styles.activityDesc}>Total</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={styles.activityDesc}>{Formatter.price(this.total)}</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.containerRincian}>
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0}} key={j}>
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={styles.activityDesc}>
-                      Diskon voucher
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.activityDesc}>Rp 200.000</Text>
-                  </View>
-
-                </View> 
-              )}
-            </View>
-          )} 
-          <View style={{marginVertical:5}}></View>
-
-          {this.breakdown.map((bd, i) =>
-            <View key={i}>
-              {bd.details.map((det, j) =>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0}} key={j}>
-                  <View style={{ flex: 2, paddingRight: 5 }}>
-                    <Text style={styles.activityDesc}>
-                      Kode Unik
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.activityDesc}>Rp 153</Text>
-                  </View>
-
-                </View> 
-              )}
-            </View>
-          )} 
-          <View style={{marginVertical:5}}></View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>
-            <View style={{ flex: 1, paddingRight: 5 }}>
-              <Text style={styles.activityDescTotal}>Grand Total</Text>
+              <Text style={styles.activityDescTotal}>Total</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               <Text style={styles.activityDescTotal}>{Formatter.price(this.total)}</Text>
@@ -205,7 +96,7 @@ export default class RincianHarga extends Component {
           </View>
         </View>
 
-        <View style={{paddingBottom:40}}></View>
+        <View style={{ paddingBottom: 40 }}></View>
       </ScrollView>
     );
   }
@@ -218,11 +109,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerRincian: {
-     marginTop: 20, 
-     backgroundColor:'#fff', 
-     padding:20,
-     borderWidth:1,
-     borderColor:'#dfdfdf'
+    marginTop: 20,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#dfdfdf'
   },
   activityTitle: {
     fontFamily: 'Hind-SemiBold',
@@ -258,7 +149,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-    activityDescTotal: {
+  activityDescTotal: {
     fontSize: 17,
     color: '#454545',
     fontFamily: 'Hind-Bold',
@@ -281,13 +172,13 @@ const styles = StyleSheet.create({
     color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight:30,
-        paddingTop:5,
-        marginBottom:-25,  
+        lineHeight: 30,
+        paddingTop: 5,
+        marginBottom: -25,
       },
       android: {
         lineHeight: 26,
-        paddingBottom:8,
+        paddingBottom: 8,
 
       },
     }),

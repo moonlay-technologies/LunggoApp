@@ -174,10 +174,10 @@ export default class BookingDetail extends React.Component {
 
   _goToRincian = () => {
     let params = this.props.navigation.state.params;
-    let title = params.title;
     let total = this.state.price;
     let breakdown =
       [{
+        name: params.title,
         details: this.state.counter.map(ctr => {
           return {
             unit: ctr.type,
@@ -187,7 +187,7 @@ export default class BookingDetail extends React.Component {
           }
         })
       }];
-    this.props.navigation.navigate('RincianHarga', { title, breakdown, total })
+    this.props.navigation.navigate('RincianHarga', { breakdown, total })
   }
 
   render() {
