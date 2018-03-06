@@ -22,7 +22,6 @@ export default class BookedPageDetail extends React.Component {
     // this.state = {
     //   timeLeft: Moment(this.details.timeLimit).toNow(),
     // };
-    console.warn('call and sms operator blom di tes');
     console.warn('avatar operator dan pax list masih dummy / blm jln');
   }
 

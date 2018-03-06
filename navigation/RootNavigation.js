@@ -35,6 +35,7 @@ import {
 } from '../commons/Auth/screens/Screens';
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
+import WebViewScreen from '../customer/screens/WebViewScreen';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -90,7 +91,8 @@ export default class RootNavigator extends React.Component {
       Settings: { screen: Settings },
       NotFound: { screen: NotFound },
       IntroScreen: { screen: IntroScreen },
-      BeforeLoginScreen: { screen: BeforeLoginScreen }
+      BeforeLoginScreen: { screen: BeforeLoginScreen },
+      WebViewScreen: { screen: WebViewScreen }
     },
     {
       initialRouteParams: { appType: APP_TYPE },

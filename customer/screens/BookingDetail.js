@@ -304,63 +304,7 @@ export default class BookingDetail extends React.Component {
 
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={styles.container}>
-          {/*<View style={{flex:1, marginBottom:15}}>
-            <Image
-              style={styles.thumb}
-              source={require('../../assets/images/detailimg3.jpg')}
-            />
-          </View>*/}
-          {/*<Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
-            Paket Tour
-          </Text>*/}
-          {/*<View style={{flexDirection: 'row', marginBottom:5}}>
-            <Rating
-              // startingValue={3.6}
-              readonly
-              imageSize={12}
-              // onFinishRating={this.ratingCompleted}
-            />
-          </View>
-          <Text style={styles.activityDesc}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit, sed do eiusmod tempor incididunt ut labore et 
-            dolore magna aliqua. Ut enim ad minim veniam.
-          </Text>*/}
-          {/*<View style={{ marginTop: 15 }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Jepang
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Maksimum 6 orang
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Khusus hari minggu
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Untuk usia diatas 10 tahun
-                </Text>
-              </View>
-            </View>
-          </View>*/}
+        {/* <View style={styles.container}>
           <Text style={styles.activityTitle}>Paket Tur</Text>
           <View style={styles.containerPackage}>
             <View style={{ flexDirection:'row'}}>
@@ -450,7 +394,7 @@ export default class BookingDetail extends React.Component {
           </View>
         </View>
 
-        <View style={styles.divider} />
+        <View style={styles.divider} /> */}
 
         <View style={styles.container}>
 
