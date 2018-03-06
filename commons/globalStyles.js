@@ -61,7 +61,14 @@ export default StyleSheet.create({
     borderRadius:3,
     backgroundColor: '#f57b76',
   },
-
+  ctaButton8: {
+    width: '100%',
+    paddingTop: 10,
+    paddingBottom: 10,
+    overflow: 'hidden',
+    borderRadius:3,
+    backgroundColor: '#f57b76',
+  },
   ctaButtonReview: {
     width: '100%',
     paddingTop: 8,
