@@ -58,11 +58,11 @@ export default class Mutasi extends React.Component {
   _showTrxList = () => {
     let startEndDiff = Moment(this.state.endDate).diff(this.state.StartDate, 'days');
     if (startEndDiff > 31 || startEndDiff < 0 || this.state.isDateOutOfBound)
-      return <Text>Rentang tanggal maksimal 31 hari</Text>;
+      return <View style={{alignItems:'center', flex:1, justifyContent:'center',}}><Text>Rentang tanggal maksimal 31 hari</Text></View>;
     if (this.state.isLoading)
       return <LoadingAnimation />;
     else if (!this.state.trx.length)
-      return <Text>Tidak ada transaksi pada rentang tanggal ini.</Text>;
+      return <View style={{alignItems:'center', flex:1, justifyContent:'center'}}><Text>Tidak ada transaksi pada rentang tanggal ini.</Text></View>;
     else
       return this.state.trx.map(t => (
         <View style={styles.container} key={t.trxNo}>
@@ -90,64 +90,80 @@ export default class Mutasi extends React.Component {
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 10, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dfdfdf', padding: 15 }}>
             <View style={{ flexDirection: 'row', flex: 1 }}>
-              <DatePicker
-                style={{ flex: 1, paddingRight: 10, }}
-                date={Moment(this.state.startDate).format(this.format)}
-                showIcon={false}
-                mode="date"
-                placeholder="Start Date"
-                format={this.format}
-                minDate={Moment(new Date()).add(-1, 'year').format(this.format)}
-                maxDate={Moment(new Date()).format(this.format)}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(date) => {
-                  console.log(date);
-                  this.setState({ startDate: Moment(date, this.format, this.locale) });
-                  this._getTrx();
-                }}
-                customStyles={{
-                  placeholderText: {
-                    color: '#000'
-                  },
-                  dateInput: {
-                    borderRadius: 3
-                  },
-                }}
-              />
-              <DatePicker
-                style={{ flex: 1 }}
-                date={Moment(this.state.endDate).format(this.format)}
-                showIcon={false}
-                mode="date"
-                placeholder="End Date"
-                format={this.format}
-                minDate={Moment(this.state.startDate).format(this.format)}
-                maxDate={Moment(new Date()).format(this.format)}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={(date) => {
-                  this.setState({ endDate: Moment(date, this.format, this.locale) });
-                  this._getTrx();
-                }}
-                customStyles={{
-                  placeholderText: {
-                    color: '#000'
-                  },
-                  dateInput: {
-                    borderRadius: 3
-                  },
-                }}
-              />
+              <View>
+                <Text style={styles.textKecil1}>Tanggal awal</Text>
+                <DatePicker
+                  style={styles.containerTanggal}
+                  date={Moment(this.state.startDate).format(this.format)}
+                  showIcon={false}
+                  mode="date"
+                  placeholder="Start Date"
+                  format={this.format}
+                  minDate={Moment(new Date()).add(-1, 'year').format(this.format)}
+                  maxDate={Moment(new Date()).format(this.format)}
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  onDateChange={(date) => {
+                    console.log(date);
+                    this.setState({ startDate: Moment(date, this.format, this.locale) });
+                    this._getTrx();
+                  }}
+                  customStyles={{
+                    placeholderText: {
+                      fontSize:20,
+                      color:'#fff'
+                    },
+                    dateText:{
+                      color:'#fff', 
+                      fontWeight:'bold'
+                    },
+                    dateInput: {
+                      borderColor:'transparent'
+                    },
+                  }}
+                />
+              </View>
+              <View>
+                <Text style={styles.textKecil1}>Tanggal akhir</Text>
+                <DatePicker
+                  style={styles.containerTanggal}
+                  date={Moment(this.state.endDate).format(this.format)}
+                  showIcon={false}
+                  mode="date"
+                  placeholder="End Date"
+                  format={this.format}
+                  minDate={Moment(this.state.startDate).format(this.format)}
+                  maxDate={Moment(new Date()).format(this.format)}
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  onDateChange={(date) => {
+                    this.setState({ endDate: Moment(date, this.format, this.locale) });
+                    this._getTrx();
+                  }}
+                  customStyles={{
+                    placeholderText: {
+                      fontSize:20,
+                      color:'#fff'
+                    },
+                    dateText:{
+                      color:'#fff',
+                      fontWeight:'bold'
+                    },
+                    dateInput: {
+                      borderColor:'transparent'
+                    },
+                  }}
+                />
+              </View>
             </View>
-            <View style={{ flex: 1, alignItems: 'center', marginTop: 15 }}>
+            {/*<View style={{ flex: 1, alignItems: 'center', marginTop: 15 }}>
               <Button
                 containerStyle={globalStyles.ctaButton8}
                 style={{ fontSize: 14, color: '#fff' }}
               >
                 Pilih
               </Button>
-            </View>
+            </View>*/}
           </View>
 
           <View>
@@ -173,10 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
   },
   boxMutasi: {
-    marginBottom: 15,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#dfdfdf',
   },
   priceTitleBig: {
     fontSize: 14,
@@ -223,10 +235,26 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  textKecil1: {
+    fontSize: 14,
+    fontFamily: 'Hind-SemiBold',
+    color: '#676767',
+    textAlign:'center',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom: -10,
+      },
+      android: {
+        marginBottom: -3,
+      },
+    }),
+  },
   kode: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'Hind-Bold',
-    color: '#01d4cb',
+    color: '#676767',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -253,14 +281,15 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
+  containerTanggal:{
+    flex: 1, 
+    paddingRight: 10, 
+    marginRight:5, 
+    marginTop:10, 
+    borderRadius: 3, 
+    borderColor:'#00a89d', 
+    backgroundColor:'#00bdb1',
+    
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
-  }
+
 });
