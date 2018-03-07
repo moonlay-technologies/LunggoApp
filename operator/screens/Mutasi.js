@@ -89,8 +89,8 @@ export default class Mutasi extends React.Component {
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 10, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dfdfdf', padding: 15 }}>
-            <View style={{ flexDirection: 'row', flex: 1 }}>
-              <View>
+            <View style={{ flexDirection: 'row', flex: 1, alignItems:'center'}}>
+              <View style={{flex:1,  alignItems:'center'}}>
                 <Text style={styles.textKecil1}>Tanggal awal</Text>
                 <DatePicker
                   style={styles.containerTanggal}
@@ -118,12 +118,14 @@ export default class Mutasi extends React.Component {
                       fontWeight:'bold'
                     },
                     dateInput: {
-                      borderColor:'transparent'
+                      borderRadius: 3, 
+                      borderColor:'#00a89d', 
+                      backgroundColor:'#00bdb1',
                     },
                   }}
                 />
               </View>
-              <View>
+              <View style={{flex:1, alignItems:'center'}}>
                 <Text style={styles.textKecil1}>Tanggal akhir</Text>
                 <DatePicker
                   style={styles.containerTanggal}
@@ -150,7 +152,9 @@ export default class Mutasi extends React.Component {
                       fontWeight:'bold'
                     },
                     dateInput: {
-                      borderColor:'transparent'
+                      borderRadius: 3, 
+                      borderColor:'#00a89d', 
+                      backgroundColor:'#00bdb1',
                     },
                   }}
                 />
@@ -282,9 +286,8 @@ const styles = StyleSheet.create({
     }),
   },
   containerTanggal:{
-    flex: 1, 
-    paddingRight: 10, 
-    marginRight:5, 
+    flex: 1,
+    width:'95%',
     marginTop:10, 
     borderRadius: 3, 
     borderColor:'#00a89d', 
