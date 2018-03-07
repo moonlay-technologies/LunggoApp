@@ -4,7 +4,7 @@
 
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { CalendarList } from 'react-native-calendars';
 import {
   StyleSheet, Platform, View, Text, TouchableOpacity,
@@ -14,14 +14,17 @@ import Modal from 'react-native-modal';
 import Button from 'react-native-button';
 import * as Formatter from '../components/Formatter';
 
-export default class CalendarPicker extends Component {
+export default class CalendarPicker extends React.Component {
 
   constructor (props) {
     super(props)
-    let { selectedDate, selectedTime, availableDateTimes, price } =
-      this.props.navigation.state.params;
+    let { selectedDate, selectedTime, availableDateTimes, price,
+        } = props.navigation.state.params;
     let markedDates = {};
-    availableDateTimes && availableDateTimes.map( item => {
+    availableDateTimes.map( item => {
+      //// if the date has passed, do nothing
+      if (new Date(item.date) < new Date() ) return;
+      //// set markedDates to record every date in available date
       markedDates[item.date] = {disabled: false};
       if (item.availableHours) {
         markedDates[item.date].availableHours = item.availableHours;
@@ -31,8 +34,7 @@ export default class CalendarPicker extends Component {
 
     this.state = {
       selectedDate, selectedTime, price, markedDates,
-      // minDate : '2018-01-10', //// kalo ada yg minimal H-3 dsb
-      minDate : Date(),
+      minDate: Date(), //'2018-01-10',////kalo ada yg minimal H-3 dsb
       isModalVisible: false,
       tempSelectedDate: null,
     };
