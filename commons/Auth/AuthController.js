@@ -85,6 +85,8 @@ export async function getAuthAccess() {
       )
       //already logged in, go to next step
       global.isFetchingAuth = false;
+      global.accessToken = accessToken;
+      global.authLevel = authLevel;
       return { accessToken, authLevel };
     } //// if it's not, then token is expired or client doesnt have expTime
     else/**/ if (refreshToken) {

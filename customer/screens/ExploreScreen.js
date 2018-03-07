@@ -13,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
 import LoadingAnimation from '../components/LoadingAnimation'
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -26,6 +27,7 @@ export default class ExploreScreen extends React.Component {
       paketList: [],
       tripList: [],
       turList: [],
+      promoList: [],
       isLoading: true,
       wishlists: {},
     };
@@ -51,12 +53,29 @@ export default class ExploreScreen extends React.Component {
     }, 0);
   }
 
+  _getPromos = async () => {
+    const path = '/v1/featpromo';
+    let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
+    try {
+      let response = await fetchTravoramaApi(request);
+      if (response) {
+        return response.featuredPromos;
+      } else {
+        console.error('PromoAPI: no response returned!');
+        return 'no response returned';
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   _refreshContents = () => {
     Promise.all([
-      // search('tiket').then(tiketList => this.setState({ tiketList })),
-      // search('paket').then(paketList => this.setState({ paketList })),
-      // search('trip').then(tripList => this.setState({ tripList })),
-      // search('tur').then(turList => this.setState({ turList }))
+      search('tiket').then(tiketList => this.setState({ tiketList })),
+      search('paket').then(paketList => this.setState({ paketList })),
+      search('trip').then(tripList => this.setState({ tripList })),
+      search('tur').then(turList => this.setState({ turList })),
+      this._getPromos().then(promoList => this.setState({ promoList }))
     ]).then(response => {
       this.setState({ isLoading: false });
     });
@@ -79,8 +98,6 @@ export default class ExploreScreen extends React.Component {
     let placeSrc = [require('../../assets/images/yogya.jpg'), require('../../assets/images/surabaya.jpg'), require('../../assets/images/bg.jpg')];
     let places = [...placeSrc, ...placeSrc, ...placeSrc];
     let placeList = places.map(place => { return { mediaSrc: place } });
-    let promos = [require('../../assets/images/promo1.jpg'), require('../../assets/images/promo2.jpg'), require('../../assets/images/promo3.jpg')]
-    let promoList = promos.map(promo => { return { mediaSrc: promo } });
     if (this.state.isLoading)
       return <LoadingAnimation />
     else
@@ -127,22 +144,22 @@ export default class ExploreScreen extends React.Component {
           </View> */}
 
           {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 200 })}
+          {this._renderContent({ list: this.state.tiketList, itemsPerScreen: 1, height: 200 })}
 
           {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-          {this._renderContent({ list: allList, itemsPerScreen: 2, height: 150 })}
+          {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
 
           {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-          {this._renderContent({ list: allList, itemsPerScreen: 3, height: 150 })}
+          {this._renderContent({ list: this.state.tripList, itemsPerScreen: 3, height: 150 })}
 
           {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-          {this._renderContent({ list: allList, itemsPerScreen: 1, height: 100 })}
+          {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
 
-          {this._renderHeader({ title: 'Destinasi Favorit' })}
-          {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })}
+          {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
+          {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
 
           {this._renderHeader({ title: 'Promo Terkini' })}
-          {this._renderContent({ list: promoList, itemsPerScreen: 1, height: 100 })}
+          {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
 
           <View style={{ paddingTop: 10 }}></View>
 
@@ -154,6 +171,7 @@ export default class ExploreScreen extends React.Component {
     this.props.navigation.navigate(screen, params);
 
   _onPressProduct = item => this._goTo('DetailScreen', { details: item });
+  _onPressPromo = promo => this._goTo('WebViewScreen', { title: promo.title, url: promo.detailsUrl });
   _onPressCategory = str => this._goTo('SearchActivity', { searchString: str });
 
   _renderHeader({ title, searchUrl }) {
@@ -168,6 +186,82 @@ export default class ExploreScreen extends React.Component {
         )}
       </View>
     )
+  }
+
+  _renderPromo({ list, itemsPerScreen, height }) {
+    let itemWidth = ((width - 1.5 * THUMBNAIL_WS) / itemsPerScreen - THUMBNAIL_WS);
+    let style = StyleSheet.create({
+      containerThumbnail: {
+        backgroundColor: 'transparent',
+        paddingBottom: 8,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 3,
+            shadowOpacity: 0.7
+          },
+        })
+      },
+      thumbnail: {
+        backgroundColor: 'transparent',
+        resizeMode: 'cover',
+        width: itemWidth,
+        height: height,
+        borderRadius: 5,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 6,
+            shadowOpacity: 0.7
+          },
+
+        }),
+      }
+    });
+
+    let _renderItem = ({ item, index }) => {
+      return (
+        <TouchableOpacity key={item.id}
+          style={{
+            width: itemWidth,
+            marginLeft: THUMBNAIL_WS,
+
+          }}
+          activeOpacity={1}
+          onPress={() => this._onPressPromo(item)}
+        >
+          <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
+            <Image
+              style={style.thumbnail}
+              source={{ uri: item.bannerUrl }}
+            />
+          </View>
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+      <Carousel
+        ref={c => this._carousel = c}
+        data={list}
+        renderItem={_renderItem}
+        sliderWidth={width}
+        itemWidth={itemWidth + THUMBNAIL_WS}
+        layout={'default'}
+        firstItem={0}
+        activeSlideAlignment={'start'}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
+      />
+    );
   }
 
   _renderContent({ list, itemsPerScreen, height }) {

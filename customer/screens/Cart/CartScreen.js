@@ -59,13 +59,13 @@ export default class CartScreen extends React.Component {
     <ListItem
       item={item}
       index={index}
-      onPress={this._onPressItem}
+      onPress={() => this._onPressItem(item)}
       onPressDelete={this._onPressDelete}
     />
   );
 
   _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', { details: item })
+    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail })
   };
 
   _onPressDelete = (index, rsvNo) => {

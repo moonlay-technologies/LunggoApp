@@ -2,7 +2,7 @@
 
 import { Notifications } from 'expo';
 import React from 'react';
-import { View, Image, Text, StyleSheet, Platform } from 'react-native';
+import { View, Image, Text, StyleSheet, Platform, Keyboard } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
@@ -35,6 +35,7 @@ import {
 } from '../commons/Auth/screens/Screens';
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
+import WebViewScreen from '../customer/screens/WebViewScreen';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -50,11 +51,10 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: __DEV__ ? {
-        screen:BeforeLoginScreen
+        //screen:BeforeLoginScreen
         //screen: Dashboard
         //screen: MainTabNavigator
-        //screen: Mutasi
-
+        screen: MainTabNavigator
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : LoginScreen
       },
@@ -90,7 +90,8 @@ export default class RootNavigator extends React.Component {
       Settings: { screen: Settings },
       NotFound: { screen: NotFound },
       IntroScreen: { screen: IntroScreen },
-      BeforeLoginScreen: { screen: BeforeLoginScreen }
+      BeforeLoginScreen: { screen: BeforeLoginScreen },
+      WebViewScreen: { screen: WebViewScreen }
     },
     {
       initialRouteParams: { appType: APP_TYPE },
@@ -114,6 +115,7 @@ export default class RootNavigator extends React.Component {
         }),
         }
       }),
+      onTransitionStart: () => Keyboard.dismiss()
     }
   );
 

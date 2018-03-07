@@ -14,8 +14,17 @@ import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common'
 import * as Formatter from '../../customer/components/Formatter'
 import DatePicker from 'react-native-datepicker'
 import globalStyles from '../../commons/globalStyles';
+import Moment from 'moment';
 
 export default class Mutasi extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      startDate: Moment(new Date()).add(-1, 'month'),
+      endDate: new Date(),
+      trx: []
+    };
+  }
 
   static navigationOptions = {
     title: 'Mutasi'
@@ -28,146 +37,88 @@ export default class Mutasi extends React.Component {
       method: 'GET',
       requiredAuthLevel: AUTH_LEVEL.User,
     }).then(response => {
+      console.log(response);
       this.setState({ trx: response.transactionStatements });
     })
   }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      date: '',
-      time: '20:00',
-      datetime: '2016-05-05 20:00',
-      datetime1: '2016-05-05 20:00'
-    };
-  }
-
-
 
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <ScrollView>
-        <View style={{flex:1, marginBottom:10, backgroundColor:'#ffffff', borderWidth:1, borderColor:'#dfdfdf', padding:15}}>
-          <View style={{flexDirection:'row', flex:1}}>
-            <DatePicker
-                style={{flex:1, paddingRight:10,}}
-                date={this.state.date}
+          <View style={{ flex: 1, marginBottom: 10, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dfdfdf', padding: 15 }}>
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              <DatePicker
+                style={{ flex: 1, paddingRight: 10, }}
+                date={this.state.startDate.toString()}
                 showIcon={false}
                 mode="date"
                 placeholder="Start Date"
-                format="YYYY-MM-DD"
-                minDate="2016-05-01"
-                maxDate="2016-06-01"
+                format="DD-MM-YYYY"
+                minDate={Moment(new Date()).add(-1, 'year').toString()}
+                maxDate={new Date().toString()}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
-                onDateChange={(date) => {this.setState({date: date});}}
+                onDateChange={(date) => { this.setState({ startDate: date }); }}
                 customStyles={{
-                  placeholderText:{
-                    color:'#000'
+                  placeholderText: {
+                    color: '#000'
                   },
-                  dateInput:{
-                    borderRadius:3
+                  dateInput: {
+                    borderRadius: 3
                   },
                 }}
               />
               <DatePicker
-                style={{flex:1}}
-                date={this.state.date}
+                style={{ flex: 1 }}
+                date={this.state.endDate.toString()}
                 showIcon={false}
                 mode="date"
                 placeholder="End Date"
-                format="YYYY-MM-DD"
-                minDate="2016-05-01"
-                maxDate="2016-06-01"
+                format="DD-MM-YYYY"
+                minDate={this.state.startDate.toString()}
+                maxDate={new Date().toString()}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
-                onDateChange={(date) => {this.setState({date: date});}}
+                onDateChange={(date) => { this.setState({ endDate: date }); }}
                 customStyles={{
-                  placeholderText:{
-                    color:'#000'
+                  placeholderText: {
+                    color: '#000'
                   },
-                  dateInput:{
-                    borderRadius:3
+                  dateInput: {
+                    borderRadius: 3
                   },
                 }}
               />
-          </View>
-            <View style={{flex:1, alignItems:'center', marginTop:15}}>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', marginTop: 15 }}>
               <Button
                 containerStyle={globalStyles.ctaButton8}
-                style={{fontSize: 14, color: '#fff'}}
+                style={{ fontSize: 14, color: '#fff' }}
               >
                 Pilih
               </Button>
             </View>
-          </View>  
+          </View>
 
-          {/* <View style={styles.container}>
-            <Text style={styles.priceTitleBig}>Total Credit</Text>
-            <Text style={styles.categoryTitle}>Rp 1.000.000</Text>
-          </View>
-          <View style={styles.divider}></View> */}
-          <View style={styles.container}>
-            {/*this.state.trx.map(t =>
-              <View style={styles.boxMutasi}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }}>
-                    <Text style={styles.textKecil}>{t.remarks}</Text>
-                    <Text style={styles.kode}>{t.trxNo}</Text>
-                    <Text style={styles.textKecilabu}>{Moment(t.dateTime).format('D MMM YYYY HH:MM')}</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.textKecil}>+{Formatter.rupiah(t.amount)}</Text>
-                    <Text style={styles.textKecilabu}>Rp 200.000</Text>
+          <View>
+            {this.state.trx.map(t => (
+              <View style={styles.container} key={t.trxNo}>
+                <View style={styles.boxMutasi}>
+                  <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                    <View style={{ flex: 2 }}>
+                      <Text style={styles.textKecil}>{t.remarks}</Text>
+                      <Text style={styles.kode}>{t.trxNo}</Text>
+                      <Text style={styles.textKecilabu}>{Moment(t.dateTime).format('D MMM YYYY HH:MM')}</Text>
+                    </View>
+                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                      <Text style={styles.textKecil}>+ {Formatter.rupiah(t.amount)}</Text>
+                      {/* <Text style={styles.textKecilabu}>Rp 200.000</Text> */}
+                    </View>
                   </View>
                 </View>
               </View>
-            )*/}
-            <View style={styles.boxMutasi}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }}>
-                    <Text style={styles.textKecil}>lalalalal</Text>
-                    <Text style={styles.kode}>1234567890</Text>
-                    <Text style={styles.textKecilabu}>6 Jan 2018 20:97</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.textKecil}>+Rp 142.172u1</Text>
-                    <Text style={styles.textKecilabu}>Rp 200.000</Text>
-                  </View>
-                </View>
-              </View>
-          </View>
-          <View style={styles.container}>
-            {/*this.state.trx.map(t =>
-              <View style={styles.boxMutasi}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }}>
-                    <Text style={styles.textKecil}>{t.remarks}</Text>
-                    <Text style={styles.kode}>{t.trxNo}</Text>
-                    <Text style={styles.textKecilabu}>{Moment(t.dateTime).format('D MMM YYYY HH:MM')}</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.textKecil}>+{Formatter.rupiah(t.amount)}</Text>
-                    <Text style={styles.textKecilabu}>Rp 200.000</Text>
-                  </View>
-                </View>
-              </View>
-            )*/}
-            <View style={styles.boxMutasi}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }}>
-                    <Text style={styles.textKecil}>lalalalal</Text>
-                    <Text style={styles.kode}>1234567890</Text>
-                    <Text style={styles.textKecilabu}>6 Jan 2018 20:97</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.textKecil}>+Rp 142.172u1</Text>
-                    <Text style={styles.textKecilabu}>Rp 200.000</Text>
-                  </View>
-                </View>
-              </View>
+            ))}
           </View>
         </ScrollView>
       </View>
@@ -179,9 +130,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: '#fff',
-    borderWidth:1, 
-    borderColor:'#dfdfdf',
-    marginTop:10
+    borderWidth: 1,
+    borderColor: '#dfdfdf',
+    marginTop: 10
   },
   divider: {
     height: 1,
@@ -190,9 +141,9 @@ const styles = StyleSheet.create({
   },
   boxMutasi: {
     marginBottom: 15,
-    paddingBottom:15,
-    borderBottomWidth:1, 
-    borderBottomColor:'#dfdfdf',
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dfdfdf',
   },
   priceTitleBig: {
     fontSize: 14,
