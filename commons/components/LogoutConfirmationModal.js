@@ -17,15 +17,17 @@ export default class LogoutConfirmationModal extends React.Component {
 
   _logout = () => {
     logout().then(() => {
-      if (APP_TYPE != 'OPERATOR')
+      if (APP_TYPE != 'OPERATOR') {
         backToMain(this.props.navigation);
-        
-      let { reset, navigate } = NavigationActions;
-      const action = reset({
-        index: 0,
-        actions: [navigate({ routeName: 'LoginScreen' })],
-      });
-      this.props.navigation.dispatch(action);
+      }
+      else {
+        let { reset, navigate } = NavigationActions;
+        const action = reset({
+          index: 0,
+          actions: [navigate({ routeName: 'LoginScreen', params: { appType: 'OPERATOR' } })],
+        });
+        this.props.navigation.dispatch(action);
+      }
     });
   }
 
