@@ -16,6 +16,7 @@ import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
 import { fetchWishlist, backToMain } from '../../../api/Common';
+import { APP_TYPE } from '../../../constants/env';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
@@ -66,7 +67,7 @@ export default class LoginScreen extends React.Component {
         this.setState({ isLoading: false });
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-          if (params && params.appType == 'OPERATOR') {
+          if (APP_TYPE == 'OPERATOR') {
             backToMain(this.props.navigation);
           } else {
           // this._notificationSubscription = this._registerForPushNotifications();
