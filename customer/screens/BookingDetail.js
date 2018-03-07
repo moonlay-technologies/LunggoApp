@@ -5,7 +5,7 @@ import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
-import { Rating, Icon } from 'react-native-elements';
+import { Rating, Icon, CheckBox } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform
@@ -51,6 +51,7 @@ export default class BookingDetail extends React.Component {
       isPaxFilled: true,
       isContactFilled: true,
       contact: {},
+      isBookForSelf: true,
     };
   }
 
@@ -58,10 +59,12 @@ export default class BookingDetail extends React.Component {
     title: 'Detail Pesanan'
   };
 
-
+  userContact = {}
+  lastInputtedContact = {}
   componentDidMount() {
     getProfile().then(({ contact }) => {
       this.setState({ contact });
+      this.userContact = contact;
     }).catch(err => console.error(err));
   }
 
@@ -81,6 +84,7 @@ export default class BookingDetail extends React.Component {
 
   setContact = contactObj => {
     contactObj.isContactFilled = true;
+    this.lastInputtedContact = contactObj;
     this.setState({ contact: contactObj });
   }
 
@@ -159,26 +163,26 @@ export default class BookingDetail extends React.Component {
     });
   }
 
-  _goToPaxChoice = () => {
-    let { navigation } = this.props;
-    let { price, requiredPaxData } = navigation.state.params;
-    let { pax, paxListItemIndexes } = this.state;
-    if (!paxListItemIndexes) paxListItemIndexes = [];
-    navigation.navigate('PaxChoice', {
-      price, requiredPaxData,
-      setPax: this.setPax,
-      setPaxListItemIndexes: this.setPaxListItemIndexes,
-      paxListItemIndexes: paxListItemIndexes.slice(),
-      paxCount: pax ? pax.length : 0,
-    })
-  }
+  // _goToPaxChoice = () => {
+  //   let { navigation } = this.props;
+  //   let { price, requiredPaxData } = navigation.state.params;
+  //   let { pax, paxListItemIndexes } = this.state;
+  //   if (!paxListItemIndexes) paxListItemIndexes = [];
+  //   navigation.navigate('PaxChoice', {
+  //     price, requiredPaxData,
+  //     setPax: this.setPax,
+  //     setPaxListItemIndexes: this.setPaxListItemIndexes,
+  //     paxListItemIndexes: paxListItemIndexes.slice(),
+  //     paxCount: pax ? pax.length : 0,
+  //   })
+  // }
 
   _goToRincian = () => {
     let params = this.props.navigation.state.params;
-    let title = params.title;
     let total = this.state.price;
     let breakdown =
       [{
+        name: params.title,
         details: this.state.counter.map(ctr => {
           return {
             unit: ctr.type,
@@ -188,7 +192,13 @@ export default class BookingDetail extends React.Component {
           }
         })
       }];
-    this.props.navigation.navigate('RincianHarga', { title, breakdown, total })
+    this.props.navigation.navigate('RincianHarga', { breakdown, total })
+  }
+
+  _onBookForSelfRadioButtonPressed = () => {
+    let isBookForSelf = !this.state.isBookForSelf;
+    let contact = (isBookForSelf) ? this.userContact : this.lastInputtedContact;
+    this.setState({ isBookForSelf, contact });
   }
 
   render() {
@@ -245,7 +255,7 @@ export default class BookingDetail extends React.Component {
       );
     }
 
-    let paxForm = (/* !!requiredPaxData */ false) ? ///sementara ilangin paxForm, pake paxCount smua
+    let paxForm = /*(!!requiredPaxData) ?
       <View style={{
         borderBottomColor: '#efefef',
         borderBottomWidth: 1,
@@ -263,14 +273,18 @@ export default class BookingDetail extends React.Component {
         >
           <View style={{ flexDirection: 'row' }}>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-              {isPaxFilled ? null : <Text style={styles.validation}>Mohon isi peserta</Text>}
+              { isPaxFilled ||
+                <Text style={styles.validation}>
+                  Mohon isi peserta
+                </Text>
+              }
             </View>
             <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
           </View>
 
         </TouchableOpacity>
       </View>
-      :
+      :*/
       <View style={{
         borderBottomColor: '#efefef',
         borderBottomWidth: 1,
@@ -305,63 +319,7 @@ export default class BookingDetail extends React.Component {
 
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={styles.container}>
-          {/*<View style={{flex:1, marginBottom:15}}>
-            <Image
-              style={styles.thumb}
-              source={require('../../assets/images/detailimg3.jpg')}
-            />
-          </View>*/}
-          {/*<Text style={[{ flex: 1.5 }, styles.activitydetailTitle]}>
-            Paket Tour
-          </Text>*/}
-          {/*<View style={{flexDirection: 'row', marginBottom:5}}>
-            <Rating
-              // startingValue={3.6}
-              readonly
-              imageSize={12}
-              // onFinishRating={this.ratingCompleted}
-            />
-          </View>
-          <Text style={styles.activityDesc}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit, sed do eiusmod tempor incididunt ut labore et 
-            dolore magna aliqua. Ut enim ad minim veniam.
-          </Text>*/}
-          {/*<View style={{ marginTop: 15 }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Jepang
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Maksimum 6 orang
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Khusus hari minggu
-                </Text>
-              </View>
-            </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-              <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
-              <View style={{ marginTop: 1, marginLeft: 10 }}>
-                <Text style={styles.activityDesc}>
-                  Untuk usia diatas 10 tahun
-                </Text>
-              </View>
-            </View>
-          </View>*/}
+        {/* <View style={styles.container}>
           <Text style={styles.activityTitle}>Paket Tur</Text>
           <View style={styles.containerPackage}>
             <View style={{ flexDirection:'row'}}>
@@ -451,7 +409,7 @@ export default class BookingDetail extends React.Component {
           </View>
         </View>
 
-        <View style={styles.divider} />
+        <View style={styles.divider} /> */}
 
         <View style={styles.container}>
 
@@ -469,7 +427,11 @@ export default class BookingDetail extends React.Component {
                 styles.normalText : styles.warningText} >
                 {selectedDateText}
               </Text>
-              {isDateSelected ? null : <Text style={styles.validation}>Mohon isi jadwal</Text>}
+              { isDateSelected ||
+                <Text style={styles.validation}>
+                  Mohon isi jadwal
+                </Text>
+              }
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToCalendarPicker} >
                 {addEditButton(date)}
@@ -495,7 +457,35 @@ export default class BookingDetail extends React.Component {
           </View>
 
           <View>
-            <Text style={styles.activityTitle}>Kontak yang dapat dihubungi</Text>
+            <Text style={styles.activityTitle}>
+              Kontak yang dapat dihubungi
+            </Text>
+            <View style={{flexDirection:'row', marginTop:20}}>
+              <CheckBox
+                size={18}
+                textStyle={{fontSize:10}}
+                style={{flex:1}}
+                title='Pesan untuk saya sendiri'
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor='#01d4cb'
+                uncheckedColor='grey'
+                onPress={this._onBookForSelfRadioButtonPressed}
+                checked={this.state.isBookForSelf}
+              />
+              <CheckBox
+                size={18}
+                textStyle={{fontSize:10}}
+                style={{flex:1}}
+                title='Pesan untuk orang lain'
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                checkedColor='#01d4cb'
+                uncheckedColor='grey'
+                onPress={this._onBookForSelfRadioButtonPressed}
+                checked={ ! this.state.isBookForSelf}
+              />
+            </View>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -507,14 +497,20 @@ export default class BookingDetail extends React.Component {
             }}>
               <Text style={this.state.isContactFilled ?
                 styles.normalText : styles.warningText} >
-                {contact.name + '\n'}
-                {contact.email + '\n'}
-                {contact.countryCallCd + ' ' + contact.phone}
+                { (contact && contact.name != undefined) ?
+                  `${contact.name} \n${contact.email} `+
+                  `\n+ ${contact.countryCallCd} - ${contact.phone}`
+                  : 'Mohon isi data kontak'
+                }
               </Text>
-              {isContactFilled ? null : <Text style={styles.validation}>Mohon isi kontak</Text>}
+              { isContactFilled ||
+                <Text style={styles.validation}>
+                  Mohon isi kontak
+                </Text>
+              }
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToBookingContact} >
-                {addEditButton(contact)}
+                {addEditButton(contact && !!contact.name)}
               </TouchableOpacity>
             </View>
           </View>
@@ -532,7 +528,9 @@ export default class BookingDetail extends React.Component {
               onPress={this._book}
               disabled={this.state.isLoading}
               styleDisabled={{ color: '#aaa' }}
-            >Pesan</Button>
+            >
+              Pesan
+            </Button>
           </View>
         </View>
         {/*bottom CTA button*/}

@@ -16,6 +16,7 @@ import { Notifications } from 'expo';
 import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
 import { fetchWishlist, backToMain } from '../../../api/Common';
+import { LinearGradient } from 'expo';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
@@ -58,8 +59,9 @@ export default class LoginScreen extends React.Component {
 
   _login = () => {
     this.setState({ isLoading: true })
-    let { navigate, goBack, replace, pop } = this.props.navigation;
-    let { params } = this.props.navigation.state;
+    let { navigation } = this.props;
+    let { navigate, goBack, replace, pop } = navigation;
+    let { params } = navigation.state;
 
     fetchTravoramaLoginApi(this.state.userName, this.state.password)
       .then(response => {
@@ -67,13 +69,13 @@ export default class LoginScreen extends React.Component {
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
           if (params && params.appType == 'OPERATOR') {
-            backToMain(this.props.navigation);
+            backToMain(navigation);
           } else {
           // this._notificationSubscription = this._registerForPushNotifications();
             fetchWishlist();
             let { resetAfter, thruBeforeLogin } = params;
             if (resetAfter)
-              backToMain(this.props.navigation);
+              backToMain(navigation);
             else if (thruBeforeLogin)
               pop(2);
             else
@@ -134,7 +136,7 @@ export default class LoginScreen extends React.Component {
           }}
           onPress={() => this.props.navigation.replace('Registration', params)}
         >
-          <Text style={{ fontSize: 12, color: '#000', fontFamily: 'Hind' }}>
+          <Text style={{ fontSize: 14, color: '#000', fontFamily: 'Hind' }}>
             Belum punya akun? Daftar di sini
         </Text>
         </TouchableOpacity>
@@ -196,23 +198,30 @@ export default class LoginScreen extends React.Component {
           </View>
           {errorMessagePassword}
           {errorMessage}
-          <Button
-            containerStyle={{
-              marginTop: 30,
-              height: 45,
-              paddingTop: 11,
-              paddingBottom: 10,
-              overflow: 'hidden',
-              borderRadius: 25,
-              backgroundColor: '#00d3c5',
-            }}
-            style={{ fontSize: 16, color: '#ffffff', fontFamily: 'Hind-Bold' }}
-            onPress={this._onLoginPressed}
+
+           <TouchableOpacity
+           onPress={this._onLoginPressed}
+            style={{alignItems: 'center', width:'100%', marginTop:30 }}
+            activeOpacity={1}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
           >
-            Login
-            </Button>
+            <LinearGradient
+              colors={['#00d3c5', '#35eac6', '#6affc6']}
+              start={[0, 0]}
+              end={[1, 0]}
+              style={{height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width:'100%'}}>
+              <Text style={{
+                  backgroundColor: 'transparent',
+                  fontSize: 18, color: '#ffffff', 
+                  fontFamily: 'Hind-SemiBold', 
+                }}>
+                Masuk
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
             <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
@@ -263,9 +272,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#e5e5e5',
     borderRadius: 25,
-    color: '#acacac',
+    color: '#565656',
     backgroundColor: '#f5f5f5',
     fontFamily: 'Hind',
   },
@@ -278,7 +287,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: '#fdaab8',
     borderRadius: 25,
     color: '#acacac',
     backgroundColor: '#f5f5f5',

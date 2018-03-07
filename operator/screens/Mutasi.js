@@ -12,11 +12,22 @@ import {
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common'
 import * as Formatter from '../../customer/components/Formatter'
+import DatePicker from 'react-native-datepicker'
+import globalStyles from '../../commons/globalStyles';
+import Moment from 'moment';
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
 
 export default class Mutasi extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { trx: [] };
+    this.format = 'D MMM YYYY';
+    this.locale = 'id';
+    this.state = {
+      startDate: Moment(new Date()).add(-1, 'month'),
+      endDate: Moment(new Date()),
+      trx: [],
+      isLoading: true
+    };
   }
 
   static navigationOptions = {
@@ -24,43 +35,123 @@ export default class Mutasi extends React.Component {
   };
 
   componentDidMount() {
-    const endpoint = '/v1/operator/transactionstatement';
+    this._getTrx();
+  }
+
+  _getTrx() {
+    this.setState({ isLoading: true });
+    let endpoint = '/v1/operator/transactionstatement';
+    endpoint += '?startdate=' + Moment(this.state.startDate).format('YYYY-MM-DD');
+    endpoint += '&enddate=' + Moment(this.state.endDate).format('YYYY-MM-DD');
     fetchTravoramaApi({
       path: endpoint,
       method: 'GET',
-      requiredAuthLevel: AUTH_LEVEL.User,
+      requiredAuthLevel: AUTH_LEVEL.User
     }).then(response => {
-      this.setState({ trx: response.transactionStatements });
+      if (response.status == 200)
+        this.setState({ trx: response.transactionStatements, isLoading: false, isDateOutOfBound: false });
+      else if (response.error == 'ERR_DATETIME_OUT_OF_RANGE')
+        this.setState({ isDateOutOfBound: true, isLoading: false });
     })
   }
 
-
+  _showTrxList = () => {
+    let startEndDiff = Moment(this.state.endDate).diff(this.state.StartDate, 'days');
+    if (startEndDiff > 31 || startEndDiff < 0 || this.state.isDateOutOfBound)
+      return <Text>Rentang tanggal maksimal 31 hari</Text>;
+    if (this.state.isLoading)
+      return <LoadingAnimation />;
+    else if (!this.state.trx.length)
+      return <Text>Tidak ada transaksi pada rentang tanggal ini.</Text>;
+    else
+      return this.state.trx.map(t => (
+        <View style={styles.container} key={t.trxNo}>
+          <View style={styles.boxMutasi}>
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+              <View style={{ flex: 2 }}>
+                <Text style={styles.textKecil}>{t.remarks}</Text>
+                <Text style={styles.kode}>{t.trxNo}</Text>
+                <Text style={styles.textKecilabu}>{Moment(t.dateTime).format('D MMM YYYY HH:MM')}</Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={styles.textKecil}>+ {Formatter.rupiah(t.amount)}</Text>
+                {/* <Text style={styles.textKecilabu}>Rp 200.000</Text> */}
+              </View>
+            </View>
+          </View>
+        </View>
+      ));
+  }
 
   render() {
+    console.log(this.state);
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
-        <ScrollView style={{ marginTop: 60, }}>
-          {/* <View style={styles.container}>
-            <Text style={styles.priceTitleBig}>Total Credit</Text>
-            <Text style={styles.categoryTitle}>Rp 1.000.000</Text>
+      <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
+        <ScrollView>
+          <View style={{ flex: 1, marginBottom: 10, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dfdfdf', padding: 15 }}>
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              <DatePicker
+                style={{ flex: 1, paddingRight: 10, }}
+                date={Moment(this.state.startDate).format(this.format)}
+                showIcon={false}
+                mode="date"
+                placeholder="Start Date"
+                format={this.format}
+                minDate={Moment(new Date()).add(-1, 'year').format(this.format)}
+                maxDate={Moment(new Date()).format(this.format)}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={(date) => {
+                  console.log(date);
+                  this.setState({ startDate: Moment(date, this.format, this.locale) });
+                  this._getTrx();
+                }}
+                customStyles={{
+                  placeholderText: {
+                    color: '#000'
+                  },
+                  dateInput: {
+                    borderRadius: 3
+                  },
+                }}
+              />
+              <DatePicker
+                style={{ flex: 1 }}
+                date={Moment(this.state.endDate).format(this.format)}
+                showIcon={false}
+                mode="date"
+                placeholder="End Date"
+                format={this.format}
+                minDate={Moment(this.state.startDate).format(this.format)}
+                maxDate={Moment(new Date()).format(this.format)}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={(date) => {
+                  this.setState({ endDate: Moment(date, this.format, this.locale) });
+                  this._getTrx();
+                }}
+                customStyles={{
+                  placeholderText: {
+                    color: '#000'
+                  },
+                  dateInput: {
+                    borderRadius: 3
+                  },
+                }}
+              />
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', marginTop: 15 }}>
+              <Button
+                containerStyle={globalStyles.ctaButton8}
+                style={{ fontSize: 14, color: '#fff' }}
+              >
+                Pilih
+              </Button>
+            </View>
           </View>
-          <View style={styles.divider}></View> */}
-          <View style={styles.container}>
-            {this.state.trx.map(t =>
-              <View style={styles.boxMutasi}>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }}>
-                    <Text style={styles.textKecil}>{t.remarks}</Text>
-                    <Text style={styles.kode}>{t.trxNo}</Text>
-                    <Text style={styles.textKecilabu}>{Moment(t.dateTime).format('D MMM YYYY HH:MM')}</Text>
-                  </View>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={styles.textKecil}>+{Formatter.rupiah(t.amount)}</Text>
-                    {/* <Text style={styles.textKecilabu}>Rp 200.000</Text> */}
-                  </View>
-                </View>
-              </View>
-            )}
+
+          <View>
+            {this._showTrxList()}
           </View>
         </ScrollView>
       </View>
@@ -72,6 +163,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#dfdfdf',
+    marginTop: 10
   },
   divider: {
     height: 1,
@@ -79,10 +173,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
   },
   boxMutasi: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#efefef',
-    marginBottom: 15
+    marginBottom: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dfdfdf',
   },
   priceTitleBig: {
     fontSize: 14,
@@ -159,4 +253,14 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5
+  }
 });

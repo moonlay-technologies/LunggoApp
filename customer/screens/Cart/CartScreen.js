@@ -36,22 +36,20 @@ export default class CartScreen extends React.Component {
   }
 
   _goToRincian = () => {
-    let { cartId, list, totalPrice, status} = this.state;
-    let title = "DUMMY Cart no #" + cartId;
+    let { cartId, list, totalPrice, status } = this.state;
+    let title = "Nomor Keranjang #" + cartId;
     let total = totalPrice;
-    let breakdown = list.map(rsv => {
-      return {
-        name: rsv.activityDetail.name,
-        details: rsv.ticketCount.filter(pax => pax.count).map(pax => {
-          return {
-            unit: pax.type,
-            count: pax.count,
-            unitPrice: pax.totalPrice / pax.count,
-            totalPrice: pax.totalPrice
-          }
-        })
-      }
-    });
+    let breakdown = list.map(rsv => ({
+      name: rsv.activityDetail.name,
+      details: rsv.ticketCount.filter(pax => pax.count).map(pax => {
+        return {
+          unit: pax.type,
+          count: pax.count,
+          unitPrice: pax.totalPrice / pax.count,
+          totalPrice: pax.totalPrice
+        }
+      })
+    }));
     this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
   }
 
@@ -61,13 +59,13 @@ export default class CartScreen extends React.Component {
     <ListItem
       item={item}
       index={index}
-      onPress={this._onPressItem}
+      onPress={() => this._onPressItem(item)}
       onPressDelete={this._onPressDelete}
     />
   );
 
   _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', { details: item })
+    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail })
   };
 
   _onPressDelete = (index, rsvNo) => {
