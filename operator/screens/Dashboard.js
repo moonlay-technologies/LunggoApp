@@ -15,12 +15,13 @@ import * as Formatter from '../../customer/components/Formatter';
 import Modal from '../../commons/components/Modal';
 import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
-
+import { checkUserLoggedIn } from '../../api/Common';
+import { NavigationActions } from 'react-navigation';
 
 export default class Dashboard extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       name: '...',
       balance: 9999999,
@@ -34,6 +35,16 @@ export default class Dashboard extends React.Component {
 
   componentDidMount() {
     getProfile().then(({ contact }) => this.setState(contact));
+    checkUserLoggedIn().then(isLoggedIn => {
+      if (!isLoggedIn) {
+        let { reset, navigate } = NavigationActions;
+        const action = reset({
+          index: 0,
+          actions: [navigate({ routeName: 'LoginScreen' })],
+        });
+        this.props.navigation.dispatch(action);
+      }
+    });
   }
 
   _handleResponse = (response) => {

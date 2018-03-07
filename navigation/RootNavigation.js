@@ -54,6 +54,7 @@ export default class RootNavigator extends React.Component {
         //screen:BeforeLoginScreen
         screen: Dashboard
         //screen: MainTabNavigator
+
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
@@ -95,7 +96,7 @@ export default class RootNavigator extends React.Component {
     {
       initialRouteParams: { appType: APP_TYPE },
       initialRouteName: (this.props.skipIntro || this.props.isLoggedIn) ?
-        'Main' : (APP_TYPE=='OPERATOR') ? 'LoginScreen' : 'IntroScreen',
+        'Main' : (APP_TYPE == 'OPERATOR') ? 'LoginScreen' : 'IntroScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',
@@ -103,15 +104,15 @@ export default class RootNavigator extends React.Component {
           marginBottom: -5
         },
         headerStyle: {
-           ...Platform.select({
-          ios: {
-          },
-          android: {
-            elevation: 2,
-            marginTop:-20
+          ...Platform.select({
+            ios: {
+            },
+            android: {
+              elevation: 2,
+              marginTop: -20
 
-          },
-        }),
+            },
+          }),
         }
       }),
       onTransitionStart: () => Keyboard.dismiss()

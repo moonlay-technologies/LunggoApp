@@ -45,9 +45,9 @@ export default class ExploreScreen extends React.Component {
       let wishlistItems = await getItemAsync('wishlist');
       if (wishlistItems != null) {
         let activityList = JSON.parse(wishlistItems);
-        let wishlists = this.state.wishlists;
-        for (var act in activityList)
-          wishlists[act.id] = true;
+        let wishlists = {};
+        for (let i = 0; i < activityList.length; i++)
+          wishlists[activityList[i].id] = true;
         this.setState({ wishlists });
       }
     }, 0);
