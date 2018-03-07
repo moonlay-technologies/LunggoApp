@@ -150,11 +150,12 @@ export default class BookingDetail extends React.Component {
   _goToCalendarPicker = () => {
     let { navigation } = this.props;
     let { availableDateTimes } = navigation.state.params;
-    let { price } = this.state;
+    let { price, date, time } = this.state;
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
-      selectedDate: this.state.date,
+      selectedDate: date,
+      selectedTime: time,
     });
   }
 
@@ -195,7 +196,7 @@ export default class BookingDetail extends React.Component {
     let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      Formatter.dateFullShort(date) + ', pk ' + time : 'Atur Jadwal';
+      `${Formatter.dateFullShort(date)}, pk ${time}` : 'Atur Jadwal';
 
     let addEditButton = isEdit => !!isEdit ?
       <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>
