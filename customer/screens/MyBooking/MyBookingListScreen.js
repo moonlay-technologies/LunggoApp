@@ -28,29 +28,32 @@ class ActivityListItem extends React.PureComponent {
     WebBrowser.openBrowserAsync(item.pdfUrl);
   }
 
+  _goToBookedPageDetail = () => this.props.navigation.navigate
+    ('BookedPageDetail', { details: this.props.item })
+
   _voucherButton = item => {
     if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
-      return (<View style={styles.labelWarning}>
+      return (
         <Button
-          containerStyle={{ alignItems: 'center', }}
+          containerStyle={styles.labelWarning}
           style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
           onPress={() =>
             item.hasPdfVoucher
               ? this._viewPdfVoucher(item)
-              : this.props.navigation.navigate('BookedPageDetail', { details: item })
+              : this._goToBookedPageDetail()
           }
         >
           Lihat Voucher
-                </Button>
-      </View>);
+        </Button>
+      );
     else
-      return <View><Text style={styles.labelText}>Memproses tiket</Text></View>;
+      return <Text style={styles.labelText}>Memproses tiket</Text>;
   }
 
   render() {
     let { item } = this.props;
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BookedPageDetail', { details: item })}>
+      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
         <View style={{ flexDirection: 'row', }}>
           <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 1.8 }}>
@@ -378,7 +381,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff5f5f',
     padding: 5,
     borderRadius: 3,
-    marginTop: 5
+    marginTop: 5,
+    alignItems: 'center',
   },
   labelText: {
     color: '#18b0a2',

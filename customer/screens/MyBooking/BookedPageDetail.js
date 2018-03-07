@@ -7,22 +7,23 @@ import { Icon } from 'react-native-elements';
 import { Platform, StyleSheet, TouchableOpacity, Text, View, Image,
   TextInput, ScrollView, Linking } from 'react-native';
 import Maps from '../../components/Maps';
-// import Moment from 'moment';
-// import 'moment/locale/id';
 
 export default class BookedPageDetail extends React.Component {
 
   constructor (props) {
     super(props);
-    this.details = props.navigation.state.params.details;
-    this.details.totalPaxCount = 0;
+
+
+console.log(props.navigation.state)
+
+    this.details = {
+      totalPaxCount: 0,
+      ...props.navigation.state.params.details,
+    };
     this.details.paxCount.map( categ => {
       this.details.totalPaxCount += categ.count;
     });
-    // this.state = {
-    //   timeLeft: Moment(this.details.timeLimit).toNow(),
-    // };
-    console.warn('avatar operator dan pax list masih dummy / blm jln');
+    console.warn('avatar operator masih dummy dan pax list blm ada');
   }
 
   // _onContinuePaymentPressed = () => {
@@ -44,9 +45,10 @@ export default class BookedPageDetail extends React.Component {
   _smsOperator = () => Linking.openURL('sms:'+this.details.operatorPhone)
 
   render() {
-    let { name, mediaSrc, date, price, city, address, //bookingStatus,
-          selectedSession, operatorName, operatorPhone,
+    let { name, mediaSrc, date, price, city, address, bookingStatus,
+          selectedSession, operatorName, operatorPhone, ticketNumber,
           operatorEmail, totalPaxCount, latitude, longitude, paxes,
+          hasPdfVoucher, isPdfUploaded,
         } = this.details;
     // let bookingStatusText = bookingStatus;
         // switch (bookingStatus) {
@@ -168,21 +170,31 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>{/* end container */}
-        {/*<View style={styles.divider}/>
+        <View style={styles.divider}/>
         <View style={styles.container}>
-          <View style={{flex:1,}}>
-            <Text style={styles.activityTitle}>
-              Kode verifikasi anda
+        { (bookingStatus=='BOOK') ?
+          <Text>Menunggu proses pembayaran</Text>
+        : (bookingStatus=='FORW') ?
+        /*(hasPdfVoucher || ticketNumber )isPdfUploaded*/
+        /*<View style={{flex:1,}}>*/
+          <Text>Pembayaran Berhasil! Meneruskan ke Operator</Text>
+        : (bookingStatus=='CONF') ?
+        <View>
+          <Text style={styles.activityTitle}>
+            Kode verifikasi anda
+          </Text>
+          <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+            {/*<Image style={[{marginTop:30, marginBottom:10},styles.barcode]}
+              source={require('../../../assets/images/barcode.jpg')} />*/}
+            <Text style={{fontWeight:'bold', fontSize:16}}>
+              {ticketNumber || 'ERROR: terjadi kesalahan pada server'}
             </Text>
-            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-              <Image style={[{marginTop:30, marginBottom:10},styles.barcode]}
-                source={require('../../../assets/images/barcode.jpg')} />
-              <Text style={{fontWeight:'bold', fontSize:16}}>
-                DUMMYNO J092374932
-              </Text>
-            </View>
           </View>
-        </View>{/* end container */}
+        </View>
+        : <Text>ERROR: bookingStatus other than BOOK/CONF/FORW not handled yet</Text>
+        }
+        </View>
+        {/*
         <View style={styles.divider}/>
         <View style={[styles.container,{flex:1,}]}>
           <Text style={styles.activityTitle}>
