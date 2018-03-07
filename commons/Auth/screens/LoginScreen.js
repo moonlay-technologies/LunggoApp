@@ -59,8 +59,9 @@ export default class LoginScreen extends React.Component {
 
   _login = () => {
     this.setState({ isLoading: true })
-    let { navigate, goBack, replace, pop } = this.props.navigation;
-    let { params } = this.props.navigation.state;
+    let { navigation } = this.props;
+    let { navigate, goBack, replace, pop } = navigation;
+    let { params } = navigation.state;
 
     fetchTravoramaLoginApi(this.state.userName, this.state.password)
       .then(response => {
@@ -68,13 +69,13 @@ export default class LoginScreen extends React.Component {
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
           if (params && params.appType == 'OPERATOR') {
-            backToMain(this.props.navigation);
+            backToMain(navigation);
           } else {
           // this._notificationSubscription = this._registerForPushNotifications();
             fetchWishlist();
             let { resetAfter, thruBeforeLogin } = params;
             if (resetAfter)
-              backToMain(this.props.navigation);
+              backToMain(navigation);
             else if (thruBeforeLogin)
               pop(2);
             else

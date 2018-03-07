@@ -12,7 +12,7 @@ export default class BeforeLoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.params = props.onIntro ? { resetAfter: true } : { thruBeforeLogin: true };
+    this.params = props.skipIntro ? { thruBeforeLogin: true } : { resetAfter: true };
   }
 
   static navigationOptions = {
