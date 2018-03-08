@@ -17,6 +17,7 @@ import registerForPushNotificationsAsync
   from '../../../api/registerForPushNotificationsAsync';
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { LinearGradient } from 'expo';
+import { fetchProfile } from '../../ProfileController';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
@@ -71,7 +72,7 @@ export default class LoginScreen extends React.Component {
           if (params && params.appType == 'OPERATOR') {
             backToMain(navigation);
           } else {
-          // this._notificationSubscription = this._registerForPushNotifications();
+            // this._notificationSubscription = this._registerForPushNotifications();
             fetchWishlist();
             let { resetAfter, thruBeforeLogin } = params;
             if (resetAfter)
@@ -210,12 +211,12 @@ export default class LoginScreen extends React.Component {
               colors={['#00d3c5', '#35eac6', '#6affc6']}
               start={[0, 0]}
               end={[1, 0]}
-              style={{height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width:'100%'}}>
+              style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
               <Text style={{
-                  backgroundColor: 'transparent',
-                  fontSize: 18, color: '#ffffff', 
-                  fontFamily: 'Hind-SemiBold', 
-                }}>
+                backgroundColor: 'transparent',
+                fontSize: 18, color: '#ffffff',
+                fontFamily: 'Hind-SemiBold',
+              }}>
                 Masuk
               </Text>
             </LinearGradient>

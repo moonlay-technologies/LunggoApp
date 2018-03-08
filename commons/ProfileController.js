@@ -14,17 +14,17 @@ export async function fetchProfile() {
   let { status } = response;
   if (status == 200) {
     let { name, email, countryCallCd, phone } = response;
-    await setItemAsync('profile', JSON.stringify(response));
-    return {
-      status, contact: { name, email, phone, countryCallCd },
-    };
+    let profile = { name, email, countryCallCd, phone };
+    await setItemAsync('profile', JSON.stringify(profile));
+    return profile;
   }
   else return response;
 }
 
 export async function getProfile() {
-  let contactJson = await getItemAsync('profile');
-  if (!contactJson) return { contact:{} };
-  let contact = JSON.parse(contactJson);
-  return { contact };
+  let profileJson = await getItemAsync('profile');
+  if (!profileJson) return null;
+  
+  let profile = JSON.parse(profileJson);
+  return profile;
 }

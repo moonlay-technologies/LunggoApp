@@ -10,9 +10,9 @@ class ListItem extends React.PureComponent {
   _onPress = () => this.props.onPressItem(this.props.item);
   
   render() {
-    const {item} = this.props;
+    const {item, index} = this.props;
     return (
-      <View key={item.rsvNo} style={{flex:1}}>
+      <View key={index} style={{flex:1}}>
         <TouchableHighlight
           onPress={this._onPress}
           underlayColor='#ddd'
@@ -37,30 +37,18 @@ class ListItem extends React.PureComponent {
 
 export default class ActivityList extends React.Component {
 
-  static navigationOptions = {
-    title: 'Your Activity',
-  };
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      list: props.list
-    };
-  }
-
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index
   _renderItem = ({item, index}) => (
     <ListItem
       item={item}
       index={index}
       onPressItem={this._onPressItem}
     />
-  );
+  )
+
   _onPressItem = (item) => {
-    this.props.navigation.navigate(
-      'DetailScreen', {details: item}
-    );
-  };
+    this.props.navigation.navigate('DetailScreen', {details: item});
+  }
 
   render() {
     return (
@@ -68,7 +56,7 @@ export default class ActivityList extends React.Component {
         <View style={styles.containerListAppointment}>
           <FlatList
             // numColumns={2}
-            data={this.state.list}
+            data={this.props.list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
           />

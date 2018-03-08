@@ -181,10 +181,10 @@ export default class CalendarPicker extends React.Component {
                 }}>{ Formatter.price(this.state.price) }</Text>
                 {/*<Text>/ 2 orang</Text>*/}
               </View>
-              <Text style={{fontSize:15, color:'#000',}}>
-                ???????per orang????)
-                {/* pax && pax.length>0 ? pax.length+' orang' : 'Start from'*/}
-              </Text> 
+              {/* <Text style={{fontSize:15, color:'#000',}}>
+                {Formatter.price(this.state.price/this.state.pax)} per orang
+                pax && pax.length>0 ? pax.length+' orang' : 'Start from'
+              </Text>  */}
             </View>
             <View style={{alignItems: 'flex-end', flex:1, justifyContent:'flex-end'}}>
               <Button

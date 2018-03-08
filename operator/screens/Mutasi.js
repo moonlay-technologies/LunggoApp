@@ -58,11 +58,17 @@ export default class Mutasi extends React.Component {
   _showTrxList = () => {
     let startEndDiff = Moment(this.state.endDate).diff(this.state.StartDate, 'days');
     if (startEndDiff > 31 || startEndDiff < 0 || this.state.isDateOutOfBound)
-      return <View style={{alignItems:'center', flex:1, justifyContent:'center',}}><Text>Rentang tanggal maksimal 31 hari</Text></View>;
+      return (
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', }}>
+          <Text>Rentang tanggal maksimal 31 hari</Text>
+        </View>);
     if (this.state.isLoading)
       return <LoadingAnimation />;
     else if (!this.state.trx.length)
-      return <View style={{alignItems:'center', flex:1, justifyContent:'center'}}><Text>Tidak ada transaksi pada rentang tanggal ini.</Text></View>;
+      return (
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          <Text>Tidak ada transaksi pada rentang tanggal ini.</Text>
+        </View>);
     else
       return this.state.trx.map(t => (
         <View style={styles.container} key={t.trxNo}>
@@ -89,8 +95,8 @@ export default class Mutasi extends React.Component {
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 10, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#dfdfdf', padding: 15 }}>
-            <View style={{ flexDirection: 'row', flex: 1, alignItems:'center'}}>
-              <View style={{flex:1,  alignItems:'center'}}>
+            <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: 'center' }}>
                 <Text style={styles.textKecil1}>Tanggal awal</Text>
                 <DatePicker
                   style={styles.containerTanggal}
@@ -110,22 +116,22 @@ export default class Mutasi extends React.Component {
                   }}
                   customStyles={{
                     placeholderText: {
-                      fontSize:20,
-                      color:'#fff'
+                      fontSize: 20,
+                      color: '#fff'
                     },
-                    dateText:{
-                      color:'#fff', 
-                      fontWeight:'bold'
+                    dateText: {
+                      color: '#fff',
+                      fontWeight: 'bold'
                     },
                     dateInput: {
-                      borderRadius: 3, 
-                      borderColor:'#00a89d', 
-                      backgroundColor:'#00bdb1',
+                      borderRadius: 3,
+                      borderColor: '#00a89d',
+                      backgroundColor: '#00bdb1',
                     },
                   }}
                 />
               </View>
-              <View style={{flex:1, alignItems:'center'}}>
+              <View style={{ flex: 1, alignItems: 'center' }}>
                 <Text style={styles.textKecil1}>Tanggal akhir</Text>
                 <DatePicker
                   style={styles.containerTanggal}
@@ -144,17 +150,17 @@ export default class Mutasi extends React.Component {
                   }}
                   customStyles={{
                     placeholderText: {
-                      fontSize:20,
-                      color:'#fff'
+                      fontSize: 20,
+                      color: '#fff'
                     },
-                    dateText:{
-                      color:'#fff',
-                      fontWeight:'bold'
+                    dateText: {
+                      color: '#fff',
+                      fontWeight: 'bold'
                     },
                     dateInput: {
-                      borderRadius: 3, 
-                      borderColor:'#00a89d', 
-                      backgroundColor:'#00bdb1',
+                      borderRadius: 3,
+                      borderColor: '#00a89d',
+                      backgroundColor: '#00bdb1',
                     },
                   }}
                 />
@@ -243,7 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Hind-SemiBold',
     color: '#676767',
-    textAlign:'center',
+    textAlign: 'center',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -285,14 +291,14 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  containerTanggal:{
+  containerTanggal: {
     flex: 1,
-    width:'95%',
-    marginTop:10, 
-    borderRadius: 3, 
-    borderColor:'#00a89d', 
-    backgroundColor:'#00bdb1',
-    
+    width: '95%',
+    marginTop: 10,
+    borderRadius: 3,
+    borderColor: '#00a89d',
+    backgroundColor: '#00bdb1',
+
   },
 
 });

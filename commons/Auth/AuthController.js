@@ -1,6 +1,8 @@
 'use strict';
-import { clientId, clientSecret, deviceId, API_DOMAIN, AUTH_LEVEL,
+import {
+  clientId, clientSecret, deviceId, API_DOMAIN, AUTH_LEVEL,
 } from '../../constants/env';
+import { fetchProfile } from '../ProfileController';
 
 async function fetchAuth(data) {
   let url = API_DOMAIN + '/v1/login';
@@ -20,7 +22,7 @@ async function fetchAuth(data) {
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-async function setAccessToken (tokenData) {
+async function setAccessToken(tokenData) {
   let { accessToken, refreshToken, expTime, authLevel } = tokenData;
   setItemAsync('accessToken', accessToken);
   setItemAsync('refreshToken', refreshToken);
@@ -30,23 +32,21 @@ async function setAccessToken (tokenData) {
 
 export async function fetchTravoramaLoginApi(userName, password) {
   let data = { clientId, clientSecret, deviceId, userName, password };
-  //redundant with getAuthAccess()
 
   let response = await fetchAuth(data);
 
-  switch (response.status + '') { //// cast to string
-    case '200':
+  switch (response.status) {
+    case 200:
       response.authLevel = AUTH_LEVEL.User;
-      setAccessToken(response);
+      setAccessToken(response).then(() => fetchProfile());
       break;
-    case '400':
-    case '500':
+    case 400:
+    case 500:
     default:
       console.log('LOGIN API error ' + response.status);
       console.log('LOGIN API request data:');
       console.log(data);
   }
-  //end of redundant
   return response;
 }
 
@@ -63,7 +63,6 @@ async function waitFetchingAuth() {
 }
 
 export async function getAuthAccess() {
-  // console.log('global.isFetchingAuth: ' + global.isFetchingAuth)
   if (global.isFetchingAuth) {
     await waitFetchingAuth();
     let { accessToken, authLevel } = global;
@@ -79,7 +78,7 @@ export async function getAuthAccess() {
     let data = { clientId, clientSecret, deviceId };
 
     // console.warn('sengaja ditutup dulu validasi expTimenya buat testing refreshToken')
-    /**/if ( new Date(expTime) > new Date() ) { //// token not expired
+    /**/if (new Date(expTime) > new Date()) { //// token not expired
       console.log(
         'session not expired, continue the request...'
       )
@@ -99,14 +98,14 @@ export async function getAuthAccess() {
 
     let response = await fetchAuth(data);
     global.isFetchingAuth = false;
-    
-    switch (response.status + '') { //// cast to string
-      case '200':
+
+    switch (response.status) {
+      case 200:
         response.authLevel = authLevel;
         setAccessToken(response);
         break;
-      case '400':
-      case '500':
+      case 400:
+      case 500:
       default:
         await removeAccessToken();
         return getAuthAccess();

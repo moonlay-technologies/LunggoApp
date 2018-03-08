@@ -53,7 +53,9 @@ export async function fetchTravoramaApi(request) {
     console.log('response from ' + url + ' :');
     console.log(response);
     if (response.status != 200) {
-      console.log('status is not 200! \n data:');
+      console.log('status is not 200! \nresponse:');
+      console.log(response);
+      console.log('request.data:');
       console.log(request.data);
     }
     return response;
@@ -86,14 +88,17 @@ export function fetchWishlist() {
       method: 'GET'
     }
     let response = fetchTravoramaApi(request).then(response => {
-      // if (response.status == 401) throw 'blom login!! nanti munculin modal';
-      setItemAsync('wishlist', JSON.stringify(response.activityList));
+      if (response.status == 200)
+        setItemAsync('wishlist', JSON.stringify(response.activityList));
+      else
+        deleteItemAsync('wishlist');
+
     });
   });
 }
 
-export function backToMain ( navigation ) {
-  let {reset, navigate} = NavigationActions;
+export function backToMain(navigation) {
+  let { reset, navigate } = NavigationActions;
   const action = reset({
     index: 0,
     actions: [navigate({ routeName: 'Main' })],

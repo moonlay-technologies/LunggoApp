@@ -108,12 +108,13 @@ export default TabNavigator(
     //initialLayout: {width:100, height:300},
     animationEnabled: true,
     swipeEnabled: true,
+    lazy: false,
 
     tabBarOptions: {
       activeTintColor: Colors.bottomTabSelected,
       labelStyle: {
         fontSize: 12,
-        fontFamily:'Hind-SemiBold',
+        fontFamily: 'Hind-SemiBold',
         ...Platform.select({
           ios: {
             marginBottom: -8,
@@ -124,8 +125,8 @@ export default TabNavigator(
 
           },
         }),
-        },
-      style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec',}
+      },
+      style: { paddingBottom: 5, height: 60, backgroundColor: '#fbfbfb', borderTopColor: '#ececec', }
     },
   }
 );

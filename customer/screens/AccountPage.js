@@ -9,7 +9,7 @@ import {
 import { Icon } from 'react-native-elements';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
-import { fetchProfile } from '../../commons/ProfileController';
+import { fetchProfile, getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 
@@ -17,7 +17,7 @@ export default class AccountScreen extends React.Component {
     super(props)
     this.state = {
       isLoggedIn: null,
-      contact: {},
+      profile: {},
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
     }
   }
@@ -27,27 +27,23 @@ export default class AccountScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.navigation.addListener('willFocus', this._getProfile);
-    this._getProfile();
-  }
+    this.props.navigation.addListener('willFocus', getProfile);
 
-  _getProfile = () => {
-    checkUserLoggedIn().then(isLoggedIn => {
-      this.setState({ isLoggedIn });
-      if (isLoggedIn)
-        fetchProfile().then(({ contact }) => this.setState({ contact }));
-    });
+    checkUserLoggedIn().then(isLoggedIn =>
+      getProfile().then(profile =>
+        this.setState({ profile, isLoggedIn })
+      ));
   }
 
   _openModal = () => this.refs.modal.openModal()
 
   render() {
     let { navigate } = this.props.navigation;
-    let { contact } = this.state;
+    let { profile } = this.state;
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
-        <LogoutConfirmationModal ref='modal' {...this.props}/>
+        <LogoutConfirmationModal ref='modal' {...this.props} />
 
         {this.state.isLoggedIn ?
 
@@ -136,7 +132,7 @@ export default class AccountScreen extends React.Component {
               </View>
               <View style={{ alignItems: 'flex-end', flex: 1 }}>
                 <Icon
-                  name='ios-contacts-outline'
+                  name='ios-profiles-outline'
                   type='ionicon'
                   size={30}
                   color='#454545' />
