@@ -50,23 +50,14 @@ export default class BookingDetail extends React.Component {
       isDateSelected: true,
       isPaxFilled: true,
       isContactFilled: true,
-      contact: {},
-      isBookForSelf: true,
+      isContactNeverFilled: true,
+      isBookButtonPressed: false
     };
   }
 
   static navigationOptions = {
     title: 'Detail Pesanan'
   };
-
-  userContact = {}
-  lastInputtedContact = {}
-  componentDidMount() {
-    getProfile().then(profile => {
-      this.setState({ contact: profile });
-      this.userContact = profile;
-    }).catch(err => console.error(err));
-  }
 
   setPaxListItemIndexes = indexes =>
     this.setState({ paxListItemIndexes: indexes });
@@ -83,9 +74,7 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    contactObj.isContactFilled = true;
-    this.lastInputtedContact = contactObj;
-    this.setState({ contact: contactObj });
+    this.setState({ contact: contactObj, isContactFilled: true, isContactNeverFilled: false });
   }
 
   _book = async () => {
@@ -97,6 +86,7 @@ export default class BookingDetail extends React.Component {
     let pax = totalCount;
 
     //// validation
+    this.setState({ isBookButtonPressed: true });
     if (!pax) this.setState({ isPaxFilled: false });
     if (!date) this.setState({ isDateSelected: false });
     if (!contact) this.setState({ isContactFilled: false });
@@ -118,6 +108,7 @@ export default class BookingDetail extends React.Component {
     let data = {
       date, pax, contact, ticketCount, selectedSession,
       packageId: params.activityId, activityId: params.activityId,
+      paxes: [contact],
     };
 
     try {
@@ -195,15 +186,14 @@ export default class BookingDetail extends React.Component {
     this.props.navigation.navigate('RincianHarga', { breakdown, total })
   }
 
-  _onBookForSelfRadioButtonPressed = () => {
-    let isBookForSelf = !this.state.isBookForSelf;
-    let contact = (isBookForSelf) ? this.userContact : this.lastInputtedContact;
-    this.setState({ isBookForSelf, contact });
+  _onBookForSelfRadioButtonPressed = async () => {
+    let contact = await getProfile();
+    this.setState({ contact, isContactFilled: true, isContactNeverFilled: false });
   }
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       `${Formatter.dateFullShort(date)}, pk ${time}` : 'Atur Jadwal';
@@ -460,32 +450,6 @@ export default class BookingDetail extends React.Component {
             <Text style={styles.activityTitle}>
               Kontak tamu yang dapat dihubungi
             </Text>
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-              <CheckBox
-                size={18}
-                textStyle={{ fontSize: 10 }}
-                style={{ flex: 1 }}
-                title='Pesan untuk saya sendiri'
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checkedColor='#01d4cb'
-                uncheckedColor='grey'
-                onPress={this._onBookForSelfRadioButtonPressed}
-                checked={this.state.isBookForSelf}
-              />
-              <CheckBox
-                size={18}
-                textStyle={{ fontSize: 10 }}
-                style={{ flex: 1 }}
-                title='Pesan untuk orang lain'
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checkedColor='#01d4cb'
-                uncheckedColor='grey'
-                onPress={this._onBookForSelfRadioButtonPressed}
-                checked={!this.state.isBookForSelf}
-              />
-            </View>
             <View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -495,24 +459,52 @@ export default class BookingDetail extends React.Component {
               paddingTop: 20,
               // marginVertical:20,
             }}>
-              <Text style={this.state.isContactFilled ?
-                styles.normalText : styles.warningText} >
-                {(contact && contact.name != undefined) ?
-                  `${contact.name} \n${contact.email} ` +
-                  `\n+ ${contact.countryCallCd} - ${contact.phone}`
-                  : 'Mohon isi data kontak tamu'
-                }
-              </Text>
-              {isContactFilled ||
-                <Text style={styles.validation}>
-                  Mohon isi kontak tamu
+              {isContactFilled && contact &&
+                <Text style={styles.normalText}>
+                  {contact.name}{'\n'}
+                  {contact.email}{'\n'}
+                  {contact.countryCallCd} - {contact.phone}
                 </Text>
+              }
+              {isContactNeverFilled &&
+                <View>
+                  <CheckBox
+                    size={18}
+                    textStyle={{ fontSize: 13 }}
+                    style={{ flex: 1, marginBottom: 20 }}
+                    title='Pesan untuk saya sendiri'
+                    checkedIcon='dot-circle-o'
+                    uncheckedIcon='circle-o'
+                    checkedColor='#01d4cb'
+                    uncheckedColor='grey'
+                    onPress={this._onBookForSelfRadioButtonPressed}
+                    checked={false}
+                  />
+                  <CheckBox
+                    size={18}
+                    textStyle={{ fontSize: 13 }}
+                    style={{ flex: 1 }}
+                    title='Pesan untuk orang lain'
+                    checkedIcon='dot-circle-o'
+                    uncheckedIcon='circle-o'
+                    checkedColor='#01d4cb'
+                    uncheckedColor='grey'
+                    onPress={this._goToBookingContact}
+                    checked={false}
+                  />
+                </View>
               }
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToBookingContact} >
-                {addEditButton(contact && !!contact.name)}
+                {isContactNeverFilled ||
+                  <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>}
               </TouchableOpacity>
             </View>
+            {!isContactFilled && isBookButtonPressed &&
+              <Text style={styles.warningText} >
+                Mohon isi data kontak tamu
+              </Text>
+            }
           </View>
 
         </View>
