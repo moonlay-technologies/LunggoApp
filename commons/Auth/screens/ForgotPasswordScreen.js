@@ -5,7 +5,7 @@ import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import { StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+  KeyboardAvoidingView, ActivityIndicator,Keyboard,TouchableWithoutFeedback } from 'react-native';
 import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation'
@@ -47,7 +47,8 @@ export default class ForgotPasswordScreen extends React.Component {
     let {phone, isLoading, errorMessage} = this.state;
     let loadingIndicator = isLoading ? <LoadingAnimation/> : null;
     return (
-      <KeyboardAvoidingView behavior="position" style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{marginBottom:15}}>
           <Text style={styles.categoryTitle}>Lupa Password?</Text>
         </View>
@@ -72,8 +73,8 @@ export default class ForgotPasswordScreen extends React.Component {
           })}
           onSubmitEditing={this._submit}
           ref='phone'
-          selectTextOnFocus={true}
-          autoFocus={true}
+          selectTextOnFocus={false}
+          autoFocus={false}
         />
         <Button
           containerStyle={{
@@ -94,25 +95,28 @@ export default class ForgotPasswordScreen extends React.Component {
         </Button>
         {loadingIndicator}
       </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height:'100%',
     padding:15,
-    paddingTop:60,
+    paddingTop:30,
     backgroundColor: '#fff',
   },
   categoryTitle :{
     fontWeight:'bold',
     fontSize:26,
     color:'#454545',
+    textAlign:'center'
   },
   mediumText: {
     fontSize:15,
     color:'#454545',
+    textAlign:'center'
   },
   smallText: {
     fontSize:13,
@@ -137,7 +141,6 @@ const styles = StyleSheet.create({
     paddingTop:10,
     paddingBottom:10,
     marginRight: 5,
-    flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
     borderColor: 'transparent',
