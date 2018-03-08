@@ -39,7 +39,7 @@ export default class BeforeLoginScreen extends React.Component {
           <TouchableOpacity
             onPress={() => navigate('Registration', this.params)} 
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width:'90%'}}
-            activeOpacity={1}
+            activeOpacity={0.9}
           >
             <LinearGradient
               colors={['#00d3c5', '#35eac6', '#6affc6']}

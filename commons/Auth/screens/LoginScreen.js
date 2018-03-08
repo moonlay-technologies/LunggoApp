@@ -202,7 +202,7 @@ export default class LoginScreen extends React.Component {
            <TouchableOpacity
            onPress={this._onLoginPressed}
             style={{alignItems: 'center', width:'100%', marginTop:30 }}
-            activeOpacity={1}
+            activeOpacity={0.6}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
           >
