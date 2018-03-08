@@ -66,8 +66,8 @@ export default class AccountScreen extends React.Component {
               </View>*/}
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 1 }}>
-                <Text style={styles.optionProfile}>{profile.name}</Text>
+              <View style={{ justifyContent: 'center', flex: 2 }}>
+                <Text style={styles.optionProfile}>{contact.name}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -78,8 +78,8 @@ export default class AccountScreen extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 1 }}>
-                <Text style={styles.optionProfile}>{profile.email}</Text>
+              <View style={{ justifyContent: 'center', flex: 2 }}>
+                <Text style={styles.optionProfile}>{contact.email}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -90,8 +90,8 @@ export default class AccountScreen extends React.Component {
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 1 }}>
-                <Text style={styles.optionProfile}>+{profile.countryCallCd} {profile.phone}</Text>
+              <View style={{ justifyContent: 'center', flex: 2 }}>
+                <Text style={styles.optionProfile}>+{contact.countryCallCd} {contact.phone}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -164,7 +164,7 @@ export default class AccountScreen extends React.Component {
             </View>*/}
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
-                <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View style={{ justifyContent: 'center', flex: 2 }}>
                   <Text style={styles.optionProfile}>Log Out</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 1 }}>
@@ -181,7 +181,7 @@ export default class AccountScreen extends React.Component {
           <View style={styles.container}>
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
-                <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View style={{ justifyContent: 'center', flex: 2 }}>
                   <Text style={styles.optionProfile}>Login</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 1 }}>
@@ -195,7 +195,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
-                <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View style={{ justifyContent: 'center', flex: 2 }}>
                   <Text style={styles.optionProfile}>Daftar</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end', flex: 1 }}>

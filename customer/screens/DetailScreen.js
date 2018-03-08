@@ -123,10 +123,11 @@ export default class DetailScreen extends Component {
                 <View style={styles.divider} />
 
                 <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+
                 <Accordion style={styles.containerdescriptionActivity}
                   sections={[
                     {
-                      title: 'Agenda',
+                      title: 'Agendas',
                       content: 'Lorem ipsum dolor sit amet, consectetur ',
                     },
                     {
@@ -258,8 +259,8 @@ class Header extends Component {
           </TouchableOpacity>
           <Animated.View style={{ opacity , flex:6.5}}>
             <Text
-              style={[styles.activitydetailTitle,
-                { marginTop: 6.5, textAlign: 'center'}]}
+              style={[styles.activitydetailTitleHeader,
+                { marginTop: 4, textAlign: 'center'}]}
               numberOfLines={1}
             >
               {title}
@@ -270,7 +271,7 @@ class Header extends Component {
               <Icon name='share' type='materialicons' size={30} color='#000' />
             </TouchableOpacity> */}
             <WishButton wishlisted={wishlisted} id={id} big={true} onPress={this.props._onWishlist}
-              {...this.props} style={{ marginLeft: 10 }} unwishlistedColor={'#000'} />
+              {...this.props} style={{ marginLeft: 5 }} unwishlistedColor={'#000'} />
           </View>
         </View>
       </Animated.View>
@@ -442,7 +443,7 @@ class MainInfo extends Component {
     return (
       <View>
         <View style={{ paddingTop: 10, paddingBottom: 20 }}>
-          <View style={{ marginBottom: 10 }}>
+          <View >
             <Text style={styles.activitydetailTitle}>
               {name}
             </Text>
@@ -453,7 +454,7 @@ class MainInfo extends Component {
             </MultilineText>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Icon name='ios-pin' type='ionicon' size={18} color='#454545' />
+            <Icon name='ios-pin' type='ionicon' size={18} color='#009389' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 {city}
@@ -461,7 +462,7 @@ class MainInfo extends Component {
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-person' type='ionicon' size={18} color='#454545' />
+            <Icon name='ios-person' type='ionicon' size={18} color='#009389' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Maksimum 6 orang
@@ -469,7 +470,7 @@ class MainInfo extends Component {
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-calendar' type='ionicon' size={18} color='#454545' />
+            <Icon name='ios-calendar' type='ionicon' size={18} color='#009389' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Khusus hari minggu
@@ -477,7 +478,7 @@ class MainInfo extends Component {
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-clipboard' type='ionicon' size={18} color='#454545' />
+            <Icon name='ios-clipboard' type='ionicon' size={18} color='#009389' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Untuk usia diatas 10 tahun
@@ -485,12 +486,18 @@ class MainInfo extends Component {
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='md-alarm' type='ionicon' size={18} color='#454545' />
+            <Icon name='md-alarm' type='ionicon' size={18} color='#009389' />
             <View style={{ marginTop: 1, marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 {duration.amount + " " + duration.unit}
               </Text>
             </View>
+          </View>
+
+          <View style={{flexDirection: 'row', marginBottom:3}}>
+            <Text>{'\u2022'}</Text>
+            <Text style={[styles.activityDesc,
+                { paddingLeft:5}]}>23.00 - 24.00: Guest picked-up in Surabaya city center jakarta selatan</Text>
           </View>
 
         </View>
@@ -618,7 +625,9 @@ const styles = StyleSheet.create({
     padding: 10,
     ...Platform.select({
       ios: {
-        marginTop: 18
+        marginTop: 18,
+        borderBottomWidth:1,
+        borderBottomColor:'#dfdfdf'
       },
       android: {
         marginTop: 5
@@ -668,7 +677,7 @@ const styles = StyleSheet.create({
   },
   activityTitle: {
     fontFamily: 'Hind-Bold',
-    fontSize: 15,
+    fontSize: 16,
     color: '#454545',
     ...Platform.select({
       ios: {
@@ -685,17 +694,35 @@ const styles = StyleSheet.create({
   },
   activitydetailTitle: {
     fontFamily: 'Hind-Bold',
-    fontSize: 19,
+    fontSize: 24,
     color: '#454545',
     ...Platform.select({
       ios: {
-        lineHeight: 15 * 0.8,
-        paddingTop: 20 - (19 * 0.4),
-        marginBottom: -15,
-        //backgroundColor:'red'
+        lineHeight: 19,
+        paddingTop:15 ,
+        marginBottom: -10,
       },
       android: {
-        lineHeight: 24
+        lineHeight: 30,
+        marginBottom:20,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activitydetailTitleHeader: {
+    fontFamily: 'Hind-Bold',
+    fontSize: 20,
+    color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:15 ,
+        marginBottom: -10,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
         //paddingTop: 23 - (23* 1),
 
       },
@@ -711,13 +738,13 @@ const styles = StyleSheet.create({
     color: '#acacac'
   },
   activityDesc: {
-    fontSize: 16,
+    fontSize: 15.5,
     color: '#454545',
-    fontFamily: 'Hind',
+    fontFamily: 'Hind-Light',
     ...Platform.select({
       ios: {
-        lineHeight: 15 * 0.8,
-        paddingTop: 10,
+        lineHeight: 14,
+        paddingTop: 9,
         marginBottom: -10
       },
       android: {
@@ -729,7 +756,7 @@ const styles = StyleSheet.create({
   },
   containerdescriptionActivity: {
     flex: 1,
-    paddingVertical: 20
+    paddingVertical: 30
   },
   containersimiliarActivity: {
     marginBottom: 20,
@@ -737,10 +764,20 @@ const styles = StyleSheet.create({
     flex: 1
   },
   sectionTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 7,
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 18,
     color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: 0,
+      },
+      android: {
+        lineHeight: 24,
+        marginBottom:10
+      },
+    }),
   },
   reviewTitle: {
     fontFamily: 'Hind-SemiBold',
@@ -821,7 +858,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#efefef',
+    backgroundColor: '#e1e1e1',
   },
   locationActivity: {
     fontSize: 12,

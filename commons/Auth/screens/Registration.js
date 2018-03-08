@@ -271,7 +271,7 @@ export default class Registration extends React.Component {
           <TouchableOpacity
            onPress={this._onRegisterPressed}
             style={{alignItems: 'center', width:'100%', marginTop:30 }}
-            activeOpacity={1}
+            activeOpacity={0.6}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
           >
