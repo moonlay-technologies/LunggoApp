@@ -3,9 +3,9 @@ import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-export async function getMyBookingList() {
+export async function getMyBookingList(force = true) {
   let myBookingsJson = await getItemAsync('myBookings');
-  if (!myBookingsJson) {
+  if (force || !myBookingsJson) {
     let fetched = await fetchMyBookingList();
     if (fetched.status != 200)
       return [];

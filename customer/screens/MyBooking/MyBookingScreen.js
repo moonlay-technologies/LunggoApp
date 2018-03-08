@@ -27,7 +27,7 @@ export default class MyBookingScreen extends React.Component {
     if (params && !params.loggedIn) {
       return this.setState({ isLoading: false });
     }
-    getMyBookingList().then(list => {
+    getMyBookingList(true).then(list => {
       this.setState({ list, isLoading: false });
     });
   }
