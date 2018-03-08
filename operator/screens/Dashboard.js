@@ -194,7 +194,7 @@ export default class Dashboard extends React.Component {
           <View style={styles.containerDashboard}>
             <View style={styles.containerBoxDashboard}>
               <View style={{ position: 'absolute', flexDirection: 'row', right: 15, top: 15, }}>
-                <TouchableOpacity>
+                {/*<TouchableOpacity>
                   <Icon
                     style={{ width: 45, alignItems: 'center', }}
                     name='ios-paper-plane'
@@ -204,7 +204,7 @@ export default class Dashboard extends React.Component {
                   <View style={styles.notification}>
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 10 }}>5</Text>
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
                 <TouchableOpacity
                   style={{ width: 25, alignItems: 'center' }}
                   onPress={this._openSettingModal}
@@ -230,14 +230,14 @@ export default class Dashboard extends React.Component {
                   <Text style={styles.teks3a}>Lihat Daftar Transaksi</Text>
                 </TouchableOpacity>
                 <View style={styles.separatorOption}></View>
-                <TouchableOpacity onPress={this._goToProfile}>
+                {/*<TouchableOpacity onPress={this._goToProfile}>
                   <Text style={styles.teks3a}>Ubah Profil</Text>
                 </TouchableOpacity>
                 <View style={styles.separatorOption}></View>
                 <TouchableOpacity onPress={this._goToActivityList}>
                   <Text style={styles.teks3a}>Ubah Activity</Text>
                 </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
+                <View style={styles.separatorOption}></View>*/}
                 <TouchableOpacity onPress={this._askLogout}>
                   <Text style={styles.teks3a}>Log Out Akun</Text>
                 </TouchableOpacity>
@@ -268,6 +268,9 @@ export default class Dashboard extends React.Component {
           </View>
 
         </View>
+
+
+{/*
         <View style={{ marginTop: 30, padding: 15, paddingBottom: 5 }}>
           <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
         </View>
@@ -344,206 +347,7 @@ export default class Dashboard extends React.Component {
               </View>
             </View>
           </View>
-        </View>
-
-
-        {/*<View style={styles.container}>
-        <View style={{}}>
-          <Text style={styles.namaProfile}>Ali Zainal Abidin</Text>
-        </View>
-       </View>*/}
-
-        {/* <View style={styles.container}>
-          <View>
-            <View style={{flexDirection:'row'}}>
-              <TouchableOpacity
-                style={{flex:1}}
-                onPress={this._goToAccountScreen}
-              >
-                <Image style={styles.avatarBig} source={require('../../assets/images/janedoe.jpg')}/>
-              </TouchableOpacity>
-              </View>
-              <View style={{flex:1,alignItems:'flex-start', justifyContent:'flex-start'}}>
-                <View style={{}}>
-                  <Text style={styles.categoryTitle}>Hello Mr. Fox!</Text>
-                </View>
-                <View style={{}}>
-                  <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
-                </View>
-              <TouchableOpacity>
-                <Icon
-                  style={{marginRight:4}}
-                  name='sms'
-                  type='materialicons'
-                  size={30}
-                  color='#454545'/>
-                <View style={styles.notification}>
-                  <Text style={{color:'#fff', fontWeight:'bold', fontSize:11}}>5</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View style={{padding:15,paddingTop:0,}}>
-          <View style={{}}>
-            <Text style={styles.categoryTitle}>Hello Mr. Fox!</Text>
-          </View>
-          <View style={{}}>
-            <Text style={styles.priceTitleBig}>Amazing Experience from dawn till the dusk</Text>
-          </View>
-          <View style={{flexDirection:'row', marginTop:8}}>
-            <View style={{flex:1}}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('Mutasi')
-                }
-              >
-                <View style={{flexDirection:'row'}}>
-                  <View>
-                     <Icon
-                    name='wallet'
-                    type='entypo'
-                    size={23}
-                    color='#454545'/>
-                  </View>
-                  <Text style={styles.credit}>Rp 1.000.000</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={{flex:1, alignItems:'flex-end'}}>
-              <Button
-                containerStyle={{
-                  height: 25,
-                  width: 95,
-                  paddingTop: 5,
-                  overflow: 'hidden',
-                  borderRadius:5,
-                  backgroundColor: '#fff',
-                  borderColor:'#676767',
-                  borderWidth:1
-                }}
-                style={{fontSize: 12, color: '#676767',}}
-                onPress={this._goToAccountScreen}
-              >
-                Edit Profile
-              </Button>
-            </View>
-            <TouchableOpacity
-              style={{marginLeft:10}}
-              onPress={this._goToSettingsScreen}
-            >
-              <Icon
-                name='ios-settings-outline'
-                type='ionicon'
-                size={26}
-                color='#454545'/>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={{flexDirection:'row', marginTop:15, padding:15,paddingTop:0,}}>
-          <TouchableOpacity
-            style={{
-              flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2
-            }}
-            onPress={this._onAppointmentRequestPressed}
-          >
-            <Text style={styles.textKecil}>You have</Text>
-            <Text style={styles.point}>12</Text>
-            <Text style={styles.textKecil}>Pending Requests</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={{flex:1, paddingVertical:5, alignItems:'center', borderRadius:4, borderColor:'#01d4cb', borderWidth:2, marginLeft:6}}
-            onPress={this._onAppointmentListPressed}
-          >
-            <Text style={styles.textKecil}>You have</Text>
-            <Text style={styles.point}>3</Text>
-            <Text style={styles.textKecil}>Appointments</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.container}>
-          <View style={{marginTop:0}}>
-            <View style={{flexDirection:'row'}}>
-              <View style={{flex:2}}>
-                <Text style={styles.categoryTitle}>Activity Review</Text>
-              </View>
-              <TouchableOpacity
-                onPress={this._goToActivityViewDetailsScreen}
-                style={{flex:1,alignItems:'flex-end', justifyContent:'center'}}
-              >
-                <Text style={styles.textKecil}>Details</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View style={{marginTop:0}}>
-            <View style={{flexDirection:'row'}}>
-              <TouchableOpacity
-                onPress={this._onActivityListPressed}
-                style={styles.activityReviewButton}
-              >
-                <Text style={styles.point}>2</Text>
-                <Text style={styles.textKecil}>Activities</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this._goToDealsScreen}
-                style={styles.activityReviewButton}
-              >
-                <Text style={styles.point}>13</Text>
-                <Text style={styles.textKecil}>Deals</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this._goToActivityViewsScreen}
-                style={styles.activityReviewButton}
-              >
-                <Text style={styles.point}>107</Text>
-                <Text style={styles.textKecil}>Views</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this._goToReviewScreen}
-                style={styles.activityReviewButton}
-              >
-                <Text style={styles.point}>14</Text>
-                <Text style={styles.textKecil}>Review</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View style={styles.divider}></View>
-        </View>
-
-        <View style={styles.container}>
-          <View style={{marginTop:0}}>
-            <View style={{}}>
-              <View style={{}}>
-                <Text style={styles.categoryTitle}>Rating</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <View style={{marginTop:0}}>
-            <View style={{flexDirection:'row'}}>
-              <View style={{}}>
-                <Text style={styles.boldRating}>4.3</Text>
-                <Text style={{fontSize: 12, color: '#676767', marginLeft:20}}>Out of 5</Text>
-              </View>
-              <View style={{}}>
-                
-              </View>
-            </View>
-          </View>
-        </View>
-
-
-        <View style={{paddingTop:30}}></View>*/}
+        </View>*/}
 
       </ScrollView>
     );
