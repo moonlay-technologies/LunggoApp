@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import { Platform, StyleSheet, FlatList, Text, View, Image,
   TextInput, ScrollView, TouchableHighlight, } from 'react-native';
@@ -89,7 +89,7 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class AppointmentRequests extends Component {
+export default class AppointmentRequests extends React.Component {
 
   static navigationOptions = {
     title: 'Appointment Request',
@@ -97,7 +97,9 @@ export default class AppointmentRequests extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {};
+    this.state = {
+      list: [],
+    };
   }
 
   _fetchAppointmentRequests = () => {
@@ -115,7 +117,7 @@ export default class AppointmentRequests extends Component {
     this._fetchAppointmentRequests();
   }
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index
   _renderItem = ({item, index}) => (
     <ListItem
       item={item}
@@ -148,7 +150,7 @@ export default class AppointmentRequests extends Component {
   _declineRequest = ({rsvNo}) => this._respondRequest(rsvNo, 'decline')
 
   render() {
-    return (
+    return ( (this.state.list.length > 0) ?
       <ScrollView style={{backgroundColor: '#fff',}}>
         <View style={{marginBottom:10}}>
           <FlatList
@@ -159,6 +161,8 @@ export default class AppointmentRequests extends Component {
           />
         </View>
       </ScrollView>
+      :
+      <Text>You don't have any appointment request</Text>
     );
   }
 }

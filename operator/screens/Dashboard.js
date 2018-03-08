@@ -59,16 +59,8 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  _goToAppointmentRequest = (response) => {
-    if (response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'AppointmentRequest', { list: response.appointmentRequests }
-      )
-    } else {
-      this.setState({ message: 'response undefined' })
-      console.log(response)
-    }
+  _goToAppointmentRequest = () => {
+    this.props.navigation.navigate('AppointmentRequest');
   }
 
   _goToAppointmentList = (response) => {
@@ -86,23 +78,6 @@ export default class Dashboard extends React.Component {
   _goToActivityList = () => {
     this._closeSettingModal();
     this.props.navigation.navigate('ActivityList');
-  }
-
-  _getAppointmentRequest = () => {
-    const version = 'v1';
-    const path = `/${version}/operator/appointments/request`;
-    // this.setState({ isLoading: true });
-    let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._goToAppointmentRequest(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n' + error
-      });
-      console.log(error);
-    });
   }
 
   _getAppointmentList = () => {
@@ -140,10 +115,6 @@ export default class Dashboard extends React.Component {
   //   });
   // }
 
-  _onAppointmentRequestPressed = () => {
-    this.setState({ message: '', isLoading: true });
-    this._getAppointmentRequest();
-  }
   _onAppointmentListPressed = () => {
     this.setState({ message: '', isLoading: true });
     this._getAppointmentList();
@@ -154,13 +125,6 @@ export default class Dashboard extends React.Component {
   //   this._getAppointmentDetail(id);
   // }
 
-  //// Bind <TextInput> searchText with state searchString
-  _onSearchTextChanged = event => {
-    this.setState({ searchString: event.nativeEvent.text });
-  }
-
-  // _goToSettingsScreen = () => this.props.navigation.navigate('Settings')
-
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
   _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
@@ -168,6 +132,7 @@ export default class Dashboard extends React.Component {
   // _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
   // _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
+
   _goToProfile = () => {
     this._closeSettingModal();
     'TODO'
@@ -255,7 +220,7 @@ export default class Dashboard extends React.Component {
                   <Text style={styles.teks1}>Activity</Text>
                   <Text style={styles.teks2}>22</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this._onAppointmentRequestPressed} style={{ flex: 1, alignItems: 'center' }}>
+                <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Request</Text>
                   <Text style={styles.teks2}>3</Text>
                 </TouchableOpacity>

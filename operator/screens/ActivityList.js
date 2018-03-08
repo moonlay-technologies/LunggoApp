@@ -10,7 +10,7 @@ class ListItem extends React.PureComponent {
   _onPress = () => this.props.onPressItem(this.props.item);
   
   render() {
-    const {item} = this.props;
+    const {item, index} = this.props;
     return (
       <View key={index} style={{flex:1}}>
         <TouchableHighlight
