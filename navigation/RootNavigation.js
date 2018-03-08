@@ -53,7 +53,8 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         //screen:BeforeLoginScreen
         // screen: Mutasi
-        screen: MainTabNavigator
+        // screen: MainTabNavigator
+        screen: Dashboard
 
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard

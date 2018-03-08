@@ -34,7 +34,7 @@ export default class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    getProfile().then(({ contact }) => this.setState(contact));
+    getProfile().then( profile => this.setState(profile));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;

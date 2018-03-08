@@ -15,7 +15,7 @@ class ListItem extends React.PureComponent {
   render() {
     const {item} = this.props;
     return (
-      <View key={item.rsvNo} style={{flex:1,}}>
+      <View style={{flex:1,}}>
 
         <TouchableHighlight
           onPress={this._onPress}

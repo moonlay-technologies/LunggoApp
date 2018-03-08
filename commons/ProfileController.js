@@ -23,8 +23,11 @@ export async function fetchProfile() {
 
 export async function getProfile() {
   let profileJson = await getItemAsync('profile');
-  if (!profileJson) return null;
+  if (!profileJson) return fetchProfile();
   
   let profile = JSON.parse(profileJson);
+  console.log('profile')
+  console.log(profile)
+  
   return profile;
 }

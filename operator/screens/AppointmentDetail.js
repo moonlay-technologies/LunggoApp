@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import { Icon } from 'react-native-elements'
 import {
@@ -10,37 +10,15 @@ import {
 import Moment from 'moment';
 import 'moment/locale/id';
 
-export default class AppointmentDetail extends Component {
+export default class AppointmentDetail extends React.Component {
 
   static navigationOptions = {
     title: 'Detail Appointment',
   };
 
-  constructor (props) {
-    super(props)
-    const {details} = this.props.navigation.state.params || {};
-    if (!details) {   //// if params.details doesnt exist,
-      this.state = {  //// use default state object
-        // isLoading, id
-        name: 'Loading activity name...',
-        date: 'yyyy-mm-dd',
-        session: 'session...',
-        paxCount: '?',
-        requestTime: '',
-        price: 'loading price...',
-        mediaSrc: []
-      }
-    } else {
-      details.mediaSrc = [details.mediaSrc];
-      // if (!details.duration) details.duration = { ////fallback
-      //   amount: 'loading ', unit: 'duration...'   ////if duration not
-      // }                            //// provided like in ActivityList
-      this.state = details; //// prevent error when params == undefined
-    }
-  }
-
   render() {
-    let {date, session, paxCount} = this.state;
+    let { details } = this.props.navigation.state.params;
+    let { contact, paxes } = details.paxGroup;
     return (
       <ScrollView style={{backgroundColor: '#fff',}}>
         <View style={{flex:1,}}>
@@ -48,16 +26,18 @@ export default class AppointmentDetail extends Component {
           <View style={styles.containerListAppointment}>
             <View style={{flex:1}}>
 
-              <Text style={styles.activityTitle}>Banana Boat</Text>
+              <Text style={styles.activityTitle}>
+                {details.name}
+              </Text>
               <View style={{width:'100%',flexDirection:'row', marginTop:3}}>
                 <View style={{ marginRight:10 }}>
                   <Text style={styles.timeActivity}>
-                    {Moment(date).format('ddd, D MMM YYYY')}
+                    {Moment(details.date).format('ddd, D MMM YYYY')}
                   </Text>
                 </View>
                 <View >
                   <Text style={styles.timeActivity}>
-                    {session}
+                    {details.session}
                   </Text>
                 </View>
               </View>
@@ -72,10 +52,23 @@ export default class AppointmentDetail extends Component {
                   />
                 </View>
                 <View style={{marginLeft:8}}>
-                  <Text style={{fontSize:14, marginTop:3}}>{paxCount} guest</Text>
+                  <Text style={{fontSize:14, marginTop:3}}>
+                    {paxes.length} guest
+                  </Text>
                 </View>
               </View>
 
+
+
+              <View style={{marginTop:40}}>
+                <Text style={styles.activityTitle}>Contact Person</Text>
+                <Text>{contact.name}</Text>
+                <Text>{contact.countryCallCd+contact.phone}</Text>
+                <Text>{contact.email}</Text>
+              </View>
+
+
+              {/*  
               <View style={{flexDirection:'row', marginTop:40,}}>
 
                 <View style={{flex:1}}>
@@ -149,7 +142,7 @@ export default class AppointmentDetail extends Component {
                   </View>
                 </View> 
 
-              </View>
+              </View>*/}
 
               {/*<View style={{marginTop:25,}}>
                 <View style={{flexDirection:'row',}}>
