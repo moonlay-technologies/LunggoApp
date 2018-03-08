@@ -58,7 +58,7 @@ export default class SubmitReviewScreen extends React.Component {
                 style={{ textAlignVertical: 'top', borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5, paddingVertical: 13, paddingHorizontal: 10, height: 100 }}
                 placeholder='Aktivitasnya menyenangkan, pelayanannya baik dan ramah, dst...'
                 underlineColorAndroid='transparent'
-                multiline={true}
+                multiline={false}
                 numberOfLines={5}
                 onChangeText={text => {this.reviewText = text}}
                 onSubmitEditing={content => this._submitReview()}

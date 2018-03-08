@@ -110,6 +110,9 @@ export async function getAuthAccess() {
         await removeAccessToken();
         return getAuthAccess();
     }
+    global.isFetchingAuth = false;
+    global.accessToken = accessToken;
+    global.authLevel = authLevel;
     return { accessToken, authLevel };
   } catch (error) {
     console.log('get auth access error');
@@ -117,7 +120,7 @@ export async function getAuthAccess() {
   }
 }
 
-export async function checkUserLoggedIn(request) {
+export async function checkUserLoggedIn() {
   let { authLevel } = await getAuthAccess();
   return (authLevel >= AUTH_LEVEL.User);
 }

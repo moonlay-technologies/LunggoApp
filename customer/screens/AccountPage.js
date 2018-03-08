@@ -29,10 +29,10 @@ export default class AccountScreen extends React.Component {
   componentDidMount() {
     this.props.navigation.addListener('willFocus', getProfile);
 
-    checkUserLoggedIn().then(isLoggedIn =>
-      getProfile().then(profile =>
-        this.setState({ profile, isLoggedIn })
-      ));
+    checkUserLoggedIn().then( async isLoggedIn => {
+      let profile = isLoggedIn ? await getProfile() : {};
+      this.setState({ profile, isLoggedIn });
+    });
   }
 
   _openModal = () => this.refs.modal.openModal()

@@ -106,7 +106,7 @@ export default TabNavigator(
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     //initialLayout: {width:100, height:300},
-    animationEnabled: true,
+    animationEnabled: false,
     swipeEnabled: true,
     lazy: false,
 

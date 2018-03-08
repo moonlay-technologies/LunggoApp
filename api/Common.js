@@ -7,6 +7,7 @@ export { checkUserLoggedIn } from '../commons/Auth/AuthController';
 export { AUTH_LEVEL } from '../constants/env';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+const LOGGING = false;
 
 //// fetch API
 export async function fetchTravoramaApi(request) {
@@ -14,7 +15,7 @@ export async function fetchTravoramaApi(request) {
     let { path, method, data, requiredAuthLevel } = request;
     method = method || 'GET';
     let url = API_DOMAIN + (path || request);
-    console.log('fetching ' + method + ' from ' + url + ' ...')
+    LOGGING && console.log('fetching ' + method + ' from ' + url + ' ...')
     if (!requiredAuthLevel)
       throw 'ERROR fetch: requiredAuthLevel needed!';
 
@@ -50,8 +51,8 @@ export async function fetchTravoramaApi(request) {
       throw 'invalid JSON format :' + JSON.stringify(request.data);
     }
     response = await response.json();
-    console.log('response from ' + url + ' :');
-    console.log(response);
+    LOGGING && console.log('response from ' + url + ' :');
+    LOGGING && console.log(response);
     if (response.status != 200) {
       console.log('status is not 200! \nresponse:');
       console.log(response);

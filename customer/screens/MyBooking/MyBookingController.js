@@ -5,7 +5,8 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getMyBookingList(force = true) {
   let myBookingsJson = await getItemAsync('myBookings');
-  if (force || !myBookingsJson) {
+  //if (force || !myBookingsJson) {
+  if (true || !myBookingsJson) {
     let fetched = await fetchMyBookingList();
     if (fetched.status != 200)
       return [];
