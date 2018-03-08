@@ -28,8 +28,11 @@ class ActivityListItem extends React.PureComponent {
     WebBrowser.openBrowserAsync(item.pdfUrl);
   }
 
-  _goToBookedPageDetail = () => this.props.navigation.navigate
-    ('BookedPageDetail', { details: this.props.item })
+  _goToBookedPageDetail = () => {
+    console.log(this.props.item);
+    this.props.navigation.navigate
+      ('BookedPageDetail', { details: this.props.item })
+  };
 
   _voucherButton = item => {
     if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')

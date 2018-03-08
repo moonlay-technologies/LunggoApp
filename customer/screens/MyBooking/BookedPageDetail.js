@@ -4,26 +4,25 @@ import React from 'react';
 import Button from 'react-native-button';
 import * as Formatter from '../../components/Formatter';
 import { Icon } from 'react-native-elements';
-import { Platform, StyleSheet, TouchableOpacity, Text, View, Image,
-  TextInput, ScrollView, Linking } from 'react-native';
+import {
+  Platform, StyleSheet, TouchableOpacity, Text, View, Image,
+  TextInput, ScrollView, Linking
+} from 'react-native';
 import Maps from '../../components/Maps';
+import { WebBrowser } from 'expo';
 
 export default class BookedPageDetail extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
-
-
-console.log(props.navigation.state)
 
     this.details = {
       totalPaxCount: 0,
       ...props.navigation.state.params.details,
     };
-    this.details.paxCount.map( categ => {
+    this.details.paxCount.map(categ => {
       this.details.totalPaxCount += categ.count;
     });
-    console.warn('avatar operator masih dummy dan pax list blm ada');
   }
 
   // _onContinuePaymentPressed = () => {
@@ -34,99 +33,142 @@ console.log(props.navigation.state)
 
   _viewActivityDetail = () => {
     this.props.navigation.navigate('DetailScreen', {
-      details:{
+      details: {
         id: this.details.activityId,
         ...this.details,
       }
     });
   }
 
-  _callOperator = () => Linking.openURL('tel:'+this.details.operatorPhone)
-  _smsOperator = () => Linking.openURL('sms:'+this.details.operatorPhone)
+  _viewPdfVoucher = async () => {
+    let { rsvNo, pdfUrl } = this.details;
+    // TODO uncomment this buat local PDF
+    // let localUri = await getItemAsync('myBookings.pdfVoucher.' + rsvNo);
+    // WebBrowser.openBrowserAsync(localUri || pdfUrl);
+    WebBrowser.openBrowserAsync(pdfUrl);
+  }
+
+  _callOperator = () => Linking.openURL('tel:' + this.details.operatorPhone)
+  _smsOperator = () => Linking.openURL('sms:' + this.details.operatorPhone)
+
+  _showTicket() {
+    let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
+
+    if (bookingStatus == 'BOOK')
+      return <Text>Menunggu proses pembayaran</Text>;
+    else if (bookingStatus == 'FORW')
+      return <Text>Sedang menunggu konfirmasi operator</Text>;
+    else if (bookingStatus == 'TKTD' && hasPdfVoucher && isPdfUploaded) {
+      return (
+        <Button
+          containerStyle={styles.labelWarning}
+          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+          onPress={() => this._viewPdfVoucher()}
+        >
+          Lihat Voucher
+        </Button>
+      );
+    }
+    else if (bookingStatus == 'TKTD' && ticketNumber) {
+      return (
+        <View>
+          <Text style={styles.activityTitle}>
+            Kode Tiket
+          </Text>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+              {ticketNumber}
+            </Text>
+          </View>
+        </View>);
+    }
+    else if (bookingStatus == 'CONF')
+      return <Text>Tiket sedang dalam proses penerbitan</Text>;
+  }
 
   render() {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
-          selectedSession, operatorName, operatorPhone, ticketNumber,
-          operatorEmail, totalPaxCount, latitude, longitude, paxes,
-          hasPdfVoucher, isPdfUploaded,
-        } = this.details;
+      selectedSession, operatorName, operatorPhone, ticketNumber,
+      operatorEmail, totalPaxCount, latitude, longitude, paxes,
+      hasPdfVoucher, isPdfUploaded,
+    } = this.details;
     // let bookingStatusText = bookingStatus;
-        // switch (bookingStatus) {
-        //   case 'PROC': bookingStatusText = 'dalam progres'; break;
-        // }
+    // switch (bookingStatus) {
+    //   case 'PROC': bookingStatusText = 'dalam progres'; break;
+    // }
     return (
-      <ScrollView style={{flex:1, backgroundColor:'#fff'}}>
-        <View style={[styles.container,{flexDirection:'row'}]}>
-          <Image style={[{flex:1},styles.thumbnailMedium]}
-            source={{uri: mediaSrc}}
+      <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={[styles.container, { flexDirection: 'row' }]}>
+          <Image style={[{ flex: 1 }, styles.thumbnailMedium]}
+            source={{ uri: mediaSrc }}
           />
-          <View style={{flex:2, paddingLeft:10}}>
-            <Text style={[{marginBottom:15},styles.activityTitle]}>
+          <View style={{ flex: 2, paddingLeft: 10 }}>
+            <Text style={[{ marginBottom: 15 }, styles.activityTitle]}>
               {name}
             </Text>
-            <View style={{flexDirection: 'row', marginBottom:5}}>
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
               <Icon
                 name='event'
                 type='materialicons'
                 size={16}
-                color='#454545'/>
-              <Text style={{marginTop:1, marginLeft:10,fontSize:12}}>
+                color='#454545' />
+              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
                 {Formatter.dateFullLong(date)}
               </Text>
             </View>
-    { (selectedSession) &&
-            <View style={{flexDirection: 'row', marginBottom:5}}>
-              <Icon
-                name='access-time'
-                type='materialicons'
-                size={16}
-                color='#454545'
-              />
-              <Text style={{marginTop:1, marginLeft:10,fontSize:12}}>
-                {selectedSession}
-              </Text>
-            </View>
-    }
-            <View style={{flexDirection: 'row', marginBottom:5}}>
+            {(selectedSession) &&
+              <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+                <Icon
+                  name='access-time'
+                  type='materialicons'
+                  size={16}
+                  color='#454545'
+                />
+                <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
+                  {selectedSession}
+                </Text>
+              </View>
+            }
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
               <Icon
                 name='location'
                 type='entypo'
                 size={16}
                 color='#454545'
               />
-              <Text style={{marginTop:1, marginLeft:10,fontSize:12}}>
+              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
                 {city}
               </Text>
             </View>
           </View>
           <TouchableOpacity onPress={this._viewActivityDetail}>
-            <Text style={{flex:0.5, alignItems:'flex-end',fontSize:12, color:'#676767',}}>
+            <Text style={{ flex: 0.5, alignItems: 'flex-end', fontSize: 12, color: '#676767', }}>
               Detail
             </Text>
           </TouchableOpacity>
         </View>{/* end container */}
-        <View style={styles.divider}/>
+        <View style={styles.divider} />
         <View style={styles.container}>
-          <View style={{flex:1, flexDirection:'row'}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <Text style={styles.activityTitle}>
-              Operator Detail
+              Kontak Operator
             </Text>
-            <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
               <TouchableOpacity onPress={this._callOperator}>
-                <Image style={{width:40, height:40, resizeMode:'cover', marginRight:10 }} source={require('../../../assets/images/phone.png')}/>
+                <Image style={{ width: 40, height: 40, resizeMode: 'cover', marginRight: 10 }} source={require('../../../assets/images/phone.png')} />
               </TouchableOpacity>
               <TouchableOpacity onPress={this._smsOperator}>
-                <Image style={{width:40, height:40, resizeMode:'cover', }} source={require('../../../assets/images/sms.png')}/>
+                <Image style={{ width: 40, height: 40, resizeMode: 'cover', }} source={require('../../../assets/images/sms.png')} />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{flex:1, flexDirection:'row'}}>
-            <Image style={[styles.avatar,{marginRight:10}]} source={require('../../../assets/images/janedoe.jpg')}/>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Image style={[styles.avatar, { marginRight: 10 }]} source={require('../../../assets/images/janedoe.jpg')} />
             <View>
-              <Text style={{fontWeight:'bold', fontSize:16, color:'#454545'}}>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#454545' }}>
                 {operatorName}
               </Text>
-              <Text style={{fontSize:13, color:'#454545'}}>
+              <Text style={{ fontSize: 13, color: '#454545' }}>
                 {operatorPhone} - {operatorEmail}
               </Text>
             </View>
@@ -170,60 +212,40 @@ console.log(props.navigation.state)
             </Text>
           </View>
         </View>{/* end container */}
-        <View style={styles.divider}/>
+        <View style={styles.divider} />
         <View style={styles.container}>
-        { (bookingStatus=='BOOK') ?
-          <Text>Menunggu proses pembayaran</Text>
-        : (bookingStatus=='FORW') ?
-        /*(hasPdfVoucher || ticketNumber )isPdfUploaded*/
-        /*<View style={{flex:1,}}>*/
-          <Text>Pembayaran Berhasil! Meneruskan ke Operator</Text>
-        : (bookingStatus=='CONF') ?
-        <View>
-          <Text style={styles.activityTitle}>
-            Kode verifikasi anda
-          </Text>
-          <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-            {/*<Image style={[{marginTop:30, marginBottom:10},styles.barcode]}
-              source={require('../../../assets/images/barcode.jpg')} />*/}
-            <Text style={{fontWeight:'bold', fontSize:16}}>
-              {ticketNumber || 'ERROR: terjadi kesalahan pada server'}
-            </Text>
-          </View>
+          {this._showTicket()}
         </View>
-        : <Text>ERROR: bookingStatus other than BOOK/CONF/FORW not handled yet</Text>
-        }
-        </View>
-        {/*
-        <View style={styles.divider}/>
-        <View style={[styles.container,{flex:1,}]}>
+
+        <View style={styles.divider} />
+        <View style={[styles.container, { flex: 1, }]}>
           <Text style={styles.activityTitle}>
-            Lokasi Appointment
+            Lokasi
           </Text>
           <Maps lat={latitude} long={longitude} name={name}
             address={address} city={city} {...this.props} />
-        </View>{/* end container */}
-        <View style={styles.divider}/>
+        </View>
+        <View style={styles.divider} />
         <View style={styles.container}>
           <View>
-            <Text style={[styles.activityTitle,{marginBottom:10}]}>
+            <Text style={[styles.activityTitle, { marginBottom: 10 }]}>
               Peserta: {totalPaxCount} orang
             </Text>
-            {paxes && paxes.map( pax =>
+            {paxes && paxes.map(pax =>
               <TouchableOpacity style={{
-                flexDirection:'row',
+                flexDirection: 'row',
                 justifyContent: 'space-between',
                 borderBottomColor: '#efefef',
-                borderBottomWidth:1,
-                paddingBottom:20,
-                marginTop:20
+                borderBottomWidth: 1,
+                paddingBottom: 20,
+                marginTop: 20
               }}>
                 <Text>{pax.name}</Text>
                 <Icon
                   name='chevron-thin-right'
                   type='entypo'
                   size={20}
-                  color='#707070'/>
+                  color='#707070' />
               </TouchableOpacity>
             )}
           </View>
@@ -243,46 +265,46 @@ console.log(props.navigation.state)
 
 const styles = StyleSheet.create({
   container: {
-    padding:15,
+    padding: 15,
     backgroundColor: '#fff',
-    flex:1
+    flex: 1
   },
   thumbnailMedium: {
-    resizeMode:'cover', 
-    width:'100%', 
-    height:100, 
-    borderRadius:5,
+    resizeMode: 'cover',
+    width: '100%',
+    height: 100,
+    borderRadius: 5,
   },
   thumb: {
-    resizeMode:'cover', 
-    width:'100%', 
-    height:170,
+    resizeMode: 'cover',
+    width: '100%',
+    height: 170,
   },
   activityTitle: {
-    fontWeight:'bold',
-    fontSize:15,
-    color:'#454545',
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#454545',
   },
-  status:{
-    color:'#f19a4b',
-    fontSize:12,
-    marginTop:2,
+  status: {
+    color: '#f19a4b',
+    fontSize: 12,
+    marginTop: 2,
   },
   descriptionActivity: {
-    fontSize:11,
-    marginTop:0,
-    color:'blue'
+    fontSize: 11,
+    marginTop: 0,
+    color: 'blue'
   },
-  avatar:{
-    width:40, 
-    height:40, 
-    resizeMode:'cover', 
-    borderRadius:20
+  avatar: {
+    width: 40,
+    height: 40,
+    resizeMode: 'cover',
+    borderRadius: 20
   },
-  barcode:{
-    width:130, 
-    height:130, 
-    resizeMode:'cover',
+  barcode: {
+    width: 130,
+    height: 130,
+    resizeMode: 'cover',
   },
   divider: {
     height: 1,
@@ -290,5 +312,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
+  },
+  labelWarning: {
+    backgroundColor: '#ff5f5f',
+    padding: 5,
+    borderRadius: 3,
+    marginTop: 5,
+    alignItems: 'center',
   },
 });
