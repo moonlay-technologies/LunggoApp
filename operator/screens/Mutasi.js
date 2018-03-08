@@ -282,10 +282,9 @@ const styles = StyleSheet.create({
     }),
   },
   containerTanggal:{
-    flex: 1, 
-    paddingRight: 10, 
-    marginRight:5, 
-    marginTop:10, 
+    flex: 1,  
+    marginTop:10,
+    marginRight:10, 
     borderRadius: 3, 
     borderColor:'#00a89d', 
     backgroundColor:'#00bdb1',

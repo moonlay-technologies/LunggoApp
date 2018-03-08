@@ -86,14 +86,17 @@ export function fetchWishlist() {
       method: 'GET'
     }
     let response = fetchTravoramaApi(request).then(response => {
-      // if (response.status == 401) throw 'blom login!! nanti munculin modal';
-      setItemAsync('wishlist', JSON.stringify(response.activityList));
+      if (response.status == 200)
+        setItemAsync('wishlist', JSON.stringify(response.activityList));
+      else
+        deleteItemAsync('wishlist');
+
     });
   });
 }
 
-export function backToMain ( navigation ) {
-  let {reset, navigate} = NavigationActions;
+export function backToMain(navigation) {
+  let { reset, navigate } = NavigationActions;
   const action = reset({
     index: 0,
     actions: [navigate({ routeName: 'Main' })],

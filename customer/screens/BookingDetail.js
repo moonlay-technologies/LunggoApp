@@ -62,9 +62,9 @@ export default class BookingDetail extends React.Component {
   userContact = {}
   lastInputtedContact = {}
   componentDidMount() {
-    getProfile().then(({ contact }) => {
-      this.setState({ contact });
-      this.userContact = contact;
+    getProfile().then(profile => {
+      this.setState({ contact: profile });
+      this.userContact = profile;
     }).catch(err => console.error(err));
   }
 
@@ -427,7 +427,7 @@ export default class BookingDetail extends React.Component {
                 styles.normalText : styles.warningText} >
                 {selectedDateText}
               </Text>
-              { isDateSelected ||
+              {isDateSelected ||
                 <Text style={styles.validation}>
                   Mohon isi jadwal
                 </Text>
@@ -458,13 +458,13 @@ export default class BookingDetail extends React.Component {
 
           <View>
             <Text style={styles.activityTitle}>
-              Kontak yang dapat dihubungi
+              Kontak tamu yang dapat dihubungi
             </Text>
-            <View style={{flexDirection:'row', marginTop:20}}>
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
               <CheckBox
                 size={18}
-                textStyle={{fontSize:10}}
-                style={{flex:1}}
+                textStyle={{ fontSize: 10 }}
+                style={{ flex: 1 }}
                 title='Pesan untuk saya sendiri'
                 checkedIcon='dot-circle-o'
                 uncheckedIcon='circle-o'
@@ -475,15 +475,15 @@ export default class BookingDetail extends React.Component {
               />
               <CheckBox
                 size={18}
-                textStyle={{fontSize:10}}
-                style={{flex:1}}
+                textStyle={{ fontSize: 10 }}
+                style={{ flex: 1 }}
                 title='Pesan untuk orang lain'
                 checkedIcon='dot-circle-o'
                 uncheckedIcon='circle-o'
                 checkedColor='#01d4cb'
                 uncheckedColor='grey'
                 onPress={this._onBookForSelfRadioButtonPressed}
-                checked={ ! this.state.isBookForSelf}
+                checked={!this.state.isBookForSelf}
               />
             </View>
             <View style={{
@@ -497,15 +497,15 @@ export default class BookingDetail extends React.Component {
             }}>
               <Text style={this.state.isContactFilled ?
                 styles.normalText : styles.warningText} >
-                { (contact && contact.name != undefined) ?
-                  `${contact.name} \n${contact.email} `+
+                {(contact && contact.name != undefined) ?
+                  `${contact.name} \n${contact.email} ` +
                   `\n+ ${contact.countryCallCd} - ${contact.phone}`
-                  : 'Mohon isi data kontak'
+                  : 'Mohon isi data kontak tamu'
                 }
               </Text>
-              { isContactFilled ||
+              {isContactFilled ||
                 <Text style={styles.validation}>
-                  Mohon isi kontak
+                  Mohon isi kontak tamu
                 </Text>
               }
               <TouchableOpacity containerStyle={styles.addButton}
@@ -549,11 +549,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1
   },
-  containerPackage:{
-    backgroundColor:'#fff',
-    borderRadius:3,
-    padding:10,
-    marginTop:15,
+  containerPackage: {
+    backgroundColor: '#fff',
+    borderRadius: 3,
+    padding: 10,
+    marginTop: 15,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 15 * 0.8,
         paddingTop: 20 - (19 * 0.4),
-        marginBottom:-10,
+        marginBottom: -10,
       },
       android: {
         lineHeight: 24
@@ -725,10 +725,10 @@ const styles = StyleSheet.create({
   warningText: {
     color: 'red',
   },
-  containerMoreDescription:{
-    borderTopWidth:1,
-    borderTopColor:'#e3e3e3',
-    paddingTop:15,
-    marginTop:15
+  containerMoreDescription: {
+    borderTopWidth: 1,
+    borderTopColor: '#e3e3e3',
+    paddingTop: 15,
+    marginTop: 15
   },
 });
