@@ -16,8 +16,9 @@ class ListItem extends React.PureComponent {
   render() {
     const {item} = this.props;
     item.totalPax = item.reservations.reduce( (total, rsv) => {
-      if (rsv.paxes.length > 0) return total + rsv.paxes.length;
-      else return total + rsv.paxCount.reduce( (total2,paxType) => {
+      // if (rsv.paxes.length > 0) return total + rsv.paxes.length;
+      // else
+      return total + rsv.paxCount.reduce( (total2,paxType) => {
         return total2 + paxType.count;
       }, 0);
     }, 0);
