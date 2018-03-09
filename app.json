@@ -23,11 +23,11 @@
       ]
     },
     "ios": {
-      "bundleIdentifier": "com.sk3vy.new-project-template",
+      "bundleIdentifier": "com.travorama.activity",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.travorama"
+      "package": "com.travorama.activity"
     }
   }
 }

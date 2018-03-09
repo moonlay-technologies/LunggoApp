@@ -53,6 +53,10 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         screen:BeforeLoginScreen
         //screen: MainTabNavigator
+        //screen:BeforeLoginScreen
+        // screen: Mutasi
+        // screen: MainTabNavigator
+        screen: Dashboard
 
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
@@ -68,7 +72,6 @@ export default class RootNavigator extends React.Component {
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
       AppointmentList: { screen: AppointmentList },
-      // Dashboard: { screen: Dashboard },
       AppointmentDetail: { screen: AppointmentDetail },
       AppointmentRequest: { screen: AppointmentRequest },
       ActivityList: { screen: ActivityList },

@@ -13,6 +13,9 @@ export var date = date =>
 export var dateLong = date =>
 	Moment(date).format('D MMMM YYYY');
 
+//// display how many pax (e.g. )
+export var paxCount = paxCount => paxCount.filter(p => p.count != 0)
+  .map(p => p.count + ' ' + p.type).join(', ')
 
 //// Format number to "1.000.000"
 export var number = int => int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
