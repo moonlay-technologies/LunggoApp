@@ -1,0 +1,3 @@
+rootProject.name = 'Travorama'
+
+include ':app'
