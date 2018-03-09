@@ -5,8 +5,9 @@ import Button from 'react-native-button';
 import { Icon } from 'react-native-elements'
 import {
   Platform, StyleSheet, Text, View,
-  Image, TextInput, ScrollView,
+  Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
+import * as Formatter from '../../customer/components/Formatter';
 import Moment from 'moment';
 import 'moment/locale/id';
 
@@ -18,7 +19,7 @@ export default class AppointmentDetail extends React.Component {
 
   render() {
     let { details } = this.props.navigation.state.params;
-    let { contact, paxes } = details.paxGroup;
+    // let {paxGroups} = details;
     return (
       <ScrollView style={{backgroundColor: '#fff',}}>
         <View style={{flex:1,}}>
@@ -53,27 +54,47 @@ export default class AppointmentDetail extends React.Component {
                 </View>
                 <View style={{marginLeft:8}}>
                   <Text style={{fontSize:14, marginTop:3}}>
-                    {paxes.length} guest
+                    Total {details.totalPax} orang peserta
                   </Text>
                 </View>
               </View>
 
 
 
-              <View style={{marginTop:40}}>
-                <Text style={styles.activityTitle}>Contact Person</Text>
-                <Text>{contact.name}</Text>
-                <Text>{contact.countryCallCd+contact.phone}</Text>
-                <Text>{contact.email}</Text>
-              </View>
+              { details.reservations.map( rsv =>
+                <TouchableHighlight
+                  key={rsv.rsvNo}
+                  onPress={this._onPress}
+                  underlayColor='#ddd'
+                >
+                  <View style={{flexDirection:'row', marginTop:40,}}>
+                    <View>
+                      <Text style={styles.activityTitle}>{rsv.contact.name}</Text><Text>{Formatter.paxCount(rsv.paxCount)}</Text>
+                      <Text>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
+                      <Text>{rsv.contact.email}</Text>
+                    </View>
+
+                    <View style={{flex:1}}>
+                      <View style={{marginTop:10, alignItems:'flex-end'}}>
+                        <Icon
+                          name='chevron-thin-right'
+                          type='entypo'
+                          size={24}
+                          color='#707070'
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </TouchableHighlight> 
+              ) }
 
 
-              {/*  
+{/*paxGroups.map(pg =>
               <View style={{flexDirection:'row', marginTop:40,}}>
 
                 <View style={{flex:1}}>
                   <View>
-                    <Text style={styles.activityTitle}>Guest 1</Text>
+                    <Text style={styles.activityTitle}>pg.contact.name</Text>
                   </View>
                   <View>
                     <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
@@ -93,56 +114,7 @@ export default class AppointmentDetail extends React.Component {
                 </View> 
 
               </View>
-
-              <View style={{flexDirection:'row', marginTop:30,}}>
-
-                <View style={{flex:1}}>
-                  <View>
-                    <Text style={styles.activityTitle}>Guest 2</Text>
-                  </View>
-                  <View>
-                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
-                    <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
-                  </View>
-                </View>
-
-                <View style={{flex:1}}>
-                  <View style={{marginTop:10, alignItems:'flex-end'}}>
-                    <Icon
-                      name='chevron-thin-right'
-                      type='entypo'
-                      size={24}
-                      color='#707070'
-                    />
-                  </View>
-                </View> 
-
-              </View>
-
-              <View style={{flexDirection:'row', marginTop:30,}}>
-
-                <View style={{flex:1}}>
-                  <View>
-                    <Text style={styles.activityTitle}>Guest 3</Text>
-                  </View>
-                  <View>
-                    <Text style={{color:'#00d3ca', fontSize:13, fontStyle:'italic'}}>Verified</Text>
-                    <Text style={{color:'#9a9a9a', fontSize:13, fontStyle:'italic'}}>Waiting for verification</Text>
-                  </View>
-                </View>
-
-                <View style={{flex:1}}>
-                  <View style={{marginTop:10, alignItems:'flex-end'}}>
-                    <Icon
-                      name='chevron-thin-right'
-                      type='entypo'
-                      size={24}
-                      color='#707070'
-                    />
-                  </View>
-                </View> 
-
-              </View>*/}
+              )}
 
               {/*<View style={{marginTop:25,}}>
                 <View style={{flexDirection:'row',}}>
