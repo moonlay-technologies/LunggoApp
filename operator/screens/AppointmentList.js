@@ -23,7 +23,6 @@ class ListItem extends React.PureComponent {
       }, 0);
     }, 0);
 
-    console.log('item.totalPax');console.log(item.totalPax)
     return (
       <View style={{flex:1,}}>
 
