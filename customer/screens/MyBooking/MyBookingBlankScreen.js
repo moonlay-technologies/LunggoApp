@@ -40,7 +40,7 @@ export default class MyBookingBlankScreen extends React.Component {
           <Image style={{ width: 180, height: 180, resizeMode: 'contain' }}
             source={require('../../assets/images/pesanan.jpg')} />
           <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center', }}>
-            <Text style={styles.textCartBesar}>Belum ada pesanan</Text>
+            <Text style={styles.textCartBesar}>{isLoggedIn ? 'Belum ada pesanan' : 'Login untuk Melihat Pesanan'}</Text>
             <View>
               <Text style={styles.textCart}>
                 Semua pesanan kamu yang sudah dibayarkan akan terdaftar di sini. {"\n"}
