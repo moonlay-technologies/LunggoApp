@@ -12,10 +12,19 @@ import { Icon } from 'react-native-elements';
 class ListItem extends React.PureComponent {
 
   _onPress = () => this.props.onPressItem(this.props.item);
+
   render() {
     const {item} = this.props;
+    item.totalPax = item.reservations.reduce( (total, rsv) => {
+      // if (rsv.paxes.length > 0) return total + rsv.paxes.length;
+      // else
+      return total + rsv.paxCount.reduce( (total2,paxType) => {
+        return total2 + paxType.count;
+      }, 0);
+    }, 0);
+
     return (
-      <View key={item.rsvNo} style={{flex:1,}}>
+      <View style={{flex:1,}}>
 
         <TouchableHighlight
           onPress={this._onPress}
@@ -35,7 +44,7 @@ class ListItem extends React.PureComponent {
 
           <View style={{flex:3}}>
             <Text style={styles.activityTitle}>{item.name}</Text>
-            <Text style={styles.activityTitle}>{item.paxCount} Guest</Text>
+            <Text style={[styles.timeActivity,{marginTop:7}]}>{item.totalPax} Guest</Text>
             <View style={{width:'100%', marginTop:5, flexDirection:'row',}}>
               <View style={{ flexDirection:'row', marginRight:10 }}>
                 <Text style={styles.timeActivity}>

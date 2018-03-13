@@ -5,6 +5,7 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, FlatList, Text, View, Image,
   TextInput, ScrollView, TouchableHighlight, } from 'react-native';
 import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import * as Formatter from '../../customer/components/Formatter';
 import Moment from 'moment';
 import 'moment/locale/id';
 
@@ -18,43 +19,37 @@ class ListItem extends React.PureComponent {
     const {item} = this.props;
     return (
       <View key={item.rsvNo}>
-        <TouchableHighlight
-          onPress={this._onPressItem}
-          underlayColor='#ddd'
-        >
+        <TouchableHighlight onPress={this._onPressItem} underlayColor='#ddd'>
           <View style={{flex:1},styles.containerListAppointment}>
 
             <View style={{flex:3}}>
-              <Text style={styles.activityTitle}>Ali Zainal</Text>
-              <View style={{marginTop:5,}}>
-                <Text style={styles.timeActivity}>{item.name}</Text>
+              <View style={{flexDirection:'row'}}>
+                <Text style={styles.activityTitle}>
+                  {item.activityName}
+                </Text>
+                <Text>
+                  { Moment(item.requestTime).fromNow() }
+                </Text>
               </View>
               <View style={{width:'100%',flexDirection:'row', marginTop:5}}>
-                <View style={{ flexDirection:'row', marginRight:10 }}>
-                  <Text style={styles.timeActivity}>
-                    {Moment(item.date).format('ddd, D MMM YYYY')}
-                  </Text>
-                </View>
-                <View style={{ flexDirection:'row' }}>
-                  <Text style={styles.timeActivity}>
-                    {item.session}
-                  </Text>
-                </View>
+                <Text style={styles.timeActivity}>
+                  {Moment(item.date).format('ddd, D MMM YYYY')}
+                </Text>
+                <Text style={[styles.timeActivity,{marginLeft:10}]}>
+                  {item.session}
+                </Text>
               </View>
+              <Text style={[styles.timeActivity,{marginTop:5,}]}>
+                {item.contactName} ({Formatter.paxCount(item.paxCount)})
+              </Text>
             </View>
 
-            <View style={{
-              flex:1,
-              flexDirection:'row',
-              // justifyContent:'flex-end',
-              marginTop:15,
-            }}>
+            <View style={{flex:1, flexDirection:'row', marginTop:15}}>
               <Button
                 containerStyle={{
                   height:32,
                   width:100,
                   paddingTop:6,
-                  // overflow:'hidden',
                   borderRadius:4,
                   borderWidth: 1,
                   borderColor: '#bfbfbf',
@@ -62,14 +57,15 @@ class ListItem extends React.PureComponent {
                 }}
                 style={{fontSize: 14, color: '#454545'}}
                 onPress={() => this._onPressDecline()}
-              >Tolak</Button>
+              >
+                Tolak
+              </Button>
               <Button
                 containerStyle={{
                   marginLeft:10,
                   height:32,
                   width:100,
                   paddingTop:6,
-                  overflow:'hidden',
                   borderRadius:4,
                   backgroundColor: '#00c8be'
                 }}
@@ -78,11 +74,14 @@ class ListItem extends React.PureComponent {
               >
                 Terima
               </Button>
+              <Text>
+                { Moment(item.timeLimit).fromNow() }
+              </Text>
             </View>
           </View>
         </TouchableHighlight>
 
-        <View style={styles.divider}></View>
+        <View style={styles.divider} />
 
       </View>
     );
@@ -129,9 +128,9 @@ export default class AppointmentRequests extends React.Component {
   );
 
   _viewDetails = (item) => {
-    this.props.navigation.navigate(
-      'BookedPageDetail',{details: item}
-    );
+    // this.props.navigation.navigate(
+    //   'BookedPageDetail',{details: item}
+    // );
   }
 
   _respondRequest = (rsvNo, action) => {

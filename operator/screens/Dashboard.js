@@ -34,7 +34,7 @@ export default class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    getProfile().then(({ contact }) => this.setState(contact));
+    getProfile().then( profile => this.setState(profile));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;
@@ -212,9 +212,9 @@ export default class Dashboard extends React.Component {
               <View style={{ marginTop: 20 }}>
                 <Text style={styles.namaProfile}>{this.state.name}</Text>
               </View>
-              <View style={{}}>
+              {/* <View style={{}}>
                 <Text style={styles.saldo}>{Formatter.price(this.state.balance)}</Text>
-              </View>
+              </View> */}
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Activity</Text>

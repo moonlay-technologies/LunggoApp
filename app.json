@@ -28,7 +28,7 @@
       "buildNumber": "2"
     },
     "android": {
-      "package": "com.travorama"
+      "package": "com.travorama.activity"
     }
   }
 }

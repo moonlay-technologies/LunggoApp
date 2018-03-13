@@ -72,7 +72,6 @@ export default class RootNavigator extends React.Component {
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
       AppointmentList: { screen: AppointmentList },
-      // Dashboard: { screen: Dashboard },
       AppointmentDetail: { screen: AppointmentDetail },
       AppointmentRequest: { screen: AppointmentRequest },
       ActivityList: { screen: ActivityList },

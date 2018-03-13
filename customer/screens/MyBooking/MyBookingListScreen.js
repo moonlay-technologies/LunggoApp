@@ -69,7 +69,7 @@ class ActivityListItem extends React.PureComponent {
               <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             </View>
             <Text style={styles.activityDesc}>
-              {item.paxCount.filter(p => p.count != 0).map(p => p.count + ' ' + p.type).join(', ')}
+              {Formatter.paxCount(item.paxCount)}
             </Text>
             {this._voucherButton(item)}
           </View>

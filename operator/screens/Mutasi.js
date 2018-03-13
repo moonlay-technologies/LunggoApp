@@ -15,6 +15,7 @@ import * as Formatter from '../../customer/components/Formatter'
 import DatePicker from 'react-native-datepicker'
 import globalStyles from '../../commons/globalStyles';
 import Moment from 'moment';
+// import 'moment/locale/id';
 import LoadingAnimation from '../../customer/components/LoadingAnimation';
 
 export default class Mutasi extends React.Component {
@@ -23,8 +24,8 @@ export default class Mutasi extends React.Component {
     this.format = 'D MMM YYYY';
     this.locale = 'id';
     this.state = {
-      startDate: Moment(new Date()).add(-1, 'month'),
-      endDate: Moment(new Date()),
+      startDate: Moment(new Date()).add(-1, 'month').startOf('day'),
+      endDate: Moment(new Date()).startOf('day'),
       trx: [],
       isLoading: true
     };
@@ -56,7 +57,7 @@ export default class Mutasi extends React.Component {
   }
 
   _showTrxList = () => {
-    let startEndDiff = Moment(this.state.endDate).diff(this.state.StartDate, 'days');
+    let startEndDiff = Moment(this.state.endDate).diff(Moment(this.state.startDate), 'days');
     if (startEndDiff > 31 || startEndDiff < 0 || this.state.isDateOutOfBound)
       return (
         <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', }}>
@@ -90,7 +91,6 @@ export default class Mutasi extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <ScrollView>
@@ -110,7 +110,6 @@ export default class Mutasi extends React.Component {
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
                   onDateChange={(date) => {
-                    console.log(date);
                     this.setState({ startDate: Moment(date, this.format, this.locale) });
                     this._getTrx();
                   }}
