@@ -83,7 +83,7 @@ export default class DetailScreen extends Component {
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
-      review, reviewCount, rating, ratingCount } = this.state;
+      review, reviewCount, rating, ratingCount, additionalContents } = this.state;
     return (
       <View>
         <ScrollView
@@ -122,23 +122,15 @@ export default class DetailScreen extends Component {
 
                 <View style={styles.divider} />
 
-                <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+                <View style={styles.containerdescriptionActivity}>
+                  <Text style={styles.sectionTitle}>
+                    Lokasi
+                  </Text>
+                  <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+                </View>
 
                 <Accordion style={styles.containerdescriptionActivity}
-                  sections={[
-                    {
-                      title: 'Agendas',
-                      content: 'Lorem ipsum dolor sit amet, consectetur ',
-                    },
-                    {
-                      title: 'Participant Requirement',
-                      content: 'Lorem ipsum...',
-                    },
-                    {
-                      title: 'Cancelation Policy',
-                      content: 'Lorem ipsum...',
-                    },
-                  ]} />
+                  sections={additionalContents.contents} />
                 {/*<Recommendation />*/}
               </View>
             )}
@@ -257,10 +249,10 @@ class Header extends Component {
           <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
-          <Animated.View style={{ opacity , flex:6.5}}>
+          <Animated.View style={{ opacity, flex: 6.5 }}>
             <Text
               style={[styles.activitydetailTitleHeader,
-                { marginTop: 4, textAlign: 'center'}]}
+              { marginTop: 4, textAlign: 'center' }]}
               numberOfLines={1}
             >
               {title}
@@ -413,7 +405,6 @@ class Contents extends Component {
 
   render() {
     let { contents } = this.props;
-    console.log(contents);
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
@@ -494,10 +485,10 @@ class MainInfo extends Component {
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', marginBottom:3}}>
+          <View style={{ flexDirection: 'row', marginBottom: 3 }}>
             <Text>{'\u2022'}</Text>
             <Text style={[styles.activityDesc,
-                { paddingLeft:5}]}>23.00 - 24.00: Guest picked-up in Surabaya city center jakarta selatan</Text>
+            { paddingLeft: 5 }]}>23.00 - 24.00: Guest picked-up in Surabaya city center jakarta selatan</Text>
           </View>
 
         </View>
@@ -545,45 +536,48 @@ class ReviewAndRating extends Component {
   render() {
     let { rating, ratingCount, review, reviewCount, id } = this.props;
     return (
-      <View >
-        {!reviewCount && (
-          <View style={styles.containerdescriptionActivity}>
-            <Text style={styles.sectionTitle}>
+      <View>
+        <View style={styles.containerdescriptionActivity}>
+          <Text style={styles.sectionTitle}>
+            Review
+        </Text>
+          {!reviewCount && (
+
+            <Text style={styles.activityDesc}>
               Belum ada review
             </Text>
-          </View>
-        )}
-        {!!reviewCount && (
-          <View style={styles.containerdescriptionActivity}>
-            <View style={{ flexDirection: 'row', flex: 1 }}>
-              <View style={{ flex: 2, flexDirection: 'row' }}>
-                <View style={{ marginRight: 10 }}>
-                  <Image style={styles.avatar} source={(review.avatar && { uri: review.avatar }) || require('../../assets/images/dummyProfile.png')} />
+          )}
+          {!!reviewCount && (
+            <View>
+              <View style={{ flexDirection: 'row', flex: 1 }}>
+                <View style={{ flex: 2, flexDirection: 'row' }}>
+                  <View style={{ marginRight: 10 }}>
+                    <Image style={styles.avatar} source={(review.avatar && { uri: review.avatar }) || require('../../assets/images/dummyProfile.png')} />
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.reviewTitle}>
+                      {review.name}
+                    </Text>
+                    <Text style={styles.reviewDate}>
+                      {Formatter.dateLong(review.date)}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.reviewTitle}>
-                    {review.name}
-                  </Text>
-                  <Text style={styles.reviewDate}>
-                    {Formatter.dateLong(review.date)}
-                  </Text>
-                </View>
-              </View>
-              {/*<View style={{ flex: 1, alignItems: 'flex-end', justifyContent:'center' }}>
+                {/*<View style={{ flex: 1, alignItems: 'flex-end', justifyContent:'center' }}>
                 <Text style={styles.reviewDate}>
                   {Formatter.dateLong(review.date)}
                 </Text>
               </View>*/}
-            </View>
-            <View style={{ marginTop: 10 }}>
+              </View>
+              <View style={{ marginTop: 10 }}>
 
-              <MultilineText style={styles.isireview}>
-                {review.content}
-              </MultilineText>
+                <MultilineText style={styles.isireview}>
+                  {review.content}
+                </MultilineText>
+              </View>
             </View>
-          </View>
-        )}
-
+          )}
+        </View>
         <View style={styles.divider} />
 
         {!!reviewCount && (
@@ -626,8 +620,8 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: 18,
-        borderBottomWidth:1,
-        borderBottomColor:'#dfdfdf'
+        borderBottomWidth: 1,
+        borderBottomColor: '#dfdfdf'
       },
       android: {
         marginTop: 5
@@ -699,12 +693,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         lineHeight: 19,
-        paddingTop:15 ,
+        paddingTop: 15,
         marginBottom: -10,
       },
       android: {
         lineHeight: 30,
-        marginBottom:20,
+        marginBottom: 20,
         //paddingTop: 23 - (23* 1),
 
       },
@@ -717,12 +711,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         lineHeight: 19,
-        paddingTop:15 ,
+        paddingTop: 15,
         marginBottom: -10,
       },
       android: {
         lineHeight: 30,
-        marginBottom:5,
+        marginBottom: 5,
         //paddingTop: 23 - (23* 1),
 
       },
@@ -775,7 +769,7 @@ const styles = StyleSheet.create({
       },
       android: {
         lineHeight: 24,
-        marginBottom:10
+        marginBottom: 10
       },
     }),
   },

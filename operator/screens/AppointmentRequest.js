@@ -2,9 +2,11 @@
 
 import React from 'react';
 import Button from 'react-native-button';
-import { Platform, StyleSheet, FlatList, Text, View, Image,
-  TextInput, ScrollView, TouchableHighlight, } from 'react-native';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import {
+  Platform, StyleSheet, FlatList, Text, View, Image,
+  TextInput, ScrollView, TouchableHighlight,
+} from 'react-native';
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import * as Formatter from '../../customer/components/Formatter';
 import Moment from 'moment';
 import 'moment/locale/id';
@@ -16,66 +18,66 @@ class ListItem extends React.PureComponent {
   _onPressDecline = () => this.props.onPressDecline(this.props.item);
   _onPressAccept = () => this.props.onPressAccept(this.props.item);
   render() {
-    const {item} = this.props;
+    const { item } = this.props;
     return (
       <View key={item.rsvNo}>
         <TouchableHighlight onPress={this._onPressItem} underlayColor='#ddd'>
-          <View style={{flex:1},styles.containerListAppointment}>
+          <View style={[{ flex: 1 }, styles.containerListAppointment]}>
 
-            <View style={{flex:3}}>
-              <View style={{flexDirection:'row'}}>
+            <View style={{ flex: 3 }}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityTitle}>
                   {item.activityName}
                 </Text>
                 <Text>
-                  { Moment(item.requestTime).fromNow() }
+                  {Moment(item.requestTime).fromNow()}
                 </Text>
               </View>
-              <View style={{width:'100%',flexDirection:'row', marginTop:5}}>
+              <View style={{ width: '100%', flexDirection: 'row', marginTop: 5 }}>
                 <Text style={styles.timeActivity}>
                   {Moment(item.date).format('ddd, D MMM YYYY')}
                 </Text>
-                <Text style={[styles.timeActivity,{marginLeft:10}]}>
+                <Text style={[styles.timeActivity, { marginLeft: 10 }]}>
                   {item.session}
                 </Text>
               </View>
-              <Text style={[styles.timeActivity,{marginTop:5,}]}>
+              <Text style={[styles.timeActivity, { marginTop: 5, }]}>
                 {item.contactName} ({Formatter.paxCount(item.paxCount)})
               </Text>
             </View>
 
-            <View style={{flex:1, flexDirection:'row', marginTop:15}}>
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 15 }}>
               <Button
                 containerStyle={{
-                  height:32,
-                  width:100,
-                  paddingTop:6,
-                  borderRadius:4,
+                  height: 32,
+                  width: 100,
+                  paddingTop: 6,
+                  borderRadius: 4,
                   borderWidth: 1,
                   borderColor: '#bfbfbf',
                   backgroundColor: 'transparent'
                 }}
-                style={{fontSize: 14, color: '#454545'}}
+                style={{ fontSize: 14, color: '#454545' }}
                 onPress={() => this._onPressDecline()}
               >
                 Tolak
               </Button>
               <Button
                 containerStyle={{
-                  marginLeft:10,
-                  height:32,
-                  width:100,
-                  paddingTop:6,
-                  borderRadius:4,
+                  marginLeft: 10,
+                  height: 32,
+                  width: 100,
+                  paddingTop: 6,
+                  borderRadius: 4,
                   backgroundColor: '#00c8be'
                 }}
-                style={{fontSize: 14, color: '#fff'}}
+                style={{ fontSize: 14, color: '#fff' }}
                 onPress={() => this._onPressAccept()}
               >
                 Terima
               </Button>
               <Text>
-                { Moment(item.timeLimit).fromNow() }
+                {Moment(item.timeLimit).fromNow()}
               </Text>
             </View>
           </View>
@@ -94,7 +96,7 @@ export default class AppointmentRequests extends React.Component {
     title: 'Appointment Request',
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       list: [],
@@ -107,8 +109,8 @@ export default class AppointmentRequests extends React.Component {
       path: `/${version}/operator/appointments/request`,
       requiredAuthLevel: AUTH_LEVEL.User,
     }
-    fetchTravoramaApi(request).then( response => {
-      this.setState({list: response.appointmentRequests});
+    fetchTravoramaApi(request).then(response => {
+      this.setState({ list: response.appointmentRequests });
     }).catch(error => console.log(error));
   }
 
@@ -117,7 +119,7 @@ export default class AppointmentRequests extends React.Component {
   }
 
   _keyExtractor = (item, index) => index
-  _renderItem = ({item, index}) => (
+  _renderItem = ({ item, index }) => (
     <ListItem
       item={item}
       index={index}
@@ -140,20 +142,20 @@ export default class AppointmentRequests extends React.Component {
       method: 'POST',
       requiredAuthLevel: AUTH_LEVEL.User,
     }
-    fetchTravoramaApi(request).then( response => {
+    fetchTravoramaApi(request).then(response => {
       this._fetchAppointmentRequests();
     }).catch(error => console.log(error));
   }
 
-  _acceptRequest = ({rsvNo}) => this._respondRequest(rsvNo,'confirm')
-  _declineRequest = ({rsvNo}) => this._respondRequest(rsvNo, 'decline')
+  _acceptRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'confirm')
+  _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
 
   render() {
-    return ( (this.state.list.length > 0) ?
-      <ScrollView style={{backgroundColor: '#fff',}}>
-        <View style={{marginBottom:10}}>
+    return ((this.state.list.length > 0) ?
+      <ScrollView style={{ backgroundColor: '#fff', }}>
+        <View style={{ marginBottom: 10 }}>
           <FlatList
-            style={{paddingTop:15}}
+            style={{ paddingTop: 15 }}
             data={this.state.list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
@@ -168,9 +170,9 @@ export default class AppointmentRequests extends React.Component {
 
 const styles = StyleSheet.create({
   containerListAppointment: {
-    paddingVertical:10,
-    paddingHorizontal:15,
-    flex:1
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    flex: 1
   },
   divider: {
     height: 1,
@@ -180,27 +182,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   activityTitle: {
-    fontWeight:'bold',
-    fontSize:16,
-    color:'#454545',
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#454545',
   },
   timeActivity: {
-    fontSize:13,
-    color:'#454545',
+    fontSize: 13,
+    color: '#454545',
   },
   activityGuest: {
-    fontSize:18,
+    fontSize: 18,
     marginBottom: 3,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   status: {
-    color:'green',
-    fontSize:12,
+    color: 'green',
+    fontSize: 12,
   },
   icon: {
-    width:15,
-    height:15,
-    marginRight:3,
+    width: 15,
+    height: 15,
+    marginRight: 3,
   },
 
 });

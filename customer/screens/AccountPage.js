@@ -67,7 +67,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{contact.name}</Text>
+                <Text style={styles.optionProfile}>{profile.name}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -79,7 +79,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{contact.email}</Text>
+                <Text style={styles.optionProfile}>{profile.email}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -91,7 +91,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>+{contact.countryCallCd} {contact.phone}</Text>
+                <Text style={styles.optionProfile}>+{profile.countryCallCd} {profile.phone}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
