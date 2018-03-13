@@ -207,6 +207,20 @@ export default class AccountScreen extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
+            <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <TouchableOpacity style={{ flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'center', flex: 2 }}>
+                  <Text style={styles.optionProfile}>Undang Teman</Text>
+                </View>
+                <View style={{ alignItems: 'flex-end', flex: 1 }}>
+                  <Icon
+                    name='ios-contacts'
+                    type='ionicon'
+                    size={30}
+                    color='#454545' />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         }
 

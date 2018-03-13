@@ -5,7 +5,7 @@
     "slug": "travorama",
     "privacy": "public",
     "sdkVersion": "21.0.0",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "primaryColor": "#01d4cb",
     "icon": "./assets/icons/app-icon.png",
@@ -23,8 +23,9 @@
       ]
     },
     "ios": {
-      "bundleIdentifier": "com.sk3vy.new-project-template",
-      "supportsTablet": true
+      "bundleIdentifier": "com.travorama.TravoramaMobileApp",
+      "supportsTablet": true,
+      "buildNumber": "2"
     },
     "android": {
       "package": "com.travorama"

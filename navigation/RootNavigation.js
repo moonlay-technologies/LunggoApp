@@ -13,7 +13,7 @@ import { APP_TYPE } from '../constants/env';
 import {
   SearchActivity, MyBooking, BookedPageDetail, DetailScreen, Review,
   PaymentScreen, PaxChoice, BookingDetail, AddPax, CalendarPicker,
-  AdvanceSearch, RincianHarga,
+  AdvanceSearch, RincianHarga, 
 } from '../customer/screens/Screens';
 
 import {
@@ -36,6 +36,8 @@ import {
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 import WebViewScreen from '../customer/screens/WebViewScreen';
+import ReferralPage from '../customer/screens/ReferralPage';
+import RiwayatReferral from '../customer/screens/RiwayatReferral';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -51,8 +53,10 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: __DEV__ ? {
-        screen:BeforeLoginScreen
+        //screen:BeforeLoginScreen
         //screen: MainTabNavigator
+        //screen:ReferralPage
+        screen:RiwayatReferral
 
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
