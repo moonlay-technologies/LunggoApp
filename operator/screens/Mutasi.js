@@ -58,10 +58,15 @@ export default class Mutasi extends React.Component {
 
   _showTrxList = () => {
     let startEndDiff = Moment(this.state.endDate).diff(Moment(this.state.startDate), 'days');
-    if (startEndDiff > 31 || startEndDiff < 0 || this.state.isDateOutOfBound)
+    if (startEndDiff > 31 || this.state.isDateOutOfBound)
       return (
         <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', }}>
           <Text>Rentang tanggal maksimal 31 hari</Text>
+        </View>);
+    if (startEndDiff < 0)
+      return (
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', }}>
+          <Text>Tanggal akhir tidak boleh kurang dari tanggal awal</Text>
         </View>);
     if (this.state.isLoading)
       return <LoadingAnimation />;
@@ -107,7 +112,7 @@ export default class Mutasi extends React.Component {
                   format={this.format}
                   minDate={Moment(new Date()).add(-1, 'year').format(this.format)}
                   maxDate={Moment(new Date()).format(this.format)}
-                  confirmBtnText="Confirm"
+                  confirmBtnText="OK"
                   cancelBtnText="Cancel"
                   onDateChange={(date) => {
                     this.setState({ startDate: Moment(date, this.format, this.locale) });
@@ -142,7 +147,7 @@ export default class Mutasi extends React.Component {
                   minDate={Moment(this.state.startDate).format(this.format)}
                   maxDate={Moment(new Date()).format(this.format)}
                   confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
+                  cancelBtnText="OK"
                   onDateChange={(date) => {
                     this.setState({ endDate: Moment(date, this.format, this.locale) });
                     this._getTrx();
