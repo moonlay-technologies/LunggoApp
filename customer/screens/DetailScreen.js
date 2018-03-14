@@ -109,10 +109,17 @@ export default class DetailScreen extends Component {
                 <Contents contents={contents} />
 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
-                  <View style={styles.containerdescriptionActivity}>
-                    <Text style={styles.sectionTitle}>
+                  <View style={[styles.containerdescriptionActivity, { flexDirection: 'row' }]}>
+                    <Text style={[styles.sectionTitle, { alignItems: 'flex-start' }]}>
                       Ketentuan Pembatalan
-                </Text>
+                    </Text>
+                    <View style={{ marginLeft: 10, alignItems: 'flex-end', flex: 2 }}>
+                      <Icon
+                        name='chevron-right'
+                        type='entypo'
+                        size={22}
+                        color='black' />
+                    </View>
                   </View>
                 </TouchableOpacity>
 

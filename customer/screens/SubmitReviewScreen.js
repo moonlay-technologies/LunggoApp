@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
-  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity,
+  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Keyboard
 } from 'react-native';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMain,
@@ -19,9 +19,23 @@ export default class SubmitReviewScreen extends React.Component {
   constructor(props) {
     super(props);
     this.reviewText = '';
+    this.minLength = 20;
+    this.state = { isValidated: true };
   }
 
-  _submitReview = () => {
+  _validate = async () => {
+    let textLength = (this.reviewText.match(/\S/g) || []).length;
+    if (textLength < this.minLength)
+      await this.setState({ isValidated: false });
+    else
+      await this.setState({ isValidated: true });
+  }
+
+  _submitReview = async () => {
+    await this._validate();
+    if (!this.state.isValidated)
+      return;
+
     const version = 'v1';
     let rsvNo = this.props.navigation.state.params.rsvNo;
     console.log({
@@ -58,13 +72,20 @@ export default class SubmitReviewScreen extends React.Component {
                 style={{ textAlignVertical: 'top', borderWidth: 1, borderColor: '#cdcdcd', fontSize: 14, width: '100%', borderRadius: 5, paddingVertical: 13, paddingHorizontal: 10, height: 100 }}
                 placeholder='Aktivitasnya menyenangkan, pelayanannya baik dan ramah, dst...'
                 underlineColorAndroid='transparent'
-                multiline={false}
+                multiline={true}
                 numberOfLines={5}
-                onChangeText={text => {this.reviewText = text}}
-                onSubmitEditing={content => this._submitReview()}
+                onChangeText={text => {
+                  this.reviewText = text;
+                  this._validate();
+                }}
+                onSubmitEditing={Keyboard.dismiss}
               />
             </View>
           </View>
+          {this.state.isValidated ||
+            <Text style={{ color: 'red', alignSelf: 'flex-end', paddingTop: 5 }}>
+              Review minimal memiliki 20 karakter
+            </Text>}
         </View>
         <TouchableOpacity style={styles.containerSubmit} onPress={() => this._submitReview()}>
           <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
