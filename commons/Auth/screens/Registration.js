@@ -247,6 +247,7 @@ export default class Registration extends React.Component {
               autoCorrect={false}
               secureTextEntry={!showPassword}
               returnKeyType={"done"}
+              onSubmitEditing={() => this._onRegisterPressed()}
             />
             {errorMessagePassword}
             {errorMessage}

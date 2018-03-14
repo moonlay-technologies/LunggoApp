@@ -38,7 +38,8 @@ export async function fetchTravoramaLoginApi(userName, password) {
   switch (response.status) {
     case 200:
       response.authLevel = AUTH_LEVEL.User;
-      setAccessToken(response).then(() => fetchProfile());
+      setAccessToken(response);
+      await fetchProfile();
       break;
     case 400:
     case 500:

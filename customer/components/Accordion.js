@@ -7,7 +7,7 @@ export default class AccordionView extends Component {
   constructor(props) {
     super(props);
     this.icons = {   
-      'up'   : require('../../assets/icons/right-arrow.png'),
+      'up'   : require('../../assets/icons/up-arrow.png'),
       'down' : require('../../assets/icons/down-arrow.png')
     };
   }
@@ -16,6 +16,7 @@ export default class AccordionView extends Component {
     let icon = isActive ? this.icons['up'] : this.icons['down'];
     return (
       <View>
+        <View style={styles.divider} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{section.title}</Text>
             <Image style={styles.buttonImage} source={icon}/>
@@ -27,7 +28,7 @@ export default class AccordionView extends Component {
   _renderContent(section) {
     return (
       <View style={styles.content}>
-        <Text style={styles.activityDesc}>{section.content}</Text>
+        <Text style={styles.activityDesc}>{section.desc}</Text>
       </View>
     );
   }
@@ -94,5 +95,9 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
+  divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#e1e1e1',
+  },
 })
