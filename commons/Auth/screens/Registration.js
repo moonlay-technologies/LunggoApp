@@ -12,6 +12,8 @@ import { KeyboardAwareScrollView }
   from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
   from '../../FormValidation';
+import registerForPushNotificationsAsync
+  from '../../../api/NotificationController';
 import globalStyles from '../../globalStyles';
 import { fetchTravoramaLoginApi } from '../AuthController'
 import { LinearGradient } from 'expo';
@@ -55,16 +57,12 @@ export default class Registration extends React.Component {
     }
     fetchTravoramaApi(request).then(response => {
       if (response.status == 200) {
-        console.log('2222');
         fetchTravoramaLoginApi(this.state.email || this.state.phone, this.state.password)
           .then(response => {
-            console.log('3333');
             if (response.status == 200) {
-              console.log('4444');
-              // this._notificationSubscription = this._registerForPushNotifications();
+              registerForPushNotificationsAsync();
               fetchWishlist();
               let { resetAfter, thruBeforeLogin } = params;
-              console.log('5555');
               if (resetAfter)
                 backToMain(this.props.navigation);
               else if (thruBeforeLogin)
@@ -72,7 +70,6 @@ export default class Registration extends React.Component {
               else
                 pop();
               this.setState({ isLoading: false })
-              console.log('6666');
             } else {
               console.log(response);
               let error = 'Terjadi kesalahan pada server';
@@ -270,8 +267,8 @@ export default class Registration extends React.Component {
 
 
           <TouchableOpacity
-           onPress={this._onRegisterPressed}
-            style={{alignItems: 'center', width:'100%', marginTop:30 }}
+            onPress={this._onRegisterPressed}
+            style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
             activeOpacity={0.6}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
@@ -280,12 +277,12 @@ export default class Registration extends React.Component {
               colors={['#00d3c5', '#35eac6', '#6affc6']}
               start={[0, 0]}
               end={[1, 0]}
-              style={{height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width:'100%'}}>
+              style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
               <Text style={{
-                  backgroundColor: 'transparent',
-                  fontSize: 18, color: '#ffffff', 
-                  fontFamily: 'Hind-SemiBold', 
-                }}>
+                backgroundColor: 'transparent',
+                fontSize: 18, color: '#ffffff',
+                fontFamily: 'Hind-SemiBold',
+              }}>
                 Daftarkan
               </Text>
             </LinearGradient>

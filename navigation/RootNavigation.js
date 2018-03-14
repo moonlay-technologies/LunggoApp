@@ -7,7 +7,7 @@ import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
-  from '../api/registerForPushNotificationsAsync';
+  from '../api/NotificationController';
 import { APP_TYPE } from '../constants/env';
 
 import {
