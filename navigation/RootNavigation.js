@@ -36,8 +36,8 @@ import {
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 import WebViewScreen from '../customer/screens/WebViewScreen';
-import ReferralPage from '../customer/screens/ReferralPage';
-import RiwayatReferral from '../customer/screens/RiwayatReferral';
+import Referral from '../customer/screens/ReferralPage';
+import ReferralHistory from '../customer/screens/RiwayatReferral';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -55,8 +55,9 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         //screen:BeforeLoginScreen
         //screen: MainTabNavigator
-        //screen:ReferralPage
-        screen:RiwayatReferral
+        // screen:Referral
+        // screen:ReferralHistory
+        screen:AccountPage
 
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
@@ -93,7 +94,9 @@ export default class RootNavigator extends React.Component {
       NotFound: { screen: NotFound },
       IntroScreen: { screen: IntroScreen },
       BeforeLoginScreen: { screen: BeforeLoginScreen },
-      WebViewScreen: { screen: WebViewScreen }
+      WebViewScreen: { screen: WebViewScreen },
+      Referral: { screen: Referral },
+      ReferralHistory: { screen: ReferralHistory },
     },
     {
       initialRouteParams: { appType: APP_TYPE },
