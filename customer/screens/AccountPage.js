@@ -36,6 +36,7 @@ export default class AccountScreen extends React.Component {
   }
 
   _openModal = () => this.refs.modal.openModal()
+  _goToReferral = () => this.props.navigation.navigate('Referral')
 
   render() {
     let { navigate } = this.props.navigation;
@@ -162,6 +163,22 @@ export default class AccountScreen extends React.Component {
                   color='#454545' />
               </View>
             </View>*/}
+
+            <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
+                <View style={{ justifyContent: 'center', flex: 2 }}>
+                  <Text style={styles.optionProfile}>Undang Teman</Text>
+                </View>
+                <View style={{ alignItems: 'flex-end', flex: 1 }}>
+                  <Icon
+                    name='ios-contacts'
+                    type='ionicon'
+                    size={30}
+                    color='#454545' />
+                </View>
+              </TouchableOpacity>
+            </View>
+
             <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
                 <View style={{ justifyContent: 'center', flex: 2 }}>
@@ -207,20 +224,7 @@ export default class AccountScreen extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={{ borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <TouchableOpacity style={{ flexDirection: 'row' }}>
-                <View style={{ justifyContent: 'center', flex: 2 }}>
-                  <Text style={styles.optionProfile}>Undang Teman</Text>
-                </View>
-                <View style={{ alignItems: 'flex-end', flex: 1 }}>
-                  <Icon
-                    name='ios-contacts'
-                    type='ionicon'
-                    size={30}
-                    color='#454545' />
-                </View>
-              </TouchableOpacity>
-            </View>
+            
           </View>
         }
 
