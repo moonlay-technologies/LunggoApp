@@ -16,7 +16,6 @@ export default class AccordionView extends Component {
     let icon = isActive ? this.icons['up'] : this.icons['down'];
     return (
       <View>
-        <View style={styles.divider} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{section.title}</Text>
             <Image style={styles.buttonImage} source={icon}/>
@@ -35,15 +34,16 @@ export default class AccordionView extends Component {
 
   render() {
     return (
-      <Accordion
-        style={styles.container}
-        sections={this.props.sections}
-        underlayColor={'transparent'}
-        renderHeader={(section, index, isActive) =>
-          this._renderHeader(section,isActive)
-        }
-        renderContent={this._renderContent}
-      />
+      <View style={styles.container}>
+        <Accordion
+          sections={this.props.sections}
+          underlayColor={'transparent'}
+          renderHeader={(section, index, isActive) =>
+            this._renderHeader(section,isActive)
+          }
+          renderContent={this._renderContent}
+        />
+      </View>
     );
   }
 }
@@ -51,9 +51,9 @@ export default class AccordionView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: '#fff',
-    // marginTop: 20,
-    // overflow: 'hidden'
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#efefef',
   },
   titleContainer: {
     flexDirection: 'row',
