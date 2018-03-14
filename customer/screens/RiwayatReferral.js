@@ -1,158 +1,97 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import { LinearGradient } from 'expo';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity
+  Platform, StyleSheet, Text, View, Image, ScrollView, FlatList,
+  TouchableOpacity,
 } from 'react-native';
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
+import Accordion from '../components/Accordion';
 
-export default class LoginScreen extends Component<{}> {
+export default class ReferralHistory extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      referralHistories: [],
+    }
+  }
+
+  static navigationOptions = {
+    title: 'Riwayat Referral',
+  };
+
+  componentDidMount() {
+    this._fetchReferralHistories();
+  }
+
+  _fetchReferralHistories = () => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/account/referraldetail`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then(res => {
+      this.setState({ referralHistories: res.referralDetails });
+    }).catch(error => console.log(error));
+  }
+
+  _keyExtractor = (item, index) => index;
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+    />
+  );
+
   render() {
     return (
-      <ScrollView style={{flex:1, backgroundColor:'#fff', height:'100%'}}>
-        <View style={styles.containerRiwayat}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
-            <Text style={styles.h1}>Ali Zainal</Text>
-            <Text style={styles.h2}>3/10 Reward</Text>
-          </View>
-          <View style={{marginVertical:10, flexDirection:'row'}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/uncheck.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:10, flexDirection:'row'}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/uncheck.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/uncheck.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          
-        </View>
-        <View style={styles.containerRiwayat}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
-            <Text style={styles.h1}>Indera Aji</Text>
-            <Text style={styles.h2}>3/10 Reward</Text>
-          </View>
-          <View style={{marginVertical:10, flexDirection:'row'}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row',}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:10, flexDirection:'row'}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row'}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/check.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
-            <View style={{flex:0.8}}>
-              <Image 
-                style={{width:25, height:25}}
-                source={require('../../assets/images/uncheck.png')} 
-              />
-            </View>
-            <View style={{flex:7}}>
-              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
-              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
-            </View>
-          </View>
-          
-        </View>
-        
+      <ScrollView style={{ backgroundColor: '#fff',}}>
+        <FlatList
+            data={this.state.referralHistories}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+        />
       </ScrollView>
+    );
+  }
+}
+
+class ListItem extends React.PureComponent {
+  render() {
+    let {item} = this.props;
+    return (
+        <View style={styles.containerRiwayat}>
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
+            <Text style={styles.h1}>{item.name}</Text>
+            <Text style={styles.h2}>{item.history.length}/{item.history.length} Reward</Text>
+          </View>
+
+          { item.history.map( (step,index) =>
+            <View key={index} 
+              style={[
+                styles.referralAccordionItem,
+                { opacity:step.stepStatus!=false?1:.5 }
+              ]}
+            >
+              <View style={{flex:0.8}}>
+                <Image 
+                  style={{width:25, height:25}}
+                  source={ step.stepStatus!=false ?
+                    require('../../assets/images/check.png') :
+                    require('../../assets/images/uncheck.png')
+                  }
+                />
+              </View>
+              <View style={{flex:7}}>
+                <Text style={styles.activityJudulReward}>{step.stepName}</Text>
+                <Text style={styles.activityDesc}>{step.stepDetail}</Text>
+              </View>
+            </View>
+          )}  
+        </View>
     );
   }
 }
@@ -226,4 +165,9 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  referralAccordionItem: {
+    marginVertical: 5,
+    flexDirection: 'row', 
+  },
+
 });
