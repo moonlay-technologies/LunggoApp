@@ -10,6 +10,7 @@ import {
 import * as Formatter from '../../customer/components/Formatter';
 import Modal from '../../commons/components/Modal';
 import globalStyles from '../../commons/globalStyles';
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 
 export default class Referral extends React.Component {
 
@@ -28,9 +29,18 @@ export default class Referral extends React.Component {
   }
 
   componentDidMount() {
-    // getReferralCode().then(res => {
-    //   this.setState(res);
-    // });
+    this._getReferralCode();
+  }
+
+  _getReferralCode = () => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/account/referral`,
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then(response => {
+      this.setState(response);
+    }).catch(error => console.log(error));
   }
 
   // _copyToClipboard = () => Clipboard.setString(this.state.referralCode)
