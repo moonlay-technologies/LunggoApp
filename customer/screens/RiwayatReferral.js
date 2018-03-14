@@ -18,19 +18,140 @@ export default class LoginScreen extends Component<{}> {
     return (
       <ScrollView style={{flex:1, backgroundColor:'#fff', height:'100%'}}>
         <View style={styles.containerRiwayat}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
             <Text style={styles.h1}>Ali Zainal</Text>
-            <Text style={styles.h2}>Sudah Bergabung</Text>
+            <Text style={styles.h2}>3/10 Reward</Text>
           </View>
-          <Text style={styles.activityDesc}>Immediately regret falling into bathtub kitten is playing with dead mouse i like</Text>
+          <View style={{marginVertical:10, flexDirection:'row'}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/uncheck.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:10, flexDirection:'row'}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/uncheck.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/uncheck.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          
         </View>
         <View style={styles.containerRiwayat}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-            <Text style={styles.h1}>Ali Zainal</Text>
-            <Text style={styles.h2}>Sudah Bergabung</Text>
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
+            <Text style={styles.h1}>Indera Aji</Text>
+            <Text style={styles.h2}>3/10 Reward</Text>
           </View>
-          <Text style={styles.activityDesc}>Immediately regret falling into bathtub kitten is playing with dead mouse i like</Text>
+          <View style={{marginVertical:10, flexDirection:'row'}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row',}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:10, flexDirection:'row'}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah terdaftar di Travorama</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row'}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/check.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          <View style={{marginVertical:5, flexDirection:'row', opacity:0.5}}>
+            <View style={{flex:0.8}}>
+              <Image 
+                style={{width:25, height:25}}
+                source={require('../../assets/images/uncheck.png')} 
+              />
+            </View>
+            <View style={{flex:7}}>
+              <Text style={styles.activityJudulReward}>Get Rp 50.000 Credits</Text>
+              <Text style={styles.activityDesc}>Teman kamu sudah melakukan perjalanan 1x</Text>
+            </View>
+          </View>
+          
         </View>
+        
       </ScrollView>
     );
   }
@@ -43,7 +164,7 @@ const styles = StyleSheet.create({
     padding:20,
   },
   h1:{
-    fontFamily: 'Hind',
+    fontFamily: 'Hind-SemiBold',
     fontSize: 20,
     color: '#454545',
     backgroundColor:'transparent',
@@ -62,8 +183,7 @@ const styles = StyleSheet.create({
     }),
   },
   h2:{
-    fontSize: 14,
-    fontWeight:'bold',
+    fontSize: 13,
     color: '#454545',
     backgroundColor:'transparent',
   },
@@ -71,6 +191,23 @@ const styles = StyleSheet.create({
     padding:15,
     borderBottomWidth:1,
     borderBottomColor:'#d7d7d7',
+  },
+  activityJudulReward: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   activityDesc: {
     fontSize: 14,
