@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import * as Formatter from '../../customer/components/Formatter';
+import { fetchAppointmentRequests } from './Appointments/AppointmentController';
 import Moment from 'moment';
 import 'moment/locale/id';
 
@@ -98,24 +99,24 @@ export default class AppointmentRequests extends React.Component {
 
   constructor(props) {
     super(props)
+    let {requests} = props.navigation.state.params || [];
     this.state = {
-      list: [],
+      list: {...requests},
     };
   }
 
-  _fetchAppointmentRequests = () => {
-    const version = 'v1';
-    let request = {
-      path: `/${version}/operator/appointments/request`,
-      requiredAuthLevel: AUTH_LEVEL.User,
-    }
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ list: response.appointmentRequests });
-    }).catch(error => console.log(error));
+  componentDidMount() {
+    _refreshList();
   }
 
-  componentDidMount() {
-    this._fetchAppointmentRequests();
+  _pullRefresh = () => {
+    // TODO: pull to refresh
+  }
+
+  _refreshList = () => {
+    fetchAppointmentRequests().then( res =>
+      this.setState({ list: res.appointmentRequests })
+    );
   }
 
   _keyExtractor = (item, index) => index
@@ -151,7 +152,7 @@ export default class AppointmentRequests extends React.Component {
   _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
 
   render() {
-    return ((this.state.list.length > 0) ?
+    return ((this.state.list && this.state.list.length > 0) ?
       <ScrollView style={{ backgroundColor: '#fff', }}>
         <View style={{ marginBottom: 10 }}>
           <FlatList

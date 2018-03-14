@@ -17,6 +17,7 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
+import { fetchAppointmentRequests } from './Appointments/AppointmentController';
 
 export default class Dashboard extends React.Component {
 
@@ -26,6 +27,9 @@ export default class Dashboard extends React.Component {
       name: '...',
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
+      requests: [],
+      activities: [],
+      appointments: [],
     };
   }
 
@@ -45,6 +49,14 @@ export default class Dashboard extends React.Component {
         this.props.navigation.dispatch(action);
       }
     });
+    this._getAppointmentRequests();
+
+  }
+
+  _getAppointmentRequests = () => {
+    fetchAppointmentRequests().then( res => {
+      this.setState({requests:res.appointmentRequests});
+    });
   }
 
   _handleResponse = (response) => {
@@ -60,7 +72,7 @@ export default class Dashboard extends React.Component {
   }
 
   _goToAppointmentRequest = () => {
-    this.props.navigation.navigate('AppointmentRequest');
+    this.props.navigation.navigate('AppointmentRequest',{requests});
   }
 
   _goToAppointmentList = (response) => {
@@ -76,7 +88,6 @@ export default class Dashboard extends React.Component {
   }
 
   _goToActivityList = () => {
-    this._closeSettingModal();
     this.props.navigation.navigate('ActivityList');
   }
 
@@ -129,8 +140,7 @@ export default class Dashboard extends React.Component {
 
   _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
   _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
-  // _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
-  // _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityDetails = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
   _goToProfile = () => {
@@ -138,6 +148,7 @@ export default class Dashboard extends React.Component {
     'TODO'
     console.warn('TODO: Dashboard.js _goToProfile')
   }
+
   _goToMutasi = () => {
     this._closeSettingModal();
     this.props.navigation.navigate('Mutasi');
@@ -198,10 +209,6 @@ export default class Dashboard extends React.Component {
                 {/*<TouchableOpacity onPress={this._goToProfile}>
                   <Text style={styles.teks3a}>Ubah Profil</Text>
                 </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
-                <TouchableOpacity onPress={this._goToActivityList}>
-                  <Text style={styles.teks3a}>Ubah Activity</Text>
-                </TouchableOpacity>
                 <View style={styles.separatorOption}></View>*/}
                 <TouchableOpacity onPress={this._askLogout}>
                   <Text style={styles.teks3a}>Log Out Akun</Text>
@@ -218,15 +225,15 @@ export default class Dashboard extends React.Component {
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Activity</Text>
-                  <Text style={styles.teks2}>22</Text>
+                  <Text style={styles.teks2}>{this.state.activities.length}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Request</Text>
-                  <Text style={styles.teks2}>3</Text>
+                  <Text style={styles.teks2}>{this.state.requests.length}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._onAppointmentListPressed} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Akan datang</Text>
-                  <Text style={styles.teks2}>12</Text>
+                  <Text style={styles.teks2}>{this.state.appointments.length}</Text>
                 </TouchableOpacity>
               </View>
             </View>
