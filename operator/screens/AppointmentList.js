@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Platform, StyleSheet, Text, View, Image,
   TextInput, ScrollView, TouchableHighlight, FlatList,
@@ -86,7 +86,7 @@ class ListItem extends React.PureComponent {
   }
 }
 
-export default class AppointmentList extends Component {
+export default class AppointmentList extends React.Component {
 
   static navigationOptions = {
     title: 'List Appointment',

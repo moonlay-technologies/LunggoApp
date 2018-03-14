@@ -7,7 +7,7 @@ import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
-  from '../api/registerForPushNotificationsAsync';
+  from '../api/NotificationController';
 import { APP_TYPE } from '../constants/env';
 
 import {
@@ -56,7 +56,7 @@ export default class RootNavigator extends React.Component {
         //screen: MainTabNavigator
         // screen:Referral
         // screen:ReferralHistory
-        screen:AccountPage
+        screen:MainTabNavigator
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
