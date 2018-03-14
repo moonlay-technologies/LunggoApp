@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Image, Platform } from 'react-native';
-import Accordion from 'react-native-collapsible/Accordion';
+import CollapsibleAccordion from 'react-native-collapsible/Accordion';
 
-export default class AccordionView extends Component {
+export default class Accordion extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,15 +17,26 @@ export default class AccordionView extends Component {
     return (
       <View>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{section.title}</Text>
+          { this.props.renderHeader ?
+            this.props.renderHeader(section)
+            :
+            <Text style={styles.title}>
+              {section.title || section.name || section.header}
+            </Text>
+          }
             <Image style={styles.buttonImage} source={icon}/>
         </View>
       </View>
     );
   }
 
-  _renderContent(section) {
-    return (
+  _renderContent = section => {
+    if (this.props.renderContent) return (
+      <View>
+        {this.props.renderContent(section)}
+      </View>
+    );
+    else return (
       <View style={styles.content}>
         <Text style={styles.activityDesc}>{section.desc}</Text>
       </View>
@@ -34,8 +45,8 @@ export default class AccordionView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Accordion
+      <View style={[styles.container, this.props.style]}>
+        <CollapsibleAccordion
           sections={this.props.sections}
           underlayColor={'transparent'}
           renderHeader={(section, index, isActive) =>
@@ -100,4 +111,79 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#e1e1e1',
   },
+
+
+  container: {
+    backgroundColor: '#fff',
+    flex:1,
+    padding:20,
+  },
+  h1:{
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 20,
+    color: '#454545',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:15 ,
+        marginBottom: -10,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  h2:{
+    fontSize: 13,
+    color: '#454545',
+    backgroundColor:'transparent',
+  },
+  containerRiwayat:{
+    padding:15,
+    borderBottomWidth:1,
+    borderBottomColor:'#d7d7d7',
+  },
+  activityJudulReward: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityDesc: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-Light',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  referralAccordionItem: {
+    marginVertical: 5,
+    flexDirection: 'row', 
+  },
+
 })

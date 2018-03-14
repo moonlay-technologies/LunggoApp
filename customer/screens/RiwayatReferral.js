@@ -38,22 +38,29 @@ export default class ReferralHistory extends React.Component {
     }).catch(error => console.log(error));
   }
 
-  _keyExtractor = (item, index) => index;
-  _renderItem = ({item, index}) => (
-    <ListItem
-      item={item}
-      index={index}
-    />
-  );
+  _keyExtractor = (item, index) => index
+  _renderContent = item => <ListItem item={item}/>
+  _renderHeader = item =>
+    <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
+      <Text style={styles.h1}>{item.name}</Text>
+      <Text style={styles.h2}>{item.history.length}/{item.history.length} Reward</Text>
+    </View>
 
   render() {
     return (
       <ScrollView style={{ backgroundColor: '#fff',}}>
+        <Accordion
+          style={styles.containerRiwayat}
+          sections={this.state.referralHistories}
+          renderContent={this._renderContent}
+          renderHeader={this._renderHeader}
+        />
+        {/*
         <FlatList
             data={this.state.referralHistories}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
-        />
+        />*/}
       </ScrollView>
     );
   }
@@ -64,11 +71,6 @@ class ListItem extends React.PureComponent {
     let {item} = this.props;
     return (
         <View style={styles.containerRiwayat}>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
-            <Text style={styles.h1}>{item.name}</Text>
-            <Text style={styles.h2}>{item.history.length}/{item.history.length} Reward</Text>
-          </View>
-
           { item.history.map( (step,index) =>
             <View key={index} 
               style={[
