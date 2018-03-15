@@ -63,7 +63,7 @@ export default class ContinueToCartModal extends React.Component {
               style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
               onPress={this._seeMoreActivity}
             >
-              Lihat Activity Lainnya
+              Pesan Aktivitas Lainnya
             </Button>
           </View>
         </View>
