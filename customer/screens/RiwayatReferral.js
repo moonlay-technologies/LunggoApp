@@ -41,9 +41,11 @@ export default class ReferralHistory extends React.Component {
   _keyExtractor = (item, index) => index
   _renderContent = item => <ListItem item={item}/>
   _renderHeader = item =>
-    <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
+    <View style={{flex:1,flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
       <Text style={styles.h1}>{item.name}</Text>
-      <Text style={styles.h2}>{item.history.length}/{item.history.length} Reward</Text>
+      <Text style={styles.h2}>
+        {item.history.filter(step=>step.stepStatus!=false).length}/{item.history.length} Reward
+      </Text>
     </View>
 
   render() {
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#454545',
     backgroundColor:'transparent',
+    alignItems: 'flex-end',
   },
   containerRiwayat:{
     padding:15,

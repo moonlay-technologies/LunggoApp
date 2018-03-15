@@ -24,7 +24,7 @@ export default class Accordion extends React.Component {
               {section.title || section.name || section.header}
             </Text>
           }
-            <Image style={styles.buttonImage} source={icon}/>
+          <Image style={styles.buttonImage} source={icon}/>
         </View>
       </View>
     );
@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     marginVertical:20,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
   },
   title: {
     flex    : 1,
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
   },
   buttonImage: {
     width : 20,
-    height: 20
+    height: 20,
+    
   },
   content: {
     overflow: 'hidden',
