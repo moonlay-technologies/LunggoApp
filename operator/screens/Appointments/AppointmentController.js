@@ -13,3 +13,14 @@ export async function fetchAppointmentRequests() {
   	console.error(error);
 	}
 }
+
+export const fetchAppointmentList = async () => {
+  const version = 'v1';
+  const path = `/${version}/operator/appointments`;
+  let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
+  try {
+    return await fetchTravoramaApi(request);
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -1,26 +1,19 @@
 'use strict';
 
-import React, { Component } from 'react';
-import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 
 export default class LoadingAnimation extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
       <View style={styles.container}>
-        <Image style={{height: 100, width:100}} source={require('../assets/images/loader1.gif')} />
+        <Image
+          style={{
+            height: this.props.height || 100,
+            width: this.props.width || 100
+          }}
+          source={require('../assets/images/loader1.gif')} />
       </View>
     );
   }

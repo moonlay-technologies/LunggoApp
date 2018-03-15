@@ -17,7 +17,9 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
-import { fetchAppointmentRequests } from './Appointments/AppointmentController';
+import { fetchAppointmentRequests, fetchAppointmentList,
+} from './Appointments/AppointmentController';
+import { fetchActivityList } from './ActivityController';
 
 export default class Dashboard extends React.Component {
 
@@ -27,15 +29,15 @@ export default class Dashboard extends React.Component {
       name: '...',
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
-      requests: [],
-      activities: [],
-      appointments: [],
+      requests: null,
+      activities: null,
+      appointments: null,
     };
   }
 
   static navigationOptions = {
     header: null,
-  };
+  }
 
   componentDidMount() {
     getProfile().then( profile => this.setState(profile));
@@ -50,94 +52,42 @@ export default class Dashboard extends React.Component {
       }
     });
     this._getAppointmentRequests();
-
+    this._getAppointmentList();
+    this._getActivityList();
   }
 
   _getAppointmentRequests = () => {
     fetchAppointmentRequests().then( res => {
-      console.log('res')
-      console.log(res)
       this.setState({requests:res.appointmentRequests});
     });
   }
 
-  _handleResponse = (response) => {
-    if (response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'AppointmentList', { list: response.appointments }
-      )
-    } else {
-      this.setState({ message: 'response undefined' })
-      console.log(response)
-    }
+  _getAppointmentList = () => {
+    fetchAppointmentList().then( ({appointments}) =>
+      this.setState( {appointments} )
+    );
+  }
+
+  _getActivityList = () => {
+    fetchActivityList().then( ({activityList}) =>
+      this.setState( {activities: activityList} )
+    );
   }
 
   _goToAppointmentRequest = () => {
-    let {requests} = this.state;
+    let {requests = []} = this.state;
     this.props.navigation.navigate('AppointmentRequest',{requests});
   }
 
-  _goToAppointmentList = (response) => {
-    if (response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'AppointmentList', { list: response.appointments }
-      )
-    } else {
-      this.setState({ message: 'response undefined' })
-      console.log(response)
-    }
+  _goToAppointmentList = () => {
+    this.props.navigation.navigate(
+      'AppointmentList', { list: this.state.appointments || []}
+    );
   }
 
   _goToActivityList = () => {
     this.props.navigation.navigate('ActivityList');
   }
-
-  _getAppointmentList = () => {
-    const version = 'v1';
-    const path = `/${version}/operator/appointments`;
-    // this.setState({ isLoading: true });
-    let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._goToAppointmentList(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n' + error
-      });
-      console.log(error);
-    });
-  }
-
-  // _getAppointmentDetail = id => {
-  //   const version = 'v1';
-  //   const path = `/${version}/operator/appointments/${id}`;
-  //   // this.setState({ isLoading: true });
-  //   let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
-  //   fetchTravoramaApi(request).then(response => {
-  //     console.log(response)
-  //     this.setState({ isLoading: false });
-  //     this._handleResponse(response);
-  //   }).catch(error => {
-  //     this.setState({
-  //       isLoading: false,
-  //       message: 'Something bad happened :\n'+ error
-  //     });
-  //     console.log(error);
-  //   });
-  // }
-
-  _onAppointmentListPressed = () => {
-    this.setState({ message: '', isLoading: true });
-    this._getAppointmentList();
-  }
-  // _onAppointmentDetailPressed = () => {
-  //   this.setState({ message: '', isLoading:true });
-  //   const id = 1;
-  //   this._getAppointmentDetail(id);
-  // }
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
@@ -228,15 +178,21 @@ export default class Dashboard extends React.Component {
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Activity</Text>
-                  <Text style={styles.teks2}>{this.state.activities.length}</Text>
+                  { this.state.activities==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.activities.length}</Text>
+                  }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Request</Text>
-                  <Text style={styles.teks2}>{this.state.requests.length}</Text>
+                  { this.state.requests==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
+                  }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this._onAppointmentListPressed} style={{ flex: 1, alignItems: 'center' }}>
+                <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Akan datang</Text>
-                  <Text style={styles.teks2}>{this.state.appointments.length}</Text>
+                  { this.state.appointments==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.appointments.length}</Text>
+                  }
                 </TouchableOpacity>
               </View>
             </View>
