@@ -29,24 +29,30 @@ class ListItem extends React.PureComponent {
                 <Text style={styles.activityTitle}>
                   {item.activityName}
                 </Text>
-                <Text>
+                {/*<Text>
                   {Moment(item.requestTime).fromNow()}
-                </Text>
+                </Text>*/}
               </View>
               <View style={{ width: '100%', flexDirection: 'row', marginTop: 5 }}>
-                <Text style={styles.timeActivity}>
+                <Text style={styles.activityDesc}>
                   {Moment(item.date).format('ddd, D MMM YYYY')}
                 </Text>
-                <Text style={[styles.timeActivity, { marginLeft: 10 }]}>
+                <Text style={[styles.activityDesc, { marginLeft: 10 }]}>
                   {item.session}
                 </Text>
               </View>
-              <Text style={[styles.timeActivity, { marginTop: 5, }]}>
+              <Text style={[styles.activityDesc,]}>
                 {item.contactName} ({Formatter.paxCount(item.paxCount)})
               </Text>
             </View>
 
-            <View style={{ flex: 1, flexDirection: 'row', marginTop: 15 }}>
+            <View style={{marginTop: 20}}>
+              <Text style={styles.dueDate}>
+                Batas waktu menerima: {Moment(item.timeLimit).fromNow()}
+              </Text>
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 10 }}>
               <Button
                 containerStyle={{
                   height: 32,
@@ -76,9 +82,8 @@ class ListItem extends React.PureComponent {
               >
                 Terima
               </Button>
-              <Text>
-                {Moment(item.timeLimit).fromNow()}
-              </Text>
+              
+              
             </View>
           </View>
         </TouchableHighlight>
@@ -182,13 +187,55 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   activityTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
     color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
-  timeActivity: {
-    fontSize: 13,
+  activityDesc: {
+    fontSize: 15,
     color: '#454545',
+    fontFamily: 'Hind-Light',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  dueDate: {
+    fontSize: 15,
+    color: '#f3645e',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   activityGuest: {
     fontSize: 18,
