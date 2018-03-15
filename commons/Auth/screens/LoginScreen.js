@@ -132,15 +132,17 @@ export default class LoginScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-          <View style={{ marginBottom: 40 }}>
-            <Text style={globalStyles.categoryTitle}>Login</Text>
+          <View style={{ marginBottom: 30 }}>
+            <Text style={globalStyles.categoryTitle1}>Login</Text>
+          </View>
+          <View style={{marginBottom:10}}>
+            <Text style={styles.label}>Email / No. Handphone</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
             <TextInput
               style={this.state.errorUserName ?
                 styles.searchInputFalse : styles.searchInput
               }
-              placeholder='Email / No. Handphone'
               keyboardType='email-address'
               underlineColorAndroid='transparent'
               autoCapitalize='none'
@@ -157,14 +159,16 @@ export default class LoginScreen extends React.Component {
           </View>
 
           {errorMessageUserName}
-          <View>
+          <View style={{marginTop:0}}>
+            <View style={{marginBottom:10}}>
+              <Text style={styles.label}>Password</Text>
+            </View>
             <TextInput
               ref='passwordInput'
               style={this.state.errorPassword ?
                 styles.searchInputFalse : styles.searchInput
               }
               underlineColorAndroid='transparent'
-              placeholder='Password'
               secureTextEntry={!showPassword}
               autoCapitalize='none'
               autoCorrect={false}
@@ -175,7 +179,7 @@ export default class LoginScreen extends React.Component {
               onSubmitEditing={this._onLoginPressed}
               returnKeyType='done'
             />
-            <View style={{ position: 'absolute', right: 20, top: 11, }}>
+            <View style={{ position: 'absolute', right: 20, top: 40, }}>
               <TouchableOpacity onPress={this._toggleShowPassword}>
                 <Icon
                   name={showPassword ? 'eye' : 'eye-with-line'}
@@ -230,11 +234,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: '#fff',
   },
-  /*categoryTitle :{
-    fontWeight:'bold',
-    fontSize:26,
-    color:'#454545'
-  },*/
+
   normaltext: {
     backgroundColor: 'transparent',
     color: '#ffffff',
@@ -250,6 +250,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
     padding: 40,
     color: '#ffffff'
+  },
+  label: {
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+      },
+    }),
   },
   searchInput: {
     height: 45,

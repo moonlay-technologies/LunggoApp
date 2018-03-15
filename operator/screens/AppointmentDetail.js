@@ -7,6 +7,7 @@ import {
   Platform, StyleSheet, Text, View,
   Image, TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
+import { LinearGradient } from 'expo';
 import * as Formatter from '../../customer/components/Formatter';
 import Moment from 'moment';
 import 'moment/locale/id';
@@ -32,28 +33,28 @@ export default class AppointmentDetail extends React.Component {
               </Text>
               <View style={{width:'100%',flexDirection:'row', marginTop:3}}>
                 <View style={{ marginRight:10 }}>
-                  <Text style={styles.timeActivity}>
+                  <Text style={styles.activityDesc}>
                     {Moment(details.date).format('ddd, D MMM YYYY')}
                   </Text>
                 </View>
                 <View >
-                  <Text style={styles.timeActivity}>
+                  <Text style={styles.activityDesc}>
                     {details.session}
                   </Text>
                 </View>
               </View>
 
-              <View style={{flexDirection:'row', marginTop:10}}>
+              <View style={{flexDirection:'row', marginTop:5}}>
                 <View style={{alignItems:'flex-start',}}>
                   <Icon
-                    name='users'
-                    type='entypo'
+                    name='ios-people'
+                    type='ionicon'
                     color='#454545'
-                    size={20}
+                    size={22}
                   />
                 </View>
                 <View style={{marginLeft:8}}>
-                  <Text style={{fontSize:14, marginTop:3}}>
+                  <Text style={styles.activityDesc}>
                     Total {details.totalPax} orang peserta
                   </Text>
                 </View>
@@ -67,19 +68,22 @@ export default class AppointmentDetail extends React.Component {
                   onPress={this._onPress}
                   underlayColor='#ddd'
                 >
-                  <View style={{flexDirection:'row', marginTop:40,}}>
+                  <View style={{flexDirection:'row', marginTop:20,}}>
                     <View>
-                      <Text style={styles.activityTitle}>{rsv.contact.name}</Text><Text>{Formatter.paxCount(rsv.paxCount)}</Text>
-                      <Text>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
-                      <Text>{rsv.contact.email}</Text>
+                      <View>
+                        <Text style={styles.activityTitle}>{rsv.contact.name}</Text>
+                        <Text style={styles.activityDesc}>{Formatter.paxCount(rsv.paxCount)}</Text>
+                      </View>
+                      <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
+                      <Text style={styles.activityDesc}>{rsv.contact.email}</Text>
                     </View>
 
-                    <View style={{flex:1}}>
-                      <View style={{marginTop:10, alignItems:'flex-end'}}>
+                    <View style={{flex:1, justifyContent:'center'}}>
+                      <View style={{marginTop:10, alignItems:'flex-end', }}>
                         <Icon
                           name='chevron-thin-right'
                           type='entypo'
-                          size={24}
+                          size={20}
                           color='#707070'
                         />
                       </View>
@@ -153,34 +157,39 @@ export default class AppointmentDetail extends React.Component {
           <View style={styles.containerListAppointment}>
             <View style={{flex:1}}>
               
-              <View style={{flexDirection:'row',}}>
-                <View style={{flex:3, paddingRight:10}}>
+              <View>
+                <View style={{flex:2,}}>
+                  <View style={{marginBottom:10}}>
+                    <Text style={styles.label}>Masukkan Kode Verifikasi</Text>
+                  </View>
+                  
                   <TextInput
                     underlineColorAndroid= 'transparent'
                     style={styles.txtInput}
                     // onChangeText={ name => this.setState({name}) }
                     // value={this.state.name}
-                    placeholder="Masukan kode verifikasi"
+                    placeholder="Kode verifikasi"
                   />
                 </View>
-                <View style={{flex:1}}>
-                  <Button
-                    containerStyle={{
-                      height: 40,
-                      paddingTop: 10,
-                      paddingBottom :10,
-                      overflow: 'hidden',
-                      borderRadius: 20,
-                      backgroundColor: '#00d5cb',
-                    }}
-                    style={{fontSize: 14, color: '#ffffff'}}
-                    >
-                    Verify
-                  </Button>
+
+                <View style={{flex:1, alignItems:'center', width:'100%', justifyContent:'center', marginTop:15}}>
+                  <LinearGradient
+                    colors={['#00d3c5', '#35eac6', '#6affc6']}
+                    start={[0, 0]}
+                    end={[1, 0]}
+                    style={{ height: 35, paddingTop: 6, alignItems: 'center', borderRadius: 5, width: '50%' }}>
+                    <Text style={{
+                      backgroundColor: 'transparent',
+                      fontSize: 15, color: '#ffffff',
+                      fontFamily: 'Hind-Bold',
+                    }}>
+                      Verifikasi
+                    </Text>
+                  </LinearGradient>
                 </View>
               </View>
 
-              <View style={{marginTop:40, alignItems:'center'}}>
+{/*              <View style={{marginTop:40, alignItems:'center'}}>
                 <Button
                     containerStyle={{
                       height: 50,
@@ -197,7 +206,7 @@ export default class AppointmentDetail extends React.Component {
                   <View style={{marginTop:8}}>
                     <Text>Scan Barcode</Text>
                   </View>
-              </View>
+              </View>*/}
 
             </View>
           </View>
@@ -215,17 +224,19 @@ const styles = StyleSheet.create({
     flex:1
   },
   txtInput: {
-    height: 40, 
-    borderColor:'transparent',
+    height: 35,
+    paddingLeft: 15,
+    paddingTop: 10,
+    paddingBottom: 9,
+    marginRight: 5,
+    flexGrow: 1,
+    fontSize: 16,
     borderWidth: 1,
-    borderRadius: 20,
-    paddingRight:10, 
-    paddingLeft:10, 
-    marginBottom:20,
-    fontSize:14,
-    fontWeight:'bold',
-    backgroundColor:'#f5f5f5',
-    color:'#bdbdbd'
+    borderColor: '#e5e5e5',
+    borderRadius: 5,
+    color: '#565656',
+    backgroundColor: '#f5f5f5',
+    fontFamily: 'Hind',
   },
   divider: {
     height: 1,
@@ -233,11 +244,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     marginTop: 15,
     marginBottom: 15,
-  },
-  activityTitle: {
-    fontWeight:'bold',
-    fontSize:16,
-    color:'#454545',
   },
   status: {
     color:'green',
@@ -248,9 +254,58 @@ const styles = StyleSheet.create({
     height:15,
     marginRight:3,
   },
-  timeActivity: {
-    fontSize:13,
-    color:'#454545',
+  activityTitle:{
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 18,
+    color: '#454545',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:15 ,
+        marginBottom: -15,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityDesc: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-Light',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  label: {
+    fontSize: 15,
+    color: '#000',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   
 });

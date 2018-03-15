@@ -148,17 +148,18 @@ export default class Registration extends React.Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
         >*/}
-          <View style={{ marginBottom: 30 }}>
-            <Text style={globalStyles.categoryTitle}>Daftar Akun Baru</Text>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={globalStyles.categoryTitle1}>Daftar Akun Baru</Text>
           </View>
-
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>Nama Lengkap</Text>
+          </View>
           <View style={{ marginBottom: 15 }}>
             <TextInput
               style={this.state.errorName ?
                 styles.searchInputFalse : styles.searchInput
               }
               underlineColorAndroid='transparent'
-              placeholder='Nama Lengkap'
               value={name}
               onChangeText={name => this.setState({
                 name, errorName: null, error: null
@@ -168,6 +169,9 @@ export default class Registration extends React.Component {
             />
           </View>
           {errorMessageName}
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>Email</Text>
+          </View>
           <View style={{ marginBottom: 15 }}>
             <TextInput
               style={this.state.errorEmail ?
@@ -175,7 +179,6 @@ export default class Registration extends React.Component {
               }
               ref='email'
               underlineColorAndroid='transparent'
-              placeholder='Email'
               keyboardType='email-address'
               autoCapitalize='none'
               autoCorrect={false}
@@ -188,6 +191,9 @@ export default class Registration extends React.Component {
             />
           </View>
           {errorMessageEmail}
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>No. Handphone</Text>
+          </View>
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
             <View style={{ flex: 1.4 }}>
               <TextInput
@@ -214,7 +220,6 @@ export default class Registration extends React.Component {
                 }
                 ref='phone'
                 underlineColorAndroid='transparent'
-                placeholder='No. Handphone'
                 keyboardType='numeric'
                 value={phone}
                 onChangeText={phone => this.setState({
@@ -228,6 +233,9 @@ export default class Registration extends React.Component {
 
           {errorMessageCountryCode}
           {errorMessagePhone}
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>Password</Text>
+          </View>
           <View style={{ marginBottom: 15 }}>
             <TextInput
               style={this.state.errorPassword ?
@@ -268,7 +276,7 @@ export default class Registration extends React.Component {
 
           <TouchableOpacity
             onPress={this._onRegisterPressed}
-            style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
+            style={{ alignItems: 'center', width: '100%', marginTop: 20 }}
             activeOpacity={0.6}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}
@@ -311,7 +319,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    paddingTop: 30,
+    paddingTop: 10,
     backgroundColor: '#fff',
   },
   normaltext: {
@@ -329,6 +337,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
     padding: 40,
     color: '#ffffff'
+  },
+  label: {
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+      },
+    }),
   },
   searchInput: {
     height: 45,
