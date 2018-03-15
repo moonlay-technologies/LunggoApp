@@ -101,12 +101,12 @@ export default class AppointmentRequests extends React.Component {
     super(props)
     let {requests} = props.navigation.state.params || [];
     this.state = {
-      list: {...requests},
+      list: [...requests],
     };
   }
 
   componentDidMount() {
-    _refreshList();
+    this._refreshList();
   }
 
   _pullRefresh = () => {

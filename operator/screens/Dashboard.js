@@ -55,6 +55,8 @@ export default class Dashboard extends React.Component {
 
   _getAppointmentRequests = () => {
     fetchAppointmentRequests().then( res => {
+      console.log('res')
+      console.log(res)
       this.setState({requests:res.appointmentRequests});
     });
   }
@@ -72,6 +74,7 @@ export default class Dashboard extends React.Component {
   }
 
   _goToAppointmentRequest = () => {
+    let {requests} = this.state;
     this.props.navigation.navigate('AppointmentRequest',{requests});
   }
 

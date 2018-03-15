@@ -7,7 +7,9 @@ export async function fetchAppointmentRequests() {
     path: `/${version}/operator/appointments/request`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
-  fetchTravoramaApi(request).then(response => {
-    return response;
-  }).catch(error => console.log(error));
+  try {
+    return await fetchTravoramaApi(request);
+  } catch (error) {
+  	console.error(error);
+	}
 }
