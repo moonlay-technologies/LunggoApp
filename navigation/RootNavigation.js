@@ -99,8 +99,9 @@ export default class RootNavigator extends React.Component {
     },
     {
       initialRouteParams: { appType: APP_TYPE },
-      initialRouteName: (this.props.skipIntro || this.props.isLoggedIn) ?
-        'Main' : (APP_TYPE == 'OPERATOR') ? 'LoginScreen' : 'IntroScreen',
+      initialRouteName: (APP_TYPE == 'CUSTOMER') ?
+        (this.props.skipIntro) ? 'Main' : 'IntroScreen' :
+        (this.props.isLoggedIn) ? 'Main' : 'LoginScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',

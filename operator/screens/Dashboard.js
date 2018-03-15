@@ -17,6 +17,9 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
+import { fetchAppointmentRequests, fetchAppointmentList,
+} from './Appointments/AppointmentController';
+import { fetchActivityList } from './ActivityController';
 
 export default class Dashboard extends React.Component {
 
@@ -26,12 +29,15 @@ export default class Dashboard extends React.Component {
       name: '...',
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
+      requests: null,
+      activities: null,
+      appointments: null,
     };
   }
 
   static navigationOptions = {
     header: null,
-  };
+  }
 
   componentDidMount() {
     getProfile().then( profile => this.setState(profile));
@@ -45,92 +51,49 @@ export default class Dashboard extends React.Component {
         this.props.navigation.dispatch(action);
       }
     });
+    this._getAppointmentRequests();
+    this._getAppointmentList();
+    this._getActivityList();
   }
 
-  _handleResponse = (response) => {
-    if (response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'AppointmentList', { list: response.appointments }
-      )
-    } else {
-      this.setState({ message: 'response undefined' })
-      console.log(response)
-    }
-  }
-
-  _goToAppointmentRequest = () => {
-    this.props.navigation.navigate('AppointmentRequest');
-  }
-
-  _goToAppointmentList = (response) => {
-    if (response) {
-      //// navigate
-      this.props.navigation.navigate(
-        'AppointmentList', { list: response.appointments }
-      )
-    } else {
-      this.setState({ message: 'response undefined' })
-      console.log(response)
-    }
-  }
-
-  _goToActivityList = () => {
-    this._closeSettingModal();
-    this.props.navigation.navigate('ActivityList');
-  }
-
-  _getAppointmentList = () => {
-    const version = 'v1';
-    const path = `/${version}/operator/appointments`;
-    // this.setState({ isLoading: true });
-    let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
-    fetchTravoramaApi(request).then(response => {
-      this.setState({ isLoading: false });
-      this._goToAppointmentList(response);
-    }).catch(error => {
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened :\n' + error
-      });
-      console.log(error);
+  _getAppointmentRequests = () => {
+    fetchAppointmentRequests().then( res => {
+      this.setState({requests:res.appointmentRequests});
     });
   }
 
-  // _getAppointmentDetail = id => {
-  //   const version = 'v1';
-  //   const path = `/${version}/operator/appointments/${id}`;
-  //   // this.setState({ isLoading: true });
-  //   let request = {path, requiredAuthLevel: AUTH_LEVEL.Guest}
-  //   fetchTravoramaApi(request).then(response => {
-  //     console.log(response)
-  //     this.setState({ isLoading: false });
-  //     this._handleResponse(response);
-  //   }).catch(error => {
-  //     this.setState({
-  //       isLoading: false,
-  //       message: 'Something bad happened :\n'+ error
-  //     });
-  //     console.log(error);
-  //   });
-  // }
-
-  _onAppointmentListPressed = () => {
-    this.setState({ message: '', isLoading: true });
-    this._getAppointmentList();
+  _getAppointmentList = () => {
+    fetchAppointmentList().then( ({appointments}) =>
+      this.setState( {appointments} )
+    );
   }
-  // _onAppointmentDetailPressed = () => {
-  //   this.setState({ message: '', isLoading:true });
-  //   const id = 1;
-  //   this._getAppointmentDetail(id);
-  // }
+
+  _getActivityList = () => {
+    fetchActivityList().then( ({activityList}) =>
+      this.setState( {activities: activityList} )
+    );
+  }
+
+  _goToAppointmentRequest = () => {
+    let {requests = []} = this.state;
+    this.props.navigation.navigate('AppointmentRequest',{requests});
+  }
+
+  _goToAppointmentList = () => {
+    this.props.navigation.navigate(
+      'AppointmentList', { list: this.state.appointments || []}
+    );
+  }
+
+  _goToActivityList = () => {
+    this.props.navigation.navigate('ActivityList');
+  }
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
   _goToMessageScreen = () => this.props.navigation.navigate('NotFound')
   _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
-  // _goToActivityViewsScreen = () => this.props.navigation.navigate('NotFound')
-  // _goToActivityViewDetailsScreen = () => this.props.navigation.navigate('NotFound')
+  // _goToActivityDetails = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
   _goToProfile = () => {
@@ -138,6 +101,7 @@ export default class Dashboard extends React.Component {
     'TODO'
     console.warn('TODO: Dashboard.js _goToProfile')
   }
+
   _goToMutasi = () => {
     this._closeSettingModal();
     this.props.navigation.navigate('Mutasi');
@@ -198,10 +162,6 @@ export default class Dashboard extends React.Component {
                 {/*<TouchableOpacity onPress={this._goToProfile}>
                   <Text style={styles.teks3a}>Ubah Profil</Text>
                 </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
-                <TouchableOpacity onPress={this._goToActivityList}>
-                  <Text style={styles.teks3a}>Ubah Activity</Text>
-                </TouchableOpacity>
                 <View style={styles.separatorOption}></View>*/}
                 <TouchableOpacity onPress={this._askLogout}>
                   <Text style={styles.teks3a}>Log Out Akun</Text>
@@ -218,15 +178,21 @@ export default class Dashboard extends React.Component {
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Activity</Text>
-                  <Text style={styles.teks2}>22</Text>
+                  { this.state.activities==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.activities.length}</Text>
+                  }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Request</Text>
-                  <Text style={styles.teks2}>3</Text>
+                  { this.state.requests==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
+                  }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this._onAppointmentListPressed} style={{ flex: 1, alignItems: 'center' }}>
+                <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Akan datang</Text>
-                  <Text style={styles.teks2}>12</Text>
+                  { this.state.appointments==null ? <LoadingAnimation height={40} width={40}/> :
+                    <Text style={styles.teks2}>{this.state.appointments.length}</Text>
+                  }
                 </TouchableOpacity>
               </View>
             </View>

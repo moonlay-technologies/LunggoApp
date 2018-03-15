@@ -4,14 +4,9 @@ import React from 'react';
 import { ActivityIndicator, Text } from 'react-native';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import ListScreen from './ActivityList';
-import LoadingAnimation from '../../customer/components/LoadingAnimation'
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
+import { fetchActivityList } from './ActivityController';
 
-async function getActivityList () {
-  const version = 'v1';
-  const path = `/${version}/operator/myactivity`;
-  let request = {path, requiredAuthLevel: AUTH_LEVEL.User}
-  return await fetchTravoramaApi(request);
-}
 
 export default class ActivityListLoadingScreen extends React.Component {
 
@@ -28,7 +23,7 @@ export default class ActivityListLoadingScreen extends React.Component {
   };
 
   componentDidMount() {
-    getActivityList().then( res => {
+    fetchActivityList().then( res => {
       this.setState({list:res.activityList, isLoading:false})
     });
   }
