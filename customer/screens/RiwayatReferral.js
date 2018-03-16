@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import Accordion from '../components/Accordion';
+import * as Formatter from '../components/Formatter';
 
 export default class ReferralHistory extends React.Component {
 
@@ -90,7 +91,7 @@ class ListItem extends React.PureComponent {
                 />
               </View>
               <View style={{flex:7}}>
-                <Text style={styles.activityJudulReward}>{step.stepName}</Text>
+                <Text style={styles.activityJudulReward}>{Formatter.price(step.referralCredit)}</Text>
                 <Text style={styles.activityDesc}>{step.stepDetail}</Text>
               </View>
             </View>
