@@ -218,9 +218,6 @@ class Footer extends Component {
 }
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
     let half = [200, 400];
@@ -250,16 +247,24 @@ class Header extends Component {
   render() {
     let { wishlisted, id, title } = this.props;
     let { backgroundColor, elevation, opacity } = this.state;
+    let borderBottomWidth = opacity;
     return (
       <Animated.View style={[styles.headerBackground, { backgroundColor, elevation }]}>
-        <View style={styles.headerContentContainer}>
+        <View style={[ styles.headerContentContainer,
+          {
+            ...Platform.select({
+              ios: {borderBottomWidth}
+            })
+          }
+        ]}>
           <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
           <Animated.View style={{ opacity, flex: 6.5 }}>
             <Text
-              style={[styles.activitydetailTitleHeader,
-              { marginTop: 4, textAlign: 'center' }]}
+              style={[ styles.activitydetailTitleHeader,
+                { marginTop: 4, textAlign: 'center' }
+              ]}
               numberOfLines={1}
             >
               {title}
@@ -627,7 +632,6 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: 18,
-        borderBottomWidth: 1,
         borderBottomColor: '#dfdfdf'
       },
       android: {
