@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { LinearGradient } from 'expo';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView, //Clipboard,
-  TouchableOpacity, TextInput, TouchableWithoutFeedback
+  TouchableOpacity, TextInput, TouchableWithoutFeedback, Share,
 } from 'react-native';
 import * as Formatter from '../../customer/components/Formatter';
 import Modal from '../../commons/components/Modal';
@@ -44,7 +44,21 @@ export default class Referral extends React.Component {
   }
 
   // _copyToClipboard = () => Clipboard.setString(this.state.referralCode)
-  _onShareCTAPressed = () => this.refs.modal.openModal()
+  // _onShareCTAPressed = () => this.refs.modal.openModal()
+  _onShareCTAPressed = () => {
+    Share.share({
+      message: this.state.shareableLink,
+      // url: 'http://bam.tech',
+      title: 'This is dummy title'
+    }, {
+      // Android only:
+      dialogTitle: 'Ajak temanmu',
+      // iOS only:
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter'
+      ]
+    });
+  }
   _goToReferralHistory = () => this.props.navigation.navigate('ReferralHistory')
 
   render() {
@@ -79,7 +93,10 @@ export default class Referral extends React.Component {
               Immediately regret falling into bathtub kitten is playing with dead mouse i like
             </Text>
           </View>
-          <TouchableWithoutFeedback onPress={this._onShareCTAPressed}>
+          <TouchableWithoutFeedback
+            onPress={this._onShareCTAPressed}
+            //disabled={!this.state.expDate}
+          >
             <View>
               <View style={styles.containerKode}>
                 <Text style={styles.kodeReferral}>
@@ -92,11 +109,19 @@ export default class Referral extends React.Component {
                   colors={['#00d3c5', '#35eac6']}
                   start={[0, 0]}
                   end={[1, 0]}
-                  style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 3, width: '100%',  }}>
+                  style={{
+                    height: 45,
+                    paddingTop: 11,
+                    alignItems: 'center',
+                    borderRadius: 3,
+                    width: '100%',
+                  }}
+                >
                   <Text style={{
                     backgroundColor: 'transparent',
                     fontSize: 18, color: '#ffffff',
                     fontFamily: 'Hind-SemiBold',
+                    //color: !this.state.expDate ? '#aaa' : 'white',
                   }}>
                     Share
                   </Text>
@@ -133,7 +158,8 @@ class ShareModal extends React.Component {
             <Button
               containerStyle={globalStyles.ctaButton3}
               style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
-              onPress={this.closeModal}>
+              onPress={this.closeModal}
+            >
               Tutup
             </Button>
           </View>
