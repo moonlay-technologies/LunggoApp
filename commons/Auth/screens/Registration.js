@@ -2,45 +2,43 @@
 
 import React from 'react';
 import { Icon } from 'react-native-elements'
-import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, TouchableOpacity,
-  Text, View, Image, TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
+  Platform, StyleSheet, TouchableOpacity, Text, View, Image,
+  TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
-import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
-import { KeyboardAwareScrollView }
-  from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, validatePassword, validateRequiredField }
   from '../../FormValidation';
+import globalStyles from '../../globalStyles';
+import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import registerForPushNotificationsAsync
   from '../../../api/NotificationController';
-import globalStyles from '../../globalStyles';
 import { fetchTravoramaLoginApi } from '../AuthController'
-import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
-import { LinearGradient } from 'expo';
+import { WideCTAButton } from '../../components/Buttons';
 
 export default class Registration extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { countryCallCode: '+62' }
+    this.state = {
+      countryCallCd: '+62',
+    }
   }
 
-
-
   _onRegisterPressed = () => {
-    let { name, password, email, countryCallCode, phone } = this.state;
+    let { name, email, countryCallCd, phone, password } = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     let errorPassword = validatePassword(password);
-    let errorCountryCallCode = validateRequiredField(countryCallCode);
+    let errorCountryCallCd = validateRequiredField(countryCallCd);
     let errorPhone = validateRequiredField(phone);
     if (!errorName && !errorEmail && !errorPassword &&
-      !errorCountryCallCode && !errorPhone) {
+      !errorCountryCallCd && !errorPhone) {
       this._register();
     }
     else this.setState({
       errorName, errorEmail, errorPassword,
-      errorCountryCallCode, errorPhone
+      errorCountryCallCd, errorPhone
     });
   }
 
@@ -107,9 +105,9 @@ export default class Registration extends React.Component {
   }
 
   render() {
-    let { name, email, phone, password, countryCallCode, showPassword,
-      isLoading, errorName, errorPassword, errorEmail, errorPhone,
-      errorCountryCallCode, error } = this.state;
+    let { name, email, phone, countryCallCd, errorName, errorEmail,
+      errorPhone, errorCountryCallCd, error, password, showPassword,
+      isLoading, errorPassword, } = this.state;
 
     let errorMessageName = errorName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
@@ -126,9 +124,9 @@ export default class Registration extends React.Component {
         <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
       </View> : null;
 
-    let errorMessageCountryCallCode = errorCountryCallCode ?
+    let errorMessageCountryCallCd = errorCountryCallCd ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorCountryCallCode}</Text>
+        <Text style={{ color: '#fc2b4e' }}>{errorCountryCallCd}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
@@ -150,8 +148,11 @@ export default class Registration extends React.Component {
           scrollEnabled={true}
         >*/}
           <View style={{ marginBottom: 25 }}>
-            <Text style={globalStyles.categoryTitle1}>Daftar Akun Baru</Text>
+            <Text style={globalStyles.categoryTitle1}>
+              Daftar Akun Baru
+            </Text>
           </View>
+
           <View style={{marginBottom:5}}>
             <Text style={styles.label}>Nama Lengkap</Text>
           </View>
@@ -188,7 +189,7 @@ export default class Registration extends React.Component {
                 email, errorEmail: null, error: null
               })}
               returnKeyType={"next"}
-              onSubmitEditing={() => this.refs.countryCallCode.focus()}
+              onSubmitEditing={() => this.refs.phone/*countryCallCd*/.focus()}
             />
           </View>
           {errorMessageEmail}
@@ -198,17 +199,17 @@ export default class Registration extends React.Component {
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
             {/*<View style={{ flex: 1.4 }}>
               <TextInput
-                style={this.state.errorCountryCallCode ?
+                style={this.state.errorCountryCallCd ?
                   styles.searchInputFalse : styles.searchInput
                 }
-                ref='countryCallCode'
+                ref='countryCallCd'
                 underlineColorAndroid='transparent'
                 placeholder='+ ....'
                 keyboardType='phone-pad'
-                value={countryCallCode}
+                value={countryCallCd}
                 selectTextOnFocus={true}
-                onChangeText={countryCallCode => this.setState({
-                  countryCallCode, errorCountryCallCode: null, error: null
+                onChangeText={countryCallCd => this.setState({
+                  countryCallCd, errorCountryCallCd: null, error: null
                 })}
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.refs.phone.focus()}
@@ -232,7 +233,7 @@ export default class Registration extends React.Component {
             </View>
           </View>
 
-          {errorMessageCountryCallCode}
+          {errorMessageCountryCallCd}
           {errorMessagePhone}
           <View style={{marginBottom:5}}>
             <Text style={styles.label}>Password</Text>
@@ -274,33 +275,14 @@ export default class Registration extends React.Component {
             </View>
           </View>
 
-
-          <TouchableOpacity
+          <WideCTAButton
             onPress={this._onRegisterPressed}
-            style={{ alignItems: 'center', width: '100%', marginTop: 20 }}
-            activeOpacity={0.6}
             disabled={isLoading}
-            styleDisabled={{ opacity: .7 }}
-          >
-            <LinearGradient
-              colors={['#00d3c5', '#35eac6', '#6affc6']}
-              start={[0, 0]}
-              end={[1, 0]}
-              style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
-              <Text style={{
-                backgroundColor: 'transparent',
-                fontSize: 18, color: '#ffffff',
-                fontFamily: 'Hind-SemiBold',
-              }}>
-                Daftarkan
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            text='Daftarkan'
+          />
 
           <TouchableOpacity
-            style={{
-              marginTop: 30, alignItems: 'center'
-            }}
+            style={{ marginTop: 30, alignItems: 'center' }}
             onPress={() =>
               this.props.navigation.replace('LoginScreen', this.props.navigation.state.params)
             }

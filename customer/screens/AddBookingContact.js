@@ -4,15 +4,15 @@ import React from 'react';
 import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 import {
-  StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
-  ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
+  Platform, StyleSheet, TouchableOpacity, Text, View, Image,
+  TextInput, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
+import { validateEmail, validatePassword, validateRequiredField }
+  from '../../commons/FormValidation';
+import globalStyles from '../../commons/globalStyles';
+import {phoneWithoutCountryCode_Indonesia} from '../components/Formatter';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {
-  validateEmail, validatePassword, validateRequiredField,
-} from '../../commons/FormValidation';
-import globalStyles from '../../commons/globalStyles';
 
 
 export default class AddBookingContact extends React.Component {
@@ -24,31 +24,21 @@ export default class AddBookingContact extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    headerStyle: {
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      zIndex: 100,
-      top: 0,
-      left: 0,
-      right: 0,
-    },
-  }
-
   _onSubmitForm = () => {
     let { name, email, countryCallCd, phone } = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     // let errorPassword = validatePassword(password);
-    let errorcountryCallCd = false //validateRequiredField(countryCallCd);
+    let errorCountryCallCd = validateRequiredField(countryCallCd);
     let errorPhone = validateRequiredField(phone);
     this.setState({
       errorName, errorEmail,
-      errorcountryCallCd, errorPhone
+      errorCountryCallCd, errorPhone
     });
     if (!errorName && !errorEmail &&
-      !errorcountryCallCd && !errorPhone) {
-      let { name, email, phone, countryCallCd } = this.state;
+      !errorCountryCallCd && !errorPhone) {
+      let { name, email, countryCallCd } = this.state;
+      let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);
       let contact = { name, email, phone, countryCallCd };
       this.props.navigation.state.params.setContact(contact);
       this.props.navigation.goBack();
@@ -58,7 +48,7 @@ export default class AddBookingContact extends React.Component {
 
   render() {
     let { name, email, phone, countryCallCd, errorName, errorEmail,
-      errorPhone, errorcountryCallCd, error } = this.state;
+      errorPhone, errorCountryCallCd, error } = this.state;
 
     let errorMessageName = errorName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
@@ -69,10 +59,15 @@ export default class AddBookingContact extends React.Component {
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
         <Text style={{ color: '#fc2b4e' }}>{errorEmail}</Text>
       </View> : null;
-
-    let errorMessagecountryCallCd = errorcountryCallCd ?
+/*
+    let errorMessagePassword = errorPassword ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorcountryCallCd}</Text>
+        <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
+      </View> : null;
+*/
+    let errorMessageCountryCallCd = errorCountryCallCd ?
+      <View style={{ alignItems: 'center', marginBottom: 10 }}>
+        <Text style={{ color: '#fc2b4e' }}>{errorCountryCallCd}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
@@ -93,10 +88,15 @@ export default class AddBookingContact extends React.Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={true}
         >*/}
-          <View style={{ marginBottom: 30 }}>
-            <Text style={{}}>Kontak yang dapat dihubungi</Text>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={globalStyles.categoryTitle1}>
+              Kontak
+            </Text>
           </View>
 
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>Nama Lengkap</Text>
+          </View>
           <View style={{ marginBottom: 15 }}>
             <TextInput
               style={this.state.errorName ?
@@ -113,6 +113,9 @@ export default class AddBookingContact extends React.Component {
             />
           </View>
           {errorMessageName}
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>Email</Text>
+          </View>
           <View style={{ marginBottom: 15 }}>
             <TextInput
               style={this.state.errorEmail ?
@@ -133,10 +136,13 @@ export default class AddBookingContact extends React.Component {
             />
           </View>
           {errorMessageEmail}
+          <View style={{marginBottom:5}}>
+            <Text style={styles.label}>No. Handphone</Text>
+          </View>
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
             {/*<View style={{ flex: 1.4 }}>
               <TextInput
-                style={this.state.errorcountryCallCd ?
+                style={this.state.errorCountryCallCd ?
                   styles.searchInputFalse : styles.searchInput
                 }
                 ref='countryCallCd'
@@ -146,7 +152,7 @@ export default class AddBookingContact extends React.Component {
                 value={countryCallCd}
                 selectTextOnFocus={true}
                 onChangeText={countryCallCd => this.setState({
-                  countryCallCd, errorcountryCallCd: null, error: null
+                  countryCallCd, errorCountryCallCd: null, error: null
                 })}
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.refs.phone.focus()}
@@ -171,7 +177,7 @@ export default class AddBookingContact extends React.Component {
             </View>
           </View>
 
-          {errorMessagecountryCallCd}
+          {errorMessageCountryCallCd}
           {errorMessagePhone}
           <Button
             containerStyle={{
@@ -200,7 +206,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    paddingTop: 90,
+    paddingTop: 10,
     backgroundColor: '#fff',
   },
   normaltext: {
@@ -219,6 +225,20 @@ const styles = StyleSheet.create({
     padding: 40,
     color: '#ffffff'
   },
+  label: {
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+      },
+    }),
+  },
   searchInput: {
     height: 45,
     paddingLeft: 15,
@@ -228,9 +248,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#e5e5e5',
     borderRadius: 25,
-    color: '#acacac',
+    color: '#565656',
     backgroundColor: '#f5f5f5',
     fontFamily: 'Hind',
   },
@@ -243,7 +263,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#fc2b4e',
+    borderColor: '#fdaab8',
     borderRadius: 25,
     color: '#acacac',
     backgroundColor: '#f5f5f5',
