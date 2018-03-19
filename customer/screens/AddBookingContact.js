@@ -134,7 +134,7 @@ export default class AddBookingContact extends React.Component {
           </View>
           {errorMessageEmail}
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
-            <View style={{ flex: 1.4 }}>
+            {/*<View style={{ flex: 1.4 }}>
               <TextInput
                 style={this.state.errorcountryCallCd ?
                   styles.searchInputFalse : styles.searchInput
@@ -151,7 +151,7 @@ export default class AddBookingContact extends React.Component {
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.refs.phone.focus()}
               />
-            </View>
+            </View>*/}
             <View style={{ flex: 4 }}>
               <TextInput
                 style={this.state.errorPhone ?

@@ -195,7 +195,7 @@ export default class Registration extends React.Component {
             <Text style={styles.label}>No. Handphone</Text>
           </View>
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
-            <View style={{ flex: 1.4 }}>
+            {/*<View style={{ flex: 1.4 }}>
               <TextInput
                 style={this.state.errorCountryCode ?
                   styles.searchInputFalse : styles.searchInput
@@ -212,7 +212,7 @@ export default class Registration extends React.Component {
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.refs.phone.focus()}
               />
-            </View>
+            </View>*/}
             <View style={{ flex: 4 }}>
               <TextInput
                 style={this.state.errorPhone ?
