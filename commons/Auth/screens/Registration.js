@@ -16,30 +16,31 @@ import registerForPushNotificationsAsync
   from '../../../api/NotificationController';
 import globalStyles from '../../globalStyles';
 import { fetchTravoramaLoginApi } from '../AuthController'
+import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import { LinearGradient } from 'expo';
 
 export default class Registration extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { countryCode: '+62' }
+    this.state = { countryCallCode: '+62' }
   }
 
 
 
   _onRegisterPressed = () => {
-    let { name, password, email, countryCode, phone } = this.state;
+    let { name, password, email, countryCallCode, phone } = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     let errorPassword = validatePassword(password);
-    let errorCountryCode = validateRequiredField(countryCode);
+    let errorCountryCallCode = validateRequiredField(countryCallCode);
     let errorPhone = validateRequiredField(phone);
     if (!errorName && !errorEmail && !errorPassword &&
-      !errorCountryCode && !errorPhone) {
+      !errorCountryCallCode && !errorPhone) {
       this._register();
     }
     else this.setState({
       errorName, errorEmail, errorPassword,
-      errorCountryCode, errorPhone
+      errorCountryCallCode, errorPhone
     });
   }
 
@@ -52,7 +53,7 @@ export default class Registration extends React.Component {
     let request = {
       path: '/v1/register',
       method: 'POST',
-      data: this.state,
+      data: {...this.state, phone: phoneWithoutCountryCode_Indonesia(this.state.phone) },
       requiredAuthLevel: AUTH_LEVEL.Guest,
     }
     fetchTravoramaApi(request).then(response => {
@@ -106,9 +107,9 @@ export default class Registration extends React.Component {
   }
 
   render() {
-    let { name, email, phone, password, countryCode, showPassword,
+    let { name, email, phone, password, countryCallCode, showPassword,
       isLoading, errorName, errorPassword, errorEmail, errorPhone,
-      errorCountryCode, error } = this.state;
+      errorCountryCallCode, error } = this.state;
 
     let errorMessageName = errorName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
@@ -125,9 +126,9 @@ export default class Registration extends React.Component {
         <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
       </View> : null;
 
-    let errorMessageCountryCode = errorCountryCode ?
+    let errorMessageCountryCallCode = errorCountryCallCode ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        <Text style={{ color: '#fc2b4e' }}>{errorCountryCode}</Text>
+        <Text style={{ color: '#fc2b4e' }}>{errorCountryCallCode}</Text>
       </View> : null;
 
     let errorMessagePhone = errorPhone ?
@@ -187,7 +188,7 @@ export default class Registration extends React.Component {
                 email, errorEmail: null, error: null
               })}
               returnKeyType={"next"}
-              onSubmitEditing={() => this.refs.countryCode.focus()}
+              onSubmitEditing={() => this.refs.countryCallCode.focus()}
             />
           </View>
           {errorMessageEmail}
@@ -197,17 +198,17 @@ export default class Registration extends React.Component {
           <View style={{ marginBottom: 15, flexDirection: 'row' }}>
             {/*<View style={{ flex: 1.4 }}>
               <TextInput
-                style={this.state.errorCountryCode ?
+                style={this.state.errorCountryCallCode ?
                   styles.searchInputFalse : styles.searchInput
                 }
-                ref='countryCode'
+                ref='countryCallCode'
                 underlineColorAndroid='transparent'
                 placeholder='+ ....'
                 keyboardType='phone-pad'
-                value={countryCode}
+                value={countryCallCode}
                 selectTextOnFocus={true}
-                onChangeText={countryCode => this.setState({
-                  countryCode, errorCountryCode: null, error: null
+                onChangeText={countryCallCode => this.setState({
+                  countryCallCode, errorCountryCallCode: null, error: null
                 })}
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.refs.phone.focus()}
@@ -231,7 +232,7 @@ export default class Registration extends React.Component {
             </View>
           </View>
 
-          {errorMessageCountryCode}
+          {errorMessageCountryCallCode}
           {errorMessagePhone}
           <View style={{marginBottom:5}}>
             <Text style={styles.label}>Password</Text>

@@ -40,7 +40,7 @@ export default class AddBookingContact extends React.Component {
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     // let errorPassword = validatePassword(password);
-    let errorcountryCallCd = validateRequiredField(countryCallCd);
+    let errorcountryCallCd = false //validateRequiredField(countryCallCd);
     let errorPhone = validateRequiredField(phone);
     this.setState({
       errorName, errorEmail,

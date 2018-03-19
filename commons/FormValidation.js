@@ -8,7 +8,7 @@ export function validateUserName (userNameString) {
   // return null;
 
   if (errorEmail==null || errorPhone==null) return null;
-  else return errorEmail;
+  else return errorPhone;
 
 }
 

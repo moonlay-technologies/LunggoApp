@@ -92,7 +92,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{/*+{profile.countryCallCd} */}{profile.phone}</Text>
+                <Text style={styles.optionProfile}>{/*+{profile.countryCallCd} */}0{profile.phone}</Text>
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
