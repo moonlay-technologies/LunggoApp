@@ -13,8 +13,8 @@ export async function fetchProfile() {
   let response = await fetchTravoramaApi(request);
   let { status } = response;
   if (status == 200) {
-    let { name, email, countryCallCd, phone } = response;
-    let profile = { name, email, countryCallCd, phone };
+    let { name, email, countryCallCd, phone, isPhoneVerified, isEmailVerified } = response;
+    let profile = { name, email, countryCallCd, phone, isPhoneVerified, isEmailVerified };
     await setItemAsync('profile', JSON.stringify(profile));
     return profile;
   }

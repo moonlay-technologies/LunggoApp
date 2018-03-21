@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
-import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile, getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
@@ -29,7 +29,7 @@ export default class AccountScreen extends React.Component {
   componentDidMount() {
     this.props.navigation.addListener('willFocus', getProfile);
 
-    checkUserLoggedIn().then( async isLoggedIn => {
+    checkUserLoggedIn().then(async isLoggedIn => {
       let profile = isLoggedIn ? await getProfile() : {};
       this.setState({ profile, isLoggedIn });
     });
@@ -37,10 +37,24 @@ export default class AccountScreen extends React.Component {
 
   _openModal = () => this.refs.modal.openModal()
   _goToReferral = () => this.props.navigation.navigate('Referral')
+  _onOtpPhoneVerified = ({ countryCallCd, phone, otp }) => {
+    let request = {
+      path: '/v1/account/verifyphone',
+      method: 'POST',
+      data: { countryCallCd, phone, otp },
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then(response => {
+      if (response.status = 200) {
+        backToMain();
+      }
+    })
+  }
 
   render() {
     let { navigate } = this.props.navigation;
     let { profile } = this.state;
+    let { phone, countryCallCd, isPhoneVerified } = profile;
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
 
@@ -93,6 +107,13 @@ export default class AccountScreen extends React.Component {
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 2 }}>
                 <Text style={styles.optionProfile}>{/*+{profile.countryCallCd} */}0{profile.phone}</Text>
+                {isPhoneVerified ||
+                  <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })}>
+                    <Text>
+                      Verifikasi
+                    </Text>
+                  </TouchableOpacity>
+                }
               </View>
               <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
                 {/* <Icon
@@ -224,7 +245,7 @@ export default class AccountScreen extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
-            
+
           </View>
         }
 
