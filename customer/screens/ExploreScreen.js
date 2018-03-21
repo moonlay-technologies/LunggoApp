@@ -366,7 +366,7 @@ export default class ExploreScreen extends React.Component {
   }
 }
 
-const THUMBNAIL_WS = 15;
+const THUMBNAIL_WS = 10;
 const styles = StyleSheet.create({
   /*  slides:{
       backgroundColor:'red',

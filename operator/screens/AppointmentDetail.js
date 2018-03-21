@@ -22,17 +22,18 @@ export default class AppointmentDetail extends React.Component {
     let { details } = this.props.navigation.state.params;
     // let {paxGroups} = details;
     return (
-      <ScrollView style={{backgroundColor: '#fff',}}>
-        <View style={{flex:1,}}>
+      <ScrollView style={{flex:1,backgroundColor: '#f1f0f0',}}>
+        <View style={{flex:1,backgroundColor: '#f1f0f0',}}>
 
-          <View style={styles.containerListAppointment}>
-            <View style={{flex:1}}>
+          <View style={styles.containerListAppointmentHeader}>
+            <Text style={styles.activityTitle}>
+            {details.name}
+            </Text>
 
-              <Text style={styles.activityTitle}>
-                {details.name}
-              </Text>
-              <View style={{width:'100%',flexDirection:'row', marginTop:3}}>
-                <View style={{ marginRight:10 }}>
+            <View style={{flexDirection:'row'}}>
+
+              <View style={{alignItems:'center'}}>
+                <View>
                   <Text style={styles.activityDesc}>
                     {Moment(details.date).format('ddd, D MMM YYYY')}
                   </Text>
@@ -44,53 +45,55 @@ export default class AppointmentDetail extends React.Component {
                 </View>
               </View>
 
-              <View style={{flexDirection:'row', marginTop:5}}>
-                <View style={{alignItems:'flex-start',}}>
+              <View style={{flexDirection:'row'}}>
+                {/*<View style={{alignItems:'flex-start',}}>
                   <Icon
                     name='ios-people'
                     type='ionicon'
                     color='#454545'
                     size={22}
                   />
-                </View>
+                </View>*/}
                 <View style={{marginLeft:8}}>
                   <Text style={styles.activityDesc}>
                     Total {details.totalPax} orang peserta
                   </Text>
                 </View>
               </View>
+            </View>
 
+          </View>
 
-
-              { details.reservations.map( rsv =>
-                <TouchableHighlight
-                  key={rsv.rsvNo}
-                  onPress={this._onPress}
-                  underlayColor='#ddd'
-                >
-                  <View style={{flexDirection:'row', marginTop:20,}}>
+          <View style={styles.containerListAppointment}>
+            { details.reservations.map( rsv =>
+              <TouchableHighlight
+                key={rsv.rsvNo}
+                onPress={this._onPress}
+                underlayColor='#ddd'
+              >
+                <View style={{flexDirection: 'row',}}>
+                  <View style={{flex:1}}>
                     <View>
-                      <View>
-                        <Text style={styles.activityTitle}>{rsv.contact.name}</Text>
-                        <Text style={styles.activityDesc}>{Formatter.paxCount(rsv.paxCount)}</Text>
-                      </View>
-                      <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
-                      <Text style={styles.activityDesc}>{rsv.contact.email}</Text>
+                      <Text style={styles.activityTitle}>{rsv.contact.name}</Text>
+                      <Text style={styles.activityDesc}>{Formatter.paxCount(rsv.paxCount)}</Text>
                     </View>
-
-                    <View style={{flex:1, justifyContent:'center'}}>
-                      <View style={{marginTop:10, alignItems:'flex-end', }}>
-                        <Icon
-                          name='chevron-thin-right'
-                          type='entypo'
-                          size={20}
-                          color='#707070'
-                        />
-                      </View>
+                    <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
+                    <Text style={styles.activityDesc}>{rsv.contact.email}</Text>
+                  </View>
+                  <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                    <View style={{marginTop:10,}}>
+                      <Icon
+                        name='chevron-thin-right'
+                        type='entypo'
+                        size={20}
+                        color='#707070'
+                      />
                     </View>
                   </View>
-                </TouchableHighlight> 
-              ) }
+                </View>
+              </TouchableHighlight> 
+            )}
+          </View>
 
 
 {/*paxGroups.map(pg =>
@@ -149,12 +152,7 @@ export default class AppointmentDetail extends React.Component {
                 </View>
               </View>*/}
 
-            </View>
-          </View>
-
-          <View style={styles.divider}></View>
-
-          <View style={styles.containerListAppointment}>
+          <View style={styles.containerListAppointmentVerifikasi}>
             <View style={{flex:1}}>
               
               <View>
@@ -218,10 +216,24 @@ export default class AppointmentDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  containerListAppointmentHeader: {
+    padding:15,
+    flex:1,
+    backgroundColor:'#fff',
+    marginBottom:20,
+    alignItems:'center'
+  },
   containerListAppointment: {
     padding:15,
+    flex:1,
+    backgroundColor:'#fff'
+  },
+  containerListAppointmentVerifikasi: {
+    padding:15,
     flexDirection: 'row',
-    flex:1
+    flex:1,
+    backgroundColor:'#fff',
+    marginTop:30,
   },
   txtInput: {
     height: 35,
@@ -238,13 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     fontFamily: 'Hind',
   },
-  divider: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#efefef',
-    marginTop: 15,
-    marginBottom: 15,
-  },
+
   status: {
     color:'green',
     fontSize:12,

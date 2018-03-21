@@ -35,19 +35,35 @@ class ActivityListItem extends React.PureComponent {
   };
 
   _voucherButton = item => {
-    if (item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')
+    if (true)/*(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')*/
       return (
-        <Button
-          containerStyle={styles.labelWarning}
-          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
-          onPress={() =>
-            item.hasPdfVoucher
-              ? this._viewPdfVoucher(item)
-              : this._goToBookedPageDetail()
-          }
-        >
-          Lihat Voucher
-        </Button>
+        <View style={{flexDirection:'row'}}>
+          <View style={{ flex: 1 }}>
+            <Button
+              containerStyle={styles.labelOff}
+              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              onPress={() =>
+                item.hasPdfVoucher
+                  ? this._viewPdfVoucher(item)
+                  : this._goToBookedPageDetail()
+              }
+            >
+              Voucher Diproses
+            </Button>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              containerStyle={styles.labelWarning}
+              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              onPress={
+                () => item.requestRating ?
+                  this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
+                  this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
+            >
+              {item.requestRating ? 'Beri Rating' : 'Beri Review'}
+            </Button>
+          </View>
+        </View>
       );
     else
       return <Text style={styles.labelText}>Memproses tiket</Text>;
@@ -57,9 +73,9 @@ class ActivityListItem extends React.PureComponent {
     let { item } = this.props;
     return (
       <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View style={{ flexDirection: 'row', }}>
-          <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
-          <View style={{ flex: 1.8 }}>
+        <View>
+          {/*<View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>*/}
+          <View style={{ flex: 1 }}>
             <Text style={styles.activityTitle}>
               {item.name}
             </Text>
@@ -71,10 +87,11 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>
               {Formatter.paxCount(item.paxCount)}
             </Text>
+            {/*<Text style={styles.labelText}>Memproses tiket</Text>*/}
             {this._voucherButton(item)}
           </View>
         </View>
-
+{/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
             <View style={{ flex: 1 }}>
@@ -91,6 +108,7 @@ class ActivityListItem extends React.PureComponent {
             </View>
           </View>
         )}
+        */}
         <View style={styles.separator} />
       </TouchableOpacity>
     )
@@ -135,9 +153,9 @@ class CartListItem extends React.PureComponent {
 
   _labelPaymentStatus = status => {
     if (status == 'SETTLED')
-      return <View style={styles.labelOk}><Text style={styles.labelTextLunas}>Lunas</Text></View>;
+      return <View><Text style={styles.labelTextLunas}>Lihat Invoice</Text></View>;
     else
-      return <View> style={styles.labelDanger}><Text style={styles.labelTextBelumLunas}>Belum Lunas</Text></View>;
+      return <View><Text style={styles.labelTextBelumLunas}>Belum Lunas</Text></View>;
   }
 
   render() {
@@ -164,7 +182,7 @@ class CartListItem extends React.PureComponent {
           </View>
         </View>
 
-        <View style={styles.invoice}>
+        {/*<View style={styles.invoice}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Button
@@ -182,7 +200,7 @@ class CartListItem extends React.PureComponent {
               </Button>
             </View>
           </View>
-        </View>
+        </View>*/}
 
 
       </View>
@@ -265,7 +283,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 0,
-    backgroundColor: '#f7f8fb',
+    backgroundColor: '#f1f0f0',
   },
   cartbox: {
     backgroundColor: '#fff',
@@ -342,10 +360,10 @@ const styles = StyleSheet.create({
     width: 90,
   },
   separator: {
-    backgroundColor: '#ececec',
+    backgroundColor: '#bfbfbf',
     height: 0.3,
     width: '100%',
-    marginVertical: 20
+    marginVertical: 25
   },
   total: {
     paddingBottom: 15,
@@ -381,28 +399,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#23d3c3',
   },
   labelWarning: {
-    backgroundColor: '#ff5f5f',
-    padding: 5,
+    backgroundColor: '#00d3c5',
+    paddingVertical: 10,
     borderRadius: 3,
-    marginTop: 5,
+    marginTop: 13,
     alignItems: 'center',
+    marginRight:10,
+  },
+  labelOff: {
+    backgroundColor: '#8f8f8f',
+    paddingVertical: 10,
+    borderRadius: 3,
+    marginTop: 13,
+    alignItems: 'center',
+    marginRight:10,
+    opacity:0.7
   },
   labelText: {
     color: '#18b0a2',
     fontSize: 13,
     textAlign: 'left',
-    fontWeight: 'bold'
   },
   labelTextLunas: {
-    color: '#5ba1ff',
+    color: '#00d3c5',
     fontSize: 14,
     textAlign: 'right',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'Hind',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
         paddingTop: 10,
-        marginBottom: -10
+        marginBottom:0,
       },
       android: {
         //lineHeight:24
