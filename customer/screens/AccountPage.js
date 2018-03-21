@@ -36,19 +36,19 @@ export default class AccountScreen extends React.Component {
   }
 
   _openModal = () => this.refs.modal.openModal()
+
   _goToReferral = () => this.props.navigation.navigate('Referral')
-  _onOtpPhoneVerified = ({ countryCallCd, phone, otp }) => {
+
+  _onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation}) => {
     let request = {
       path: '/v1/account/verifyphone',
       method: 'POST',
       data: { countryCallCd, phoneNumber: phone, otp },
       requiredAuthLevel: AUTH_LEVEL.User,
     }
-    fetchTravoramaApi(request).then(response => {
-      if (response.status = 200) {
-        backToMain(this.props.navigation);
-      }
-    })
+    fetchTravoramaApi(request).then( ({status}) => {
+      if (status = 200) backToMain(navigation);
+    });
   }
 
   render() {

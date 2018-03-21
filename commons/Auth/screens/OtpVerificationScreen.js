@@ -11,14 +11,15 @@
 'use strict';
 
 import React from 'react';
-import { Icon } from 'react-native-elements'
 import Button from 'react-native-button';
 import {
-  StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
+  StyleSheet, Text, View, TextInput, ScrollView, Keyboard,
+  KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback,
 } from 'react-native';
 import { sendOtp, verifyOtp } from '../ResetPasswordController';
-import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import LoadingAnimation from '../../../customer/components/LoadingAnimation';
+
+const itv = null;
 
 export default class OtpVerificationScreen extends React.Component {
   constructor(props, context) {
@@ -28,25 +29,38 @@ export default class OtpVerificationScreen extends React.Component {
       isLoading: false,
       cooldown: props.navigation.state.params.resendCooldown,
       showCooldown: false,
+      cooldownExpireAt: null,
     }
   }
 
-  _startResendCooldown = () => {
-    var itv = setInterval(() => {
-      let { cooldown = this.props.navigation.state.params.resendCooldown } = this.state;
-      cooldown--;
-      if (cooldown > 0) this.setState({ cooldown });
-      else { //// If the cooldown is finished, clear interval
-        clearInterval(itv);
-        this.setState({ cooldown: null, showCooldown: false });
-      }
-    }, 1000);
+  componentDidMount() {
+    if (!this.state.cooldown) { //// kalo dipanggil dari 'verify phone number'
+      let { countryCallCd, phone } = this.props.navigation.state.params;
+      sendOtp(countryCallCd, phone);
+    }
+    this._startResendCooldown();
   }
 
-  componentDidMount() {
-    let { countryCallCd, phone } = this.props.navigation.state.params;
-    this._startResendCooldown();
-    sendOtp(countryCallCd, phone);
+  _startResendCooldown = () => {
+    let { cooldown } = this.state;
+    if (!cooldown) cooldown = 120;
+    let now = new Date();
+    this.setState({
+      cooldown,
+      cooldownExpireAt: now.setSeconds(now.getSeconds() + cooldown),
+    });
+    itv = setInterval( this._countingDown, 1000);
+  }
+
+  _countingDown = () => {
+    let { cooldownExpireAt } = this.state;
+    let cooldown = cooldownExpireAt - new Date();
+    if (cooldown < 0) cooldown = 0;
+    this.setState( {cooldown} );
+    if (!cooldown) { //// If the cooldown is finished, clear interval
+      clearInterval(itv);
+      this.setState({ showCooldown: false, cooldownExpireAt: null });
+    }
   }
 
   _resendOtp = () => {
@@ -54,22 +68,22 @@ export default class OtpVerificationScreen extends React.Component {
     else {
       let { countryCallCd, phone } = this.props.navigation.state.params;
       sendOtp(countryCallCd, phone);
-      this.setState({ cooldown: 120 }); //// 2 minutes
       this._startResendCooldown();
     }
   }
 
   _verifyOtp = () => {
+    let { navigation } = this.props;
+    let { countryCallCd, phone, email, onVerified } = navigation.state.params;
     let otp = this.state.inputs.join('');
-    let { countryCallCd, phone, email } = this.props.navigation.state.params;
     this.setState({ isLoading: true });
     verifyOtp(countryCallCd, phone, otp).then(response => {
-      if (response.status === 200)
-        this.props.navigation.state.params.onVerified({ countryCallCd, phone, email, otp })
-      else
-        console.log(response.error);
-      this.setState({ isLoading: false, errorMessage: response.message });
-    });
+      if (response.status === 200) {
+        clearInterval(itv);
+        onVerified({ countryCallCd, phone, email, otp, navigation });
+      } else
+        this.setState({ isLoading: false, errorMessage: response.message });
+    }).catch( err => console.error(err) );
   }
 
   _onChangeText = (inputText, index) => {
@@ -104,7 +118,7 @@ export default class OtpVerificationScreen extends React.Component {
     let { inputs, isLoading, errorMessage, cooldown, showCooldown } = this.state;
     let loadingIndicator = isLoading ? <LoadingAnimation /> : null;
     return (
-      <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={styles.container}>
         <KeyboardAvoidingView behavior="position">
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
@@ -219,7 +233,7 @@ export default class OtpVerificationScreen extends React.Component {
             </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

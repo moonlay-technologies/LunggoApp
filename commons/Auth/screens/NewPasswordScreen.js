@@ -5,8 +5,8 @@ import Colors from '../../../constants/Colors';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import {
-  StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, TouchableOpacity, ActivityIndicator,
+  StyleSheet, Text, View, Image, TextInput, ScrollView, Keyboard,
+  KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback,
 } from 'react-native';
 import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
@@ -50,64 +50,66 @@ export default class NewPasswordScreen extends React.Component {
   render() {
     let { password, showPassword, isLoading, errorMessage } = this.state;
     return (
-      <KeyboardAvoidingView behavior="position" style={styles.container}>
-        <View style={{ marginBottom: 15 }}>
-          <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
-        </View>
-        <View style={{ marginBottom: 25 }}>
-          <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
-        </View>
-        {errorMessage ?
-          <View style={{ alignItems: 'center', marginBottom: 10 }}>
-            <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
-          </View> : null
-        }
-        <View>
-          <TextInput
-            style={styles.searchInput}
-            underlineColorAndroid='transparent'
-            placeholder='New Password'
-            secureTextEntry={!showPassword}
-            autoCapitalize='none'
-            autoCorrect={false}
-            blurOnSubmit={true}
-            onChangeText={password => this.setState({
-              password, errorMessage: null,
-            })}
-            returnKeyType='done'
-            onSubmitEditing={this._submit}
-            ref='password'
-            selectTextOnFocus={true}
-            autoFocus={true}
-          />
-          <View style={{ position: 'absolute', right: 20, top: 11, }}>
-            <TouchableOpacity onPress={this._toggleShowPassword}>
-              <Icon
-                name={showPassword ? 'eye' : 'eye-with-line'}
-                type='entypo' size={22} color='#acacac'
-              />
-            </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView behavior="position" style={styles.container}>
+          <View style={{ marginBottom: 15 }}>
+            <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
           </View>
-        </View>
-        <Button
-          containerStyle={{
-            marginTop: 40,
-            height: 45,
-            paddingTop: 13,
-            paddingBottom: 10,
-            overflow: 'hidden',
-            borderRadius: 25,
-            backgroundColor: Colors.primaryColor,
-          }}
-          style={{ fontSize: 16, color: '#fff' }}
-          onPress={this._submit}
-          disabled={isLoading}
-          styleDisabled={{ color: '#aaa' }}
-        >
-          Ubah Password
-        </Button>
-        {isLoading ? <LoadingAnimation /> : null}
-      </KeyboardAvoidingView>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
+          </View>
+          {errorMessage ?
+            <View style={{ alignItems: 'center', marginBottom: 10 }}>
+              <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
+            </View> : null
+          }
+          <View>
+            <TextInput
+              style={styles.searchInput}
+              underlineColorAndroid='transparent'
+              placeholder='New Password'
+              secureTextEntry={!showPassword}
+              autoCapitalize='none'
+              autoCorrect={false}
+              blurOnSubmit={true}
+              onChangeText={password => this.setState({
+                password, errorMessage: null,
+              })}
+              returnKeyType='done'
+              onSubmitEditing={this._submit}
+              ref='password'
+              selectTextOnFocus={true}
+              autoFocus={true}
+            />
+            <View style={{ position: 'absolute', right: 20, top: 11, }}>
+              <TouchableOpacity onPress={this._toggleShowPassword}>
+                <Icon
+                  name={showPassword ? 'eye' : 'eye-with-line'}
+                  type='entypo' size={22} color='#acacac'
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Button
+            containerStyle={{
+              marginTop: 40,
+              height: 45,
+              paddingTop: 13,
+              paddingBottom: 10,
+              overflow: 'hidden',
+              borderRadius: 25,
+              backgroundColor: Colors.primaryColor,
+            }}
+            style={{ fontSize: 16, color: '#fff' }}
+            onPress={this._submit}
+            disabled={isLoading}
+            styleDisabled={{ color: '#aaa' }}
+          >
+            Ubah Password
+          </Button>
+          {isLoading && <LoadingAnimation />}
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
