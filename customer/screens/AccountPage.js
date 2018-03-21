@@ -95,7 +95,6 @@ export default class AccountScreen extends React.Component {
                   </View>
                   <Text style={styles.textCartColor}>100 point</Text>
                 </View>
-<<<<<<< HEAD
               </View>*/}
             </View>
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
@@ -137,8 +136,6 @@ export default class AccountScreen extends React.Component {
             {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
               <View style={{ justifyContent: 'center', flex: 1 }}>
                 <Text style={styles.optionProfile}>{this.state.name}</Text>
-=======
->>>>>>> test-ready
               </View>
             </View>*/}
             <View style={{flexDirection:'row'}}>
