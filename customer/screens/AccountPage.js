@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
-import { checkUserLoggedIn } from '../../api/Common'; //'../../commons/Auth/AuthController';
+import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile, getProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
@@ -29,7 +29,7 @@ export default class AccountScreen extends React.Component {
   componentDidMount() {
     this.props.navigation.addListener('willFocus', getProfile);
 
-    checkUserLoggedIn().then( async isLoggedIn => {
+    checkUserLoggedIn().then(async isLoggedIn => {
       let profile = isLoggedIn ? await getProfile() : {};
       this.setState({ profile, isLoggedIn });
     });
@@ -37,10 +37,24 @@ export default class AccountScreen extends React.Component {
 
   _openModal = () => this.refs.modal.openModal()
   _goToReferral = () => this.props.navigation.navigate('Referral')
+  _onOtpPhoneVerified = ({ countryCallCd, phone, otp }) => {
+    let request = {
+      path: '/v1/account/verifyphone',
+      method: 'POST',
+      data: { countryCallCd, phone, otp },
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then(response => {
+      if (response.status = 200) {
+        backToMain();
+      }
+    })
+  }
 
   render() {
     let { navigate } = this.props.navigation;
     let { profile } = this.state;
+    let { phone, countryCallCd, isPhoneVerified } = profile;
     return (
       <ScrollView style={{ backgroundColor: '#f1f0f0',}}>
 
@@ -50,7 +64,7 @@ export default class AccountScreen extends React.Component {
         <View>
           <View style={styles.container}>
 
-            <TouchableOpacity style={styles.stickyHeader}>
+            <TouchableOpacity style={styles.stickyHeader} onPress={() => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })}>
               <View style={{flexDirection:'row'}}>
                 <View>
                   <Icon
