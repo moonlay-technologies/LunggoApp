@@ -5,7 +5,7 @@ export async function sendOtp(countryCallCd, phoneNumber) {
   const version = 'v1';
   let request = {
     method: 'POST',
-    path: `/${version}/account/forgotpassword`,
+    path: `/${version}/account/requestotp`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
     data: { countryCallCd, phoneNumber },
   };
@@ -26,7 +26,7 @@ export async function sendOtp(countryCallCd, phoneNumber) {
         }
       }
     } else {
-      console.error('ForgotPasswordAPI: no response returned!');
+      console.error('RequestOtpAPI: no response returned!');
     }
     return response;
   } catch (error) {
@@ -42,8 +42,10 @@ export async function verifyOtp(countryCallCd, phoneNumber, otp) {
     requiredAuthLevel: AUTH_LEVEL.Guest,
     data: { countryCallCd, phoneNumber, otp },
   };
+  console.log(request);
   try {
     let response = await fetchTravoramaApi(request);
+    console.log(response);
     if (response) {
       if (response.status != 200) {
         switch (response.error) {

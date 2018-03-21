@@ -30,11 +30,7 @@ export default class OtpVerificationScreen extends React.Component {
       showCooldown: false,
     }
     if (!this.props.navigation.state.params.countryCallCd)
-      this.props.navigation.state.params.countryCallCd = 0;
-  }
-
-  static navigationOptions = {
-    header: null,
+      this.props.navigation.state.params.countryCallCd = 62;
   }
 
   _startResendCooldown = () => {
@@ -50,15 +46,17 @@ export default class OtpVerificationScreen extends React.Component {
   }
 
   componentDidMount() {
+    let { countryCallCd, phone } = this.props.navigation.state.params;
     this._startResendCooldown();
+    sendOtp(countryCallCd, phone);
   }
 
   _resendOtp = () => {
     if (this.state.cooldown) this.setState({ showCooldown: true });
     else {
-      let {countryCallCd, phone} = this.props.navigation.state.params;
-      sendOtp( countryCallCd, phone );
-      this.setState( {cooldown:120} ); //// 2 minutes
+      let { countryCallCd, phone } = this.props.navigation.state.params;
+      sendOtp(countryCallCd, phone);
+      this.setState({ cooldown: 120 }); //// 2 minutes
       this._startResendCooldown();
     }
   }
