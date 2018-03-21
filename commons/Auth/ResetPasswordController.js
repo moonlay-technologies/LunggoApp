@@ -5,7 +5,7 @@ export async function sendOtp(countryCallCd, phoneNumber) {
   const version = 'v1';
   let request = {
     method: 'POST',
-    path: `/${version}/account/forgotpassword`,
+    path: `/${version}/account/requestotp`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
     data: { countryCallCd, phoneNumber },
   };
@@ -26,7 +26,7 @@ export async function sendOtp(countryCallCd, phoneNumber) {
         }
       }
     } else {
-      console.error('ForgotPasswordAPI: no response returned!');
+      console.error('requestOtpAPI: no response returned!');
     }
     return response;
   } catch (error) {

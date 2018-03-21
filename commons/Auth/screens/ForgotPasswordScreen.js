@@ -33,7 +33,7 @@ export default class ForgotPasswordScreen extends React.Component {
   _submit = () => {
 
     //// TODO: pake dropdown countryCallCd
-    let countryCallCd = '62'
+    let countryCallCd = '62';
 
     
     let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);

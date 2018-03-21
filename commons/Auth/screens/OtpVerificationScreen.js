@@ -30,16 +30,12 @@ export default class OtpVerificationScreen extends React.Component {
       showCooldown: false,
     }
     if (!this.props.navigation.state.params.countryCallCd)
-      this.props.navigation.state.params.countryCallCd = 0;
-  }
-
-  static navigationOptions = {
-    header: null,
+      this.props.navigation.state.params.countryCallCd = '62';
   }
 
   _startResendCooldown = () => {
     var itv = setInterval(() => {
-      let { cooldown } = this.state;
+      let { cooldown = this.props.navigation.state.params.resendCooldown } = this.state;
       cooldown--;
       if (cooldown > 0) this.setState({ cooldown });
       else { //// If the cooldown is finished, clear interval
