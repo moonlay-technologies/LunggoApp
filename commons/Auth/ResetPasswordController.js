@@ -1,5 +1,5 @@
 'use strict';
-import {fetchTravoramaApi, AUTH_LEVEL} from '../../api/Common';
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 
 export async function sendOtp(phoneNumber) {
   const version = 'v1';
@@ -11,8 +11,8 @@ export async function sendOtp(phoneNumber) {
   };
   try {
     let response = await fetchTravoramaApi(request);
-    if(response) {
-      if (response.status!=200) {
+    if (response) {
+      if (response.status != 200) {
         switch (response.error) {
           case 'ERR_INVALID_FORMAT_PHONENUMBER':
             response.message = 'Format nomor telepon salah!'; break;
@@ -29,7 +29,7 @@ export async function sendOtp(phoneNumber) {
       console.error('ForgotPasswordAPI: no response returned!');
     }
     return response;
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 }
@@ -44,13 +44,13 @@ export async function verifyOtp(phoneNumber, otp) {
   };
   try {
     let response = await fetchTravoramaApi(request);
-    if(response) {
-      if (response.status!=200) {
+    if (response) {
+      if (response.status != 200) {
         switch (response.error) {
           case 'ERR_INVALID_FORMAT_PHONENUMBER':
             response.message = 'Format nomor telepon salah!'; break;
           case 'ERR_PHONENUMBER_NOT_REGISTERED':
-            response.message =  'Nomor tidak terdaftar!'; break;
+            response.message = 'Nomor tidak terdaftar!'; break;
           case 'ERR_INVALID_REQUEST':
             response.message = 'Mohon masukkan kode verifikasi!'; break;
           case 'ERR_OTP_NOT_VALID':
@@ -66,7 +66,7 @@ export async function verifyOtp(phoneNumber, otp) {
       console.error('verifyOtpAPI: no response returned!');
     }
     return response;
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 }
@@ -81,13 +81,13 @@ export async function resetPassword(phoneNumber, otp, newPassword) {
   };
   try {
     let response = await fetchTravoramaApi(request);
-    if(response) {
-      if (response.status!=200) {
+    if (response) {
+      if (response.status != 200) {
         switch (response.error) {
           case 'ERR_INVALID_FORMAT_PHONENUMBER':
             response.message = 'Format nomor telepon salah!'; break;
           case 'ERR_PHONENUMBER_NOT_REGISTERED':
-            response.message =  'Nomor tidak terdaftar!'; break;
+            response.message = 'Nomor tidak terdaftar!'; break;
           case 'ERR_INVALID_REQUEST':
             response.message = 'Mohon masukkan password baru!'; break;
           case 'ERR_OTP_NOT_VALID':
@@ -101,7 +101,7 @@ export async function resetPassword(phoneNumber, otp, newPassword) {
       console.error('resetPasswordAPI: no response returned!');
     }
     return response;
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 }
