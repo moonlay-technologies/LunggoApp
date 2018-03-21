@@ -29,14 +29,14 @@ export default class NewPasswordScreen extends React.Component {
 
   _submit = () => {
     let { password } = this.state;
-    let { phone, otp } = this.props.navigation.state.params;
+    let { countryCallCd, phone, otp } = this.props.navigation.state.params;
     let errorPassword = validatePassword(password);
     if (errorPassword) {
       this.refs.password.focus();
       return this.setState({ errorPassword });
     }
     this.setState({ isLoading: true });
-    resetPassword(phone, otp, password).then(response => {
+    resetPassword(countryCallCd, phone, otp, password).then(response => {
       let { status, message } = response;
       if (status == 200) backToMain(this.props.navigation);
       this.setState({ isLoading: false, errorMessage: message });

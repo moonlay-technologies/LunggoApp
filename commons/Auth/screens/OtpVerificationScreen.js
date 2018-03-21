@@ -53,7 +53,8 @@ export default class OtpVerificationScreen extends React.Component {
   _resendOtp = () => {
     if (this.state.cooldown) this.setState({showCooldown:true});
     else {
-      sendOtp( this.props.navigation.state.params.phone );
+      let {countryCallCd, phone} = this.props.navigation.state.params;
+      sendOtp( countryCallCd, phone );
       this.setState({cooldown:120}); //// 2 minutes
       this._startResendCooldown();
     }
@@ -63,9 +64,9 @@ export default class OtpVerificationScreen extends React.Component {
     let otp = this.state.inputs.join('');
     console.log('otp');
     console.log(otp);
-    let {phone} = this.props.navigation.state.params;
+    let {countryCallCd, phone} = this.props.navigation.state.params;
     this.setState({isLoading: true});
-    verifyOtp(phone, otp).then( response => {
+    verifyOtp(countryCallCd, phone, otp).then( response => {
       if (response.status===200) {
         //go to new password inputScreen
         this.props.navigation.replace('NewPassword',{phone,otp});

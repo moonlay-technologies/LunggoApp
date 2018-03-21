@@ -8,7 +8,8 @@ import { StyleSheet, Text, View, Image, TextInput, ScrollView,
   KeyboardAvoidingView, ActivityIndicator,Keyboard,TouchableWithoutFeedback } from 'react-native';
 import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
-import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import LoadingAnimation from '../../../customer/components/LoadingAnimation';
+import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 
 export default class ForgotPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -24,19 +25,25 @@ export default class ForgotPasswordScreen extends React.Component {
   }
 
   _submit = () => {
-    let {phone} = this.state;
+
+    //// TODO: pake dropdown countryCallCd
+    let countryCallCd = '62'
+
+    
+    let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);
     let errorMessage = validatePhone(phone);
     if (errorMessage) {
       // this.refs.phone.focus(); //// keknya ga gitu guna
       return this.setState({errorMessage});
     }
     this.setState({isLoading: true});
-    sendOtp(phone).then( response => {
+    sendOtp(countryCallCd, phone).then( response => {
       if (response.status==200 ||
         response.error=='ERR_TOO_MANY_SEND_SMS_IN_A_TIME')
       {
-          this.props.navigation.replace('OtpVerification',
-            {phone, resendCooldown: response.resendCooldown });
+          this.props.navigation.replace('OtpVerification', {
+            countryCallCd, phone, resendCooldown: response.resendCooldown
+          });
       }
       else console.log(response.error);
       this.setState({isLoading: false, errorMessage:response.message});
