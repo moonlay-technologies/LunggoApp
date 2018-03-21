@@ -41,12 +41,12 @@ export default class AccountScreen extends React.Component {
     let request = {
       path: '/v1/account/verifyphone',
       method: 'POST',
-      data: { countryCallCd, phone, otp },
+      data: { countryCallCd, phoneNumber: phone, otp },
       requiredAuthLevel: AUTH_LEVEL.User,
     }
     fetchTravoramaApi(request).then(response => {
       if (response.status = 200) {
-        backToMain();
+        backToMain(this.props.navigation);
       }
     })
   }

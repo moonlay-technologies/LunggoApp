@@ -42,8 +42,10 @@ export async function verifyOtp(countryCallCd, phoneNumber, otp) {
     requiredAuthLevel: AUTH_LEVEL.Guest,
     data: { countryCallCd, phoneNumber, otp },
   };
+  console.log(request);
   try {
     let response = await fetchTravoramaApi(request);
+    console.log(response);
     if (response) {
       if (response.status != 200) {
         switch (response.error) {
