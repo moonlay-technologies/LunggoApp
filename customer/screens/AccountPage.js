@@ -38,8 +38,12 @@ export default class AccountScreen extends React.Component {
   _openModal = () => this.refs.modal.openModal()
 
   _goToReferral = () => this.props.navigation.navigate('Referral')
-  _goToPhoneVerification = () => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })
   _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile })
+  _goToPhoneVerification = () => this.props.navigation.navigate( 'OtpVerification', {
+    countryCallCd: this.state.profile.countryCallCd,
+    phone: this.state.profile.phone,
+    onVerified: this._onOtpPhoneVerified,
+  })
 
   _onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation}) => {
     let request = {
@@ -56,7 +60,6 @@ export default class AccountScreen extends React.Component {
   render() {
     let { navigate } = this.props.navigation;
     let { profile } = this.state;
-    let { phone, countryCallCd, isPhoneVerified } = profile;
     return (
       <ScrollView style={{ backgroundColor: '#f1f0f0', }}>
 
@@ -66,21 +69,23 @@ export default class AccountScreen extends React.Component {
             <View>
               <View style={styles.container}>
 
-                <TouchableOpacity style={styles.stickyHeader} onPress={this._goToPhoneVerification}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <View>
-                      <Icon
-                        name='ios-information-circle'
-                        type='ionicon'
-                        size={24}
-                        color='#fff' />
+                { profile.isPhoneVerified ||
+                  <TouchableOpacity style={styles.stickyHeader} onPress={this._goToPhoneVerification}>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View>
+                        <Icon
+                          name='ios-information-circle'
+                          type='ionicon'
+                          size={24}
+                          color='#fff' />
+                      </View>
+                      <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                        <Text style={styles.txtstickyHeader}>Verifikasi nomor telepon kamu di sini</Text>
+                      </View>
                     </View>
-                    <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                      <Text style={styles.txtstickyHeader}>Verifikasi nomor telepon kamu di sini</Text>
-                    </View>
-                  </View>
 
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                }
 
                 {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
               <View style={{ marginBottom: 20 }}>

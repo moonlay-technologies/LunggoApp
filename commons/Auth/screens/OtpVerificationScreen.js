@@ -54,7 +54,7 @@ export default class OtpVerificationScreen extends React.Component {
 
   _countingDown = () => {
     let { cooldownExpireAt } = this.state;
-    let cooldown = cooldownExpireAt - new Date();
+    let cooldown = (cooldownExpireAt - new Date()) / 1000 //// count cooldown (convert to second)
     if (cooldown < 0) cooldown = 0;
     this.setState( {cooldown} );
     if (!cooldown) { //// If the cooldown is finished, clear interval
