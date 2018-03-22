@@ -18,6 +18,7 @@ import registerForPushNotificationsAsync
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';
+import { APP_TYPE } from '../../../constants/env';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
@@ -51,12 +52,12 @@ export default class LoginScreen extends React.Component {
     let { navigate, goBack, replace, pop } = navigation;
     let { params } = navigation.state;
 
-    fetchTravoramaLoginApi(this.state.userName, this.state.password)
+    fetchTravoramaLoginApi(this.state.userName, this.state.password, APP_TYPE == 'OPERATOR')
       .then(response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-          if (params && params.appType == 'OPERATOR') {
+          if (APP_TYPE == 'OPERATOR') {
             backToMain(navigation);
           } else {
             registerForPushNotificationsAsync();
@@ -135,7 +136,7 @@ export default class LoginScreen extends React.Component {
           <View style={{ marginBottom: 30 }}>
             <Text style={globalStyles.categoryTitle1}>Login</Text>
           </View>
-          <View style={{marginBottom:10}}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={styles.label}>Email / No. Handphone</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
@@ -159,8 +160,8 @@ export default class LoginScreen extends React.Component {
           </View>
 
           {errorMessageUserName}
-          <View style={{marginTop:0}}>
-            <View style={{marginBottom:10}}>
+          <View style={{ marginTop: 0 }}>
+            <View style={{ marginBottom: 10 }}>
               <Text style={styles.label}>Password</Text>
             </View>
             <TextInput
@@ -191,9 +192,9 @@ export default class LoginScreen extends React.Component {
           {errorMessagePassword}
           {errorMessage}
 
-           <TouchableOpacity
-           onPress={this._onLoginPressed}
-            style={{alignItems: 'center', width:'100%', marginTop:30 }}
+          <TouchableOpacity
+            onPress={this._onLoginPressed}
+            style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
             activeOpacity={0.6}
             disabled={isLoading}
             styleDisabled={{ opacity: .7 }}

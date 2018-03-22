@@ -309,7 +309,6 @@ export default class ExploreScreen extends React.Component {
           style={{
             width: itemWidth,
             marginLeft: THUMBNAIL_WS,
-
           }}
           activeOpacity={1}
           onPress={() => this._onPressProduct(item)}

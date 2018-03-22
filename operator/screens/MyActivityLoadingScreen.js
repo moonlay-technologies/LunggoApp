@@ -5,7 +5,7 @@ import { ActivityIndicator, Text } from 'react-native';
 import {fetchTravoramaApi,AUTH_LEVEL} from '../../api/Common';
 import ListScreen from './ActivityList';
 import LoadingAnimation from '../../customer/components/LoadingAnimation';
-import { fetchActivityList } from './ActivityController';
+import { getActivityList } from './ActivityController';
 
 
 export default class ActivityListLoadingScreen extends React.Component {
@@ -23,7 +23,7 @@ export default class ActivityListLoadingScreen extends React.Component {
   };
 
   componentDidMount() {
-    fetchActivityList().then( res => {
+    getActivityList().then( res => {
       this.setState({list:res.activityList, isLoading:false})
     });
   }

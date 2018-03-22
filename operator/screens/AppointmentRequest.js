@@ -9,6 +9,7 @@ import {
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import * as Formatter from '../../customer/components/Formatter';
 import { fetchAppointmentRequests } from './Appointments/AppointmentController';
+import { shouldRefreshAppointmentRequest } from './AppointmentList';
 import Moment from 'moment';
 import 'moment/locale/id';
 
@@ -18,6 +19,7 @@ class ListItem extends React.PureComponent {
   _onPressItem = () => this.props.onPressItem(this.props.item);
   _onPressDecline = () => this.props.onPressDecline(this.props.item);
   _onPressAccept = () => this.props.onPressAccept(this.props.item);
+
   render() {
     const { item } = this.props;
     return (
@@ -47,7 +49,7 @@ class ListItem extends React.PureComponent {
               </Text>
             </View>
 
-            <View style={{marginTop: 20}}>
+            <View style={{ marginTop: 20 }}>
               <Text style={styles.dueDate}>
                 Batas waktu menerima: {Moment(item.timeLimit).fromNow()}
               </Text>
@@ -83,8 +85,8 @@ class ListItem extends React.PureComponent {
               >
                 Terima
               </Button>
-              
-              
+
+
             </View>
           </View>
         </TouchableHighlight>
@@ -104,7 +106,7 @@ export default class AppointmentRequests extends React.Component {
 
   constructor(props) {
     super(props)
-    let {requests} = props.navigation.state.params || [];
+    let { requests } = props.navigation.state.params || [];
     this.state = {
       list: [...requests],
     };
@@ -119,7 +121,7 @@ export default class AppointmentRequests extends React.Component {
   }
 
   _refreshList = () => {
-    fetchAppointmentRequests().then( res =>
+    fetchAppointmentRequests().then(res =>
       this.setState({ list: res.appointmentRequests })
     );
   }
@@ -149,7 +151,8 @@ export default class AppointmentRequests extends React.Component {
       requiredAuthLevel: AUTH_LEVEL.User,
     }
     fetchTravoramaApi(request).then(response => {
-      this._fetchAppointmentRequests();
+      shouldRefreshAppointmentRequest();
+      this.setState({ list: list.filter(e => e.rsvNo != rsvNo) });
     }).catch(error => console.log(error));
   }
 
