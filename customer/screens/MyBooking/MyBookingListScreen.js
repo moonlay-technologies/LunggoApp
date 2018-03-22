@@ -35,10 +35,10 @@ class ActivityListItem extends React.PureComponent {
   };
 
   _voucherButton = item => {
-    if (true)/*(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')*/
+    if (true) /*(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')*/
       return (
         <View style={{flexDirection:'row'}}>
-          <View style={{ flex: 1 }}>
+          {/*<View style={{ flex: 1 }}>
             <Button
               containerStyle={styles.labelOff}
               style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
@@ -62,7 +62,7 @@ class ActivityListItem extends React.PureComponent {
             >
               {item.requestRating ? 'Beri Rating' : 'Beri Review'}
             </Button>
-          </View>
+          </View>*/}
         </View>
       );
     else
@@ -73,9 +73,9 @@ class ActivityListItem extends React.PureComponent {
     let { item } = this.props;
     return (
       <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View>
-          {/*<View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>*/}
-          <View style={{ flex: 1 }}>
+        <View style={{flexDirection:'row'}}>
+          <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+          <View style={{ flex: 3 }}>
             <Text style={styles.activityTitle}>
               {item.name}
             </Text>
@@ -89,6 +89,33 @@ class ActivityListItem extends React.PureComponent {
             </Text>
             {/*<Text style={styles.labelText}>Memproses tiket</Text>*/}
             {this._voucherButton(item)}
+          </View>
+        </View>
+        <View style={{flexDirection:'row'}}>
+          <View style={{ flex: 1 }}>
+            <Button
+              containerStyle={styles.labelWarning}
+              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              onPress={() =>
+                item.hasPdfVoucher
+                  ? this._viewPdfVoucher(item)
+                  : this._goToBookedPageDetail()
+              }
+            >
+              Voucher Diproses
+            </Button>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              containerStyle={styles.labelReview}
+              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              onPress={
+                () => item.requestRating ?
+                  this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
+                  this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
+            >
+              {item.requestRating ? 'Beri Rating' : 'Beri Review'}
+            </Button>
           </View>
         </View>
 {/*
@@ -162,6 +189,15 @@ class CartListItem extends React.PureComponent {
     let { item } = this.props;
     return (
       <View style={styles.cartbox}>
+
+      <View style={{marginBottom:20, borderBottomWidth:1, borderBottomColor:'#bfbfbf', paddingBottom:20}}>
+        <View>
+          <Text style={styles.headerText}>No. Order: <Text style={styles.activityDesc}>1234567</Text></Text> 
+        </View>
+        <View>
+          <Text style={styles.headerText}>Tanggal Pesanan: <Text style={styles.activityDesc}>20 Jan 2018, 12.00 PM</Text></Text> 
+        </View>
+      </View>
 
         <FlatList
           data={item.activities}
@@ -355,9 +391,26 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  headerText: {
+    fontSize: 14,
+    color: '#2d2d2d',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
   thumbprofile: {
-    height: 90,
-    width: 90,
+    height: 60,
+    width: 60,
   },
   separator: {
     backgroundColor: '#bfbfbf',
@@ -366,7 +419,7 @@ const styles = StyleSheet.create({
     marginVertical: 25
   },
   total: {
-    paddingBottom: 15,
+    paddingBottom: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#ececec'
   },
@@ -406,6 +459,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight:10,
   },
+  labelReview: {
+    backgroundColor: '#f57b76',
+    paddingVertical: 10,
+    borderRadius: 3,
+    marginTop: 13,
+    alignItems: 'center',
+    marginRight:10,
+  },
   labelOff: {
     backgroundColor: '#8f8f8f',
     paddingVertical: 10,
@@ -413,7 +474,8 @@ const styles = StyleSheet.create({
     marginTop: 13,
     alignItems: 'center',
     marginRight:10,
-    opacity:0.7
+    opacity:0.7,
+
   },
   labelText: {
     color: '#18b0a2',

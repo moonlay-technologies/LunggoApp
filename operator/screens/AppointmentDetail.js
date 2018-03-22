@@ -30,9 +30,12 @@ export default class AppointmentDetail extends React.Component {
             {details.name}
             </Text>
 
-            <View style={{flexDirection:'row'}}>
+            <View style={{flexDirection:'row', marginTop:20}}>
 
-              <View style={{alignItems:'center'}}>
+              <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10, marginRight:10}}>
+                <Text style={styles.infoTitle}>
+                  Tanggal
+                </Text>
                 <View>
                   <Text style={styles.activityDesc}>
                     {Moment(details.date).format('ddd, D MMM YYYY')}
@@ -45,36 +48,39 @@ export default class AppointmentDetail extends React.Component {
                 </View>
               </View>
 
-              <View style={{flexDirection:'row'}}>
-                {/*<View style={{alignItems:'flex-start',}}>
-                  <Icon
-                    name='ios-people'
-                    type='ionicon'
-                    color='#454545'
-                    size={22}
-                  />
-                </View>*/}
-                <View style={{marginLeft:8}}>
+              <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10}}>
+                <Text style={styles.infoTitle}>
+                  Total Pax
+                </Text>
+                <View>
                   <Text style={styles.activityDesc}>
-                    Total {details.totalPax} orang peserta
+                    {details.totalPax} orang peserta
                   </Text>
                 </View>
               </View>
+
             </View>
 
           </View>
 
-          <View style={styles.containerListAppointment}>
-            { details.reservations.map( rsv =>
+          <View style={{paddingLeft:15}}>
+            <Text style={styles.activityTitle}>
+            Detail Peserta
+            </Text>
+          </View>
+
+          { details.reservations.map( rsv =>
+          <View key={rsv.rsvNo} style={styles.containerListAppointment}>
+            
               <TouchableHighlight
-                key={rsv.rsvNo}
+                
                 onPress={this._onPress}
                 underlayColor='#ddd'
               >
                 <View style={{flexDirection: 'row',}}>
                   <View style={{flex:1}}>
                     <View>
-                      <Text style={styles.activityTitle}>{rsv.contact.name}</Text>
+                      <Text style={styles.namaPeserta}>{rsv.contact.name}</Text>
                       <Text style={styles.activityDesc}>{Formatter.paxCount(rsv.paxCount)}</Text>
                     </View>
                     <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
@@ -92,9 +98,9 @@ export default class AppointmentDetail extends React.Component {
                   </View>
                 </View>
               </TouchableHighlight> 
-            )}
+            
           </View>
-
+          )}
 
 {/*paxGroups.map(pg =>
               <View style={{flexDirection:'row', marginTop:40,}}>
@@ -175,7 +181,7 @@ export default class AppointmentDetail extends React.Component {
                     colors={['#00d3c5', '#35eac6', '#6affc6']}
                     start={[0, 0]}
                     end={[1, 0]}
-                    style={{ height: 35, paddingTop: 6, alignItems: 'center', borderRadius: 5, width: '50%' }}>
+                    style={{ height: 35, paddingTop: 8, alignItems: 'center', borderRadius: 5, width: '50%' }}>
                     <Text style={{
                       backgroundColor: 'transparent',
                       fontSize: 15, color: '#ffffff',
@@ -226,7 +232,8 @@ const styles = StyleSheet.create({
   containerListAppointment: {
     padding:15,
     flex:1,
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    marginBottom:10
   },
   containerListAppointmentVerifikasi: {
     padding:15,
@@ -279,10 +286,50 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  namaPeserta:{
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 16,
+    color: '#454545',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:15 ,
+        marginBottom: -15,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  infoTitle:{
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 15,
+    color: '#454545',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:12,
+        marginBottom: -15,
+        paddingBottom:5,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
   activityDesc: {
     fontSize: 14,
     color: '#454545',
     fontFamily: 'Hind-Light',
+    backgroundColor:'transparent',
     ...Platform.select({
       ios: {
         lineHeight: 14,
