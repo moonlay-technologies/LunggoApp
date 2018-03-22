@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../AuthController'
 import {
-  validateUserName, validatePassword,
+  validateUserName, validatePassword, validatePhone,
 } from '../../FormValidation';
 import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
@@ -18,6 +18,7 @@ import registerForPushNotificationsAsync
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';
+import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
@@ -46,12 +47,16 @@ export default class LoginScreen extends React.Component {
   };
 
   _login = () => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true });
     let { navigation } = this.props;
     let { navigate, goBack, replace, pop } = navigation;
     let { params } = navigation.state;
+    let isPhoneNo = !validatePhone(this.state.userName);
+    let userName = (isPhoneNo) ?
+      phoneWithoutCountryCode_Indonesia(this.state.userName) :
+      this.state.userName;
 
-    fetchTravoramaLoginApi(this.state.userName, this.state.password)
+    fetchTravoramaLoginApi(userName, this.state.password)
       .then(response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {

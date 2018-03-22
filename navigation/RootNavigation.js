@@ -38,6 +38,7 @@ import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 import WebViewScreen from '../customer/screens/WebViewScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
+import ChangeProfile from '../customer/screens/ChangeProfile';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -96,6 +97,7 @@ export default class RootNavigator extends React.Component {
       WebViewScreen: { screen: WebViewScreen },
       Referral: { screen: Referral },
       ReferralHistory: { screen: ReferralHistory },
+      ChangeProfile: { screen: ChangeProfile },
     },
     {
       initialRouteParams: { appType: APP_TYPE },

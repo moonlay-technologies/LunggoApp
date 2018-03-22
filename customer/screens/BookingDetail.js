@@ -463,7 +463,7 @@ export default class BookingDetail extends React.Component {
                 <Text style={styles.normalText}>
                   {contact.name}{'\n'}
                   {contact.email}{'\n'}
-                  {contact.countryCallCd} - {contact.phone}
+                  {/*contact.countryCallCd} - */}0{contact.phone}
                 </Text>
               }
               {isContactNeverFilled &&
