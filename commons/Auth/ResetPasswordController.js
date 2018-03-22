@@ -1,13 +1,13 @@
 'use strict';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 
-export async function sendOtp(phoneNumber) {
+export async function sendOtp(countryCallCd, phoneNumber) {
   const version = 'v1';
   let request = {
     method: 'POST',
-    path: `/${version}/account/forgotpassword`,
+    path: `/${version}/account/requestotp`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
-    data: { phoneNumber },
+    data: { countryCallCd, phoneNumber },
   };
   try {
     let response = await fetchTravoramaApi(request);
@@ -26,7 +26,7 @@ export async function sendOtp(phoneNumber) {
         }
       }
     } else {
-      console.error('ForgotPasswordAPI: no response returned!');
+      console.error('requestOtpAPI: no response returned!');
     }
     return response;
   } catch (error) {
@@ -34,13 +34,13 @@ export async function sendOtp(phoneNumber) {
   }
 }
 
-export async function verifyOtp(phoneNumber, otp) {
+export async function verifyOtp(countryCallCd, phoneNumber, otp) {
   const version = 'v1';
   let request = {
     method: 'POST',
     path: `/${version}/account/checkotp`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
-    data: { phoneNumber, otp },
+    data: { countryCallCd, phoneNumber, otp },
   };
   try {
     let response = await fetchTravoramaApi(request);
@@ -57,9 +57,7 @@ export async function verifyOtp(phoneNumber, otp) {
             response.message = 'Kode verifikasi tidak cocok!'; break;
           case 'ERR_OTP_EXPIRED':
             response.message = 'Masa berlaku kode verifikasi telah habis!'; break;
-          default:
-            response.message = 'Terjadi kesalahan pada server';
-            console.warning(response);
+          default: response.message = 'Terjadi kesalahan pada server';
         }
       }
     } else {
@@ -71,13 +69,13 @@ export async function verifyOtp(phoneNumber, otp) {
   }
 }
 
-export async function resetPassword(phoneNumber, otp, newPassword) {
+export async function resetPassword(countryCallCd, phoneNumber, otp, newPassword) {
   const version = 'v1';
   let request = {
     method: 'POST',
     path: `/${version}/account/resetpassword`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
-    data: { phoneNumber, otp, newPassword },
+    data: { countryCallCd, phoneNumber, otp, newPassword },
   };
   try {
     let response = await fetchTravoramaApi(request);
