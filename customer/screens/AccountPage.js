@@ -36,19 +36,21 @@ export default class AccountScreen extends React.Component {
   }
 
   _openModal = () => this.refs.modal.openModal()
+
   _goToReferral = () => this.props.navigation.navigate('Referral')
-  _onOtpPhoneVerified = ({ countryCallCd, phone, otp }) => {
+  _goToPhoneVerification = () => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })
+  _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile })
+
+  _onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation}) => {
     let request = {
       path: '/v1/account/verifyphone',
       method: 'POST',
-      data: { countryCallCd, phone, otp },
+      data: { countryCallCd, phoneNumber: phone, otp },
       requiredAuthLevel: AUTH_LEVEL.User,
     }
-    fetchTravoramaApi(request).then(response => {
-      if (response.status = 200) {
-        backToMain();
-      }
-    })
+    fetchTravoramaApi(request).then( ({status}) => {
+      if (status = 200) backToMain(navigation);
+    });
   }
 
   render() {
@@ -64,7 +66,7 @@ export default class AccountScreen extends React.Component {
             <View>
               <View style={styles.container}>
 
-                <TouchableOpacity style={styles.stickyHeader} onPress={() => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })}>
+                <TouchableOpacity style={styles.stickyHeader} onPress={this._goToPhoneVerification}>
                   <View style={{ flexDirection: 'row' }}>
                     <View>
                       <Icon
@@ -74,7 +76,7 @@ export default class AccountScreen extends React.Component {
                         color='#fff' />
                     </View>
                     <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                      <Text style={styles.txtstickyHeader}>Verifikasi No Hp kamu disini</Text>
+                      <Text style={styles.txtstickyHeader}>Verifikasi nomor telepon kamu di sini</Text>
                     </View>
                   </View>
 
@@ -111,7 +113,7 @@ export default class AccountScreen extends React.Component {
                     </View>
                   </View>
 
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeProfile', { profile })}>
+                  <TouchableOpacity onPress={this._goToEditProfile}>
                     <View style={{ flex: 1, alignItems: 'flex-end', }}>
                       <View>
                         <Text style={styles.editProfile}>Ubah</Text>
