@@ -26,8 +26,6 @@ export async function getProfile() {
   if (!profileJson) return fetchProfile();
   
   let profile = JSON.parse(profileJson);
-  console.log('profile')
-  console.log(profile)
   
   return profile;
 }

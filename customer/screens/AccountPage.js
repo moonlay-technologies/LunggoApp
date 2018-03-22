@@ -56,31 +56,31 @@ export default class AccountScreen extends React.Component {
     let { profile } = this.state;
     let { phone, countryCallCd, isPhoneVerified } = profile;
     return (
-      <ScrollView style={{ backgroundColor: '#f1f0f0',}}>
+      <ScrollView style={{ backgroundColor: '#f1f0f0', }}>
 
         <LogoutConfirmationModal ref='modal' {...this.props} />
-       {this.state.isLoggedIn ?
- 
-        <View>
-          <View style={styles.container}>
+        {this.state.isLoggedIn ?
+          <View>
+            <View>
+              <View style={styles.container}>
 
-            <TouchableOpacity style={styles.stickyHeader} onPress={() => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })}>
-              <View style={{flexDirection:'row'}}>
-                <View>
-                  <Icon
-                    name='ios-information-circle'
-                    type='ionicon'
-                    size={24}
-                    color='#fff' />
-                </View>
-                <View style={{justifyContent:'center', marginLeft:10}}>
-                  <Text style={styles.txtstickyHeader}>Verifikasi No Hp kamu disini</Text>
-                </View>
-              </View>
-              
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.stickyHeader} onPress={() => this.props.navigation.navigate('OtpVerification', { phone, onVerified: this._onOtpPhoneVerified })}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View>
+                      <Icon
+                        name='ios-information-circle'
+                        type='ionicon'
+                        size={24}
+                        color='#fff' />
+                    </View>
+                    <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                      <Text style={styles.txtstickyHeader}>Verifikasi No Hp kamu disini</Text>
+                    </View>
+                  </View>
 
-            {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
+                </TouchableOpacity>
+
+                {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
               <View style={{ marginBottom: 20 }}>
                 <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
               </View>
@@ -96,139 +96,100 @@ export default class AccountScreen extends React.Component {
                   <Text style={styles.textCartColor}>100 point</Text>
                 </View>
               </View>*/}
-            </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{profile.name}</Text>
-              </View>
-              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
-                {/* <Icon
-                  name='ios-settings-outline'
-                  type='ionicon'
-                  size={30}
-                  color='#454545' /> */}
-              </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{profile.email}</Text>
-              </View>
-              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
-                {/* <Icon
-                  name='ios-settings-outline'
-                  type='ionicon'
-                  size={30}
-                  color='#454545' /> */}
-              </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 2 }}>
-                <Text style={styles.optionProfile}>{/*+{profile.countryCallCd} */}0{profile.phone}</Text>
-              </View>
-              <TouchableOpacity style={{ alignItems: 'flex-end', flex: 1 }}>
-                {/* <Icon
-                  name='ios-settings-outline'
-                  type='ionicon'
-                  size={30}
-                  color='#454545' /> */}
-              </TouchableOpacity>
-            </View>
-            {/* <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#efefef', paddingBottom: 15, marginBottom: 15 }}>
-              <View style={{ justifyContent: 'center', flex: 1 }}>
-                <Text style={styles.optionProfile}>{this.state.name}</Text>
-              </View>
-            </View>*/}
-            <View style={{flexDirection:'row'}}>
 
-              <View style={{flex:2}}>
-                <View>
-                  <Text style={styles.namaProfile}>{profile.name}</Text>
+                <View style={{ flexDirection: 'row' }}>
+
+                  <View style={{ flex: 2 }}>
+                    <View>
+                      <Text style={styles.namaProfile}>{profile.name}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.descProfile}>{profile.email}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.descProfile}>0{profile.phone}</Text>
+                    </View>
+                  </View>
+
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeProfile', { profile })}>
+                    <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                      <View>
+                        <Text style={styles.editProfile}>Ubah</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <View>
-                  <Text style={styles.descProfile}>{profile.email}</Text>
-                </View>
-                <View>
-                  <Text style={styles.descProfile}>{profile.countryCallCd} {profile.phone}</Text>
-                </View>
+
               </View>
 
-              <View style={{flex:1, alignItems:'flex-end', }}>
-                <View>
-                  <Text style={styles.editProfile}>Edit Profile</Text>
-                </View>
+            </View>
+
+            <View style={styles.container}>
+              <View>
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
+                  <View style={{ alignItems: 'flex-start' }}>
+                    <Icon
+                      name='ios-contacts-outline'
+                      type='ionicon'
+                      size={26}
+                      color='#454545' />
+                  </View>
+                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                    <Text style={styles.optionProfile}>Undang Teman</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.divider}></View>
+              <View>
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
+                  <View style={{ alignItems: 'flex-start' }}>
+                    <Icon
+                      name='ios-log-out'
+                      type='ionicon'
+                      size={26}
+                      color='#454545' />
+                  </View>
+                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                    <Text style={styles.optionProfile}>Log Out</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
-            
           </View>
-
+          :
           <View style={styles.container}>
             <View>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
                 <View style={{ alignItems: 'flex-start' }}>
                   <Icon
-                    name='ios-contacts-outline'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </View>
-                <View style={{ marginLeft:20, justifyContent:'center' }}>
-                  <Text style={styles.optionProfile}>Undang Teman</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.divider}></View>
-            <View>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
-                <View style={{ alignItems: 'flex-start' }}>
-                  <Icon
-                    name='ios-log-out'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </View>
-                <View style={{ marginLeft:20, justifyContent:'center' }}>
-                  <Text style={styles.optionProfile}>Log Out</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          
-        </View>
-        :
-        <View style={styles.container}>
-          <View>
-            <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
-              <View style={{ alignItems: 'flex-start' }}>
-                <Icon
                     name='ios-log-in'
                     type='ionicon'
                     size={26}
                     color='#454545' />
-              </View>
-              <View style={{ marginLeft:20, justifyContent:'center' }}>
-                <Text style={styles.optionProfile}>Log In</Text>
-              </View>
-            </TouchableOpacity>
+                </View>
+                <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                  <Text style={styles.optionProfile}>Log In</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.divider}></View>
+            <View>
+              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
+                <View style={{ alignItems: 'flex-start' }}>
+                  <Icon
+                    name='ios-laptop'
+                    type='ionicon'
+                    size={26}
+                    color='#454545' />
+                </View>
+                <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                  <Text style={styles.optionProfile}>Daftar</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-          
-          <View style={styles.divider}></View>
-          <View>
-            <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
-              <View style={{ alignItems: 'flex-start' }}>
-                <Icon
-                  name='ios-laptop'
-                  type='ionicon'
-                  size={26}
-                  color='#454545' />
-              </View>
-              <View style={{ marginLeft:20, justifyContent:'center' }}>
-                <Text style={styles.optionProfile}>Daftar</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View> 
-      }
+        }
       </ScrollView>
     );
   }
@@ -239,16 +200,16 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     flex: 1,
-    borderBottomWidth:1,
-    borderBottomColor:'#e5e5e5',
-    marginBottom:20
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
+    marginBottom: 20
   },
   stickyHeader: {
-    backgroundColor:'#f57b76', 
-    margin:-20, 
-    marginBottom:20, 
-    paddingHorizontal:20,
-    paddingVertical:10,
+    backgroundColor: '#f57b76',
+    margin: -20,
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   activitydetailTitle: {
     fontFamily: 'Hind-Bold',
@@ -274,7 +235,7 @@ const styles = StyleSheet.create({
   descProfile: {
     fontFamily: 'Hind-Light',
     fontSize: 15,
-    color:'#454545',
+    color: '#454545',
     ...Platform.select({
       ios: {
         lineHeight: 25,
@@ -288,7 +249,7 @@ const styles = StyleSheet.create({
   editProfile: {
     fontFamily: 'Hind-SemiBold',
     fontSize: 15,
-    color:'#00a89d',
+    color: '#00a89d',
     ...Platform.select({
       ios: {
         lineHeight: 25,
@@ -302,7 +263,7 @@ const styles = StyleSheet.create({
   optionProfile: {
     fontFamily: 'Hind-Light',
     fontSize: 16,
-    color:'#454545',
+    color: '#454545',
     ...Platform.select({
       ios: {
         lineHeight: 25,
@@ -316,7 +277,7 @@ const styles = StyleSheet.create({
   namaProfile: {
     fontFamily: 'Hind-SemiBold',
     fontSize: 18,
-    color:'#454545',
+    color: '#454545',
     ...Platform.select({
       ios: {
         lineHeight: 25,
@@ -330,7 +291,7 @@ const styles = StyleSheet.create({
   txtstickyHeader: {
     fontFamily: 'Hind-SemiBold',
     fontSize: 15,
-    color:'#fff',
+    color: '#fff',
     ...Platform.select({
       ios: {
         lineHeight: 25,
@@ -345,6 +306,6 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#e1e1e1',
-    marginVertical:16
+    marginVertical: 16
   },
 });
