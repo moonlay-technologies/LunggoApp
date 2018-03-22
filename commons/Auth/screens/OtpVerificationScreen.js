@@ -29,8 +29,6 @@ export default class OtpVerificationScreen extends React.Component {
       cooldown: props.navigation.state.params.resendCooldown,
       showCooldown: false,
     }
-    if (!this.props.navigation.state.params.countryCallCd)
-      this.props.navigation.state.params.countryCallCd = 0;
   }
 
   static navigationOptions = {

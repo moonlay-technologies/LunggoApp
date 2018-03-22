@@ -31,13 +31,13 @@ export function validateRequiredField(inputString) {
 
 export function validatePhone(phoneNumber) {
   if (!phoneNumber) return 'Wajib diisi';
-  if (!isNaN(phoneNumber) && phoneNumber != '' && phoneNumber != false
-    && phoneNumber >= 100000000 && phoneNumber.startsWith('0')) return null;
-  console.log(phoneNumber);
-  if (!phoneNumber.startsWith('0'))
-    return "Nomor telepon harus dimulai dengan 0"
-  else
-    return 'Nomor telepon belum benar';
+  if (!!phoneNumber && (phoneNumber+'').length > 8) { // && phoneNumber.startsWith('0')) {
+    return null;
+  }
+  // if (!phoneNumber.startsWith('0'))
+  //   return "Nomor telepon harus dimulai dengan 0"
+  // else
+  //   return 'Nomor telepon belum benar';
 }
 
 // //// phone number validation with 10 or more digits

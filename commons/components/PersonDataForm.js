@@ -22,21 +22,13 @@ export default class PersonDataForm extends React.Component {
     this.state = props.contact || {
       name: '',
       email: '',
-      countryCallCd: '+62',
+      // countryCallCd: '+62',
       phone: '',
       password: '',
     };
-    if (!this.state.countryCallCd)
-      this.state.countryCallCd = '62';
-    if (!this.state.phone.startsWith('0'))
-      this.state.phone = 0 + this.state.phone;
+    this.state.countryCallCd = 62;
     this.passwordInput = {};
   }
-
-  // componentWillReceiveProps(nextProps) {
-  // if (this.props.buttonDisabled != nextProps.buttonDisabled)
-  //   this.setState({buttonDisabled});
-  // }
 
   _onSubmitForm = () => {
     let { name, email, countryCallCd, phone, password } = this.state;
@@ -47,7 +39,7 @@ export default class PersonDataForm extends React.Component {
     let errorPhone = validatePhone(phone);
     if (!errorName && !errorEmail && !errorPassword &&
       !errorCountryCallCd && !errorPhone) {
-      this.props.onSubmit({ ...this.state, phone: this.state.phone.substring(1) });
+      this.props.onSubmit({ ...this.state });
     } else this.setState({
       errorName, errorEmail, errorPassword,
       errorCountryCallCd, errorPhone
