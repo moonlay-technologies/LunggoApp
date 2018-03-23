@@ -28,7 +28,8 @@
       "buildNumber": "2"
     },
     "android": {
-      "package": "com.travorama.activity"
+      "package": "com.travorama",
+      "versionCode": 20
     }
   }
 }

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { getProfile } from '../../commons/ProfileController';
 import ContinueToCartModal from '../components/ContinueToCartModal';
+import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -127,7 +128,10 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         this.setState({ isLoading: false });
         return;
-      } else this.setState({ isContinueToCartModalVisible: true });
+      } else {
+        shouldRefreshMyBookingList();
+        this.setState({ isContinueToCartModalVisible: true });
+      }
       this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
@@ -463,7 +467,7 @@ export default class BookingDetail extends React.Component {
                 <Text style={styles.normalText}>
                   {contact.name}{'\n'}
                   {contact.email}{'\n'}
-                  {contact.countryCallCd} - {contact.phone}
+                  {/*contact.countryCallCd} - */}0{contact.phone}
                 </Text>
               }
               {isContactNeverFilled &&

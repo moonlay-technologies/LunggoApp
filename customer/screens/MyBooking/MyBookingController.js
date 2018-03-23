@@ -3,7 +3,13 @@ import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-export async function getMyBookingList(force = true) {
+export async function getMyBookingList() {
+  let shouldRefresh = await getItemAsync('shouldRefresh.myBookingList');
+  if (shouldRefresh) {
+    deleteItemAsync('shouldRefresh.myBookingList');
+    return fetchMyBookingList();
+  }
+
   let myBookingsJson = await getItemAsync('myBookings');
   //if (force || !myBookingsJson) {
   if (true || !myBookingsJson) {
@@ -31,6 +37,10 @@ async function fetchMyBookingList() {
   }
   let response = await fetchTravoramaApi(request);
   return response;
+}
+
+export async function shouldRefreshMyBookingList() {
+  setItemAsync('shouldRefresh.myBookingList', 'true');
 }
 
 async function downloadPdfVouchers(bookings) {

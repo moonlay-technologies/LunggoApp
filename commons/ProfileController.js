@@ -22,12 +22,19 @@ export async function fetchProfile() {
 }
 
 export async function getProfile() {
+  let shouldRefresh = await getItemAsync('shouldRefresh.profile');
+  if (shouldRefresh) {
+    deleteItemAsync('shouldRefresh.profile');
+    return fetchProfile();
+  }
+
   let profileJson = await getItemAsync('profile');
   if (!profileJson) return fetchProfile();
-  
+
   let profile = JSON.parse(profileJson);
-  console.log('profile')
-  console.log(profile)
-  
   return profile;
+}
+
+export async function shouldRefreshProfile() {
+  setItemAsync('shouldRefresh.profile', 'true');
 }

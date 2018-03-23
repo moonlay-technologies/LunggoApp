@@ -2,22 +2,24 @@
 
 import React from 'react';
 import Colors from '../../../constants/Colors';
-import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import {
   StyleSheet, Text, View, Image, TextInput, ScrollView,
-  KeyboardAvoidingView, ActivityIndicator, Keyboard, TouchableWithoutFeedback
+  KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback
 } from 'react-native';
 import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
-import LoadingAnimation from '../../../customer/components/LoadingAnimation'
+import LoadingAnimation from '../../../customer/components/LoadingAnimation';
+import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 
 export default class ForgotPasswordScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      countryCallCd: 62,
       phone: '',
       isLoading: false,
+      errorMessage: '',
     }
   }
 
@@ -25,32 +27,32 @@ export default class ForgotPasswordScreen extends React.Component {
     title: 'Lupa Password',
   }
 
-  _onOtpVerified = ({ phone, otp }) => {
-    this.props.navigation.replace('NewPassword', { phone, otp });
+  _onOtpVerified = ({ navigation, countryCallCd, phone, email, otp }) => {
+    navigation.replace('NewPassword', { countryCallCd, phone, email, otp });
   }
 
   _submit = () => {
-    let { phone } = this.state;
+    let { countryCallCd } = this.state;
+    let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);
     let errorMessage = validatePhone(phone);
     if (errorMessage) {
       // this.refs.phone.focus(); //// keknya ga gitu guna
       return this.setState({ errorMessage });
     }
     this.setState({ isLoading: true });
-    sendOtp(phone).then(response => {
+    sendOtp(countryCallCd, phone).then(response => {
       if (response.status == 200 ||
         response.error == 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME') {
-        this.props.navigation.replace('OtpVerification',
-          { phone, resendCooldown: response.resendCooldown, onVerified: this._onOtpVerified });
-      }
-      else console.log(response.error);
-      this.setState({ isLoading: false, errorMessage: response.message });
+        this.props.navigation.replace('OtpVerification', {
+          countryCallCd, phone, onVerified: this._onOtpVerified
+        });
+      } else
+        this.setState({ isLoading: false, errorMessage: response.message });
     });
   }
 
   render() {
     let { phone, isLoading, errorMessage } = this.state;
-    let loadingIndicator = isLoading ? <LoadingAnimation /> : null;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -58,12 +60,14 @@ export default class ForgotPasswordScreen extends React.Component {
             <Text style={styles.categoryTitle}>Lupa Password?</Text>
           </View>
           <View style={{ marginBottom: 25 }}>
-            <Text style={styles.mediumText}>Masukkan nomor telepon kamu untuk mereset password</Text>
+            <Text style={styles.mediumText}>
+              Masukkan nomor telepon kamu untuk mereset password
+            </Text>
           </View>
-          {errorMessage ?
+          {!!errorMessage &&
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
               <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
-            </View> : null
+            </View>
           }
           <TextInput
             style={styles.searchInput}
@@ -97,8 +101,8 @@ export default class ForgotPasswordScreen extends React.Component {
             styleDisabled={{ color: '#aaa' }}
           >
             Kirim
-        </Button>
-          {loadingIndicator}
+          </Button>
+          {isLoading && <LoadingAnimation />}
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     );

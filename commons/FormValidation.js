@@ -1,39 +1,39 @@
 import Regex from '../constants/Regex';
 
-export function validateUserName (userNameString) {
+export function validateUserName(userNameString) {
   let errorEmail = validateEmail(userNameString);
   let errorPhone = validatePhone(userNameString);
   // if (errorEmail != null) return errorEmail;
   // if (errorPhone != null) return errorPhone;
   // return null;
 
-  if (errorEmail==null || errorPhone==null) return null;
-  else return errorEmail;
+  if (errorEmail == 'Wajib diisi' && errorPhone == 'Wajib diisi') return 'Wajib diisi';
+  if (!errorEmail || !errorPhone) return null;
+  return 'Email atau nomor telepon belum benar';
 
 }
 
-export function validateEmail (emailString) {
+export function validateEmail(emailString) {
   if (!emailString) return 'Wajib diisi';
   if (!Regex.email.test(emailString)) return 'Email belum benar';
   return null;
 }
 
-export function validatePassword (passwordString) {
+export function validatePassword(passwordString) {
   if (!passwordString) return 'Wajib diisi'
   if (passwordString.length < 6) return 'Password minimal 6 karakter';
   return null;
 }
 
-export function validateRequiredField (inputString) {
+export function validateRequiredField(inputString) {
   if (!inputString) return 'Wajib diisi'
   return null;
 }
 
-export function validatePhone (phoneNumber) {
-  //// blom bisa validasi + (+62...)
- if ( !isNaN(phoneNumber) && phoneNumber!='' && phoneNumber!=false
-    && phoneNumber >= 100000000 ) return null;
-  return 'Nomor telepon belum benar';
+export function validatePhone(phoneNumber) {
+  if (!phoneNumber) return 'Wajib diisi';
+  if (isNaN(phoneNumber) || !phoneNumber || (phoneNumber + '').length <= 8) return 'Nomor telepon belum benar';
+  return null;
 }
 
 // //// phone number validation with 10 or more digits
@@ -62,15 +62,15 @@ export var validateCvvFormat = testInput => /^\d{3,4}$/.test(testInput);
 
 //// validate credit card's expiry date
 export var validateExpiryDate = (month, year) => {
-  if ( month<1 || month>12 || !year || isNaN(month) || isNaN(year) ) {
-    return {error:'INVALID_INPUT'};
+  if (month < 1 || month > 12 || !year || isNaN(month) || isNaN(year)) {
+    return { error: 'INVALID_INPUT' };
   }
   let now = new Date();
   var currentYear = now.getFullYear();
   var currentMonth = now.getMonth() + 1; //// by default, 0=January, so we change this with +1
   year += 2000;
-  if (year < currentYear || (year == currentYear && month < currentMonth) ) {
-    return {error:'CARD_EXPIRED'};
+  if (year < currentYear || (year == currentYear && month < currentMonth)) {
+    return { error: 'CARD_EXPIRED' };
   }
   return true;
 }

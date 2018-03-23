@@ -17,9 +17,10 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
-import { fetchAppointmentRequests, fetchAppointmentList,
+import {
+  fetchAppointmentRequests, getAppointmentList,
 } from './Appointments/AppointmentController';
-import { fetchActivityList } from './ActivityController';
+import { getActivityList } from './ActivityController';
 
 export default class Dashboard extends React.Component {
 
@@ -40,7 +41,7 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    getProfile().then( profile => this.setState(profile));
+    getProfile().then(profile => this.setState(profile));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;
@@ -51,37 +52,43 @@ export default class Dashboard extends React.Component {
         this.props.navigation.dispatch(action);
       }
     });
-    this._getAppointmentRequests();
-    this._getAppointmentList();
-    this._getActivityList();
+    this.props.navigation.addListener('didFocus', this._refreshData);
+  }
+
+  _refreshData = () => {
+    Promise.all([
+      this._getAppointmentRequests(),
+      this._getAppointmentList(),
+      this._getActivityList()
+    ]);
   }
 
   _getAppointmentRequests = () => {
-    fetchAppointmentRequests().then( res => {
-      this.setState({requests:res.appointmentRequests});
+    fetchAppointmentRequests().then(res => {
+      this.setState({ requests: res.appointmentRequests });
     });
   }
 
   _getAppointmentList = () => {
-    fetchAppointmentList().then( ({appointments}) =>
-      this.setState( {appointments} )
+    getAppointmentList().then(({ appointments }) =>
+      this.setState({ appointments })
     );
   }
 
   _getActivityList = () => {
-    fetchActivityList().then( ({activityList}) =>
-      this.setState( {activities: activityList} )
+    getActivityList().then(({ activityList }) =>
+      this.setState({ activities: activityList })
     );
   }
 
   _goToAppointmentRequest = () => {
-    let {requests = []} = this.state;
-    this.props.navigation.navigate('AppointmentRequest',{requests});
+    let { requests = [] } = this.state;
+    this.props.navigation.navigate('AppointmentRequest', { requests });
   }
 
   _goToAppointmentList = () => {
     this.props.navigation.navigate(
-      'AppointmentList', { list: this.state.appointments || []}
+      'AppointmentList', { list: this.state.appointments || [] }
     );
   }
 
@@ -178,19 +185,19 @@ export default class Dashboard extends React.Component {
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Activity</Text>
-                  { this.state.activities==null ? <LoadingAnimation height={40} width={40}/> :
+                  {this.state.activities == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.activities.length}</Text>
                   }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Request</Text>
-                  { this.state.requests==null ? <LoadingAnimation height={40} width={40}/> :
+                  {this.state.requests == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.requests.length}</Text>
                   }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
                   <Text style={styles.teks1}>Akan datang</Text>
-                  { this.state.appointments==null ? <LoadingAnimation height={40} width={40}/> :
+                  {this.state.appointments == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.appointments.length}</Text>
                   }
                 </TouchableOpacity>
@@ -201,7 +208,7 @@ export default class Dashboard extends React.Component {
         </View>
 
 
-{/*
+        {/*
         <View style={{ marginTop: 30, padding: 15, paddingBottom: 5 }}>
           <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
         </View>
