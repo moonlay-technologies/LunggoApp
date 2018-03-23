@@ -69,13 +69,18 @@ export async function verifyOtp(countryCallCd, phoneNumber, otp) {
   }
 }
 
-export async function resetPassword(countryCallCd, phoneNumber, otp, newPassword) {
+export async function resetPassword(email, countryCallCd, phoneNumber, otp, newPassword) {
+  let data = { email, countryCallCd, phoneNumber, otp, newPassword };
+  if (!data.email) delete data.email;
+  if (!data.countryCallCd) delete data.countryCallCd;
+  if (!data.phoneNumber) delete data.phoneNumber;
+
   const version = 'v1';
   let request = {
     method: 'POST',
     path: `/${version}/account/resetpassword`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
-    data: { countryCallCd, phoneNumber, otp, newPassword },
+    data: { email, countryCallCd, phoneNumber, otp, newPassword },
   };
   try {
     let response = await fetchTravoramaApi(request);

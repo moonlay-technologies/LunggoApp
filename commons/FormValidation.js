@@ -7,8 +7,9 @@ export function validateUserName(userNameString) {
   // if (errorPhone != null) return errorPhone;
   // return null;
 
-  if (errorEmail == null || errorPhone == null) return null;
-  else return errorPhone;
+  if (errorEmail == 'Wajib diisi' && errorPhone == 'Wajib diisi') return 'Wajib diisi';
+  if (!errorEmail || !errorPhone) return null;
+  return 'Email atau nomor telepon belum benar';
 
 }
 
@@ -31,13 +32,8 @@ export function validateRequiredField(inputString) {
 
 export function validatePhone(phoneNumber) {
   if (!phoneNumber) return 'Wajib diisi';
-  if (!!phoneNumber && (phoneNumber+'').length > 8) { // && phoneNumber.startsWith('0')) {
-    return null;
-  }
-  // if (!phoneNumber.startsWith('0'))
-  //   return "Nomor telepon harus dimulai dengan 0"
-  // else
-  //   return 'Nomor telepon belum benar';
+  if (isNaN(phoneNumber) || !phoneNumber || (phoneNumber + '').length <= 8) return 'Nomor telepon belum benar';
+  return null;
 }
 
 // //// phone number validation with 10 or more digits

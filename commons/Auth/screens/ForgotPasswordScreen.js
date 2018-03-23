@@ -32,7 +32,7 @@ export default class ForgotPasswordScreen extends React.Component {
   }
 
   _submit = () => {
-    let {countryCallCd} = this.state;
+    let { countryCallCd } = this.state;
     let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);
     let errorMessage = validatePhone(phone);
     if (errorMessage) {
@@ -44,7 +44,7 @@ export default class ForgotPasswordScreen extends React.Component {
       if (response.status == 200 ||
         response.error == 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME') {
         this.props.navigation.replace('OtpVerification', {
-          countryCallCd, phone, resendCooldown: 120, onVerified: this._onOtpVerified
+          countryCallCd, phone, onVerified: this._onOtpVerified
         });
       } else
         this.setState({ isLoading: false, errorMessage: response.message });
@@ -64,7 +64,7 @@ export default class ForgotPasswordScreen extends React.Component {
               Masukkan nomor telepon kamu untuk mereset password
             </Text>
           </View>
-          { !!errorMessage &&
+          {!!errorMessage &&
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
               <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
             </View>

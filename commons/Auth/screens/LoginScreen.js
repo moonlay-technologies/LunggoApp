@@ -53,11 +53,19 @@ export default class LoginScreen extends React.Component {
     let { navigate, goBack, replace, pop } = navigation;
     let { params } = navigation.state;
     let isPhoneNo = !validatePhone(this.state.userName);
-    let userName = (isPhoneNo) ?
-      phoneWithoutCountryCode_Indonesia(this.state.userName) :
-      this.state.userName;
+    let phoneNumber, countryCallCd, email;
+    if (isPhoneNo) {
+      phoneNumber = phoneWithoutCountryCode_Indonesia(this.state.userName);
+      countryCallCd = '62';
+    } else {
+      email = this.state.userName;
+    }
+    console.log(isPhoneNo);
+    console.log(phoneNumber);
+    console.log(countryCallCd);
+    console.log(email);
 
-    fetchTravoramaLoginApi(userName, this.state.password, APP_TYPE == 'OPERATOR')
+    fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password, APP_TYPE == 'OPERATOR')
       .then(response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {

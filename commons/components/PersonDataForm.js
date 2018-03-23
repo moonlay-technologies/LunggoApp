@@ -10,7 +10,7 @@ import {
 import { validateEmail, validatePassword, validateRequiredField, validatePhone }
   from '../FormValidation';
 import globalStyles from '../globalStyles';
-import { phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
+import { reversePhoneWithoutCountryCode_Indonesia, phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
 import { WideCTAButton } from './Buttons';
 
 
@@ -27,6 +27,7 @@ export default class PersonDataForm extends React.Component {
       password: '',
     };
     this.state.countryCallCd = 62;
+    this.state.phone = reversePhoneWithoutCountryCode_Indonesia(this.state.phone);
     this.passwordInput = {};
   }
 
@@ -39,7 +40,7 @@ export default class PersonDataForm extends React.Component {
     let errorPhone = validatePhone(phone);
     if (!errorName && !errorEmail && !errorPassword &&
       !errorCountryCallCd && !errorPhone) {
-      this.props.onSubmit({ ...this.state });
+      this.props.onSubmit({ ...this.state, phone: phoneWithoutCountryCode_Indonesia(phone) });
     } else this.setState({
       errorName, errorEmail, errorPassword,
       errorCountryCallCd, errorPhone

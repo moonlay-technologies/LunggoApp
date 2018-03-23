@@ -9,7 +9,7 @@ import {
 import { Icon } from 'react-native-elements';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
-import { fetchProfile, getProfile } from '../../commons/ProfileController';
+import { fetchProfile, getProfile, shouldRefreshProfile } from '../../commons/ProfileController';
 
 export default class AccountScreen extends React.Component {
 
@@ -27,32 +27,36 @@ export default class AccountScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.navigation.addListener('willFocus', getProfile);
+    this._checkUserLoggedIn();
+    this.props.navigation.addListener('willFocus', this._checkUserLoggedIn);
+  }
 
+  _checkUserLoggedIn = () => {
     checkUserLoggedIn().then(async isLoggedIn => {
       let profile = isLoggedIn ? await getProfile() : {};
       this.setState({ profile, isLoggedIn });
     });
-  }
+  };
 
   _openModal = () => this.refs.modal.openModal()
 
   _goToReferral = () => this.props.navigation.navigate('Referral')
-  _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile })
-  _goToPhoneVerification = () => this.props.navigation.navigate( 'OtpVerification', {
+  _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile: this.state.profile })
+  _goToPhoneVerification = () => this.props.navigation.navigate('OtpVerification', {
     countryCallCd: this.state.profile.countryCallCd,
     phone: this.state.profile.phone,
     onVerified: this._onOtpPhoneVerified,
   })
 
-  _onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation}) => {
+  _onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation }) => {
     let request = {
       path: '/v1/account/verifyphone',
       method: 'POST',
       data: { countryCallCd, phoneNumber: phone, otp },
       requiredAuthLevel: AUTH_LEVEL.User,
     }
-    fetchTravoramaApi(request).then( ({status}) => {
+    fetchTravoramaApi(request).then(({ status }) => {
+      shouldRefreshProfile();
       if (status = 200) backToMain(navigation);
     });
   }
@@ -61,33 +65,34 @@ export default class AccountScreen extends React.Component {
     let { navigate } = this.props.navigation;
     let { profile } = this.state;
     return (
-      <ScrollView style={{ backgroundColor: '#f1f0f0', }}>
+      <ScrollView style={{ backgroundColor: '#f1f0f0', }} >
 
         <LogoutConfirmationModal ref='modal' {...this.props} />
-        {this.state.isLoggedIn ?
-          <View>
+        {
+          this.state.isLoggedIn ?
             <View>
-              <View style={styles.container}>
+              <View>
+                <View style={styles.container}>
 
-                { profile.isPhoneVerified ||
-                  <TouchableOpacity style={styles.stickyHeader} onPress={this._goToPhoneVerification}>
-                    <View style={{ flexDirection: 'row' }}>
-                      <View>
-                        <Icon
-                          name='ios-information-circle'
-                          type='ionicon'
-                          size={24}
-                          color='#fff' />
+                  {profile.isPhoneVerified ||
+                    <TouchableOpacity style={styles.stickyHeader} onPress={this._goToPhoneVerification}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View>
+                          <Icon
+                            name='ios-information-circle'
+                            type='ionicon'
+                            size={24}
+                            color='#fff' />
+                        </View>
+                        <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+                          <Text style={styles.txtstickyHeader}>Verifikasi nomor telepon kamu di sini</Text>
+                        </View>
                       </View>
-                      <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                        <Text style={styles.txtstickyHeader}>Verifikasi nomor telepon kamu di sini</Text>
-                      </View>
-                    </View>
 
-                  </TouchableOpacity>
-                }
+                    </TouchableOpacity>
+                  }
 
-                {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
+                  {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
               <View style={{ marginBottom: 20 }}>
                 <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
               </View>
@@ -104,100 +109,100 @@ export default class AccountScreen extends React.Component {
                 </View>
               </View>*/}
 
-                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row' }}>
 
-                  <View style={{ flex: 2 }}>
-                    <View>
-                      <Text style={styles.namaProfile}>{profile.name}</Text>
+                    <View style={{ flex: 2 }}>
+                      <View>
+                        <Text style={styles.namaProfile}>{profile.name}</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.descProfile}>{profile.email}</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.descProfile}>0{profile.phone}</Text>
+                      </View>
                     </View>
-                    <View>
-                      <Text style={styles.descProfile}>{profile.email}</Text>
-                    </View>
-                    <View>
-                      <Text style={styles.descProfile}>0{profile.phone}</Text>
-                    </View>
+
+                    <TouchableOpacity onPress={this._goToEditProfile}>
+                      <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                        <View>
+                          <Text style={styles.editProfile}>Ubah</Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
 
-                  <TouchableOpacity onPress={this._goToEditProfile}>
-                    <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                      <View>
-                        <Text style={styles.editProfile}>Ubah</Text>
-                      </View>
+                </View>
+
+              </View>
+
+              <View style={styles.container}>
+                <View>
+                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <Icon
+                        name='ios-contacts-outline'
+                        type='ionicon'
+                        size={26}
+                        color='#454545' />
+                    </View>
+                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                      <Text style={styles.optionProfile}>Undang Teman</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-
+                <View style={styles.divider}></View>
+                <View>
+                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <Icon
+                        name='ios-log-out'
+                        type='ionicon'
+                        size={26}
+                        color='#454545' />
+                    </View>
+                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                      <Text style={styles.optionProfile}>Log Out</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
-
             </View>
-
+            :
             <View style={styles.container}>
               <View>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
                   <View style={{ alignItems: 'flex-start' }}>
                     <Icon
-                      name='ios-contacts-outline'
+                      name='ios-log-in'
                       type='ionicon'
                       size={26}
                       color='#454545' />
                   </View>
                   <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                    <Text style={styles.optionProfile}>Undang Teman</Text>
+                    <Text style={styles.optionProfile}>Login</Text>
                   </View>
                 </TouchableOpacity>
               </View>
+
               <View style={styles.divider}></View>
               <View>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
                   <View style={{ alignItems: 'flex-start' }}>
                     <Icon
-                      name='ios-log-out'
+                      name='ios-laptop'
                       type='ionicon'
                       size={26}
                       color='#454545' />
                   </View>
                   <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                    <Text style={styles.optionProfile}>Log Out</Text>
+                    <Text style={styles.optionProfile}>Daftar</Text>
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-          :
-          <View style={styles.container}>
-            <View>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
-                <View style={{ alignItems: 'flex-start' }}>
-                  <Icon
-                    name='ios-log-in'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </View>
-                <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                  <Text style={styles.optionProfile}>Log In</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.divider}></View>
-            <View>
-              <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
-                <View style={{ alignItems: 'flex-start' }}>
-                  <Icon
-                    name='ios-laptop'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </View>
-                <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                  <Text style={styles.optionProfile}>Daftar</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
         }
-      </ScrollView>
+      </ScrollView >
     );
   }
 }

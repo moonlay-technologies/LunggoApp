@@ -7,7 +7,12 @@ import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
 import { fetchTravoramaLoginApi } from '../AuthController';
 import PersonDataForm from '../../components/PersonDataForm';
+import { shouldRefreshProfile } from '../../ProfileController';
+import {
+  validateUserName, validatePassword, validatePhone,
+} from '../../FormValidation';
 
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class Registration extends React.Component {
 
@@ -23,27 +28,53 @@ export default class Registration extends React.Component {
     let { params } = this.props.navigation.state;
     this.setState({ isLoading: true });
 
+    let onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation }) => {
+      let request = {
+        path: '/v1/account/verifyphone',
+        method: 'POST',
+        data: { countryCallCd, phoneNumber: phone, otp },
+        requiredAuthLevel: AUTH_LEVEL.User,
+      }
+      fetchTravoramaApi(request).then(({ status }) => {
+        shouldRefreshProfile();
+        if (status = 200) {
+          let { resetAfter, thruBeforeLogin } = params;
+          if (resetAfter)
+            backToMain(this.props.navigation);
+          else if (thruBeforeLogin)
+            pop(2);
+          else
+            pop();
+        }
+      });
+    };
+
+    let goToPhoneVerification = () => {
+      console.log('masuk');
+      replace('OtpVerification', {
+        countryCallCd: accountData.countryCallCd,
+        phone: accountData.phone,
+        onVerified: onOtpPhoneVerified,
+      });
+    };
+
     let request = {
       path: '/v1/register',
       method: 'POST',
-      data: {...accountData, phone: phoneWithoutCountryCode_Indonesia(accountData.phone) },
+      data: { ...accountData, phone: phoneWithoutCountryCode_Indonesia(accountData.phone), countryCallCd: '62' },
       requiredAuthLevel: AUTH_LEVEL.Guest,
-    }
+    };
     fetchTravoramaApi(request).then(response => {
       if (response.status == 200) {
-        fetchTravoramaLoginApi(accountData.email || accountData.phone, accountData.password)
+        fetchTravoramaLoginApi(accountData.email, '62', accountData.phone, accountData.password)
           .then(response => {
             if (response.status == 200) {
+              console.log('1212121');
+              setItemAsync('isLoggedIn', 'true');
               registerForPushNotificationsAsync();
               fetchWishlist();
-              let { resetAfter, thruBeforeLogin } = params;
-              if (resetAfter)
-                backToMain(this.props.navigation);
-              else if (thruBeforeLogin)
-                pop(2);
-              else
-                pop();
-              this.setState({ isLoading: false })
+              goToPhoneVerification();
+              // this.setState({ isLoading: false });
             } else {
               console.log(response);
               let error = 'Terjadi kesalahan pada server';
@@ -51,10 +82,10 @@ export default class Registration extends React.Component {
             this.setState({ error });
           }
           ).catch(error => {
-            this.setState({ isLoading: false });
+            // this.setState({ isLoading: false });
             console.log("Login error!!");
             console.log(error);
-          })
+          });
       }
       else {
         this.setState({ isLoading: false });
@@ -83,7 +114,7 @@ export default class Registration extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, backgroundColor:'white'}}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
           submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
         />

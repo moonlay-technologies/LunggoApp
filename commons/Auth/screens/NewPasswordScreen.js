@@ -12,6 +12,10 @@ import { validatePassword } from '../../../commons/FormValidation';
 import { resetPassword } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 import { fetchWishlist, backToMain } from '../../../api/Common';
+import { fetchTravoramaLoginApi } from '../AuthController';
+import registerForPushNotificationsAsync from '../../../api/NotificationController';
+
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class NewPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -29,16 +33,34 @@ export default class NewPasswordScreen extends React.Component {
 
   _submit = () => {
     let { password } = this.state;
-    let { countryCallCd, phone, otp } = this.props.navigation.state.params;
+    let { countryCallCd, phone, email, otp } = this.props.navigation.state.params;
     let errorPassword = validatePassword(password);
     if (errorPassword) {
       this.refs.password.focus();
       return this.setState({ errorPassword });
     }
     this.setState({ isLoading: true });
-    resetPassword(countryCallCd, phone, otp, password).then(response => {
+    resetPassword(email, countryCallCd, phone, otp, password).then(response => {
       let { status, message } = response;
-      if (status == 200) backToMain(this.props.navigation);
+      if (status == 200) {
+        fetchTravoramaLoginApi(email, countryCallCd, phone, password)
+          .then(response => {
+            if (response.status == 200) {
+              setItemAsync('isLoggedIn', 'true');
+              registerForPushNotificationsAsync();
+              fetchWishlist();
+              backToMain(this.props.navigation);
+            } else {
+              console.log(response);
+              let error = 'Terjadi kesalahan pada server';
+              console.log(error);
+            }
+          })
+          .catch(error => {
+            console.log("Login error!!");
+            console.log(error);
+          });
+      }
       this.setState({ isLoading: false, errorMessage: message });
     });
   }
