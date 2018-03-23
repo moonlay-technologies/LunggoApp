@@ -11,6 +11,7 @@ import * as Formatter from '../../customer/components/Formatter';
 import Modal from '../../commons/components/Modal';
 import globalStyles from '../../commons/globalStyles';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
+import { Icon } from 'react-native-elements';
 
 export default class Referral extends React.Component {
 
@@ -69,26 +70,38 @@ export default class Referral extends React.Component {
           onPress={this._goToReferralHistory}
           style={styles.containerCredits}
         >
-          <View style={{flexDirection:'row'}}>
-            <Text style={styles.h2}>
-              Kredit kamu:
-            </Text>
-            <Text style={styles.h2Credit}>
-              {Formatter.price(this.state.referralCredit)}
-            </Text>
+          <View style={{ flexDirection:'row', justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row'}}>
+              <View style={{marginRight:6}}>
+                <Icon
+                  name='ios-cash'
+                  type='ionicon'
+                  size={22}
+                  color='#fff' />
+              </View>
+              <Text style={styles.h2}>
+                Kredit:
+              </Text>
+              <Text style={styles.h2Credit}>
+                {Formatter.price(this.state.referralCredit)}
+              </Text>
+            </View>
+            <Text style={styles.h2}>Lihat Referral</Text>
           </View>
-          <Text style={styles.h2}>Lihat Referral</Text>
+          <View style={{marginTop:0 }}>
+            <Text style={styles.h3}>Point kamu akan kadaluarsa di 1 Des 2018</Text>
+          </View>
         </TouchableOpacity>
 
         <View style={styles.container}>
           <View style={{alignItems:'center'}}>
             <Image 
-              style={{ width: 220, height: 220, resizeMode: 'contain' }}
+              style={{ width: 190, height: 190, resizeMode: 'contain', opacity:0.5 }}
               source={require('../../assets/images/referral.png')} 
             />
           </View>
           <View style={{alignItems:'center', marginTop:10}}>
-            <Text style={styles.h1}>Undang Teman Kamu</Text>
+            <Text style={styles.h1}>Ajak Teman dan Dapatkan Credits</Text>
             <Text style={styles.activityDesc}>
               Immediately regret falling into bathtub kitten is playing with dead mouse i like
             </Text>
@@ -178,14 +191,13 @@ const styles = StyleSheet.create({
   containerCredits:{
     backgroundColor:'#f57b76',
     padding:10,
-    flexDirection:'row',
-    justifyContent:'space-between'
   },
   h1:{
     fontFamily: 'Hind-SemiBold',
-    fontSize: 22,
+    fontSize: 20,
     color: '#454545',
     backgroundColor:'transparent',
+    textAlign:'center',
     ...Platform.select({
       ios: {
         lineHeight: 19,
@@ -222,6 +234,23 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Hind-Bold',
     marginLeft: 5,
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 9,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  h3: {
+    fontSize: 13.5,
+    color: '#fff',
+    fontFamily: 'Hind',
     ...Platform.select({
       ios: {
         lineHeight: 14,

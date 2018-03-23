@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { Icon } from 'react-native-elements'
 import {
   Platform, StyleSheet, Text, View,
-  Image, TextInput, ScrollView, TouchableHighlight,
+  Image, TextInput, ScrollView, TouchableHighlight, KeyboardAvoidingView
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import * as Formatter from '../../customer/components/Formatter';
@@ -22,11 +22,12 @@ export default class AppointmentDetail extends React.Component {
     let { details } = this.props.navigation.state.params;
     // let {paxGroups} = details;
     return (
-      <ScrollView style={{flex:1,backgroundColor: '#f1f0f0',}}>
+      <ScrollView style={{flex:1,backgroundColor: '#f1f0f0' }}>
+         <KeyboardAvoidingView behavior="padding">
         <View style={{flex:1,backgroundColor: '#f1f0f0',}}>
 
           <View style={styles.containerListAppointmentHeader}>
-            <Text style={styles.activityTitle}>
+            <Text style={styles.activityTitle2}>
             {details.name}
             </Text>
 
@@ -64,7 +65,7 @@ export default class AppointmentDetail extends React.Component {
           </View>
 
           <View style={{paddingLeft:15}}>
-            <Text style={styles.activityTitle}>
+            <Text style={styles.activityTitle1}>
             Detail Peserta
             </Text>
           </View>
@@ -158,40 +159,38 @@ export default class AppointmentDetail extends React.Component {
                 </View>
               </View>*/}
 
-          <View style={styles.containerListAppointmentVerifikasi}>
-            <View style={{flex:1}}>
-              
-              <View>
-                <View style={{flex:2,}}>
-                  <View style={{marginBottom:10}}>
-                    <Text style={styles.label}>Masukkan Kode Verifikasi</Text>
-                  </View>
-                  
-                  <TextInput
-                    underlineColorAndroid= 'transparent'
-                    style={styles.txtInput}
-                    // onChangeText={ name => this.setState({name}) }
-                    // value={this.state.name}
-                    placeholder="Kode verifikasi"
-                  />
-                </View>
 
-                <View style={{flex:1, alignItems:'center', width:'100%', justifyContent:'center', marginTop:15}}>
-                  <LinearGradient
-                    colors={['#00d3c5', '#35eac6', '#6affc6']}
-                    start={[0, 0]}
-                    end={[1, 0]}
-                    style={{ height: 35, paddingTop: 8, alignItems: 'center', borderRadius: 5, width: '50%' }}>
-                    <Text style={{
-                      backgroundColor: 'transparent',
-                      fontSize: 15, color: '#ffffff',
-                      fontFamily: 'Hind-Bold',
-                    }}>
-                      Verifikasi
-                    </Text>
-                  </LinearGradient>
-                </View>
+          <View style={styles.containerListAppointmentVerifikasi}>
+            <View style={{}}>
+              <View style={{marginBottom:10}}>
+                <Text style={styles.label}>Masukkan Kode Verifikasi</Text>
               </View>
+              
+              <TextInput
+                underlineColorAndroid= 'transparent'
+                style={styles.txtInput}
+                // onChangeText={ name => this.setState({name}) }
+                // value={this.state.name}
+                placeholder="Kode verifikasi"
+              />
+            </View>
+
+            <View style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:15}}>
+              <LinearGradient
+                colors={['#00d3c5', '#35eac6', '#6affc6']}
+                start={[0, 0]}
+                end={[1, 0]}
+                style={{ height: 35, paddingTop: 8, alignItems: 'center', borderRadius: 5, width: '50%' }}>
+                <Text style={{
+                  backgroundColor: 'transparent',
+                  fontSize: 15, color: '#ffffff',
+                  fontFamily: 'Hind-Bold',
+                }}>
+                  Verifikasi
+                </Text>
+              </LinearGradient>
+            </View>
+          </View>
 
 {/*              <View style={{marginTop:40, alignItems:'center'}}>
                 <Button
@@ -212,10 +211,10 @@ export default class AppointmentDetail extends React.Component {
                   </View>
               </View>*/}
 
-            </View>
-          </View>
+          
           
         </View>
+        </KeyboardAvoidingView>
       </ScrollView>
     );
   }
@@ -237,7 +236,6 @@ const styles = StyleSheet.create({
   },
   containerListAppointmentVerifikasi: {
     padding:15,
-    flexDirection: 'row',
     flex:1,
     backgroundColor:'#fff',
     marginTop:30,
@@ -256,6 +254,14 @@ const styles = StyleSheet.create({
     color: '#565656',
     backgroundColor: '#f5f5f5',
     fontFamily: 'Hind',
+    ...Platform.select({
+      android: {
+        paddingTop:-1,
+        paddingBottom:0
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
 
   status: {
@@ -267,7 +273,7 @@ const styles = StyleSheet.create({
     height:15,
     marginRight:3,
   },
-  activityTitle:{
+  activityTitle1:{
     fontFamily: 'Hind-SemiBold',
     fontSize: 18,
     color: '#454545',
@@ -276,7 +282,26 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 19,
         paddingTop:15 ,
+      },
+      android: {
+        lineHeight: 30,
+        marginBottom:5,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityTitle2:{
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 18,
+    color: '#454545',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 19,
+        paddingTop:15,
         marginBottom: -15,
+
       },
       android: {
         lineHeight: 30,
@@ -290,12 +315,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind-SemiBold',
     fontSize: 16,
     color: '#454545',
-    backgroundColor:'transparent',
     ...Platform.select({
       ios: {
         lineHeight: 19,
-        paddingTop:15 ,
-        marginBottom: -15,
+        paddingTop:5 ,
+        marginBottom: -10,
       },
       android: {
         lineHeight: 30,
