@@ -18,7 +18,7 @@ import LogoutConfirmationModal from '../../commons/components/LogoutConfirmation
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
 import {
-  fetchAppointmentRequests, getAppointmentList,
+  fetchAppointmentRequests, getAppointmentList, getReservationList,
 } from './Appointments/AppointmentController';
 import { getActivityList } from './ActivityController';
 
@@ -31,8 +31,51 @@ export default class Dashboard extends React.Component {
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
       requests: null,
+      reservations:  [
+        {
+            "activity": {
+                "activityId": 2,
+                "name": "Tiket dufan",
+                "date": "2018-03-30T00:00:00",
+                "session": "10:00 - 13:00",
+                "mediaSrc": "https://www.ancol.com/sites/default/files/styles/1400x710/public/arung-jeram-slider-2.jpg?itok=A7NbC0Wr"
+            },
+            "rsvNo": "36541081",
+            "rsvTime": "2018-01-30T00:00:00",
+            "contact": {
+                "title": 0,
+                "name": "Peter Morticelli",
+                "countryCallCd": "62",
+                "phone": "1234567890",
+                "email": "petermort@wasasa.com"
+            },
+            "paxes": [],
+            "paxCount": [
+                {
+                    "type": "Adult",
+                    "count": 1,
+                    "totalPrice": 190000
+                }
+            ],
+            "paymentSteps": [
+                {
+                    "description": "DP Pertama",
+                    "amount": 10000,
+                    "date": "2018-03-23",
+                    "isCompleted": true
+                },
+                {
+                    "description": "DP Kedua",
+                    "amount": 8000,
+                    "date": "2018-04-20",
+                    "isCompleted": false
+                }
+            ],
+          }
+        ],
       activities: null,
       appointments: null,
+      // reservations: null,
     };
   }
 
@@ -59,26 +102,37 @@ export default class Dashboard extends React.Component {
     Promise.all([
       this._getAppointmentRequests(),
       this._getAppointmentList(),
-      this._getActivityList()
+      this._getActivityList(),
+      // this._getReservationList()
     ]);
   }
 
   _getAppointmentRequests = () => {
-    fetchAppointmentRequests().then(res => {
-      this.setState({ requests: res.appointmentRequests });
-    });
+    fetchAppointmentRequests().then(res =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ requests: res.appointmentRequests })
+    ).catch( e => console.warn(e));;
   }
 
   _getAppointmentList = () => {
     getAppointmentList().then(({ appointments }) =>
+      this.props.navigation.isFocused() &&
       this.setState({ appointments })
-    );
+    ).catch( e => console.warn(e));
   }
 
   _getActivityList = () => {
     getActivityList().then(({ activityList }) =>
+      // this.props.navigation.isFocused() &&
       this.setState({ activities: activityList })
-    );
+    ).catch( e => console.warn(e));;
+  }
+
+  _getReservationList = () => {
+    getReservationList().then(({ reservations }) =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ reservations })
+    ).catch( e => console.warn(e));;
   }
 
   _goToAppointmentRequest = () => {
@@ -88,7 +142,7 @@ export default class Dashboard extends React.Component {
 
   _goToAppointmentList = () => {
     this.props.navigation.navigate(
-      'AppointmentList', { list: this.state.appointments || [] }
+      'AppointmentList', { list: this.state.appointments }
     );
   }
 
@@ -102,6 +156,13 @@ export default class Dashboard extends React.Component {
   _goToDealsScreen = () => this.props.navigation.navigate('NotFound')
   // _goToActivityDetails = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
+
+  _goToReservations = () => {
+    this._closeSettingModal();
+    this.props.navigation.navigate( 'Reservations',
+      {reservations:this.state.reservations}
+    );
+  }
 
   _goToProfile = () => {
     this._closeSettingModal();
@@ -163,7 +224,11 @@ export default class Dashboard extends React.Component {
                 <LogoutConfirmationModal ref='logoutModal' {...this.props} />
 
                 <TouchableOpacity onPress={this._goToMutasi}>
-                  <Text style={styles.teks3a}>Lihat Daftar Transaksi</Text>
+                  <Text style={styles.teks3a}>Lihat Riwayat Transaksi</Text>
+                </TouchableOpacity>
+                <View style={styles.separatorOption}></View>
+                <TouchableOpacity onPress={this._goToReservations}>
+                  <Text style={styles.teks3a}>Lihat Transaksi Pesanan</Text>
                 </TouchableOpacity>
                 <View style={styles.separatorOption}></View>
                 {/*<TouchableOpacity onPress={this._goToProfile}>
@@ -296,7 +361,7 @@ export default class Dashboard extends React.Component {
 const styles = StyleSheet.create({
   modalMenu: {
     backgroundColor: '#fff',
-    width: 160,
+    width: 180,
     padding: 10,
     position: 'absolute',
     right: 10,
