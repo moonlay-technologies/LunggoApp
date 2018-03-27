@@ -39,6 +39,7 @@ import WebViewScreen from '../customer/screens/WebViewScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
+import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -54,9 +55,9 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: __DEV__ ? {
-        screen: MainTabNavigator
-        // screen:Referral
-        // screen:ReferralHistory
+        //screen: MainTabNavigator
+        //screen:Referral
+        screen:F_AppointmentDetail
         //screen:Dashboard
        // screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
@@ -96,6 +97,7 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
       Referral: { screen: Referral },
+      F_AppointmentDetail: { screen: F_AppointmentDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
     },
