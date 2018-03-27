@@ -34,9 +34,16 @@ export default class AppointmentDetail extends React.Component {
             <View style={{flexDirection:'row', marginTop:20}}>
 
               <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10, marginRight:10}}>
-                <Text style={styles.infoTitle}>
+                {/*<Text style={styles.infoTitle}>
                   Tanggal
-                </Text>
+                </Text>*/}
+                <View style={{marginBottom:-5, marginTop:5}}>
+                  <Icon
+                    name='ios-calendar'
+                    type='ionicon'
+                    size={30}
+                    color='#00d3c5' />
+                </View>
                 <View>
                   <Text style={styles.activityDesc}>
                     {Moment(details.date).format('ddd, D MMM YYYY')}
@@ -50,9 +57,16 @@ export default class AppointmentDetail extends React.Component {
               </View>
 
               <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10}}>
-                <Text style={styles.infoTitle}>
+                {/*<Text style={styles.infoTitle}>
                   Total Pax
-                </Text>
+                </Text>*/}
+                <View style={{marginBottom:-5, marginTop:5}}>
+                  <Icon
+                    name='ios-people'
+                    type='ionicon'
+                    size={30}
+                    color='#00d3c5' />
+                </View>
                 <View>
                   <Text style={styles.activityDesc}>
                     {details.totalPax} orang peserta
