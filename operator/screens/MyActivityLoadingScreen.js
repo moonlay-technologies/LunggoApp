@@ -24,8 +24,9 @@ export default class ActivityListLoadingScreen extends React.Component {
 
   componentDidMount() {
     getActivityList().then( res => {
-      this.setState({list:res.activityList, isLoading:false})
-    });
+      this.setState({list:res.activityList})
+    }).catch( e => console.warn(e))
+      .finally( () => this.setState({isLoading:false}));
   }
 
   render() {

@@ -7,12 +7,10 @@ import {
   TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
-import * as Formatter from '../../customer/components/Formatter';
+import { dateFullShort, timeFromNow } from '../../customer/components/Formatter';
 import { fetchAppointmentRequests } from './Appointments/AppointmentController';
 import { shouldRefreshAppointmentRequest } from './AppointmentList';
-import Moment from 'moment';
-import 'moment/locale/id';
-
+import { getPaxCountText } from '../../commons/otherCommonFunctions';
 
 class ListItem extends React.PureComponent {
 
@@ -32,26 +30,23 @@ class ListItem extends React.PureComponent {
                 <Text style={styles.activityTitle}>
                   {item.activityName}
                 </Text>
-                {/*<Text>
-                  {Moment(item.requestTime).fromNow()}
-                </Text>*/}
               </View>
               <View style={{ width: '100%', flexDirection: 'row', marginTop: 5 }}>
                 <Text style={styles.activityDesc}>
-                  {Moment(item.date).format('ddd, D MMM YYYY')}
+                  {dateFullShort(item.date)}
                 </Text>
                 <Text style={[styles.activityDesc, { marginLeft: 10 }]}>
                   {item.session}
                 </Text>
               </View>
               <Text style={[styles.activityDesc,]}>
-                {item.contactName} ({Formatter.paxCount(item.paxCount)})
+                {item.contactName} ({getPaxCountText(item.paxCount)})
               </Text>
             </View>
 
             <View style={{ marginTop: 20 }}>
               <Text style={styles.dueDate}>
-                Batas waktu menerima: {Moment(item.timeLimit).fromNow()}
+                Batas waktu menerima: {timeFromNow(item.timeLimit)()}
               </Text>
             </View>
 
@@ -116,7 +111,7 @@ export default class AppointmentRequests extends React.Component {
     this._refreshList();
   }
 
-  _pullRefresh = () => {
+  _pullToRefresh = () => {
     // TODO: pull to refresh
   }
 

@@ -1,99 +1,109 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView
+  Platform, StyleSheet, Text, View, Image, TouchableOpacity,
+  ScrollView, FlatList,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+import { dateFullShort, rupiah } from '../../customer/components/Formatter';
+import {
+  getPaxCountText, getPaymentSumInSteps as getPaymentInfo,
+  getPaymentSumInReservations as getPaymentSum,
+} from '../../commons/otherCommonFunctions';
 
-export default class LoginScreen extends Component<{}> {
+
+export default class F_AppointmentDetail extends React.Component {
 
   static navigationOptions = {
     title: 'Appointment Detail',
   }
 
+  _keyExtractor = (item, index) => index
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+      {...this.props}
+    />
+  )
+
   render() {
+    let {details} = this.props.navigation.state.params;
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.center}>
-          <Text style={styles.activityTitle}> *Jalan-Jalan Ke Bali*</Text>
+        <View style={[styles.center,{paddingHorizontal:15}]}>
+          <Text style={styles.activityTitle}>{details.name}</Text>
         </View>
         <View style={styles.center}>
-          <Text style={styles.activityDesc}>*Tanggal Perjalanan: 25-04-2018*</Text>
+          <Text style={styles.activityDesc}>
+            {dateFullShort(details.date)}{details.session&&' pk. '+details.session}
+          </Text>
         </View>
-        <View style={styles.divider}></View>
+        <View style={styles.divider} />
         <View style={{flexDirection:'row', paddingHorizontal:15}}>
           <View style={{flex:1,}}>
-            <Text style={styles.activityDesc}>Total Pendapatan:</Text>
             <Text style={styles.activityDesc}>Yang sudah dibayar:</Text>
+            <Text style={styles.activityDesc}>Total Pendapatan:</Text>
           </View>
           <View style={{flex:1, alignItems:'flex-end'}}> 
-            <Text style={styles.nominalKecil}>*Rp 300.000*</Text>
-            <Text style={styles.nominalKecil}>*Rp 300.000*</Text>
+            <Text style={styles.nominalKecil}>
+              {getPaymentSum(details.reservations,'completed')}
+            </Text>
+            <Text style={styles.nominalKecil}>
+              {getPaymentSum(details.reservations)}
+            </Text>
           </View>
         </View>
-        <View style={styles.divider}></View>
-        <View style={styles.boxReservation}>  
-          <View style={styles.containerAvatar}>
-            <Text style={styles.avatar}>A</Text>
-          </View>
-          <View style={{width:'80%'}}>
-            <View>
-              <Text style={styles.namaPax}>*Ali Zainal*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityDesc}>*4 dewasa, 2 anak-anak*</Text>
-            </View>
-           {/* <View>
-              <Text style={styles.activityTanggal}>*Tanggal Pesanan: 10-11-2018*</Text>
-            </View>*/}
-            <View>
-              <Text style={styles.activityTanggal}>*Yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Total Pembayaran:<Text style={styles.nominalKecil}> Rp 1.000.000</Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
-        <View style={styles.boxReservation}>  
-          <View style={styles.containerAvatar}>
-            <Text style={styles.avatar}>I</Text>
-          </View>
-          <View style={{width:'80%'}}>
-            <View>
-              <Text style={styles.namaPax}>*Badi*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityDesc}>*4 dewasa, 2 anak-anak*</Text>
-            </View>
-           {/* <View>
-              <Text style={styles.activityTanggal}>*Tanggal Pesanan: 10-11-2018*</Text>
-            </View>*/}
-            <View>
-              <Text style={styles.activityTanggal}>*Yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Total Pembayaran:<Text style={styles.nominalKecil}> Rp 1.000.000</Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
-
-
-         
+        <View style={styles.divider} />
+        <FlatList
+          style={{paddingTop:15}}
+          data={details.reservations}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+        />
       </ScrollView>
     );
+  }
+}
+
+
+class ListItem extends React.PureComponent {
+
+  // _goToFAppointmentDetail = () => this.props.navigation.navigate(
+  //   'F_AppointmentDetail', {details: this.props.item}
+  // )
+
+  render() {
+    let {item} = this.props;
+    return (
+      <View>
+        <TouchableOpacity style={styles.boxReservation}>  
+          <View style={styles.containerAvatar}>
+            <Text style={styles.avatar}>
+              {item.contact.name.substr(0,1)}
+            </Text>
+          </View>
+          <View style={{width:'80%'}}>
+            <Text style={styles.namaPax}>{item.contact.name}</Text>
+            <Text style={styles.activityDesc}>
+              {getPaxCountText(item.paxCount)}
+            </Text>
+           {/*<Text style={styles.activityTanggal}>*Tanggal Pesanan: 10-11-2018*</Text>*/}
+            <Text style={styles.activityTanggal}>
+              Yang sudah dibayar:
+              <Text style={styles.nominalKecil}> {getPaymentInfo(item.paymentSteps,'completed')}</Text>
+            </Text>
+            <Text style={styles.activityTanggal}>
+              Total Pembayaran:
+              <Text style={styles.nominalKecil}> {getPaymentInfo(item.paymentSteps)}</Text>
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.divider} />
+      </View>
+    )
   }
 }
 
@@ -158,12 +168,13 @@ const styles = StyleSheet.create({
   },
   activityTitle: {
     fontFamily: 'Hind-SemiBold',
-    fontSize: 27,
+    fontSize: 24,
     color: '#454545',
+    textAlign:'center',
     ...Platform.select({
       ios: {
-        lineHeight: 26,
-        paddingTop: 10,
+        lineHeight: 18,
+        paddingTop: 15,
         marginBottom: -15,
       },
       android: {

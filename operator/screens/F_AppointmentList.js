@@ -1,147 +1,165 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity
+import { Platform, StyleSheet, Text, View, Image,
+  ScrollView, TouchableOpacity, FlatList,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker'
+import ReactNativeDatepicker from 'react-native-datepicker';
+import { dateFullShort, rupiah, paxCount } from '../../customer/components/Formatter';
+import { fetchAppointmentList } from './Appointments/AppointmentController';
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
+import {
+  getTotalPaxCountsText,
+  getPaymentSumInReservations as getPaymentInfo,
+  getPaymentSumInAppointments as getPaymentSum,
+} from '../../commons/otherCommonFunctions';
 
-export default class LoginScreen extends Component<{}> {
+export default class F_AppointmentList extends React.Component {
+
+  constructor (props) {
+    super(props)
+    let today = new Date();
+    this.state = {
+      isLoading: true,
+      list: [],
+      startDate: new Date(),
+      endDate: new Date( today.setMonth(today.getMonth() + 1) ),
+    };
+  }
 
   static navigationOptions = {
     title: 'Appointment List',
   }
 
+  componentDidMount() {
+    this.setState({isLoading:true});
+    fetchAppointmentList('type=order')
+      .then( res => this.setState({list:res.appointments}) )
+      .catch( e => console.warn(e) )
+      .finally( () => this.setState({isLoading: false}) );
+  }
+
+  _keyExtractor = (item, index) => index
+  _renderItem = ({item, index}) => (
+    <ListItem
+      item={item}
+      index={index}
+      {...this.props}
+    />
+  );
+
   render() {
-    return (
+    let {startDate, endDate, list} = this.state;
+    return ( this.state.isLoading ? <LoadingAnimation/> :
       <ScrollView style={styles.container}>
         <View style={styles.center}>
           <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
-          <Text style={styles.nominalBesar}>*Rp 1.300.000* </Text>
+          <Text style={styles.nominalBesar}>{getPaymentSum(list)}</Text>
           <View style={{marginTop:10, alignItems:'center'}}>
-            <Text style={styles.activityDesc}>*Total yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 300.000* </Text></Text>
+            <Text style={styles.activityDesc}>Total yang sudah dibayar:
+              <Text style={styles.nominalKecil}> {getPaymentSum(list,'completed')}</Text>
+            </Text>
             <View style={{marginTop:3}}>
-              <Text style={styles.activityDesc}>*Periode (02-01-2017 - 12-08-2018)*</Text>
+              <Text style={styles.activityDesc}>
+                Periode {dateFullShort(startDate)} - {dateFullShort(endDate)}
+              </Text>
             </View>
           </View>
         </View>
-        <View style={styles.divider}></View>
+        <View style={styles.divider} />
         <View style={{flexDirection:'row'}}>
-          <View style={{flex:1, alignItems:'center'}}>
-             <DatePicker
-              style={styles.containerTanggal}
-              date="2016-05-15"
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="2016-05-01"
-              maxDate="2016-06-01"
-              showIcon={false}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateInput: {
-                  borderRadius: 3,
-                  borderColor: '#cdcdcd',
-                  height:35,
-                },
-              }}
-              onDateChange={(date) => {this.setState({date: date})}}
-            />
-           </View>
-           <View style={{justifyContent:'center'}}>
-             <Text>-</Text>
-           </View>
-           <View style={{flex:1, alignItems:'center'}}> 
-             <DatePicker
-              style={styles.containerTanggal}
-              date="2016-05-15"
-              mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
-              minDate="2016-05-01"
-              maxDate="2016-06-01"
-              showIcon={false}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateInput: {
-                  borderRadius: 3,
-                  borderColor: '#cdcdcd',
-                  height:35,
-                },
-              }}
-              onDateChange={(date) => {this.setState({date: date})}}
-            />
-           </View>
+          <DatePicker
+            date={this.state.startDate}
+            onDateChange={ startDate => this.setState({startDate}) }
+          />
+          <View style={{justifyContent:'center'}}>
+            <Text>-</Text>
+          </View>
+          <DatePicker
+            date={this.state.endDate}
+            onDateChange={ endDate => this.setState({endDate}) }
+          />
         </View>
         <View style={styles.divider}></View>
-        <TouchableOpacity style={styles.boxReservation}>  
-          <View style={{marginRight:10, width:'20%' }}>
-            <Image style={{ height: 55, width:'100%',}} source={require('../../assets/images/bg1.jpg')} />
-          </View>
-          <View style={{width:'80%'}}>
-            <Text style={styles.activityTitle}>
-              *Jalan-Jalan Ke Bali*
-            </Text>
-            <View>
-              <Text style={styles.activityTanggal}>*Tanggal Aktifitas: 10-11-2018*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityDesc}>*4 dewasa, 2 anak-anak*</Text>
-            </View>
-            
-            <View>
-              <Text style={styles.activityTanggal}>*Yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Total Pembayaran:<Text style={styles.nominalKecil}> Rp 1.000.000</Text>
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        <TouchableOpacity style={styles.boxReservation}>  
-          <View style={{marginRight:10, width:'20%' }}>
-            <Image style={{ height: 55, width:'100%',}} source={require('../../assets/images/other-img4.jpg')} />
-          </View>
-          <View style={{width:'80%'}}>
-            <Text style={styles.activityTitle}>
-              *Jalan-Jalan Ke Surabaya*
-            </Text>
-            <View>
-              <Text style={styles.activityTanggal}>*Tanggal Aktifitas: 10-11-2018*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityDesc}>*4 dewasa, 2 anak-anak*</Text>
-            </View>
-            
-            <View>
-              <Text style={styles.activityTanggal}>*Yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Total Pembayaran:<Text style={styles.nominalKecil}> Rp 1.000.000</Text>
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-
-
-         
+        { list.length ?
+          <FlatList
+              style={{paddingTop:15}}
+              data={list}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+          />
+        :
+          <Text>You have no appointment yet</Text>
+        }
       </ScrollView>
     );
   }
 }
+
+class ListItem extends React.PureComponent {
+
+  _goToFAppointmentDetail = () => this.props.navigation.navigate(
+    'F_AppointmentDetail', {details: this.props.item}
+  )
+
+  render() {
+    let {item} = this.props;
+    return (
+      <View>
+        <TouchableOpacity style={styles.boxReservation} onPress={this._goToFAppointmentDetail}>
+          <View style={{marginRight:10, width:'20%' }}>
+            <Image style={{ height: 55, width:'100%',}} source={{uri:item.mediaSrc}} />
+          </View>
+          <View style={{width:'80%'}}>
+            <Text style={styles.activityTitle}>
+              {item.name}
+            </Text>
+            <Text style={styles.activityTanggal}>
+              {dateFullShort(item.date)}{item.session&&' pk. '+item.session}
+            </Text>
+            <Text style={styles.activityDesc}>{getTotalPaxCountsText(item.reservations)}</Text>
+            
+            <Text style={styles.activityTanggal}>
+              Yang sudah dibayar:
+              <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations,'completed')}</Text>
+            </Text>
+            <Text style={styles.activityTanggal}>
+              Total Pembayaran:
+              <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations)}</Text>
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.divider} />
+      </View>
+    );
+  }
+}
+
+
+const DatePicker = props => (
+  <TouchableOpacity style={{flex:1, alignItems:'center'}}> 
+    <ReactNativeDatepicker
+      style={styles.containerTanggal}
+      date={props.date}
+      mode="date"
+      placeholder="select date"
+      format="YYYY-MM-DD"
+      minDate={new Date()}
+      showIcon={false}
+      confirmBtnText="Confirm"
+      cancelBtnText="Cancel"
+      customStyles={{
+        dateInput: {
+          borderRadius: 3,
+          borderColor: '#cdcdcd',
+          height:35,
+        },
+      }}
+      onDateChange={props.onDateChange}
+    />
+  </TouchableOpacity>
+)
 
 const styles = StyleSheet.create({
   container: {

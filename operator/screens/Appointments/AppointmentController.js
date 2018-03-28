@@ -16,63 +16,31 @@ export async function fetchAppointmentRequests() {
   }
 }
 
-export const fetchAppointmentList = async () => {
-  const version = 'v1';
-  const path = `/${version}/operator/appointments`;
-  let request = { path, requiredAuthLevel: AUTH_LEVEL.User }
-  try {
-    let list = await fetchTravoramaApi(request);
-    await setItemAsync('appointmentList', JSON.stringify(list));
-    console.log('list');
-    console.log(list);
-    return list;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export const getAppointmentList = async () => {
   let shouldRefresh = await getItemAsync('shouldRefresh.appointmentList');
-  console.log('shouldRefresh');
-  console.log(shouldRefresh);
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.appointmentList');
     return fetchAppointmentList();
+  } else {
+    let listJson = await getItemAsync('appointmentList');
+    if (!listJson) return fetchAppointmentList();
+
+    let list = JSON.parse(listJson);
+    return list;
   }
-
-  let listJson = await getItemAsync('appointmentList');
-  console.log('listJson');
-  console.log(listJson);
-  if (!listJson) return fetchAppointmentList();
-
-  let list = JSON.parse(listJson);
-  return list;
 }
 
-export const fetchReservationList = async () => {
+export const fetchAppointmentList = async (params = '') => {
   const version = 'v1';
-  const path = `/${version}/operator/reservations`;
+  const path = `/${version}/operator/appointments?${params}`;
   let request = { path, requiredAuthLevel: AUTH_LEVEL.User }
   try {
     let list = await fetchTravoramaApi(request);
-    await setItemAsync('reservationList', JSON.stringify(list));
+    setItemAsync('appointmentList', JSON.stringify(list));
     return list;
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
-}
-
-export const getReservationList = async () => {
-  let shouldRefresh = await getItemAsync('shouldRefresh.reservationList');
-  if (shouldRefresh) {
-    deleteItemAsync('shouldRefresh.reservationList');
-    return fetchReservationList();
-  }
-  let listJson = await getItemAsync('reservationList');
-  if (!listJson) return fetchReservationList();
-
-  let list = JSON.parse(listJson);
-  return list;
 }
 
 export async function shouldRefreshAppointmentList() {

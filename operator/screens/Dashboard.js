@@ -84,7 +84,7 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    getProfile().then(profile => this.setState(profile));
+    getProfile().then(profile => this.setState(profile)).catch(e=>console.warn(e));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;
@@ -116,7 +116,7 @@ export default class Dashboard extends React.Component {
 
   _getAppointmentList = () => {
     getAppointmentList().then(({ appointments }) =>
-      this.props.navigation.isFocused() &&
+      // this.props.navigation.isFocused() &&
       this.setState({ appointments })
     ).catch( e => console.warn(e));
   }
@@ -142,7 +142,7 @@ export default class Dashboard extends React.Component {
 
   _goToAppointmentList = () => {
     this.props.navigation.navigate(
-      'AppointmentList', { list: this.state.appointments }
+      'AppointmentList', { list: this.state.appointments || []}
     );
   }
 
