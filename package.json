@@ -35,6 +35,7 @@
     "react-native-svg-uri": "^1.2.3",
     "react-native-swipeout": "^2.3.1",
     "react-native-swiper": "^1.5.13",
+    "react-native-timeline-listview": "^0.2.3",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.4.0",
     "react-redux": "^5.0.7"
