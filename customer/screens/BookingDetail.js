@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
     marginTop: 3
   },
   activityTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
     }),
   },
   activitydetailTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 19,
     color: '#454545',
     ...Platform.select({
@@ -640,7 +640,7 @@ const styles = StyleSheet.create({
   activityDesc1: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
   hargaDesc: {
     fontSize: 14,
     color: '#f57b76',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,

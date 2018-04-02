@@ -160,7 +160,7 @@ export default class AddPax extends Component {
               backgroundColor: '#23d3c3',
               width:'100%', 
             }}
-            style={{fontSize: 16, color: '#ffffff', fontFamily:'Hind-Bold'}}
+            style={{fontSize: 16, color: '#ffffff', fontFamily:'HindBold'}}
             onPress={this._add}
             styleDisabled={{color:'#fff', opacity:0.7}}
           >

@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100
   },
   activitydetailTitle: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 16,
     color: '#454545',
     ...Platform.select({
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   priceTitle: {
     fontSize: 16,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 5,

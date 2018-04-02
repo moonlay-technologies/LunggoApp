@@ -114,7 +114,7 @@ export default TabNavigator(
       activeTintColor: Colors.bottomTabSelected,
       labelStyle: {
         fontSize: 12,
-        fontFamily: 'Hind-SemiBold',
+        fontFamily: 'HindSemiBold',
         ...Platform.select({
           ios: {
             marginBottom: -8,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   txtNotification: {
     color: '#fff',
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 11,
     ...Platform.select({
       ios: {

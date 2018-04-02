@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     }),
   },
   activityTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     }),
   },
   activityPrize: {
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     fontSize: 14,
     color: '#000',
     ...Platform.select({
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 16,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     color: '#f74d4d',
     fontSize: 14,
     textAlign: 'right',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,

@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
   },
   namaProfile: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 22,
     color: '#454545',
     letterSpacing: -1,
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#f57b76',
     marginTop: 2,
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   teks2: {
     fontSize: 20,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
   teks4: {
     fontSize: 14,
     color: '#23d3c3',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     textAlign: 'center',
     ...Platform.select({
       ios: {
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
   teks5: {
     fontSize: 14,
     color: '#f57b76',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     textAlign: 'center',
     ...Platform.select({
       ios: {
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   categoryTitle: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 19,
     color: '#454545',
   },
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
   },
   boldRating: {
     fontSize: 45,
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     ...Platform.select({
       ios: {
         // lineHeight:19*0.8,
@@ -605,7 +605,7 @@ const styles = StyleSheet.create({
     }),
   },
   point: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 30,
     color: '#01d4cb',
     ...Platform.select({
@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: 16,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     textAlign: 'right',
     ...Platform.select({
       ios: {

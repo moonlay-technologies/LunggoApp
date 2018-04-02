@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     flex:1,
   },
   textCartBesar: {
-    fontFamily: 'Hind-Bold', 
+    fontFamily: 'HindBold', 
     color:'#454545', 
     fontSize:19,
     ...Platform.select({

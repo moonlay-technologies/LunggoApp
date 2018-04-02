@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   activitydetailTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 19,
     color: '#454545',
     ...Platform.select({
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     borderRadius: 45
   },
   descProfile: {
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     }),
   },
   editProfile: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 15,
     color: '#00a89d',
     ...Platform.select({
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     }),
   },
   optionProfile: {
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     fontSize: 16,
     color: '#454545',
     ...Platform.select({
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     }),
   },
   namaProfile: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 18,
     color: '#454545',
     ...Platform.select({
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     }),
   },
   txtstickyHeader: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 15,
     color: '#fff',
     ...Platform.select({

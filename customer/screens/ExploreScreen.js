@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     }),
   },
   activityTitleBig: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 20,
     color: '#454545',
     ...Platform.select({
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: 15,
     color: '#454545',
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     ...Platform.select({
       ios: {
         lineHeight: 10,
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
     }),
   },
   categoryTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 22,
     color: '#454545',
   },
