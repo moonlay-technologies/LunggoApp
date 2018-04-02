@@ -41,6 +41,7 @@ import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
 import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
 import F_ReservationDetail from '../operator/screens/F_ReservationDetail';
+import ReservationDetail from '../operator/screens/ReservationDetail';
 
 // import Filter from '../screens/Filter';
 // import WelcomeScreen from '../screens/WelcomeScreen';
@@ -58,8 +59,8 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         //screen: MainTabNavigator
         //screen:Referral
-        screen:F_ReservationDetail
-        //screen:Dashboard
+        //screen:AppointmentRequest
+        screen:Dashboard
        // screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
@@ -100,6 +101,7 @@ export default class RootNavigator extends React.Component {
       Referral: { screen: Referral },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
       F_ReservationDetail: { screen: F_ReservationDetail },
+      ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
     },

@@ -18,7 +18,7 @@ import Timeline from 'react-native-timeline-listview'
 export default class LoginScreen extends Component<{}> {
 
   static navigationOptions = {
-    title: 'Reservatioan Detail',
+    title: 'Reservation Detail',
   }
 
   constructor(){
