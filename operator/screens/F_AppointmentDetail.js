@@ -71,15 +71,15 @@ export default class F_AppointmentDetail extends React.Component {
 
 class ListItem extends React.PureComponent {
 
-  // _goToFAppointmentDetail = () => this.props.navigation.navigate(
-  //   'F_AppointmentDetail', {details: this.props.item}
-  // )
+  _goToFReservationDetail = () => this.props.navigation.navigate(
+    'F_ReservationDetail', {rsv: this.props.item}
+  )
 
   render() {
     let {item} = this.props;
     return (
       <View>
-        <TouchableOpacity style={styles.boxReservation}>  
+        <TouchableOpacity style={styles.boxReservation} onPress={this._goToFReservationDetail}>
           <View style={styles.containerAvatar}>
             <Text style={styles.avatar}>
               {item.contact.name.substr(0,1)}
