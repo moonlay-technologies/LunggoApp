@@ -58,8 +58,8 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         //screen: MainTabNavigator
         //screen:Referral
-        screen:F_AppointmentList
         // screen:F_AppointmentDetail
+        screen:F_AppointmentList
         // screen:Dashboard
        // screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
@@ -101,6 +101,7 @@ export default class RootNavigator extends React.Component {
       Referral: { screen: Referral },
       F_AppointmentList: { screen: F_AppointmentList },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
+      F_ReservationDetail: { screen: F_ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
     },
