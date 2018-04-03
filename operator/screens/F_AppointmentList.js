@@ -1,12 +1,11 @@
 'use strict';
 
 import React from 'react';
-import Button from 'react-native-button';
 import { Platform, StyleSheet, Text, View, Image,
   ScrollView, TouchableOpacity, FlatList,
 } from 'react-native';
 import ReactNativeDatepicker from 'react-native-datepicker';
-import { dateFullShort, rupiah, paxCount } from '../../customer/components/Formatter';
+import { dateFullShort } from '../../customer/components/Formatter';
 import { fetchAppointmentList } from './Appointments/AppointmentController';
 import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import {
@@ -14,18 +13,22 @@ import {
   getPaymentSumInReservations as getPaymentInfo,
   getPaymentSumInAppointments as getPaymentSum,
 } from '../../commons/otherCommonFunctions';
+import Moment from 'moment';
+import 'moment/locale/id';
 
 export default class F_AppointmentList extends React.Component {
 
   constructor (props) {
     super(props)
-    let today = new Date();
+    // let today = new Date();
     this.state = {
       isLoading: true,
       list: [],
-      startDate: new Date(),
-      endDate: new Date( today.setMonth(today.getMonth() + 1) ),
+      startDate: Moment().startOf('Month').format('DD-MM-YYYY'),
+      endDate: Moment().endOf('Month').format('DD-MM-YYYY')//new Date( today.setMonth(today.getMonth() + 1) ),
     };
+    // console.log('constr',Moment().calendar())
+    // console.log(Moment().locale())
   }
 
   static navigationOptions = {
@@ -34,10 +37,26 @@ export default class F_AppointmentList extends React.Component {
 
   componentDidMount() {
     this.setState({isLoading:true});
-    fetchAppointmentList('type=order')
+    this._getAppointmentList(this.state);
+    Expo.Util.getCurrentTimeZoneAsync().then(a =>console.log(a))
+  }
+
+  _getAppointmentList = ({startDate, endDate}) => {
+    // Moment.utc();
+    // console.log(Moment())
+    let start = Moment(startDate, 'MM/DD/YYYY', 'en');
+    let end = Moment(endDate, 'MM/DD/YYYY', 'en'); 
+    let params = `type=order&startDate=${start}&endDate=${end}`;
+
+    // console.log('getAppoin',Moment().locale())
+    // console.log(Moment().calendar())
+    
+    fetchAppointmentList(params)
       .then( res => this.setState({list:res.appointments}) )
       .catch( e => console.warn(e) )
       .finally( () => this.setState({isLoading: false}) );
+    // Moment.locale();
+    // setTimeout( ()=> console.log(Moment()),1000)
   }
 
   _keyExtractor = (item, index) => index
@@ -47,7 +66,12 @@ export default class F_AppointmentList extends React.Component {
       index={index}
       {...this.props}
     />
-  );
+  )
+
+  _changeDate = (date,whichDate) => {
+    this._getAppointmentList({...this.state, [whichDate]:date});
+    this.setState({ [whichDate]:date, isLoading: true });
+  }
 
   render() {
     let {startDate, endDate, list} = this.state;
@@ -70,15 +94,15 @@ export default class F_AppointmentList extends React.Component {
         <View style={styles.divider} />
         <View style={{flexDirection:'row'}}>
           <DatePicker
-            date={this.state.startDate}
-            onDateChange={ startDate => this.setState({startDate}) }
+            date={startDate}
+            onDateChange={ d => this._changeDate( d,'startDate')}
           />
           <View style={{justifyContent:'center'}}>
             <Text>-</Text>
           </View>
           <DatePicker
-            date={this.state.endDate}
-            onDateChange={ endDate => this.setState({endDate}) }
+            date={endDate}
+            onDateChange={ d => this._changeDate( d,'endDate')}
           />
         </View>
         <View style={styles.divider}></View>
@@ -144,18 +168,13 @@ const DatePicker = props => (
       date={props.date}
       mode="date"
       placeholder="select date"
-      format="YYYY-MM-DD"
-      minDate={new Date()}
+      format="DD-MM-YYYY"
+      minDate={Moment().subtract(1, 'years').format('MM-DD-YYYY')}
+      maxDate={Moment().add(1, 'years').format('MM-DD-YYYY')}
       showIcon={false}
       confirmBtnText="Confirm"
       cancelBtnText="Cancel"
-      customStyles={{
-        dateInput: {
-          borderRadius: 3,
-          borderColor: '#cdcdcd',
-          height:35,
-        },
-      }}
+      customStyles={styles.dateInput}
       onDateChange={props.onDateChange}
     />
   </TouchableOpacity>
@@ -289,5 +308,10 @@ const styles = StyleSheet.create({
   },
   containerTanggal: {
     width: '90%',
+  },
+  dateInput: {
+    borderRadius: 3,
+    borderColor: '#cdcdcd',
+    height:35,
   },
 });
