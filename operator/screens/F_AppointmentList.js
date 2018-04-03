@@ -20,15 +20,12 @@ export default class F_AppointmentList extends React.Component {
 
   constructor (props) {
     super(props)
-    // let today = new Date();
     this.state = {
       isLoading: true,
       list: [],
-      startDate: Moment().startOf('Month').format('DD-MM-YYYY'),
-      endDate: Moment().endOf('Month').format('DD-MM-YYYY')//new Date( today.setMonth(today.getMonth() + 1) ),
+      startDate: Moment().startOf('Month'),
+      endDate: Moment().endOf('Month'),
     };
-    // console.log('constr',Moment().calendar())
-    // console.log(Moment().locale())
   }
 
   static navigationOptions = {
@@ -38,44 +35,33 @@ export default class F_AppointmentList extends React.Component {
   componentDidMount() {
     this.setState({isLoading:true});
     this._getAppointmentList(this.state);
-    Expo.Util.getCurrentTimeZoneAsync().then(a =>console.log(a))
   }
 
   _getAppointmentList = ({startDate, endDate}) => {
-    // Moment.utc();
-    // console.log(Moment())
-    let start = Moment(startDate, 'MM/DD/YYYY', 'en');
-    let end = Moment(endDate, 'MM/DD/YYYY', 'en'); 
+    let start = Moment(startDate).format('MM/DD/YYYY');
+    let end   = Moment( endDate ).format('MM/DD/YYYY');
+    // let start = Moment.utc(startDate).format('MM/DD/YYYY');
+    // let end   = Moment.utc( endDate ).format('MM/DD/YYYY');
     let params = `type=order&startDate=${start}&endDate=${end}`;
-
-    // console.log('getAppoin',Moment().locale())
-    // console.log(Moment().calendar())
-    
     fetchAppointmentList(params)
-      .then( res => this.setState({list:res.appointments}) )
+      .then( res => this.setState({list: res.appointments}) )
       .catch( e => console.warn(e) )
       .finally( () => this.setState({isLoading: false}) );
-    // Moment.locale();
-    // setTimeout( ()=> console.log(Moment()),1000)
   }
 
   _keyExtractor = (item, index) => index
-  _renderItem = ({item, index}) => (
-    <ListItem
-      item={item}
-      index={index}
-      {...this.props}
-    />
-  )
+  _renderItem = ({item, index}) =>
+    <ListItem item={item} index={index} {...this.props} />
 
   _changeDate = (date,whichDate) => {
+    date = Moment(date,'dddd, D MMM YYYY');
     this._getAppointmentList({...this.state, [whichDate]:date});
     this.setState({ [whichDate]:date, isLoading: true });
   }
 
   render() {
-    let {startDate, endDate, list} = this.state;
-    return ( this.state.isLoading ? <LoadingAnimation/> :
+    let {startDate, endDate, list, isLoading} = this.state;
+    return ( isLoading ? <LoadingAnimation/> :
       <ScrollView style={styles.container}>
         <View style={styles.center}>
           <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
@@ -94,14 +80,14 @@ export default class F_AppointmentList extends React.Component {
         <View style={styles.divider} />
         <View style={{flexDirection:'row'}}>
           <DatePicker
-            date={startDate}
+            date={startDate.format('dddd, D MMM YYYY')}
             onDateChange={ d => this._changeDate( d,'startDate')}
           />
           <View style={{justifyContent:'center'}}>
             <Text>-</Text>
           </View>
           <DatePicker
-            date={endDate}
+            date={endDate.format('dddd, D MMM YYYY')}
             onDateChange={ d => this._changeDate( d,'endDate')}
           />
         </View>
@@ -164,17 +150,23 @@ class ListItem extends React.PureComponent {
 const DatePicker = props => (
   <TouchableOpacity style={{flex:1, alignItems:'center'}}> 
     <ReactNativeDatepicker
-      style={styles.containerTanggal}
+      style={[styles.containerTanggal,{...props.style}]}
       date={props.date}
       mode="date"
       placeholder="select date"
-      format="DD-MM-YYYY"
-      minDate={Moment().subtract(1, 'years').format('MM-DD-YYYY')}
-      maxDate={Moment().add(1, 'years').format('MM-DD-YYYY')}
+      format="ddd, D MMM YYYY"
+      minDate={Moment().subtract(1, 'years').format('dddd, D MMM YYYY')}
+      maxDate={Moment().add(1, 'years').format('dddd, D MMM YYYY')}
       showIcon={false}
       confirmBtnText="Confirm"
       cancelBtnText="Cancel"
-      customStyles={styles.dateInput}
+      customStyles={{
+        dateInput: {
+          borderRadius: 3,
+          borderColor: '#cdcdcd',
+          height:35,
+        }
+      }}
       onDateChange={props.onDateChange}
     />
   </TouchableOpacity>
@@ -309,9 +301,9 @@ const styles = StyleSheet.create({
   containerTanggal: {
     width: '90%',
   },
-  dateInput: {
-    borderRadius: 3,
-    borderColor: '#cdcdcd',
-    height:35,
-  },
+  // dateInput: {
+  //   borderRadius: 3,
+  //   borderColor: '#cdcdcd',
+  //   height:35,
+  // },
 });
