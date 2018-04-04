@@ -46,9 +46,9 @@ export default class SearchHeader extends React.Component {
             </View>
           </View>
           <TouchableOpacity style={{flex:1,alignItems:'center',}} onPress={this._goToCart} activeOpacity={0.8} >
-            <Icon name='shopping-basket' type='entypo' size={26} color='#00d3c5' />
-            {/*<View style={styles.notification}>
-              <Text style={styles.txtNotification}>5</Text>
+            <Icon name='ios-cart' type='ionicon' size={33} color='#00d3c5' />
+           {/* <View style={styles.notification}>
+              <Text style={styles.txtNotification}>3</Text>
             </View>*/}
           </TouchableOpacity>
         </View>
@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
   },
   notification: {
     backgroundColor: '#ffc943',
-    height: 16,
-    width: 16,
+    height: 18,
+    width: 18,
     position: 'absolute',
     right: 0,
     top: -3,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
+    borderRadius: 9,
   },
   txtNotification: {
     color: '#fff',
