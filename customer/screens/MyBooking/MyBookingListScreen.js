@@ -18,6 +18,7 @@ import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 import { WebBrowser } from 'expo';
+import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 
 class ActivityListItem extends React.PureComponent {
 
@@ -37,7 +38,7 @@ class ActivityListItem extends React.PureComponent {
   _voucherButton = item => {
     if (true) /*(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')*/
       return (
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           {/*<View style={{ flex: 1 }}>
             <Button
               containerStyle={styles.labelOff}
@@ -73,7 +74,7 @@ class ActivityListItem extends React.PureComponent {
     let { item } = this.props;
     return (
       <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 3 }}>
             <Text style={styles.activityTitle}>
@@ -85,13 +86,13 @@ class ActivityListItem extends React.PureComponent {
               <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             </View>
             <Text style={styles.activityDesc}>
-              {Formatter.paxCount(item.paxCount)}
+              {getPaxCountText(item.paxCount)}
             </Text>
             {/*<Text style={styles.labelText}>Memproses tiket</Text>*/}
             {this._voucherButton(item)}
           </View>
         </View>
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
             <Button
               containerStyle={styles.labelWarning}
@@ -118,7 +119,7 @@ class ActivityListItem extends React.PureComponent {
             </Button>
           </View>
         </View>
-{/*
+        {/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
             <View style={{ flex: 1 }}>
@@ -142,7 +143,7 @@ class ActivityListItem extends React.PureComponent {
   }
 }
 
-class CartListItem extends React.PureComponent {
+export default class CartListItem extends React.PureComponent {
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -190,14 +191,14 @@ class CartListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-      <View style={{marginBottom:20, borderBottomWidth:1, borderBottomColor:'#bfbfbf', paddingBottom:20}}>
-        <View>
-          <Text style={styles.headerText}>No. Order: <Text style={styles.activityDesc}>1234567</Text></Text> 
+        <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
+          <View>
+            <Text style={styles.headerText}>No. Order: <Text style={styles.activityDesc}>1234567</Text></Text>
+          </View>
+          <View>
+            <Text style={styles.headerText}>Tanggal Pesanan: <Text style={styles.activityDesc}>20 Jan 2018, 12.00 PM</Text></Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.headerText}>Tanggal Pesanan: <Text style={styles.activityDesc}>20 Jan 2018, 12.00 PM</Text></Text> 
-        </View>
-      </View>
 
         <FlatList
           data={item.activities}
@@ -241,77 +242,6 @@ class CartListItem extends React.PureComponent {
 
       </View>
     )
-  }
-}
-
-export default class MyBookingListScreen extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  static navigationOptions = {
-    title: 'Pesananku',
-  }
-
-  _keyExtractor = (item, index) => index
-  _renderItem = ({ item, index }) => (
-    <CartListItem
-      item={item}
-      index={index}
-      // onPressItem={this._onPressItem}
-      navigation={this.props.navigation}
-    />
-  )
-
-  render() {
-    return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <FlatList
-          data={this.props.list}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-        />
-
-
-        {/* Tab Button
-
-        <View style={{
-          flex:1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor:'#fff',
-          marginTop:10,
-        }}>
-          <Button
-            containerStyle={{
-              marginRight:3,
-              height:40, width:120, paddingTop:10, paddingBottom:10,
-              overflow:'hidden', borderRadius:4,
-              backgroundColor: '#437ef7'
-            }}
-            style={{fontSize: 14, color: '#ffffff'}}
-            onPress={() => this._handlePress()}>
-            Active
-          </Button>
-          <Button
-            containerStyle={{ height:40, width:120, paddingTop:10,
-              paddingBottom:10, overflow:'hidden', borderRadius:4,
-              borderWidth: 1,
-              borderColor: '#437ef7',backgroundColor: '#ffffff'
-            }}
-            style={{fontSize: 14, color: '#437ef7'}}
-            onPress={() => this._handlePress()}>
-            History 
-          </Button>
-        </View>
-        
-      */}
-
-
-      </ScrollView>
-    );
   }
 }
 
@@ -457,7 +387,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 13,
     alignItems: 'center',
-    marginRight:10,
+    marginRight: 10,
   },
   labelReview: {
     backgroundColor: '#f57b76',
@@ -465,7 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 13,
     alignItems: 'center',
-    marginRight:10,
+    marginRight: 10,
   },
   labelOff: {
     backgroundColor: '#8f8f8f',
@@ -473,8 +403,8 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 13,
     alignItems: 'center',
-    marginRight:10,
-    opacity:0.7,
+    marginRight: 10,
+    opacity: 0.7,
 
   },
   labelText: {
@@ -491,7 +421,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 15 * 0.8,
         paddingTop: 10,
-        marginBottom:0,
+        marginBottom: 0,
       },
       android: {
         //lineHeight:24

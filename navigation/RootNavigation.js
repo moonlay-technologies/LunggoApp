@@ -61,9 +61,9 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         screen: MainTabNavigator
         //screen:Referral
-        //screen:AppointmentRequest
-        //screen:Refund
-       //screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        // screen:F_ReservationDetail
+        //screen:Dashboard
+       screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
@@ -101,6 +101,7 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
       Referral: { screen: Referral },
+      F_AppointmentList: { screen: F_AppointmentList },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
       F_ReservationDetail: { screen: F_ReservationDetail },
       F_AppointmentList: { screen: F_AppointmentList },

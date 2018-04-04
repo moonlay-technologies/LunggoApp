@@ -20,12 +20,13 @@ import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';
 import { APP_TYPE } from '../../../constants/env';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import LoadingModal from './../../components/LoadingModal';
 const { setItemAsync } = Expo.SecureStore;
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { error: [] };
+    this.state = { error: [], isLoading: false };
   }
 
   _onLoginPressed = () => {
@@ -48,7 +49,6 @@ export default class LoginScreen extends React.Component {
   };
 
   _login = () => {
-    this.setState({ isLoading: true });
     let { navigation } = this.props;
     let { navigate, goBack, replace, pop } = navigation;
     let { params } = navigation.state;
@@ -60,10 +60,8 @@ export default class LoginScreen extends React.Component {
     } else {
       email = this.state.userName;
     }
-    console.log(isPhoneNo);
-    console.log(phoneNumber);
-    console.log(countryCallCd);
-    console.log(email);
+
+    this.setState({ isLoading: true });
 
     fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password, APP_TYPE == 'OPERATOR')
       .then(response => {
@@ -99,10 +97,9 @@ export default class LoginScreen extends React.Component {
           this.setState({ error });
         }
       }).catch(error => {
-        this.setState({ isLoading: false });
         console.log("Login error!!");
         console.log(error);
-      })
+      }).finally(() => this.setState({ isLoading: false }));
   }
 
   _toggleShowPassword = () => {
@@ -146,6 +143,7 @@ export default class LoginScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+          <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={globalStyles.categoryTitle1}>Login</Text>
           </View>

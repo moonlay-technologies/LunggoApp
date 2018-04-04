@@ -14,6 +14,7 @@ import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { fetchTravoramaLoginApi } from '../AuthController';
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
+import LoadingModal from './../../components/LoadingModal';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -74,6 +75,7 @@ export default class NewPasswordScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAvoidingView behavior="position" style={styles.container}>
+          <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
           </View>
