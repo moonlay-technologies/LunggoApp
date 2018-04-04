@@ -25,7 +25,7 @@ export default class AppointmentRequests extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Appointment Request',
+    title: 'Pesanan Baru',
   }
 
   componentDidMount() {
@@ -91,7 +91,9 @@ export default class AppointmentRequests extends React.Component {
         </View>
       </ScrollView>
       :
-      <Text>You don't have any appointment request</Text>
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          <Text>Belum ada pesanan baru yang masuk</Text>
+        </View>
     );
   }
 }

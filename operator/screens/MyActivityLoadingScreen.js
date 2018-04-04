@@ -19,7 +19,7 @@ export default class ActivityListLoadingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'My Activity',
+    title: 'Aktivitasku',
   };
 
   componentDidMount() {

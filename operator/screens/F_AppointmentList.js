@@ -29,7 +29,7 @@ export default class F_AppointmentList extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Appointment List',
+    title: 'Penghasilan',
   }
 
   componentDidMount() {
@@ -61,7 +61,7 @@ export default class F_AppointmentList extends React.Component {
 
   render() {
     let {startDate, endDate, list, isLoading} = this.state;
-    return ( isLoading ? <LoadingAnimation/> :
+    return (
       <ScrollView style={styles.container}>
         <View style={styles.center}>
           <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
@@ -92,7 +92,8 @@ export default class F_AppointmentList extends React.Component {
           />
         </View>
         <View style={styles.divider}></View>
-        { list.length ?
+        { isLoading ? <LoadingAnimation/> :
+          list.length ?
           <FlatList
               style={{paddingTop:15}}
               data={list}
@@ -100,7 +101,9 @@ export default class F_AppointmentList extends React.Component {
               renderItem={this._renderItem}
           />
         :
-          <Text>You have no appointment yet</Text>
+          <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+            <Text>Tidak ada transaksi pada rentang tanggal ini</Text>
+          </View>
         }
       </ScrollView>
     );

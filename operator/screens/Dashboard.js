@@ -31,48 +31,48 @@ export default class Dashboard extends React.Component {
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
       requests: null,
-      reservations:  [
-        {
-            "activity": {
-                "activityId": 2,
-                "name": "Tiket dufan",
-                "date": "2018-03-30T00:00:00",
-                "session": "10:00 - 13:00",
-                "mediaSrc": "https://www.ancol.com/sites/default/files/styles/1400x710/public/arung-jeram-slider-2.jpg?itok=A7NbC0Wr"
-            },
-            "rsvNo": "36541081",
-            "rsvTime": "2018-01-30T00:00:00",
-            "contact": {
-                "title": 0,
-                "name": "Peter Morticelli",
-                "countryCallCd": "62",
-                "phone": "1234567890",
-                "email": "petermort@wasasa.com"
-            },
-            "paxes": [],
-            "paxCount": [
-                {
-                    "type": "Adult",
-                    "count": 1,
-                    "totalPrice": 190000
-                }
-            ],
-            "paymentSteps": [
-                {
-                    "description": "DP Pertama",
-                    "amount": 10000,
-                    "date": "2018-03-23",
-                    "isCompleted": true
-                },
-                {
-                    "description": "DP Kedua",
-                    "amount": 8000,
-                    "date": "2018-04-20",
-                    "isCompleted": false
-                }
-            ],
-          }
-        ],
+      // reservations:  [
+      //   {
+      //       "activity": {
+      //           "activityId": 2,
+      //           "name": "Tiket dufan",
+      //           "date": "2018-03-30T00:00:00",
+      //           "session": "10:00 - 13:00",
+      //           "mediaSrc": "https://www.ancol.com/sites/default/files/styles/1400x710/public/arung-jeram-slider-2.jpg?itok=A7NbC0Wr"
+      //       },
+      //       "rsvNo": "36541081",
+      //       "rsvTime": "2018-01-30T00:00:00",
+      //       "contact": {
+      //           "title": 0,
+      //           "name": "Peter Morticelli",
+      //           "countryCallCd": "62",
+      //           "phone": "1234567890",
+      //           "email": "petermort@wasasa.com"
+      //       },
+      //       "paxes": [],
+      //       "paxCount": [
+      //           {
+      //               "type": "Adult",
+      //               "count": 1,
+      //               "totalPrice": 190000
+      //           }
+      //       ],
+      //       "paymentSteps": [
+      //           {
+      //               "description": "DP Pertama",
+      //               "amount": 10000,
+      //               "date": "2018-03-23",
+      //               "isCompleted": true
+      //           },
+      //           {
+      //               "description": "DP Kedua",
+      //               "amount": 8000,
+      //               "date": "2018-04-20",
+      //               "isCompleted": false
+      //           }
+      //       ],
+      //     }
+      //   ],
       activities: null,
       appointments: null,
       // reservations: null,
@@ -158,33 +158,19 @@ export default class Dashboard extends React.Component {
   // _goToActivityDetails = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
-  _goToReservations = () => {
-    this._closeSettingModal();
-    this.props.navigation.navigate( 'Reservations',
-      {reservations:this.state.reservations}
-    );
-  }
+  // _goToReservations = () => this.props.navigation.navigate(
+  //   'Reservations', {reservations:this.state.reservations}
+  // )
 
-  _goToProfile = () => {
-    this._closeSettingModal();
-    'TODO'
-    console.warn('TODO: Dashboard.js _goToProfile')
-  }
+  _goToProfile = () => { 'TODO'; console.warn('TODO: Dashboard.js _goToProfile') }
 
-  _goToMutasi = () => {
-    this._closeSettingModal();
-    this.props.navigation.navigate('Mutasi');
-  }
+  _goToMutasi = () => this.props.navigation.navigate('Mutasi')
 
-  _openSettingModal = () => this.refs.settingModal.openModal();
-  _closeSettingModal = () => this.refs.settingModal.closeModal();
-  _openLogoutModal = () => this.refs.logoutModal.openModal();
-
-  _askLogout = () => this._openLogoutModal();
+  _openLogoutModal = () => this.refs.logoutModal.openModal()
+  _askLogout = () => this._openLogoutModal()
 
   render() {
-    const loadingIndicator = this.state.isLoading ?
-      <LoadingAnimation /> : null;
+    // let nameInitial = item.contact.name.substr(0,1);
     return (
       <ScrollView style={{ backgroundColor: '#f7f8fb' }}>
         <View style={{ height: 310 }}>
@@ -203,43 +189,9 @@ export default class Dashboard extends React.Component {
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 10 }}>5</Text>
                   </View>
                 </TouchableOpacity>*/}
-                <TouchableOpacity
-                  style={{ width: 25, alignItems: 'center' }}
-                  onPress={this._openSettingModal}
-                >
-                  <Icon
-                    name='md-more'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </TouchableOpacity>
               </View>
 
-              <Modal ref='settingModal'
-                style={styles.modalMenu}
-                animationIn='fadeIn'
-                animationOut='fadeOut'
-                backdropOpacity={0}
-              >
-
-                <LogoutConfirmationModal ref='logoutModal' {...this.props} />
-
-                <TouchableOpacity onPress={this._goToMutasi}>
-                  <Text style={styles.teks3a}>Lihat Riwayat Transaksi</Text>
-                </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
-                <TouchableOpacity onPress={this._goToReservations}>
-                  <Text style={styles.teks3a}>Lihat Transaksi Pesanan</Text>
-                </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
-                {/*<TouchableOpacity onPress={this._goToProfile}>
-                  <Text style={styles.teks3a}>Ubah Profil</Text>
-                </TouchableOpacity>
-                <View style={styles.separatorOption}></View>*/}
-                <TouchableOpacity onPress={this._askLogout}>
-                  <Text style={styles.teks3a}>Log Out Akun</Text>
-                </TouchableOpacity>
-              </Modal>
+              <LogoutConfirmationModal ref='logoutModal' {...this.props} />
 
               <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
               <View style={{ marginTop: 20 }}>
@@ -250,21 +202,21 @@ export default class Dashboard extends React.Component {
               </View> */}
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Activity</Text>
+                  <Text style={styles.teks1}>Aktivitasku</Text>
                   {this.state.activities == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.activities.length}</Text>
                   }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Request</Text>
-                  {this.state.requests == null ? <LoadingAnimation height={40} width={40} /> :
-                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
-                  }
-                </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Akan datang</Text>
+                  <Text style={styles.teks1}>Jadwal Aktivitas</Text>
                   {this.state.appointments == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.appointments.length}</Text>
+                  }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
+                  <Text style={styles.teks1}>Pesanan Baru</Text>
+                  {this.state.requests == null ? <LoadingAnimation height={40} width={40} /> :
+                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
                   }
                 </TouchableOpacity>
               </View>
@@ -296,7 +248,7 @@ export default class Dashboard extends React.Component {
 
         <View style={styles.boxDetail}>
 
-          <View style={{flexDirection:'row',}}>
+          <TouchableOpacity style={styles.row} onPress={this._goToActivityList}>
             <View style={{marginRight:15}}>
               <Icon
                 name='ios-bicycle'
@@ -314,9 +266,9 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
-          <View style={{flexDirection:'row',}}>
+          <TouchableOpacity style={styles.row} onPress={this._goToAppointmentList}>
             <View style={{marginRight:15}}>
               <Icon
                 name='md-clipboard'
@@ -334,9 +286,9 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
-          <View style={{flexDirection:'row',}}>
+          <TouchableOpacity style={styles.row} onPress={this._goToAppointmentRequest}>
             <View style={{marginRight:15}}>
               <Icon
                 name='new-message'
@@ -354,11 +306,12 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.boxDetail}>
-          <View style={{flexDirection:'row',}}>
+
+          <TouchableOpacity style={styles.row} onPress={this._goToMutasi}>
             <View style={{marginRight:15}}>
               <Icon
                 name='md-trending-up'
@@ -376,7 +329,7 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <View style={{flexDirection:'row',}}>
             <View style={{marginRight:15}}>
@@ -439,27 +392,28 @@ export default class Dashboard extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.boxDetail}>
-          <View style={{flexDirection:'row',}}>
-            <View style={{marginRight:15}}>
-              <Icon
-                name='ios-log-out'
-                type='ionicon'
-                size={26}
-                color='#00d3c5' 
-              />
-            </View>
-            <Text style={styles.labelHeader}>Keluar Akun</Text>
-            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
-              <Icon
-                name='chevron-thin-right'
-                type='entypo'
-                size={18}
-                color='#cdcdcd' 
-              />
-            </View>
+        <TouchableOpacity
+          style={[styles.boxDetail,styles.row]}
+          onPress={this._askLogout}
+        >
+          <Icon
+            style={{marginRight:15}}
+            name='ios-log-out'
+            type='ionicon'
+            size={26}
+            color='#00d3c5' 
+          />
+          <Text style={styles.labelHeader}>Keluar Akun</Text>
+          <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+            <Icon
+              name='chevron-thin-right'
+              type='entypo'
+              size={18}
+              color='#cdcdcd' 
+            />
           </View>
-        </View>
+        </TouchableOpacity>
+        
 
       </ScrollView>
     );

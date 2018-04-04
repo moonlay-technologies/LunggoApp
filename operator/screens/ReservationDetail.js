@@ -1,33 +1,24 @@
 'use strict';
 
-import React, { Component } from 'react';
-import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity
+import React from 'react';
+import { Platform, StyleSheet, Text, View, Image, ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker';
 import { Icon } from 'react-native-elements';
-import Timeline from 'react-native-timeline-listview'
 
-export default class LoginScreen extends Component<{}> {
+export default class LoginScreen extends React.Component {
 
-  static navigationOptions = {
-    title: 'Reservation Detail',
-  }
-
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.data = [
       {time: '09:00', title: 'DP 1', description: 'Jumlah: Rp 300.000\nPada tanggal: 1 Jan 2018'},
       {time: '10:45', title: 'DP 2', description: 'Jumlah: Rp 700.000\nPada tanggal: 5 Jan 2018'},
       {time: '12:00', title: 'Lunas', description: 'Jumlah: Rp 1.000.000\nPada tanggal: 5 Jan 2018'},
     ]
+  }
+
+  static navigationOptions = {
+    title: 'Reservation Detail',
   }
 
   render() {
@@ -217,22 +208,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  activityDescTimeline: {
-    fontSize: 14,
-    color: '#454545',
-    fontFamily: 'Hind-Light',
-    ...Platform.select({
-      ios: {
-        lineHeight: 12,
-        paddingTop: 9,
-        marginBottom: -10,
-      },
-      android: {
-        marginTop:5,
-      },
-    }),
-  },
-
    activityTanggal: {
     fontSize: 15  ,
     color: '#636363',

@@ -22,7 +22,7 @@ export default class F_ReservationDetail extends React.Component {
         title: step.description,
         description:   'Jumlah: ' + rupiah(step.amount) +
                      '\nPada tanggal: ' + formatDate(step.date),
-        circleColor: timelineCircleColor[step.isCompleted]
+        circleColor: timelineCircleColor[step.status]
     }) );
   }
 
@@ -33,7 +33,8 @@ export default class F_ReservationDetail extends React.Component {
   render() {
     let { rsv, activityDetail:{name, date, session} } =
       this.props.navigation.state.params;
-    let activityTime = formatDate(date) + ', ' +  session;
+    let activityTime = formatDate(date);
+    activityTime += session && ', ' +  session;
     let totalPayment = getPaymentSumInSteps(rsv.paymentSteps);
     let completedPayment = getPaymentSumInSteps(rsv.paymentSteps,true);
     let isSettled = completedPayment == totalPayment;
@@ -54,8 +55,8 @@ export default class F_ReservationDetail extends React.Component {
             <Text style={styles.labelHeader}>Detail Aktifitas</Text>
             <View style={{marginTop:3}}>
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
-                <Text style={styles.labelDesc}>Judul Aktifitas :</Text>
-                <Text style={styles.activityDesc}>{name}</Text>
+                <Text style={[styles.labelDesc,{flex:1}]}>Judul Aktifitas :</Text>
+                <Text style={[styles.activityDesc,{flex:2}]} numberOfLines={1}>{name}</Text>
               </View>
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
                 <Text style={styles.labelDesc}>Waktu :</Text>
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 10,
         paddingTop: 10,
-        marginBottom: -15,
+        marginBottom: -18,
       },
       android: {
         lineHeight: 20,

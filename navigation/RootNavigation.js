@@ -45,13 +45,8 @@ import F_ReservationDetail from '../operator/screens/F_ReservationDetail';
 import ReservationDetail from '../operator/screens/ReservationDetail';
 import Refund from '../operator/screens/Refund';
 
-// import Filter from '../screens/Filter';
-// import WelcomeScreen from '../screens/WelcomeScreen';
-
 import IntroScreen from '../customer/screens/IntroScreen';
-
-
-import Settings from '../customer/screens/SettingsScreen';
+// import Filter from '../screens/Filter';
 import NotFound from '../commons/NotFoundScreen';
 
 export default class RootNavigator extends React.Component {
