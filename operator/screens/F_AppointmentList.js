@@ -4,6 +4,7 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View, Image,
   ScrollView, TouchableOpacity, FlatList,
 } from 'react-native';
+import OfflineNotificationBar from '../../commons/components/OfflineNotificationBar';
 import ReactNativeDatepicker from 'react-native-datepicker';
 import { dateFullShort } from '../../customer/components/Formatter';
 import { fetchAppointmentList } from './Appointments/AppointmentController';
@@ -62,50 +63,53 @@ export default class F_AppointmentList extends React.Component {
   render() {
     let {startDate, endDate, list, isLoading} = this.state;
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.center}>
-          <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
-          <Text style={styles.nominalBesar}>{getPaymentSum(list)}</Text>
-          <View style={{marginTop:10, alignItems:'center'}}>
-            <Text style={styles.activityDesc}>Total yang sudah dibayar:
-              <Text style={styles.nominalKecil}> {getPaymentSum(list,'completed')}</Text>
-            </Text>
-            <View style={{marginTop:3}}>
-              <Text style={styles.activityDesc}>
-                Periode {dateFullShort(startDate)} - {dateFullShort(endDate)}
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
+          <View style={styles.center}>
+            <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
+            <Text style={styles.nominalBesar}>{getPaymentSum(list)}</Text>
+            <View style={{marginTop:10, alignItems:'center'}}>
+              <Text style={styles.activityDesc}>Total yang sudah dibayar:
+                <Text style={styles.nominalKecil}> {getPaymentSum(list,'completed')}</Text>
               </Text>
+              <View style={{marginTop:3}}>
+                <Text style={styles.activityDesc}>
+                  Periode {dateFullShort(startDate)} - {dateFullShort(endDate)}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.divider} />
-        <View style={{flexDirection:'row'}}>
-          <DatePicker
-            date={startDate.format('dddd, D MMM YYYY')}
-            onDateChange={ d => this._changeDate( d,'startDate')}
-          />
-          <View style={{justifyContent:'center'}}>
-            <Text>-</Text>
+          <View style={styles.divider} />
+          <View style={{flexDirection:'row'}}>
+            <DatePicker
+              date={startDate.format('dddd, D MMM YYYY')}
+              onDateChange={ d => this._changeDate( d,'startDate')}
+            />
+            <View style={{justifyContent:'center'}}>
+              <Text>-</Text>
+            </View>
+            <DatePicker
+              date={endDate.format('dddd, D MMM YYYY')}
+              onDateChange={ d => this._changeDate( d,'endDate')}
+            />
           </View>
-          <DatePicker
-            date={endDate.format('dddd, D MMM YYYY')}
-            onDateChange={ d => this._changeDate( d,'endDate')}
-          />
-        </View>
-        <View style={styles.divider}></View>
-        { isLoading ? <LoadingAnimation/> :
-          list.length ?
-          <FlatList
-              style={{paddingTop:15}}
-              data={list}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-          />
-        :
-          <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-            <Text>Tidak ada transaksi pada rentang tanggal ini</Text>
-          </View>
-        }
-      </ScrollView>
+          <View style={styles.divider}></View>
+          { isLoading ? <LoadingAnimation/> :
+            list.length ?
+            <FlatList
+                style={{paddingTop:15}}
+                data={list}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+            />
+          :
+            <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+              <Text>Tidak ada transaksi pada rentang tanggal ini</Text>
+            </View>
+          }
+        </ScrollView>
+        <OfflineNotificationBar />
+      </View>
     );
   }
 }

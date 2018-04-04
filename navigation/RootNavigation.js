@@ -98,7 +98,6 @@ export default class RootNavigator extends React.Component {
       F_AppointmentList: { screen: F_AppointmentList },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
       F_ReservationDetail: { screen: F_ReservationDetail },
-      F_AppointmentList: { screen: F_AppointmentList },
       ReservationDetail: { screen: ReservationDetail },
       Refund: { screen: Refund },
       ReferralHistory: { screen: ReferralHistory },

@@ -208,7 +208,7 @@ export default class Dashboard extends React.Component {
                   }
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Jadwal Aktivitas</Text>
+                  <Text style={styles.teks1}>Terjadwal</Text>
                   {this.state.appointments == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.appointments.length}</Text>
                   }
@@ -277,7 +277,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <Text style={styles.labelHeader}>Jadwal Aktivitas</Text>
+            <Text style={styles.labelHeader}>Aktivitas Terjadwal</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -360,7 +360,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <Text style={styles.labelHeader}>Refund</Text>
+            <Text style={styles.labelHeader}>Pembatalan dan Pengembalian</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'

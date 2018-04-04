@@ -4,7 +4,7 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
-  FlatList, TouchableOpacity, ActivityIndicator
+  FlatList, TouchableOpacity, ActivityIndicator, RefreshControl
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
 import { Rating, Icon } from 'react-native-elements';
@@ -30,9 +30,15 @@ export default class CartScreen extends React.Component {
   };
 
   componentDidMount() {
+    this._refreshCart();
+  }
+
+  _refreshCart = () => {
+    this.setState({ isLoading: true });
     getCart().then(({ cartId, list, totalPrice, status }) => {
       this.setState({ cartId, list, totalPrice, status, isLoading: false });
-    }).catch(error => console.log(error));
+    }).catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _goToRincian = () => {
@@ -90,16 +96,15 @@ export default class CartScreen extends React.Component {
       <LoadingAnimation />)
     else if (status == 200 && list && list.length > 0) return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ backgroundColor: '#fff', }}>
-          <View style={styles.container}>
-            <FlatList
-              contentContainerStyle={styles.list}
-              data={this.state.list}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-          </View>
-        </ScrollView>
+        <View style={[styles.container, { backgroundColor: '#fff' }]}>
+          <FlatList
+            contentContainerStyle={styles.list}
+            data={this.state.list}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            refreshControl={<RefreshControl onRefresh={this._refreshCart.bind(this)} refreshing={this.state.isLoading} />}
+          />
+        </View>
 
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>

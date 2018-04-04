@@ -22,7 +22,7 @@ export default class LoadingModal extends React.Component {
           </View>
           <View style={{ justifyContent: 'center', marginLeft: 10 }}>
             <Text>
-              Loading...
+              Mohon tunggu...
           </Text>
           </View>
         </View>

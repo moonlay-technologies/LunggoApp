@@ -35,7 +35,11 @@ export default class ActivityListLoadingScreen extends React.Component {
     if (isLoading) { return <LoadingAnimation /> }
     else if (!list) { return <Text>ERROR: Internal Error (in Booking List)</Text> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
-    else { return <Text>You don't have any activity product!</Text> }
+    else { return
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          <Text>Belum ada aktivitas Anda yang terdaftar</Text>
+        </View>
+    }
   }
 
 }

@@ -36,12 +36,15 @@ class ActivityListItem extends React.PureComponent {
   };
 
   _voucherButton = item => {
-    if (true) /*(item.bookingStatus == 'TKTD' || item.bookingStatus == 'CONF')*/
-      return (
-        <View style={{ flexDirection: 'row' }}>
-          {/*<View style={{ flex: 1 }}>
+    let renderTicketButton = item => {
+      switch (item.bookingStatus) {
+        case 'FORW':
+        case 'CONF':
+          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Memproses Tiket</Text></View>;
+        case 'TKTD':
+          return (
             <Button
-              containerStyle={styles.labelOff}
+              containerStyle={styles.labelWarning}
               style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
               onPress={() =>
                 item.hasPdfVoucher
@@ -49,25 +52,41 @@ class ActivityListItem extends React.PureComponent {
                   : this._goToBookedPageDetail()
               }
             >
-              Voucher Diproses
-            </Button>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Button
-              containerStyle={styles.labelWarning}
-              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
-              onPress={
-                () => item.requestRating ?
-                  this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
-                  this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
-            >
-              {item.requestRating ? 'Beri Rating' : 'Beri Review'}
-            </Button>
-          </View>*/}
+              Lihat Tiket
+            </Button>);
+        case 'CACU':
+        case 'CAOP':
+        case 'CAAD':
+        case 'DENY':
+          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Dibatalkan</Text></View>;
+        case 'BOOK':
+        default:
+          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
+      }
+    }
+
+    let renderRatingButton = item => {
+      (item.requestRating || item.requestReview) &&
+        <Button
+          containerStyle={styles.labelReview}
+          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+          onPress={() => item.requestRating ?
+            this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
+            this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}>
+          {item.requestRating ? 'Beri Rating' : 'Beri Review'}
+        </Button>
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ flex: 1 }}>
+          {renderTicketButton(item)}
         </View>
-      );
-    else
-      return <Text style={styles.labelText}>Memproses tiket</Text>;
+        <View style={{ flex: 1 }}>
+          {renderRatingButton(item)}
+        </View>
+      </View>
+    );
   }
 
   render() {
@@ -88,37 +107,9 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>
               {getPaxCountText(item.paxCount)}
             </Text>
-            {/*<Text style={styles.labelText}>Memproses tiket</Text>*/}
-            {this._voucherButton(item)}
           </View>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Button
-              containerStyle={styles.labelWarning}
-              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
-              onPress={() =>
-                item.hasPdfVoucher
-                  ? this._viewPdfVoucher(item)
-                  : this._goToBookedPageDetail()
-              }
-            >
-              Voucher Diproses
-            </Button>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Button
-              containerStyle={styles.labelReview}
-              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
-              onPress={
-                () => item.requestRating ?
-                  this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
-                  this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
-            >
-              {item.requestRating ? 'Beri Rating' : 'Beri Review'}
-            </Button>
-          </View>
-        </View>
+        {this._voucherButton(item)}
         {/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
@@ -181,10 +172,17 @@ export default class CartListItem extends React.PureComponent {
 
   _labelPaymentStatus = status => {
     if (status == 'SETTLED')
-      return <View><Text style={styles.labelTextLunas}>Lihat Invoice</Text></View>;
+      return (
+        <TouchableWithoutFeedback onPress={this._showInvoice}>
+          <View>
+            <Text style={styles.labelTextLunas}>Lihat Invoice</Text>
+          </View>
+        </TouchableWithoutFeedback>);
     else
       return <View><Text style={styles.labelTextBelumLunas}>Belum Lunas</Text></View>;
   }
+
+  _goToPayment = cartId => this.props.navigation.navigate('PaymentScreen', { cartId });
 
   render() {
     let { item } = this.props;
@@ -218,28 +216,16 @@ export default class CartListItem extends React.PureComponent {
             </View>
           </View>
         </View>
-
-        {/*<View style={styles.invoice}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
-              <Button
-                containerStyle={globalStyles.ctaButton6}
-                style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
-                onPress={
-                  (item.paymentStatus == 'SETTLED') ?
-                    this._showInvoice :
-                    this._showInstruction
-                }
-              >
-                {(item.paymentStatus == 'SETTLED') ?
-                  'Lihat Invoice' : 'Lihat Instruksi'
-                }
-              </Button>
-            </View>
-          </View>
-        </View>*/}
-
-
+        {item.paymentStatus == 'PENDING' && (
+          <View>
+            <Button
+              containerStyle={styles.labelWarning}
+              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              onPress={() => this._goToPayment(item.cartId)}
+            >
+              Lanjutkan Pembayaran
+            </Button>
+          </View>)}
       </View>
     )
   }
@@ -408,9 +394,13 @@ const styles = StyleSheet.create({
 
   },
   labelText: {
-    color: '#18b0a2',
-    fontSize: 13,
-    textAlign: 'left',
+    borderColor: '#00d3c5',
+    paddingVertical: 10,
+    borderRadius: 3,
+    borderWidth: 1,
+    marginTop: 13,
+    alignItems: 'center',
+    marginRight: 10,
   },
   labelTextLunas: {
     color: '#00d3c5',
