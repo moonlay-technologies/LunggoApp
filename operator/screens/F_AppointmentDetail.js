@@ -25,9 +25,18 @@ export default class F_AppointmentDetail extends React.Component {
     <ListItem
       item={item}
       index={index}
+      onPressItem={ () => this._goToFReservationDetail(index)}
       {...this.props}
     />
   )
+
+  _goToFReservationDetail = i => {
+    let {reservations, name, date, session} =
+      this.props.navigation.state.params.details;
+    this.props.navigation.navigate( 'F_ReservationDetail', {
+      rsv: reservations[i], activityDetail: {name, date, session}
+    });
+  }
 
   render() {
     let {details} = this.props.navigation.state.params;
@@ -71,39 +80,40 @@ export default class F_AppointmentDetail extends React.Component {
 
 class ListItem extends React.PureComponent {
 
-  _goToFReservationDetail = () => this.props.navigation.navigate(
-    'F_ReservationDetail', {rsv: this.props.item}
-  )
-
   render() {
     let {item} = this.props;
+    let completedPayment = getPaymentInfo(item.paymentSteps,'completed');
+    let totalPayment = getPaymentInfo(item.paymentSteps);
+    let paxCount = getPaxCountText(item.paxCount);
+    let nameInitial = item.contact.name.substr(0,1);
     return (
       <View>
-        <TouchableOpacity style={styles.boxReservation} onPress={this._goToFReservationDetail}>
+        <TouchableOpacity
+          style={styles.boxReservation}
+          onPress={this.props.onPressItem}
+        >
           <View style={styles.containerAvatar}>
-            <Text style={styles.avatar}>
-              {item.contact.name.substr(0,1)}
-            </Text>
+            <Text style={styles.avatar}>{nameInitial}</Text>
           </View>
           <View style={{width:'80%'}}>
             <Text style={styles.namaPax}>{item.contact.name}</Text>
-            <Text style={styles.activityDesc}>
-              {getPaxCountText(item.paxCount)}
+            <Text style={styles.activityDesc}>{paxCount}</Text>
+            <Text style={styles.activityTanggal}>
+              Tanggal Pesan: {dateFullShort(item.rsvTime)}
             </Text>
-           {/*<Text style={styles.activityTanggal}>*Tanggal Pesanan: 10-11-2018*</Text>*/}
             <Text style={styles.activityTanggal}>
               Yang sudah dibayar:
-              <Text style={styles.nominalKecil}> {getPaymentInfo(item.paymentSteps,'completed')}</Text>
+              <Text style={styles.nominalKecil}> {completedPayment}</Text>
             </Text>
             <Text style={styles.activityTanggal}>
               Total Pembayaran:
-              <Text style={styles.nominalKecil}> {getPaymentInfo(item.paymentSteps)}</Text>
+              <Text style={styles.nominalKecil}> {totalPayment}</Text>
             </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.divider} />
       </View>
-    )
+    );
   }
 }
 

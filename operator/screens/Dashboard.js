@@ -149,6 +149,7 @@ export default class Dashboard extends React.Component {
   _goToActivityList = () => {
     this.props.navigation.navigate('ActivityList');
   }
+  _goToFAppointmentList = () => this.props.navigation.navigate('F_AppointmentList')
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
@@ -281,9 +282,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Tambah Aktifitas</Text>
-            </View>
+            <Text style={styles.labelHeader}>Tambah Aktifitas</Text>
             <View style={{alignItems:'flex-end', justifyContent:'flex-start'}}>
               <Icon
                 name='ios-arrow-forward'
@@ -306,9 +305,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Aktivitasku</Text>
-            </View>
+            <Text style={styles.labelHeader}>Aktivitasku</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -328,9 +325,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Jadwal Aktivitas</Text>
-            </View>
+            <Text style={styles.labelHeader}>Jadwal Aktivitas</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -350,9 +345,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Pesanan Baru</Text>
-            </View>
+            <Text style={styles.labelHeader}>Pesanan Baru</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -374,9 +367,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Mutasi Transaksi</Text>
-            </View>
+            <Text style={styles.labelHeader}>Mutasi Transaksi</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -396,9 +387,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Riwayat Pesanan</Text>
-            </View>
+            <Text style={styles.labelHeader}>Riwayat Pesanan</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -418,9 +407,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Refund</Text>
-            </View>
+            <Text style={styles.labelHeader}>Refund</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -431,7 +418,7 @@ export default class Dashboard extends React.Component {
             </View>
           </View>
           <View style={styles.separatorListDashbord}></View>
-          <View style={{flexDirection:'row',}}>
+          <TouchableOpacity style={styles.row} onPress={this._goToFAppointmentList}>
             <View style={{marginRight:15}}>
               <Icon
                 name='ios-cash'
@@ -440,9 +427,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Penghasilan</Text>
-            </View>
+            <Text style={styles.labelHeader}>Penghasilan</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -451,7 +436,7 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.boxDetail}>
@@ -464,9 +449,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <View style={{flex:1}}>
-              <Text style={styles.labelHeader}>Keluar Akun</Text>
-            </View>
+            <Text style={styles.labelHeader}>Keluar Akun</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -485,6 +468,9 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection:'row'
+  },
   modalMenu: {
     backgroundColor: '#fff',
     width: 180,
@@ -575,7 +561,8 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  labelHeader:{
+  labelHeader: {
+    flex: 1,
     fontFamily: 'Hind',
     fontSize: 16,
     color: '#000',

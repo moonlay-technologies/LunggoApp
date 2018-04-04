@@ -5,33 +5,25 @@ import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Timeline from 'react-native-timeline-listview';
 import { getPaxCountText, getPaymentSumInSteps } from '../../commons/otherCommonFunctions';
-import { date, rupiah } from '../../customer/components/Formatter';
+import { date as formatDate, rupiah } from '../../customer/components/Formatter';
 
 export default class F_ReservationDetail extends React.Component {
 
-  constructor() {
-    super();
-    this.data = [
-      {time: '09:00', title: 'DP 1', description: 'Jumlah: Rp 300.000\nPada tanggal: 1 Jan 2018'},
-      {
-        time: '10:45',
-        title: 'DP 2',
-        description: 'Jumlah: Rp 700.000\nPada tanggal: 5 Jan 2018',
-        circleColor: '#009688'
-      },
-      {time: '12:00', title: 'Lunas', description: 'Jumlah: Rp 1.000.000\nPada tanggal: 5 Jan 2018'},
-    ];
-    this.timelineData = props.navigation.state.params.rsv.paymentSteps.map(
-      step => {
-        return {
-          time: step.date,
-          title: '*DP 2*dummy this.timelineData',
-          description: 'Jumlah: ' + rupiah(step.amount) +
-                       '\nPada tanggal: ' + date(step.date),
-          circleColor: step.isCompleted ? '#00d3c5' : '#ababab'//'#f57b76'
-        }
-      }
-    );
+  constructor(props) {
+    super(props);
+    let timelineCircleColor = {
+      PENDING : '#ababab',
+      PAID    : '#00d3c5',
+      CANCEL  : '#f57b76',
+    };
+    this.timelineData = props.navigation.state.params.rsv
+      .paymentSteps.map( step => ({
+        time: step.date,
+        title: step.description,
+        description:   'Jumlah: ' + rupiah(step.amount) +
+                     '\nPada tanggal: ' + formatDate(step.date),
+        circleColor: timelineCircleColor[step.isCompleted]
+    }) );
   }
 
   static navigationOptions = {
@@ -39,12 +31,15 @@ export default class F_ReservationDetail extends React.Component {
   }
 
   render() {
-    let { rsv } = this.props.navigation.state.params;
+    let { rsv, activityDetail:{name, date, session} } =
+      this.props.navigation.state.params;
+    let activityTime = formatDate(date) + ', ' +  session;
     let totalPayment = getPaymentSumInSteps(rsv.paymentSteps);
     let completedPayment = getPaymentSumInSteps(rsv.paymentSteps,true);
     let isSettled = completedPayment == totalPayment;
     console.warn('potensi bug di Tanggal Pelunasan: uda pasti blom kalo tanggal terakhir itu ada di array terakhir?')
-    let dueDate = date(rsv.paymentSteps[rsv.paymentSteps.length-1].date);
+    let dueDate = formatDate(rsv.paymentSteps[rsv.paymentSteps.length-1].date);
+    let paxCount = getPaxCountText(rsv.paxCount);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.boxDetail}>
@@ -59,22 +54,20 @@ export default class F_ReservationDetail extends React.Component {
             <Text style={styles.labelHeader}>Detail Aktifitas</Text>
             <View style={{marginTop:3}}>
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
-                <Text style={styles.labelDesc}>*Judul Aktifitas:</Text>
-                <Text style={styles.activityDesc}>*Liburan ke Bali*</Text>
+                <Text style={styles.labelDesc}>Judul Aktifitas :</Text>
+                <Text style={styles.activityDesc}>{name}</Text>
               </View>
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
-                <Text style={styles.labelDesc}>*Waktu:</Text>
-                <Text style={styles.activityDesc}>*20 Jan 2018, 12.00-15.00*</Text>
+                <Text style={styles.labelDesc}>Waktu :</Text>
+                <Text style={styles.activityDesc}>{activityTime}</Text>
               </View>
-              <View style={{flexDirection:'row', justifyContent:'space-between' }}>
+              {/*<View style={{flexDirection:'row', justifyContent:'space-between' }}>
                 <Text style={styles.labelDesc}>*Nama Paket:</Text>
                 <Text style={styles.activityDesc}>*Paket Keluarga besar*</Text>
-              </View>
+              </View>*/}
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
                 <Text style={styles.labelDesc}>Peserta :</Text>
-                <Text style={styles.activityDesc}>
-                  {getPaxCountText(rsv.paxCount)}
-                </Text>
+                <Text style={styles.activityDesc}>{paxCount}</Text>
               </View>
             </View>
           </View>
@@ -103,7 +96,7 @@ export default class F_ReservationDetail extends React.Component {
               </View>
               <View style={{flexDirection:'row', justifyContent:'space-between' }}>
                 <Text style={styles.labelDesc}>Tanggal Pesan:</Text>
-                <Text style={styles.activityDesc}>{date(rsv.rsvTime)}</Text>
+                <Text style={styles.activityDesc}>{formatDate(rsv.rsvTime)}</Text>
               </View>
             </View>
           </View>
@@ -122,7 +115,6 @@ export default class F_ReservationDetail extends React.Component {
             <Timeline
               data={this.timelineData}
               showTime={false}
-              // circleColor={'#ababab'}
               circleSize={12}
               lineWidth={1}
               lineColor={'#e1e1e1'}
