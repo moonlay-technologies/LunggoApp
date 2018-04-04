@@ -13,6 +13,7 @@ import {
 import { getProfile } from '../../commons/ProfileController';
 import ContinueToCartModal from '../components/ContinueToCartModal';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import LoadingModal from './../../commons/components/LoadingModal';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -406,6 +407,8 @@ export default class BookingDetail extends React.Component {
         <View style={styles.divider} /> */}
 
         <View style={styles.container}>
+
+          <LoadingModal isVisible={this.state.isLoading} />
 
           <View>
             <Text style={styles.activityTitle}>Jadwal</Text>

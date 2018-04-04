@@ -12,9 +12,96 @@ import { fetchAppointmentRequests } from './Appointments/AppointmentController';
 import { shouldRefreshAppointmentRequest } from './AppointmentList';
 import Moment from 'moment';
 import 'moment/locale/id';
+import LoadingModal from './../../commons/components/LoadingModal';
 
+export default class AppointmentRequests extends React.Component {
 
-class ListItem extends React.PureComponent {
+  static navigationOptions = {
+    title: 'Appointment Request',
+  };
+
+  constructor(props) {
+    super(props)
+    let { requests } = props.navigation.state.params || [];
+    this.state = {
+      list: [...requests],
+      isLoading: false
+    };
+  }
+
+  componentDidMount() {
+    this._refreshList();
+  }
+
+  _pullRefresh = () => {
+    // TODO: pull to refresh
+  }
+
+  _refreshList = () => {
+    fetchAppointmentRequests().then(res =>
+      this.setState({ list: res.appointmentRequests })
+    );
+  }
+
+  _keyExtractor = (item, index) => index
+  _renderItem = ({ item, index }) => (
+    <ListItem
+      item={item}
+      index={index}
+      onPressItem={this._viewDetails}
+      onPressAccept={this._acceptRequest}
+      onPressDecline={this._declineRequest}
+    />
+  );
+
+  _viewDetails = (item) => {
+    // this.props.navigation.navigate(
+    //   'BookedPageDetail',{details: item}
+    // );
+  }
+
+  _respondRequest = (rsvNo, action) => {
+    this.setState({ isLoading: true });
+    const version = 'v1';
+    let request = {
+      path: `/${version}/operator/appointments/${action}/${rsvNo}`,
+      method: 'POST',
+      requiredAuthLevel: AUTH_LEVEL.User,
+    }
+    fetchTravoramaApi(request).then(response => {
+      shouldRefreshAppointmentRequest();
+      this.setState({ list: list.filter(e => e.rsvNo != rsvNo) });
+    }).catch(error => console.log(error));
+    this.setState({ isLoading: false });
+  }
+
+  _acceptRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'confirm')
+  _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
+
+  render() {
+    return
+    <View>
+      <LoadingModal isVisible={this.state.isLoading} />
+      <View>
+        (this.state.list && this.state.list.length > 0) ?
+        <ScrollView style={{ backgroundColor: '#fff', }}>
+          <View style={{ marginBottom: 10 }}>
+            <FlatList
+              style={{ paddingTop: 15 }}
+              data={this.state.list}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+            />
+          </View>
+        </ScrollView>
+        :
+        <Text>You don't have any appointment request</Text>
+      </View>
+    </View>
+  }
+}
+
+class ListItem extends React.Component {
 
   _onPressItem = () => this.props.onPressItem(this.props.item);
   _onPressDecline = () => this.props.onPressDecline(this.props.item);
@@ -94,85 +181,6 @@ class ListItem extends React.PureComponent {
         <View style={styles.divider} />
 
       </View>
-    );
-  }
-}
-
-export default class AppointmentRequests extends React.Component {
-
-  static navigationOptions = {
-    title: 'Appointment Request',
-  };
-
-  constructor(props) {
-    super(props)
-    let { requests } = props.navigation.state.params || [];
-    this.state = {
-      list: [...requests],
-    };
-  }
-
-  componentDidMount() {
-    this._refreshList();
-  }
-
-  _pullRefresh = () => {
-    // TODO: pull to refresh
-  }
-
-  _refreshList = () => {
-    fetchAppointmentRequests().then(res =>
-      this.setState({ list: res.appointmentRequests })
-    );
-  }
-
-  _keyExtractor = (item, index) => index
-  _renderItem = ({ item, index }) => (
-    <ListItem
-      item={item}
-      index={index}
-      onPressItem={this._viewDetails}
-      onPressAccept={this._acceptRequest}
-      onPressDecline={this._declineRequest}
-    />
-  );
-
-  _viewDetails = (item) => {
-    // this.props.navigation.navigate(
-    //   'BookedPageDetail',{details: item}
-    // );
-  }
-
-  _respondRequest = (rsvNo, action) => {
-    const version = 'v1';
-    let request = {
-      path: `/${version}/operator/appointments/${action}/${rsvNo}`,
-      method: 'POST',
-      requiredAuthLevel: AUTH_LEVEL.User,
-    }
-    fetchTravoramaApi(request).then(response => {
-      shouldRefreshAppointmentRequest();
-      this.setState({ list: list.filter(e => e.rsvNo != rsvNo) });
-    }).catch(error => console.log(error));
-  }
-
-  _acceptRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'confirm')
-  _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
-
-  render() {
-    return ((this.state.list && this.state.list.length > 0) ?
-      <ScrollView style={{ backgroundColor: '#fff', }}>
-        <View style={{ marginBottom: 10 }}>
-          <FlatList
-            style={{ paddingTop: 15 }}
-            data={this.state.list}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-          />
-        </View>
-      </ScrollView>
-      :
-      <Text>You don't have any appointment request</Text>
     );
   }
 }
