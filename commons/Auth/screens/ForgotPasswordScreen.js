@@ -11,6 +11,7 @@ import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import LoadingModal from './../../components/LoadingModal';
 
 export default class ForgotPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -56,6 +57,7 @@ export default class ForgotPasswordScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
+          <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Lupa Password?</Text>
           </View>
@@ -102,7 +104,6 @@ export default class ForgotPasswordScreen extends React.Component {
           >
             Kirim
           </Button>
-          {isLoading && <LoadingAnimation />}
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     );

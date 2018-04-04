@@ -19,6 +19,7 @@ import {
 import { sendOtp, verifyOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation';
 import Moment from 'moment';
+import LoadingModal from './../../components/LoadingModal';
 
 const defaultCooldown = 120;
 
@@ -123,6 +124,7 @@ export default class OtpVerificationScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAvoidingView behavior="position" style={styles.container}>
+          <LoadingModal isVisible={this.state.isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
           </View>

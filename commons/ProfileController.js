@@ -38,3 +38,7 @@ export async function getProfile() {
 export async function shouldRefreshProfile() {
   setItemAsync('shouldRefresh.profile', 'true');
 }
+
+export async function purgeProfile() {
+  deleteItemAsync('profile');
+}

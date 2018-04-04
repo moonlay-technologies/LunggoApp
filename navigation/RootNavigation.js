@@ -59,9 +59,9 @@ export default class RootNavigator extends React.Component {
       Main: __DEV__ ? {
         //screen: MainTabNavigator
         //screen:Referral
-        //screen:AppointmentRequest
-        screen:Dashboard
-       //screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        // screen:F_ReservationDetail
+        //screen:Dashboard
+       screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },

@@ -8,6 +8,7 @@ import registerForPushNotificationsAsync from '../../../api/NotificationControll
 import { fetchTravoramaLoginApi } from '../AuthController';
 import PersonDataForm from '../../components/PersonDataForm';
 import { shouldRefreshProfile } from '../../ProfileController';
+import LoadingModal from './../../components/LoadingModal';
 import {
   validateUserName, validatePassword, validatePhone,
 } from '../../FormValidation';
@@ -29,6 +30,7 @@ export default class Registration extends React.Component {
     this.setState({ isLoading: true });
 
     let onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation }) => {
+      this.setState({ isLoading: true });
       let request = {
         path: '/v1/account/verifyphone',
         method: 'POST',
@@ -46,11 +48,10 @@ export default class Registration extends React.Component {
           else
             pop();
         }
-      });
+      }).finally(() => this.setState({ isLoading: false }));
     };
 
     let goToPhoneVerification = () => {
-      console.log('masuk');
       replace('OtpVerification', {
         countryCallCd: accountData.countryCallCd,
         phone: accountData.phone,
@@ -64,6 +65,9 @@ export default class Registration extends React.Component {
       data: { ...accountData, phone: phoneWithoutCountryCode_Indonesia(accountData.phone), countryCallCd: '62' },
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
+
+    this.setState({ isLoading: true });
+
     fetchTravoramaApi(request).then(response => {
       if (response.status == 200) {
         fetchTravoramaLoginApi(accountData.email, '62', accountData.phone, accountData.password)
@@ -107,14 +111,17 @@ export default class Registration extends React.Component {
         }
         this.setState({ error });
       }
-    }).catch(error => console.log(error));
+    }).catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _goToLoginScreen = () => this.props.navigation.replace('LoginScreen', this.props.navigation.state.params)
 
   render() {
     return (
+
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <LoadingModal isVisible={this.state.isLoading} />
         <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
           submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
         />
@@ -126,6 +133,7 @@ export default class Registration extends React.Component {
           </Text>
         </TouchableOpacity>
       </View>
+
     );
   }
 }

@@ -7,12 +7,11 @@ export async function getMyBookingList() {
   let shouldRefresh = await getItemAsync('shouldRefresh.myBookingList');
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.myBookingList');
-    return fetchMyBookingList();
+    return (await fetchMyBookingList()).myBookings;
   }
 
   let myBookingsJson = await getItemAsync('myBookings');
-  //if (force || !myBookingsJson) {
-  if (true || !myBookingsJson) {
+  if (!myBookingsJson) {
     let fetched = await fetchMyBookingList();
     if (fetched.status != 200)
       return [];
@@ -41,6 +40,10 @@ async function fetchMyBookingList() {
 
 export async function shouldRefreshMyBookingList() {
   setItemAsync('shouldRefresh.myBookingList', 'true');
+}
+
+export async function purgeMyBookingList() {
+  deleteItemAsync('myBookings');
 }
 
 async function downloadPdfVouchers(bookings) {
