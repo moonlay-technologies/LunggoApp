@@ -16,37 +16,31 @@ export async function fetchAppointmentRequests() {
   }
 }
 
-export const fetchAppointmentList = async () => {
-  const version = 'v1';
-  const path = `/${version}/operator/appointments`;
-  let request = { path, requiredAuthLevel: AUTH_LEVEL.Guest }
-  try {
-    let list = await fetchTravoramaApi(request);
-    await setItemAsync('appointmentList', JSON.stringify(list));
-    console.log('list');
-    console.log(list);
-    return list;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export const getAppointmentList = async () => {
   let shouldRefresh = await getItemAsync('shouldRefresh.appointmentList');
-  console.log('shouldRefresh');
-  console.log(shouldRefresh);
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.appointmentList');
     return fetchAppointmentList();
+  } else {
+    let listJson = await getItemAsync('appointmentList');
+    if (!listJson) return fetchAppointmentList();
+
+    let list = JSON.parse(listJson);
+    return list;
   }
+}
 
-  let listJson = await getItemAsync('appointmentList');
-  console.log('listJson');
-  console.log(listJson);
-  if (!listJson) return fetchAppointmentList();
-
-  let list = JSON.parse(listJson);
-  return list;
+export const fetchAppointmentList = async (params = '') => {
+  const version = 'v1';
+  const path = `/${version}/operator/appointments?${params}`;
+  let request = { path, requiredAuthLevel: AUTH_LEVEL.User }
+  try {
+    let list = await fetchTravoramaApi(request);
+    setItemAsync('appointmentList', JSON.stringify(list));
+    return list;
+  } catch (error) {
+    console.warn(error);
+  }
 }
 
 export async function shouldRefreshAppointmentList() {

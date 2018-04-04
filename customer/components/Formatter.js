@@ -13,9 +13,7 @@ export var date = date =>
 export var dateLong = date =>
   Moment(date).format('D MMMM YYYY');
 
-//// display how many pax (e.g. )
-export var paxCount = paxCount => paxCount.filter(p => p.count != 0)
-  .map(p => p.count + ' ' + p.type).join(', ')
+export var timeFromNow = timeLimit => Moment(timeLimit).fromNow();
 
 //// Format number to "1.000.000"
 export var number = int => int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -105,8 +103,3 @@ export var terbilang = int => {
   }
   return result;
 }
-
-//// hari/tanggal/bulan/tahun - and other date format formatters
-//// format negative numbers pake '-' dan pake '()'
-//// format '2 jam 45 menit 30 detik'
-

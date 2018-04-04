@@ -40,6 +40,7 @@ import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
 import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
+import F_AppointmentList from '../operator/screens/F_AppointmentList';
 import F_ReservationDetail from '../operator/screens/F_ReservationDetail';
 import ReservationDetail from '../operator/screens/ReservationDetail';
 
@@ -99,6 +100,7 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
       Referral: { screen: Referral },
+      F_AppointmentList: { screen: F_AppointmentList },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
       F_ReservationDetail: { screen: F_ReservationDetail },
       ReservationDetail: { screen: ReservationDetail },

@@ -7,18 +7,13 @@ import {
   TextInput, ScrollView, TouchableHighlight,
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
-import * as Formatter from '../../customer/components/Formatter';
+import { dateFullShort, timeFromNow } from '../../customer/components/Formatter';
 import { fetchAppointmentRequests } from './Appointments/AppointmentController';
 import { shouldRefreshAppointmentRequest } from './AppointmentList';
-import Moment from 'moment';
-import 'moment/locale/id';
 import LoadingModal from './../../commons/components/LoadingModal';
+import { getPaxCountText } from '../../commons/otherCommonFunctions';
 
 export default class AppointmentRequests extends React.Component {
-
-  static navigationOptions = {
-    title: 'Appointment Request',
-  };
 
   constructor(props) {
     super(props)
@@ -29,11 +24,15 @@ export default class AppointmentRequests extends React.Component {
     };
   }
 
+  static navigationOptions = {
+    title: 'Appointment Request',
+  }
+
   componentDidMount() {
     this._refreshList();
   }
 
-  _pullRefresh = () => {
+  _pullToRefresh = () => {
     // TODO: pull to refresh
   }
 
@@ -52,7 +51,7 @@ export default class AppointmentRequests extends React.Component {
       onPressAccept={this._acceptRequest}
       onPressDecline={this._declineRequest}
     />
-  );
+  )
 
   _viewDetails = (item) => {
     // this.props.navigation.navigate(
@@ -79,25 +78,21 @@ export default class AppointmentRequests extends React.Component {
   _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
 
   render() {
-    return
-    <View>
-      <LoadingModal isVisible={this.state.isLoading} />
-      <View>
-        (this.state.list && this.state.list.length > 0) ?
-        <ScrollView style={{ backgroundColor: '#fff', }}>
-          <View style={{ marginBottom: 10 }}>
-            <FlatList
-              style={{ paddingTop: 15 }}
-              data={this.state.list}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-          </View>
-        </ScrollView>
-        :
-        <Text>You don't have any appointment request</Text>
-      </View>
-    </View>
+    return ((this.state.list && this.state.list.length > 0) ?
+      <ScrollView style={{ backgroundColor: '#fff', }}>
+        {/*<LoadingModal isVisible={this.state.isLoading} />*/}
+        <View style={{ marginBottom: 10 }}>
+          <FlatList
+            style={{ paddingTop: 15 }}
+            data={this.state.list}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+          />
+        </View>
+      </ScrollView>
+      :
+      <Text>You don't have any appointment request</Text>
+    );
   }
 }
 
@@ -119,26 +114,23 @@ class ListItem extends React.Component {
                 <Text style={styles.activityTitle}>
                   {item.activityName}
                 </Text>
-                {/*<Text>
-                  {Moment(item.requestTime).fromNow()}
-                </Text>*/}
               </View>
               <View style={{ width: '100%', flexDirection: 'row', marginTop: 5 }}>
                 <Text style={styles.activityDesc}>
-                  {Moment(item.date).format('ddd, D MMM YYYY')}
+                  {dateFullShort(item.date)}
                 </Text>
                 <Text style={[styles.activityDesc, { marginLeft: 10 }]}>
                   {item.session}
                 </Text>
               </View>
               <Text style={[styles.activityDesc,]}>
-                {item.contactName} ({Formatter.paxCount(item.paxCount)})
+                {item.contactName} ({getPaxCountText(item.paxCount)})
               </Text>
             </View>
 
             <View style={{ marginTop: 20 }}>
               <Text style={styles.dueDate}>
-                Batas waktu menerima: {Moment(item.timeLimit).fromNow()}
+                Batas waktu menerima: {timeFromNow(item.timeLimit)}
               </Text>
             </View>
 
