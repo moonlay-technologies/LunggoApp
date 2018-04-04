@@ -2,7 +2,8 @@
   "expo": {
     "name": "Travorama",
     "description": "No description",
-    "slug": "travorama",
+    "slug": "travorama-dev",
+    "scheme": "travorama",
     "privacy": "public",
     "sdkVersion": "21.0.0",
     "version": "2.0.0",
@@ -28,7 +29,8 @@
       "buildNumber": "2"
     },
     "android": {
-      "package": "com.travorama.activity"
+      "package": "com.travorama",
+      "versionCode": 20
     }
   }
 }

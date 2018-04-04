@@ -1,10 +1,10 @@
 'use strict';
 
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import ListScreen from './MyBookingListScreen';
-import { getMyBookingList } from './MyBookingController';
+import CartListItem from './MyBookingListScreen';
+import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
 
 
@@ -27,10 +27,28 @@ export default class MyBookingScreen extends React.Component {
     if (params && !params.loggedIn) {
       return this.setState({ isLoading: false });
     }
-    getMyBookingList(true).then(list => {
+    getMyBookingList().then(list => {
       this.setState({ list, isLoading: false });
     });
   }
+
+  _refreshMyBookingList = () => {
+    this.setState({ isLoading: true });
+    shouldRefreshMyBookingList();
+    getMyBookingList().then(list => {
+      this.setState({ list, isLoading: false });
+    });
+  }
+
+  _keyExtractor = (item, index) => index
+  _renderItem = ({ item, index }) => (
+    <CartListItem
+      item={item}
+      index={index}
+      // onPressItem={this._onPressItem}
+      navigation={this.props.navigation}
+    />
+  )
 
   render() {
     let { isLoading, list, status } = this.state;
@@ -38,10 +56,25 @@ export default class MyBookingScreen extends React.Component {
 
     if (isLoading) return <LoadingAnimation />
     else if (list && list.length > 0) return (
-      <ListScreen list={list} {...props} />)
-    else return <BlankScreen {...props} />
+      <FlatList
+        data={list}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList.bind(this)} refreshing={this.state.isLoading} />}
+      />)
+    else return (
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList.bind(this)} refreshing={this.state.isLoading} />}>
+        <BlankScreen {...props} />
+      </ScrollView>)
   }
 }
 
-// const styles = StyleSheet.create({
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 0,
+    backgroundColor: '#f1f0f0',
+  },
+});

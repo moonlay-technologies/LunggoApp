@@ -4,8 +4,10 @@ import {
 } from '../../constants/env';
 import { fetchProfile } from '../ProfileController';
 
-async function fetchAuth(data) {
-  let url = API_DOMAIN + '/v1/login';
+async function fetchAuth(data, isOperator) {
+  let url = API_DOMAIN + `/v1${isOperator ? '/operator' : ''}/login`;
+  console.log(url);
+  console.log(data);
   let response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -30,10 +32,14 @@ async function setAccessToken(tokenData) {
   setItemAsync('expTime', expTime);
 }
 
-export async function fetchTravoramaLoginApi(userName, password) {
-  let data = { clientId, clientSecret, deviceId, userName, password };
+export async function fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, password, isOperator = false) {
+  let data = { clientId, clientSecret, deviceId, email, countryCallCd, phoneNumber, password };
 
-  let response = await fetchAuth(data);
+  if (!data.email) delete data.email;
+  if (!data.countryCallCd) delete data.countryCallCd;
+  if (!data.phoneNumber) delete data.phoneNumber;
+
+  let response = await fetchAuth(data, isOperator);
 
   switch (response.status) {
     case 200:
@@ -108,8 +114,12 @@ export async function getAuthAccess() {
       case 400:
       case 500:
       default:
-        await removeAccessToken();
-        return getAuthAccess();
+        if (authLevel != AUTH_LEVEL.Guest) {
+          await removeAccessToken();
+          return getAuthAccess();
+        } else {
+          console.log('get auth as guest error');
+        }
     }
     global.isFetchingAuth = false;
     global.accessToken = accessToken;

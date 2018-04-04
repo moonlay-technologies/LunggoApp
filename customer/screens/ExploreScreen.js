@@ -309,7 +309,6 @@ export default class ExploreScreen extends React.Component {
           style={{
             width: itemWidth,
             marginLeft: THUMBNAIL_WS,
-
           }}
           activeOpacity={1}
           onPress={() => this._onPressProduct(item)}
@@ -366,7 +365,7 @@ export default class ExploreScreen extends React.Component {
   }
 }
 
-const THUMBNAIL_WS = 15;
+const THUMBNAIL_WS = 10;
 const styles = StyleSheet.create({
   /*  slides:{
       backgroundColor:'red',

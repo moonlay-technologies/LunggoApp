@@ -17,9 +17,10 @@ import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn } from '../../api/Common';
 import { NavigationActions } from 'react-navigation';
-import { fetchAppointmentRequests, fetchAppointmentList,
+import {
+  fetchAppointmentRequests, getAppointmentList, getReservationList,
 } from './Appointments/AppointmentController';
-import { fetchActivityList } from './ActivityController';
+import { getActivityList } from './ActivityController';
 
 export default class Dashboard extends React.Component {
 
@@ -30,8 +31,51 @@ export default class Dashboard extends React.Component {
       balance: 9999999,
       avatar: 'http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640-300x300.png',
       requests: null,
+      // reservations:  [
+      //   {
+      //       "activity": {
+      //           "activityId": 2,
+      //           "name": "Tiket dufan",
+      //           "date": "2018-03-30T00:00:00",
+      //           "session": "10:00 - 13:00",
+      //           "mediaSrc": "https://www.ancol.com/sites/default/files/styles/1400x710/public/arung-jeram-slider-2.jpg?itok=A7NbC0Wr"
+      //       },
+      //       "rsvNo": "36541081",
+      //       "rsvTime": "2018-01-30T00:00:00",
+      //       "contact": {
+      //           "title": 0,
+      //           "name": "Peter Morticelli",
+      //           "countryCallCd": "62",
+      //           "phone": "1234567890",
+      //           "email": "petermort@wasasa.com"
+      //       },
+      //       "paxes": [],
+      //       "paxCount": [
+      //           {
+      //               "type": "Adult",
+      //               "count": 1,
+      //               "totalPrice": 190000
+      //           }
+      //       ],
+      //       "paymentSteps": [
+      //           {
+      //               "description": "DP Pertama",
+      //               "amount": 10000,
+      //               "date": "2018-03-23",
+      //               "isCompleted": true
+      //           },
+      //           {
+      //               "description": "DP Kedua",
+      //               "amount": 8000,
+      //               "date": "2018-04-20",
+      //               "isCompleted": false
+      //           }
+      //       ],
+      //     }
+      //   ],
       activities: null,
       appointments: null,
+      // reservations: null,
     };
   }
 
@@ -40,7 +84,7 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    getProfile().then( profile => this.setState(profile));
+    getProfile().then(profile => this.setState(profile)).catch(e=>console.warn(e));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;
@@ -51,32 +95,49 @@ export default class Dashboard extends React.Component {
         this.props.navigation.dispatch(action);
       }
     });
-    this._getAppointmentRequests();
-    this._getAppointmentList();
-    this._getActivityList();
+    this.props.navigation.addListener('didFocus', this._refreshData);
+  }
+
+  _refreshData = () => {
+    Promise.all([
+      this._getAppointmentRequests(),
+      this._getAppointmentList(),
+      this._getActivityList(),
+      // this._getReservationList()
+    ]);
   }
 
   _getAppointmentRequests = () => {
-    fetchAppointmentRequests().then( res => {
-      this.setState({requests:res.appointmentRequests});
-    });
+    fetchAppointmentRequests().then(res =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ requests: res.appointmentRequests })
+    ).catch( e => console.warn(e));;
   }
 
   _getAppointmentList = () => {
-    fetchAppointmentList().then( ({appointments}) =>
-      this.setState( {appointments} )
-    );
+    getAppointmentList().then(({ appointments }) =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ appointments })
+    ).catch( e => console.warn(e));
   }
 
   _getActivityList = () => {
-    fetchActivityList().then( ({activityList}) =>
-      this.setState( {activities: activityList} )
-    );
+    getActivityList().then(({ activityList }) =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ activities: activityList })
+    ).catch( e => console.warn(e));;
+  }
+
+  _getReservationList = () => {
+    getReservationList().then(({ reservations }) =>
+      // this.props.navigation.isFocused() &&
+      this.setState({ reservations })
+    ).catch( e => console.warn(e));;
   }
 
   _goToAppointmentRequest = () => {
-    let {requests = []} = this.state;
-    this.props.navigation.navigate('AppointmentRequest',{requests});
+    let { requests = [] } = this.state;
+    this.props.navigation.navigate('AppointmentRequest', { requests });
   }
 
   _goToAppointmentList = () => {
@@ -88,6 +149,7 @@ export default class Dashboard extends React.Component {
   _goToActivityList = () => {
     this.props.navigation.navigate('ActivityList');
   }
+  _goToFAppointmentList = () => this.props.navigation.navigate('F_AppointmentList')
 
   _goToAccountScreen = () => this.props.navigation.navigate('AccountPage')
 
@@ -96,29 +158,22 @@ export default class Dashboard extends React.Component {
   // _goToActivityDetails = () => this.props.navigation.navigate('NotFound')
   _goToReviewScreen = () => this.props.navigation.navigate('NotFound')
 
-  _goToProfile = () => {
-    this._closeSettingModal();
-    'TODO'
-    console.warn('TODO: Dashboard.js _goToProfile')
-  }
+  // _goToReservations = () => this.props.navigation.navigate(
+  //   'Reservations', {reservations:this.state.reservations}
+  // )
 
-  _goToMutasi = () => {
-    this._closeSettingModal();
-    this.props.navigation.navigate('Mutasi');
-  }
+  _goToProfile = () => { 'TODO'; console.warn('TODO: Dashboard.js _goToProfile') }
 
-  _openSettingModal = () => this.refs.settingModal.openModal();
-  _closeSettingModal = () => this.refs.settingModal.closeModal();
-  _openLogoutModal = () => this.refs.logoutModal.openModal();
+  _goToMutasi = () => this.props.navigation.navigate('Mutasi')
 
-  _askLogout = () => this._openLogoutModal();
+  _openLogoutModal = () => this.refs.logoutModal.openModal()
+  _askLogout = () => this._openLogoutModal()
 
   render() {
-    const loadingIndicator = this.state.isLoading ?
-      <LoadingAnimation /> : null;
+    // let nameInitial = item.contact.name.substr(0,1);
     return (
       <ScrollView style={{ backgroundColor: '#f7f8fb' }}>
-        <View style={{ height: 340 }}>
+        <View style={{ height: 310 }}>
           <Image style={{ height: 250, resizeMode: 'cover' }} source={require('../../assets/images/bg1.jpg')} />
           <View style={styles.containerDashboard}>
             <View style={styles.containerBoxDashboard}>
@@ -134,39 +189,9 @@ export default class Dashboard extends React.Component {
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 10 }}>5</Text>
                   </View>
                 </TouchableOpacity>*/}
-                <TouchableOpacity
-                  style={{ width: 25, alignItems: 'center' }}
-                  onPress={this._openSettingModal}
-                >
-                  <Icon
-                    name='md-more'
-                    type='ionicon'
-                    size={26}
-                    color='#454545' />
-                </TouchableOpacity>
               </View>
 
-              <Modal ref='settingModal'
-                style={styles.modalMenu}
-                animationIn='fadeIn'
-                animationOut='fadeOut'
-                backdropOpacity={0}
-              >
-
-                <LogoutConfirmationModal ref='logoutModal' {...this.props} />
-
-                <TouchableOpacity onPress={this._goToMutasi}>
-                  <Text style={styles.teks3a}>Lihat Daftar Transaksi</Text>
-                </TouchableOpacity>
-                <View style={styles.separatorOption}></View>
-                {/*<TouchableOpacity onPress={this._goToProfile}>
-                  <Text style={styles.teks3a}>Ubah Profil</Text>
-                </TouchableOpacity>
-                <View style={styles.separatorOption}></View>*/}
-                <TouchableOpacity onPress={this._askLogout}>
-                  <Text style={styles.teks3a}>Log Out Akun</Text>
-                </TouchableOpacity>
-              </Modal>
+              <LogoutConfirmationModal ref='logoutModal' {...this.props} />
 
               <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
               <View style={{ marginTop: 20 }}>
@@ -177,108 +202,218 @@ export default class Dashboard extends React.Component {
               </View> */}
               <View style={{ flexDirection: 'row', marginTop: 25 }}>
                 <TouchableOpacity onPress={this._goToActivityList} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Activity</Text>
-                  { this.state.activities==null ? <LoadingAnimation height={40} width={40}/> :
+                  <Text style={styles.teks1}>Aktivitasku</Text>
+                  {this.state.activities == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.activities.length}</Text>
                   }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Request</Text>
-                  { this.state.requests==null ? <LoadingAnimation height={40} width={40}/> :
-                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
-                  }
-                </TouchableOpacity>
                 <TouchableOpacity onPress={this._goToAppointmentList} style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={styles.teks1}>Akan datang</Text>
-                  { this.state.appointments==null ? <LoadingAnimation height={40} width={40}/> :
+                  <Text style={styles.teks1}>Terjadwal</Text>
+                  {this.state.appointments == null ? <LoadingAnimation height={40} width={40} /> :
                     <Text style={styles.teks2}>{this.state.appointments.length}</Text>
                   }
                 </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-        </View>
-
-
-{/*
-        <View style={{ marginTop: 30, padding: 15, paddingBottom: 5 }}>
-          <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
-        </View>
-
-
-
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img3.jpg')} />
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton1}
-                  style={{ fontSize: 12, color: '#fff', }}
-                >
-                  Sedang Berjalan
-              </Button>
+                <TouchableOpacity onPress={this._goToAppointmentRequest} style={{ flex: 1, alignItems: 'center' }}>
+                  <Text style={styles.teks1}>Pesanan Baru</Text>
+                  {this.state.requests == null ? <LoadingAnimation height={40} width={40} /> :
+                    <Text style={styles.teks2}>{this.state.requests.length}</Text>
+                  }
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
 
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img2.jpg')} />
+        {/*<View style={styles.boxDetail}>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-add-circle'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
             </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton2}
-                  style={{ fontSize: 12, color: '#fff', }}
-                >
-                  1 hari lagi
-              </Button>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img1.jpg')} />
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton3}
-                  style={{ fontSize: 12, color: '#f57b76', }}
-                >
-                  5 hari lagi
-              </Button>
-              </View>
+            <Text style={styles.labelHeader}>Tambah Aktifitas</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'flex-start'}}>
+              <Icon
+                name='ios-arrow-forward'
+                type='ionicon'
+                size={26}
+                color='#cdcdcd' 
+              />
             </View>
           </View>
         </View>*/}
+
+        <View style={styles.boxDetail}>
+
+          <TouchableOpacity style={styles.row} onPress={this._goToActivityList}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-bicycle'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Aktivitasku</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={styles.separatorListDashbord}></View>
+          <TouchableOpacity style={styles.row} onPress={this._goToAppointmentList}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-clipboard'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Aktivitas Terjadwal</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={styles.separatorListDashbord}></View>
+          <TouchableOpacity style={styles.row} onPress={this._goToAppointmentRequest}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='new-message'
+                type='entypo'
+                size={24}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Pesanan Baru</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.boxDetail}>
+
+          <TouchableOpacity style={styles.row} onPress={this._goToMutasi}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-trending-up'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Mutasi Transaksi</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-clock'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Riwayat Pesanan</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-undo'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Pembatalan dan Pengembalian</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <TouchableOpacity style={styles.row} onPress={this._goToFAppointmentList}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-cash'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <Text style={styles.labelHeader}>Penghasilan</Text>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.boxDetail,styles.row]}
+          onPress={this._askLogout}
+        >
+          <Icon
+            style={{marginRight:15}}
+            name='ios-log-out'
+            type='ionicon'
+            size={26}
+            color='#00d3c5' 
+          />
+          <Text style={styles.labelHeader}>Keluar Akun</Text>
+          <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+            <Icon
+              name='chevron-thin-right'
+              type='entypo'
+              size={18}
+              color='#cdcdcd' 
+            />
+          </View>
+        </TouchableOpacity>
+        
 
       </ScrollView>
     );
@@ -287,9 +422,12 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  row: {
+    flexDirection:'row'
+  },
   modalMenu: {
     backgroundColor: '#fff',
-    width: 160,
+    width: 180,
     padding: 10,
     position: 'absolute',
     right: 10,
@@ -316,8 +454,14 @@ const styles = StyleSheet.create({
   containerDashboard: {
     padding: 15,
     position: 'absolute',
-    top: 70,
+    top: 30,
     width: '100%'
+  },
+  separatorListDashbord:{
+    backgroundColor:'#eeeeee',
+    height:1,
+    width:'100%',
+    marginVertical:15,
   },
   containerBoxDashboard: {
     backgroundColor: '#ffffff',
@@ -340,30 +484,13 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  containerRecentActivity: {
-    borderRadius: 20,
-  },
-  boxRecentActivity: {
-    backgroundColor: '#ffffff',
-    borderRadius: 5,
-    margin: 15,
-    marginTop: 5,
-    padding: 15,
-    flexDirection: 'row',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#e8f0fe',
-        shadowOffset: {
-          width: 2,
-          height: 1
-        },
-        shadowRadius: 6,
-        shadowOpacity: 1
-      },
-      android: {
-        elevation: 2
-      },
-    }),
+  boxDetail:{
+    backgroundColor:'#fff',
+    borderBottomColor:'#e1e1e1',
+    borderBottomWidth: 1,
+    padding:15,
+    marginBottom:20,
+    flex:1
   },
   avatarBig: {
     width: 90,
@@ -384,6 +511,24 @@ const styles = StyleSheet.create({
       },
       android: {
         marginBottom: -5
+
+      },
+    }),
+  },
+  labelHeader: {
+    flex: 1,
+    fontFamily: 'Hind',
+    fontSize: 16,
+    color: '#000',
+    marginTop:2,
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 10,
+        marginBottom: -12,
+      },
+      android: {
+        lineHeight: 24,
 
       },
     }),

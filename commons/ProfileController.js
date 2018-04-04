@@ -13,8 +13,8 @@ export async function fetchProfile() {
   let response = await fetchTravoramaApi(request);
   let { status } = response;
   if (status == 200) {
-    let { name, email, countryCallCd, phone } = response;
-    let profile = { name, email, countryCallCd, phone };
+    let { name, email, countryCallCd, phone, isPhoneVerified, isEmailVerified } = response;
+    let profile = { name, email, countryCallCd, phone, isPhoneVerified, isEmailVerified };
     await setItemAsync('profile', JSON.stringify(profile));
     return profile;
   }
@@ -22,12 +22,23 @@ export async function fetchProfile() {
 }
 
 export async function getProfile() {
+  let shouldRefresh = await getItemAsync('shouldRefresh.profile');
+  if (shouldRefresh) {
+    deleteItemAsync('shouldRefresh.profile');
+    return fetchProfile();
+  }
+
   let profileJson = await getItemAsync('profile');
   if (!profileJson) return fetchProfile();
-  
+
   let profile = JSON.parse(profileJson);
-  console.log('profile')
-  console.log(profile)
-  
   return profile;
+}
+
+export async function shouldRefreshProfile() {
+  setItemAsync('shouldRefresh.profile', 'true');
+}
+
+export async function purgeProfile() {
+  deleteItemAsync('profile');
 }

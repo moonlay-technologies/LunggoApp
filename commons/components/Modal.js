@@ -16,13 +16,13 @@ export default class Modal extends React.Component {
     this.setState({ isVisible });
   }
 
-  setVisibility = vis => this.setState({ isVisible: vis })
-  closeModal = () => this.setVisibility(false)
-  openModal = () => this.setVisibility(true)
-  toggleVisibility = () => this.setVisibility(!this.state.isVisible)
+  setVisibility = vis => this.setState({ isVisible: vis });
+  closeModal = () => this.setVisibility(false);
+  openModal = () => this.setVisibility(true);
+  toggleVisibility = () => this.setVisibility(!this.state.isVisible);
 
   render() {
-    let {props} = this;
+    let { props } = this;
     return (
       <ModalPlugin
         style={props.style}
