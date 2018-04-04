@@ -175,7 +175,7 @@ class Footer extends Component {
     this.setState({ isLoading: false })
   }
 
-  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity');
+  _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity')
 
   _onCtaButtonClick = () => {
     //// if customer
@@ -247,16 +247,17 @@ class Header extends Component {
   render() {
     let { wishlisted, id, title } = this.props;
     let { backgroundColor, elevation, opacity } = this.state;
-    let borderBottomWidth = opacity;
+    // let borderBottomWidth = opacity;
     return (
       <Animated.View style={[styles.headerBackground, { backgroundColor, elevation }]}>
-        <View style={[ styles.headerContentContainer,
+        <View style={styles.headerContentContainer}>
+        {/*<View style={[ styles.headerContentContainer,
           {
             ...Platform.select({
               ios: {borderBottomWidth}
             })
           }
-        ]}>
+        ]}>*/}
           <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={this._goBack}>
             <Icon name='arrow-back' type='materialicons' size={30} color='#000' />
           </TouchableOpacity>
