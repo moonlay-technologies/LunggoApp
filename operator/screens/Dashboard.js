@@ -186,7 +186,7 @@ export default class Dashboard extends React.Component {
       <LoadingAnimation /> : null;
     return (
       <ScrollView style={{ backgroundColor: '#f7f8fb' }}>
-        <View style={{ height: 340 }}>
+        <View style={{ height: 310 }}>
           <Image style={{ height: 250, resizeMode: 'cover' }} source={require('../../assets/images/bg1.jpg')} />
           <View style={styles.containerDashboard}>
             <View style={styles.containerBoxDashboard}>
@@ -269,88 +269,214 @@ export default class Dashboard extends React.Component {
               </View>
             </View>
           </View>
-
         </View>
 
-
-        {/*
-        <View style={{ marginTop: 30, padding: 15, paddingBottom: 5 }}>
-          <Text style={styles.categoryTitle}>Activity yang berlangsung</Text>
-        </View>
-
-
-
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img3.jpg')} />
+        {/*<View style={styles.boxDetail}>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-add-circle'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
             </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton1}
-                  style={{ fontSize: 12, color: '#fff', }}
-                >
-                  Sedang Berjalan
-              </Button>
-              </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Tambah Aktifitas</Text>
             </View>
-          </View>
-        </View>
-
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img2.jpg')} />
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton2}
-                  style={{ fontSize: 12, color: '#fff', }}
-                >
-                  1 hari lagi
-              </Button>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.containerRecentActivity}>
-          <View style={styles.boxRecentActivity}>
-            <View style={{ flex: 1, }}>
-              <Image style={styles.imgRecentActivity} source={require('../../assets/images/other-img1.jpg')} />
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 15 }}>
-              <Text style={styles.activityTitle}>Trip to Bandung</Text>
-              <Text style={styles.teks1}>Bandung</Text>
-              <View style={{ marginTop: 5 }}>
-                <Text style={styles.teks3}>30 Jan 2018</Text>
-                <Text style={styles.teks3}>10.00am - 12.00pm</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-                <Button
-                  containerStyle={styles.ctaButton3}
-                  style={{ fontSize: 12, color: '#f57b76', }}
-                >
-                  5 hari lagi
-              </Button>
-              </View>
+            <View style={{alignItems:'flex-end', justifyContent:'flex-start'}}>
+              <Icon
+                name='ios-arrow-forward'
+                type='ionicon'
+                size={26}
+                color='#cdcdcd' 
+              />
             </View>
           </View>
         </View>*/}
+
+        <View style={styles.boxDetail}>
+
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-bicycle'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Aktivitasku</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-clipboard'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Jadwal Aktivitas</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='new-message'
+                type='entypo'
+                size={24}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Pesanan Baru</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.boxDetail}>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-trending-up'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Mutasi Transaksi</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-clock'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Riwayat Pesanan</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='md-undo'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Refund</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+          <View style={styles.separatorListDashbord}></View>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-cash'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Penghasilan</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.boxDetail}>
+          <View style={{flexDirection:'row',}}>
+            <View style={{marginRight:15}}>
+              <Icon
+                name='ios-log-out'
+                type='ionicon'
+                size={26}
+                color='#00d3c5' 
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.labelHeader}>Keluar Akun</Text>
+            </View>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
+              <Icon
+                name='chevron-thin-right'
+                type='entypo'
+                size={18}
+                color='#cdcdcd' 
+              />
+            </View>
+          </View>
+        </View>
 
       </ScrollView>
     );
@@ -388,8 +514,14 @@ const styles = StyleSheet.create({
   containerDashboard: {
     padding: 15,
     position: 'absolute',
-    top: 70,
+    top: 30,
     width: '100%'
+  },
+  separatorListDashbord:{
+    backgroundColor:'#eeeeee',
+    height:1,
+    width:'100%',
+    marginVertical:15,
   },
   containerBoxDashboard: {
     backgroundColor: '#ffffff',
@@ -412,30 +544,13 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  containerRecentActivity: {
-    borderRadius: 20,
-  },
-  boxRecentActivity: {
-    backgroundColor: '#ffffff',
-    borderRadius: 5,
-    margin: 15,
-    marginTop: 5,
-    padding: 15,
-    flexDirection: 'row',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#e8f0fe',
-        shadowOffset: {
-          width: 2,
-          height: 1
-        },
-        shadowRadius: 6,
-        shadowOpacity: 1
-      },
-      android: {
-        elevation: 2
-      },
-    }),
+  boxDetail:{
+    backgroundColor:'#fff',
+    borderBottomColor:'#e1e1e1',
+    borderBottomWidth: 1,
+    padding:15,
+    marginBottom:20,
+    flex:1
   },
   avatarBig: {
     width: 90,
@@ -456,6 +571,23 @@ const styles = StyleSheet.create({
       },
       android: {
         marginBottom: -5
+
+      },
+    }),
+  },
+  labelHeader:{
+    fontFamily: 'Hind',
+    fontSize: 16,
+    color: '#000',
+    marginTop:2,
+    ...Platform.select({
+      ios: {
+        lineHeight: 14,
+        paddingTop: 10,
+        marginBottom: -12,
+      },
+      android: {
+        lineHeight: 24,
 
       },
     }),

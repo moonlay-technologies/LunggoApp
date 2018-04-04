@@ -9,8 +9,8 @@ import { date, rupiah } from '../../customer/components/Formatter';
 
 export default class F_ReservationDetail extends React.Component {
 
-  constructor (props) {
-    super(props);
+  constructor() {
+    super();
     this.data = [
       {time: '09:00', title: 'DP 1', description: 'Jumlah: Rp 300.000\nPada tanggal: 1 Jan 2018'},
       {
