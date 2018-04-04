@@ -89,7 +89,7 @@ class ListItem extends React.PureComponent {
 export default class AppointmentList extends React.Component {
 
   static navigationOptions = {
-    title: 'List Appointment',
+    title: 'Jadwal Aktivitas',
   };
 
   constructor (props) {

@@ -8,9 +8,8 @@ import {
   Image, TextInput, ScrollView, TouchableHighlight, KeyboardAvoidingView
 } from 'react-native';
 import { LinearGradient } from 'expo';
-import * as Formatter from '../../customer/components/Formatter';
-import Moment from 'moment';
-import 'moment/locale/id';
+import { dateFullShort } from '../../customer/components/Formatter';
+import { getPaxCountText } from '../../commons/otherCommonFunctions';
 
 export default class AppointmentDetail extends React.Component {
 
@@ -46,7 +45,7 @@ export default class AppointmentDetail extends React.Component {
                 </View>
                 <View>
                   <Text style={styles.activityDesc}>
-                    {Moment(details.date).format('ddd, D MMM YYYY')}
+                    {dateFullShort(details.date)}
                   </Text>
                 </View>
                 <View >
@@ -96,7 +95,7 @@ export default class AppointmentDetail extends React.Component {
                   <View style={{flex:1}}>
                     <View>
                       <Text style={styles.namaPeserta}>{rsv.contact.name}</Text>
-                      <Text style={styles.activityDesc}>{Formatter.paxCount(rsv.paxCount)}</Text>
+                      <Text style={styles.activityDesc}>{getPaxCountText(rsv.paxCount)}</Text>
                     </View>
                     <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
                     <Text style={styles.activityDesc}>{rsv.contact.email}</Text>

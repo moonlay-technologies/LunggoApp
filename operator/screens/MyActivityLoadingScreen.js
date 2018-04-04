@@ -19,13 +19,14 @@ export default class ActivityListLoadingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'My Activity',
+    title: 'Aktivitasku',
   };
 
   componentDidMount() {
     getActivityList().then( res => {
-      this.setState({list:res.activityList, isLoading:false})
-    });
+      this.setState({list:res.activityList})
+    }).catch( e => console.warn(e))
+      .finally( () => this.setState({isLoading:false}));
   }
 
   render() {
@@ -34,7 +35,11 @@ export default class ActivityListLoadingScreen extends React.Component {
     if (isLoading) { return <LoadingAnimation /> }
     else if (!list) { return <Text>ERROR: Internal Error (in Booking List)</Text> }
     else if (list.length > 0) { return <ListScreen list={list} {...props}/> }
-    else { return <Text>You don't have any activity product!</Text> }
+    else { return
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          <Text>Belum ada aktivitas Anda yang terdaftar</Text>
+        </View>
+    }
   }
 
 }

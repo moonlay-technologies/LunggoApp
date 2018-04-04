@@ -18,6 +18,7 @@ import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 import { WebBrowser } from 'expo';
+import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 
 class ActivityListItem extends React.PureComponent {
 
@@ -104,7 +105,7 @@ class ActivityListItem extends React.PureComponent {
               <Text style={styles.activityDesc}>{item.selectedSession}</Text>
             </View>
             <Text style={styles.activityDesc}>
-              {Formatter.paxCount(item.paxCount)}
+              {getPaxCountText(item.paxCount)}
             </Text>
           </View>
         </View>
