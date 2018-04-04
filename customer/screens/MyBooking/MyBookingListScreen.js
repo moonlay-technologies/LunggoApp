@@ -215,7 +215,7 @@ export default class CartListItem extends React.PureComponent {
             </View>
           </View>
         </View>
-        {item.paymentStatus == 'PEND' && (
+        {item.paymentStatus == 'PENDING' && (
           <View>
             <Button
               containerStyle={styles.labelWarning}
