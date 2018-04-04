@@ -36,14 +36,15 @@ export default class App extends React.Component {
             skipIntro={this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
-          <View style={styles.offlineState}>
+          
+          {/*<View style={styles.offlineState}>
             <View>
               <Text style={{color:'#f57b76'}}>Error! <Text style={{color:'#454545'}}>Terputus dari koneksi</Text></Text>
             </View>
             <View>
               <Text style={{color:'#00D3C5'}}>Coba lagi</Text>
             </View>
-          </View>
+          </View>*/}
           
         </View>
       );
@@ -57,7 +58,6 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
         require('./assets/images/robot-prod.png'),
-        require('./assets/images/loader1.gif'),
       ]),
       Font.loadAsync([
         // This is the font that we are using for our tab bar
