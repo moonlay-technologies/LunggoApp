@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import Expo, { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -36,6 +36,15 @@ export default class App extends React.Component {
             skipIntro={this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
+          <View style={styles.offlineState}>
+            <View>
+              <Text style={{color:'#f57b76'}}>Error! <Text style={{color:'#454545'}}>Terputus dari koneksi</Text></Text>
+            </View>
+            <View>
+              <Text style={{color:'#00D3C5'}}>Coba lagi</Text>
+            </View>
+          </View>
+          
         </View>
       );
     }
@@ -100,5 +109,18 @@ const styles = StyleSheet.create({
   statusBarUnderlay: {
     height: Expo.Constants.statusBarHeight,
     backgroundColor: Colors.statusBar,
+  },
+  offlineState:{
+    backgroundColor:'#fff',
+    justifyContent:'space-between', 
+    alignItems:'center', 
+    flexDirection:'row', 
+    paddingHorizontal:15, 
+    position:'absolute', 
+    bottom:0, 
+    width:'100%', 
+    height:60,  
+    borderTopColor:'#e1e1e1', 
+    borderTopWidth:1,
   },
 });
