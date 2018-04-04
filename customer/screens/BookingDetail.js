@@ -201,12 +201,17 @@ export default class BookingDetail extends React.Component {
     let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      `${Formatter.dateFullShort(date)}, pk ${time}` : 'Atur Jadwal';
+      `${Formatter.dateFullShort(date)}, pk ${time}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
-      <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>
+      <View>
+        <Text style={{color:'#00d3c5', fontWeight:'bold', fontSize:13,}}>UBAH</Text>
+      </View>
       :
-      <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
+      <View>
+        
+      </View>
+      
 
     let counterButtons = counterArr => {
       let add = counterObj => {
@@ -410,30 +415,35 @@ export default class BookingDetail extends React.Component {
 
           <LoadingModal isVisible={this.state.isLoading} />
 
-          <View>
-            <Text style={styles.activityTitle}>Jadwal</Text>
-            <View style={{
+          <View style={{marginBottom:10}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:10}}>
+              <View><Text style={styles.activityTitle}>Jadwal</Text></View>
+              <View style={{justifyContent:'center'}}><Text style={{color:'#00d3c5', fontWeight:'bold', fontSize:13,}}>PILIH</Text></View>
+            </View>
+            <View style={styles.divider}></View>
+            
+            {/*<View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              borderBottomColor: '#efefef',
-              borderBottomWidth: 1,
               paddingBottom: 20,
               marginVertical: 20,
             }}>
-              <Text style={this.state.isDateSelected ?
-                styles.normalText : styles.warningText} >
-                {selectedDateText}
-              </Text>
-              {isDateSelected ||
-                <Text style={styles.validation}>
-                  Mohon isi jadwal
+              <View style={{justifyContent:'center'}}>
+                <Text style={this.state.isDateSelected ?
+                  styles.normalText : styles.warningText} >
+                  {selectedDateText}
                 </Text>
-              }
+                {isDateSelected ||
+                  <Text style={styles.validation}>
+                    Mohon isi jadwal
+                  </Text>
+                }
+              </View>
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToCalendarPicker} >
                 {addEditButton(date)}
               </TouchableOpacity>
-            </View>
+            </View>*/}
           </View>
 
           <View>
@@ -504,7 +514,9 @@ export default class BookingDetail extends React.Component {
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToBookingContact} >
                 {isContactNeverFilled ||
-                  <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>}
+                <View style={{justifyContent:'center'}}>
+                 <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
+                </View>}
               </TouchableOpacity>
             </View>
             {!isContactFilled && isBookButtonPressed &&
