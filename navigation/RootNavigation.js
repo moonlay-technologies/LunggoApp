@@ -42,7 +42,7 @@ import ChangeProfile from '../customer/screens/ChangeProfile';
 import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
 import F_AppointmentList from '../operator/screens/F_AppointmentList';
 import F_ReservationDetail from '../operator/screens/F_ReservationDetail';
-import ReservationDetail from '../operator/screens/ReservationDetail';
+// import ReservationDetail from '../operator/screens/ReservationDetail';
 import Refund from '../operator/screens/Refund';
 
 import IntroScreen from '../customer/screens/IntroScreen';
@@ -54,11 +54,11 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: __DEV__ ? {
-        screen: MainTabNavigator
+        // screen: MainTabNavigator
         //screen:Referral
         // screen:F_ReservationDetail
-        //screen:Dashboard
-        //screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        screen:Dashboard
+        // screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       } : {
         screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
       },
@@ -98,7 +98,7 @@ export default class RootNavigator extends React.Component {
       F_AppointmentList: { screen: F_AppointmentList },
       F_AppointmentDetail: { screen: F_AppointmentDetail },
       F_ReservationDetail: { screen: F_ReservationDetail },
-      ReservationDetail: { screen: ReservationDetail },
+      // ReservationDetail: { screen: ReservationDetail },
       Refund: { screen: Refund },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },

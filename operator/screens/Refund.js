@@ -1,19 +1,11 @@
 'use strict';
 
-import React, { Component } from 'react';
-import Button from 'react-native-button';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
+import React from 'react';
+import { Platform, StyleSheet, Text, View, Image, ScrollView,
   TouchableOpacity
 } from 'react-native';
-import DatePicker from 'react-native-datepicker'
 
-export default class LoginScreen extends Component<{}> {
+export default class Refund extends React.Component {
 
   static navigationOptions = {
     title: 'Refund',
@@ -26,13 +18,15 @@ export default class LoginScreen extends Component<{}> {
           <Text style={styles.nominalBesar1}>Total Refund</Text>
           <Text style={styles.nominalBesar}>*Rp 1.300.000* </Text>
           <View style={{marginTop:1, alignItems:'center'}}>
-            {/*<Text style={styles.activityDesc}>*Total yang sudah dibayar:<Text style={styles.nominalKecil}> Rp 300.000* </Text></Text>*/}
             <View style={{marginTop:3}}>
-              <Text style={styles.activityDesc}>*Batas Akhir 02-01-2017*</Text>
+              <Text style={styles.activityDesc}>*RP 520.000 dalam 3 hari lagi*</Text>
             </View>
           </View>
         </View>
         <View style={styles.divider}></View>
+
+
+
         <TouchableOpacity style={styles.boxReservation}>  
           <View style={{marginRight:10, width:'20%' }}>
             <Image style={{ height: 55, width:'100%',}} source={require('../../assets/images/bg1.jpg')} />
@@ -41,41 +35,17 @@ export default class LoginScreen extends Component<{}> {
             <Text style={styles.activityTitle}>
               *Jalan-Jalan Ke Bali*
             </Text>
-            <View>
-              <Text style={styles.activityTanggal}>*Pemesan: Ali Zainal*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Batas akhir refund: 10-11-2018*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Yang harus direfund:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        <TouchableOpacity style={styles.boxReservation}>  
-          <View style={{marginRight:10, width:'20%' }}>
-            <Image style={{ height: 55, width:'100%',}} source={require('../../assets/images/other-img4.jpg')} />
-          </View>
-          <View style={{width:'80%'}}>
-            <Text style={styles.activityTitle}>
-              *Jalan-Jalan Ke Surabaya*
+            <Text style={styles.activityTanggal}>*Pemesan: Ali Zainal*</Text>
+            <Text style={styles.activityTanggal}>*Peserta: 2 Dewasa, 3 Anak-anak*</Text>
+            <Text style={styles.activityTanggal}>*Batas akhir refund: 10-11-2018*</Text>
+            <Text style={styles.activityTanggal}>*Yang harus direfund:
+              <Text style={styles.nominalKecil}> Rp 520.000</Text>
             </Text>
-            <View>
-              <Text style={styles.activityTanggal}>*Pemesan: Ali Zainal*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Batas akhir refund: 10-11-2018*</Text>
-            </View>
-            <View>
-              <Text style={styles.activityTanggal}>*Yang harus direfund:<Text style={styles.nominalKecil}> Rp 520.000</Text>
-              </Text>
-            </View>
+            
           </View>
         </TouchableOpacity>
         <View style={styles.divider}></View>
-
+        
 
          
       </ScrollView>

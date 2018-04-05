@@ -9,6 +9,7 @@ import {
 import { LinearGradient } from 'expo';
 import { dateFullShort } from '../../customer/components/Formatter';
 import { getPaxCountText } from '../../commons/otherCommonFunctions';
+import { fetchVerifyTicket } from './Appointments/AppointmentController';
 
 export default class AppointmentDetail extends React.Component {
 
@@ -26,34 +27,36 @@ export default class AppointmentDetail extends React.Component {
     title: 'Detail Appointment',
   }
 
-  _verify = async () => {
-    let code = this.state.verificationCode;
-    let result;
-    try {
-      let isConnected = await NetInfo.isConnected.fetch();
-      if (isConnected) {
-        // console.log('fetch(code)');
-        throw 'cannot verify online';
-      } else throw 'cannot verify online';
-    } catch(e) { result = this._verifyOffline(code); }
+  _verify = () => {
+    let {verificationCode:code, reservations} = this.state;
     this.setState({verificationCode: ''});
-    if (result) {
-      //
-    } else this.setState({showInputWarning: true})
+    let {verifiedRsv,markedRsvs} = this._verifyOffline(code);
+    if (!verifiedRsv) this.setState({showInputWarning: true});
+    else {
+      this._verifyOnline(code, verifiedRsv.rsvNo, reservations);
+      this.setState({reservations: markedRsvs});
+    }
   }
 
   _verifyOffline = code => {
-    let parsed = parseInt(code.slice(0,-2), 36);
-    let contactName = null;
-    let verifiedRsv = this.state.reservations.map( rsv => {
-      if (rsv.rsvNo == parsed) {
+    let parsedCd = parseInt(code.slice(0,-2), 36);
+    let verifiedRsv = null;
+    let markedRsvs = this.state.reservations.map( rsv => {
+      if (rsv.rsvNo == parsedCd) {
         rsv.isVerified = true;
-        contactName = rsv.contact.name;
+        verifiedRsv = rsv;
       }
       return rsv;
     });
-    this.setState({reservations: verifiedRsv})
-    return !!contactName;
+    return {verifiedRsv, markedRsvs};
+  }
+
+  _verifyOnline = async (ticketNumber, rsvNo, previousRsvs) => {
+    let isConnected = await NetInfo.isConnected.fetch();
+    if (!isConnected) return false;
+    let res = await fetchVerifyTicket({ticketNumber, rsvNo});
+    if(res.status!=200) this.setState({reservations: previousRsvs});
+    return true;
   }
 
   _onVerificationCodeChanged = verificationCode => {

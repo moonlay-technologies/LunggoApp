@@ -46,3 +46,19 @@ export const fetchAppointmentList = async (params = '') => {
 export async function shouldRefreshAppointmentList() {
   setItemAsync('shouldRefresh.appointmentList', 'true');
 }
+
+
+export const fetchVerifyTicket = async ({ticketNumber, rsvNo}) => {
+  const version = 'v1';
+  const path = `/${version}/operator/verifyticket`;
+  const method = 'POST';
+  const requiredAuthLevel = AUTH_LEVEL.User;
+  const data = {ticketNumber, rsvNo};
+  let request = { path, requiredAuthLevel, method, data }
+  try {
+    return await fetchTravoramaApi(request);
+  } catch (error) {
+    console.warn(error);
+  }
+}
+

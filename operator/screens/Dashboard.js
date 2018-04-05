@@ -165,6 +165,7 @@ export default class Dashboard extends React.Component {
   _goToProfile = () => { 'TODO'; console.warn('TODO: Dashboard.js _goToProfile') }
 
   _goToMutasi = () => this.props.navigation.navigate('Mutasi')
+  _goToRefund = () => this.props.navigation.navigate('Refund')
 
   _openLogoutModal = () => this.refs.logoutModal.openModal()
   _askLogout = () => this._openLogoutModal()
@@ -320,7 +321,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5' 
               />
             </View>
-            <Text style={styles.labelHeader}>Mutasi Transaksi</Text>
+            <Text style={styles.labelHeader}>Pencairan Dana</Text>
             <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
@@ -351,7 +352,7 @@ export default class Dashboard extends React.Component {
             </View>
           </View>
           <View style={styles.separatorListDashbord}></View>
-          <View style={{flexDirection:'row',}}>
+          <TouchableOpacity style={styles.row} onPress={this._goToRefund}>
             <View style={{marginRight:15}}>
               <Icon
                 name='md-undo'
@@ -369,7 +370,7 @@ export default class Dashboard extends React.Component {
                 color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <TouchableOpacity style={styles.row} onPress={this._goToFAppointmentList}>
             <View style={{marginRight:15}}>

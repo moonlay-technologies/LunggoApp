@@ -32,7 +32,7 @@ export default class Mutasi extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Mutasi'
+    title: 'Pencairan Dana'
   };
 
   componentDidMount() {
