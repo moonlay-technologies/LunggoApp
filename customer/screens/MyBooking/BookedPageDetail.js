@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Maps from '../../components/Maps';
 import { WebBrowser } from 'expo';
+import Avatar from './../../../commons/components/Avatar';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -163,7 +164,7 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Image style={[styles.avatar, { marginRight: 10 }]} source={require('../../../assets/images/janedoe.jpg')} />
+            <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 10 }]} />
             <View>
               <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#454545' }}>
                 {operatorName}

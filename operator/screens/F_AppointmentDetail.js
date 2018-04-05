@@ -12,7 +12,7 @@ import {
   getPaxCountText, getPaymentSumInSteps as getPaymentInfo,
   getPaymentSumInReservations as getPaymentSum,
 } from '../../commons/otherCommonFunctions';
-
+import Avatar from './../../commons/components/Avatar';
 
 export default class F_AppointmentDetail extends React.Component {
 
@@ -21,44 +21,44 @@ export default class F_AppointmentDetail extends React.Component {
   }
 
   _keyExtractor = (item, index) => index
-  _renderItem = ({item, index}) => (
+  _renderItem = ({ item, index }) => (
     <ListItem
       item={item}
       index={index}
-      onPressItem={ () => this._goToFReservationDetail(index)}
+      onPressItem={() => this._goToFReservationDetail(index)}
       {...this.props}
     />
   )
 
   _goToFReservationDetail = i => {
-    let {reservations, name, date, session} =
+    let { reservations, name, date, session } =
       this.props.navigation.state.params.details;
-    this.props.navigation.navigate( 'F_ReservationDetail', {
-      rsv: reservations[i], activityDetail: {name, date, session}
+    this.props.navigation.navigate('F_ReservationDetail', {
+      rsv: reservations[i], activityDetail: { name, date, session }
     });
   }
 
   render() {
-    let {details} = this.props.navigation.state.params;
+    let { details } = this.props.navigation.state.params;
     return (
       <ScrollView style={styles.container}>
-        <View style={[styles.center,{paddingHorizontal:15}]}>
+        <View style={[styles.center, { paddingHorizontal: 15 }]}>
           <Text style={styles.activityTitle}>{details.name}</Text>
         </View>
         <View style={styles.center}>
           <Text style={styles.activityDesc}>
-            {dateFullShort(details.date)}{details.session&&' pk. '+details.session}
+            {dateFullShort(details.date)}{details.session && ' pk. ' + details.session}
           </Text>
         </View>
         <View style={styles.divider} />
-        <View style={{flexDirection:'row', paddingHorizontal:15}}>
-          <View style={{flex:1,}}>
+        <View style={{ flexDirection: 'row', paddingHorizontal: 15 }}>
+          <View style={{ flex: 1, }}>
             <Text style={styles.activityDesc}>Yang sudah dibayar:</Text>
             <Text style={styles.activityDesc}>Total Pendapatan:</Text>
           </View>
-          <View style={{flex:1, alignItems:'flex-end'}}> 
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
             <Text style={styles.nominalKecil}>
-              {getPaymentSum(details.reservations,'completed')}
+              {getPaymentSum(details.reservations, 'completed')}
             </Text>
             <Text style={styles.nominalKecil}>
               {getPaymentSum(details.reservations)}
@@ -67,7 +67,7 @@ export default class F_AppointmentDetail extends React.Component {
         </View>
         <View style={styles.divider} />
         <FlatList
-          style={{paddingTop:15}}
+          style={{ paddingTop: 15 }}
           data={details.reservations}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
@@ -81,21 +81,19 @@ export default class F_AppointmentDetail extends React.Component {
 class ListItem extends React.PureComponent {
 
   render() {
-    let {item} = this.props;
-    let completedPayment = getPaymentInfo(item.paymentSteps,'completed');
+    let { item } = this.props;
+    let completedPayment = getPaymentInfo(item.paymentSteps, 'completed');
     let totalPayment = getPaymentInfo(item.paymentSteps);
     let paxCount = getPaxCountText(item.paxCount);
-    let nameInitial = item.contact.name.substr(0,1);
+    let nameInitial = item.contact.name.substr(0, 1);
     return (
       <View>
         <TouchableOpacity
           style={styles.boxReservation}
           onPress={this.props.onPressItem}
         >
-          <View style={styles.containerAvatar}>
-            <Text style={styles.avatar}>{nameInitial}</Text>
-          </View>
-          <View style={{width:'80%'}}>
+          <Avatar size={40} style={styles.containerAvatar} name={item.contact.name} />
+          <View style={{ width: '80%' }}>
             <Text style={styles.namaPax}>{item.contact.name}</Text>
             <Text style={styles.activityDesc}>{paxCount}</Text>
             <Text style={styles.activityTanggal}>
@@ -119,48 +117,42 @@ class ListItem extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical:20,
+    paddingVertical: 20,
     backgroundColor: '#fff',
-    flex:1,
+    flex: 1,
   },
-  center:{
-    alignItems:'center',
+  center: {
+    alignItems: 'center',
   },
-  boxReservation:{
-    paddingHorizontal:15,
-    flexDirection:'row',
-    flex:1,
-    width:'100%',
+  boxReservation: {
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    flex: 1,
+    width: '100%',
   },
-  containerAvatar:{
-    width:40,
-    height:40,
-    borderRadius:20,
-    backgroundColor:'#00d3c5',
-    alignItems:'center',
-    justifyContent:'center',
-    marginRight:10
+  containerAvatar: {
+    marginRight: 10
   },
-  avatar:{
-    color:'#fff',
-    fontWeight:'bold'
+  avatar: {
+    color: '#fff',
+    fontWeight: 'bold'
   },
-  nominalBesar:{
+  nominalBesar: {
     fontFamily: 'Hind',
     fontSize: 35,
     color: '#00d3c5',
     ...Platform.select({
       ios: {
-        height:45
+        height: 45
       },
       android: {
         lineHeight: 30,
-        marginBottom:5,
-        paddingBottom:8
+        marginBottom: 5,
+        paddingBottom: 8
       },
     }),
   },
-  nominalKecil:{
+  nominalKecil: {
     fontFamily: 'Hind',
     fontSize: 15,
     color: '#00d3c5',
@@ -172,7 +164,7 @@ const styles = StyleSheet.create({
       },
       android: {
         lineHeight: 20,
-        marginBottom:5,
+        marginBottom: 5,
       },
     }),
   },
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind-SemiBold',
     fontSize: 24,
     color: '#454545',
-    textAlign:'center',
+    textAlign: 'center',
     ...Platform.select({
       ios: {
         lineHeight: 18,
@@ -223,8 +215,8 @@ const styles = StyleSheet.create({
       },
     }),
   },
-   activityTanggal: {
-    fontSize: 15  ,
+  activityTanggal: {
+    fontSize: 15,
     color: '#636363',
     fontFamily: 'Hind-Light',
     ...Platform.select({
@@ -257,7 +249,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#e1e1e1',
-    marginVertical:15
+    marginVertical: 15
   },
   containerTanggal: {
     width: '90%',
