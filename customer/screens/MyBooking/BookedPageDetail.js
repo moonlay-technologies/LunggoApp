@@ -232,8 +232,8 @@ export default class BookedPageDetail extends React.Component {
             <Text style={[styles.activityTitle, { marginBottom: 10 }]}>
               Peserta: {totalPaxCount} orang
             </Text>
-            {paxes && paxes.map(pax =>
-              <TouchableOpacity style={{
+            {paxes && paxes.map((pax, idx) =>
+              <TouchableOpacity key={idx} style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 borderBottomColor: '#efefef',
@@ -299,7 +299,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: 40,
     height: 40,
-    resizeMode: 'cover',
     borderRadius: 20
   },
   barcode: {

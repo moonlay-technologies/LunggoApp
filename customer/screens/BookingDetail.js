@@ -49,7 +49,8 @@ export default class BookingDetail extends React.Component {
     });
     this.state = {
       counter, totalCount, price,
-      isDateSelected: true,
+      isDateSelected: false,
+      isDateValid: true,
       isPaxFilled: true,
       isContactFilled: true,
       isContactNeverFilled: true,
@@ -72,6 +73,7 @@ export default class BookingDetail extends React.Component {
 
   setSchedule = scheduleObj => {
     scheduleObj.isDateSelected = true;
+    scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
   }
 
@@ -90,7 +92,7 @@ export default class BookingDetail extends React.Component {
     //// validation
     this.setState({ isBookButtonPressed: true });
     if (!pax) this.setState({ isPaxFilled: false });
-    if (!date) this.setState({ isDateSelected: false });
+    if (!date) this.setState({ isDateValid: false });
     if (!contact) this.setState({ isContactFilled: false });
     if (!pax || !date || !contact) return;
 
@@ -198,20 +200,20 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       `${Formatter.dateFullShort(date)}, pk ${time}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
       <View>
-        <Text style={{color:'#00d3c5', fontWeight:'bold', fontSize:13,}}>UBAH</Text>
+        <Text style={{ color: '#00d3c5', fontWeight: 'bold', fontSize: 13, }}>UBAH</Text>
       </View>
       :
       <View>
-        
+
       </View>
-      
+
 
     let counterButtons = counterArr => {
       let add = counterObj => {
@@ -415,35 +417,33 @@ export default class BookingDetail extends React.Component {
 
           <LoadingModal isVisible={this.state.isLoading} />
 
-          <View style={{marginBottom:10}}>
-            <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:10}}>
-              <View><Text style={styles.activityTitle}>Jadwal</Text></View>
-              <View style={{justifyContent:'center'}}><Text style={{color:'#00d3c5', fontWeight:'bold', fontSize:13,}}>PILIH</Text></View>
-            </View>
-            <View style={styles.divider}></View>
-            
-            {/*<View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingBottom: 20,
-              marginVertical: 20,
-            }}>
-              <View style={{justifyContent:'center'}}>
-                <Text style={this.state.isDateSelected ?
-                  styles.normalText : styles.warningText} >
-                  {selectedDateText}
-                </Text>
-                {isDateSelected ||
-                  <Text style={styles.validation}>
-                    Mohon isi jadwal
-                  </Text>
-                }
+          <View style={{ marginBottom: 10 }}>
+            <TouchableOpacity onPress={this._goToCalendarPicker} >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                <View>
+                  <Text style={styles.activityTitle}>Jadwal</Text>
+                  {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+                </View>
+                <View style={{ justifyContent: 'center' }}><Text style={{ color: '#00d3c5', fontWeight: 'bold', fontSize: 13, }}>{isDateSelected ? 'UBAH' : 'PILIH'}</Text></View>
               </View>
-              <TouchableOpacity containerStyle={styles.addButton}
-                onPress={this._goToCalendarPicker} >
-                {addEditButton(date)}
-              </TouchableOpacity>
-            </View>*/}
+            </TouchableOpacity>
+
+            {this.state.isDateSelected &&
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingBottom: 20
+              }}>
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={this.state.isDateSelected ?
+                    styles.normalText : styles.warningText} >
+                    {selectedDateText}
+                  </Text>
+                </View>
+              </View>
+            }
+
+            <View style={styles.divider}></View>
           </View>
 
           <View>
@@ -514,9 +514,9 @@ export default class BookingDetail extends React.Component {
               <TouchableOpacity containerStyle={styles.addButton}
                 onPress={this._goToBookingContact} >
                 {isContactNeverFilled ||
-                <View style={{justifyContent:'center'}}>
-                 <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
-                </View>}
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
+                  </View>}
               </TouchableOpacity>
             </View>
             {!isContactFilled && isBookButtonPressed &&

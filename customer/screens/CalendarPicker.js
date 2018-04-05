@@ -192,7 +192,7 @@ export default class CalendarPicker extends React.Component {
                 style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
                 onPress={this._return}
               >
-              Pilih
+              OK
               </Button>
             </View>
           </View>
