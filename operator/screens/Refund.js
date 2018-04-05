@@ -4,10 +4,12 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View, Image, ScrollView,
   TouchableOpacity
 } from 'react-native';
+import OfflineNotificationBar from '../../commons/components/OfflineNotificationBar';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import LoadingAnimation from '../../customer/components/LoadingAnimation';
 import { timeFromNow, date, rupiah } from '../../customer/components/Formatter';
 import { getPaxCountText } from '../../commons/otherCommonFunctions';
+import Moment from 'moment';
 
 export default class Refund extends React.Component {
 
@@ -52,54 +54,63 @@ export default class Refund extends React.Component {
     let totalAmount = refunds.reduce( (total,refund) => {
       return total + refund.refundAmount;
     },0 );
-    let soonestRefund = refunds[0] || {}
-    let soonestDueDate = soonestRefund.dueDate || '0000-00-00';
-    let soonestAmount = soonestRefund.refundAmount || '';
-    return ( isLoading ? <LoadingAnimation/> :
-      <ScrollView style={styles.container}>
-        <View style={styles.center}>
-          <Text style={styles.nominalBesar1}>Total Refund</Text>
-          <Text style={styles.nominalBesar}>{rupiah(totalAmount)}</Text>
-          <View style={{marginTop:4, alignItems:'center'}}>
-            <Text style={styles.activityDesc}>
-              {rupiah(soonestAmount)} {timeFromNow(soonestDueDate)}
-            </Text>
-          </View>
+    let soonestRefund = refunds[0] || {refundAmount:0,dueDate:'0000-00-00'};
+    let soonestDueDate = Moment(soonestRefund.dueDate).diff(Moment(), 'days');
+    let soonestAmount = rupiah(soonestRefund.refundAmount);
+    return (
+      <View style={{flex:1}}>
+      { isLoading ?
+        <LoadingAnimation/>
+      :
+      (!refunds.length) ?
+        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          <Text>Tidak ada pembatalan yang harus dibayarkan</Text>
         </View>
-        <View style={styles.divider} />
-
-
-        { refunds.map( (item,i) =>
-          <View key={i}>
-            <TouchableOpacity style={styles.boxReservation} onPress={()=>this._goToDetail(item)}>
-              <View style={{marginRight:10, width:'20%' }}>
-                <Image style={{ height: 55, width:'100%',}} source={{uri:item.mediaSrc}} />
-              </View>
-              <View style={{width:'80%'}}>
-                <Text style={styles.activityTitle}>
-                  {item.activityName}
-                </Text>
-                <Text style={styles.activityTanggal}>
-                  Pemesan: {item.contact.name}
-                </Text>
-                <Text style={styles.activityTanggal}>
-                  Peserta: {getPaxCountText(item.paxCount)}
-                </Text>
-                <Text style={styles.activityTanggal}>
-                  Batas akhir refund: {date(item.dueDate)}
-                </Text>
-                <Text style={styles.activityTanggal}>Yang harus direfund:
-                  <Text style={styles.nominalKecil}> {rupiah(item.refundAmount)}</Text>
-                </Text>
-                
-              </View>
-            </TouchableOpacity>
-            <View style={styles.divider} />
+      :
+        <ScrollView style={styles.container}>
+          <View style={styles.center}>
+            <Text style={styles.nominalBesar1}>Total Refund</Text>
+            <Text style={styles.nominalBesar}>{rupiah(totalAmount)}</Text>
+            <View style={{marginTop:4, alignItems:'center'}}>
+              <Text style={styles.activityDesc}>
+                bayarkan {soonestAmount} maksimal {soonestDueDate} hari lagi
+              </Text>
+            </View>
           </View>
-        ) }
+          <View style={styles.divider} />
 
-         
-      </ScrollView>
+          { refunds.map( (item,i) =>
+            <View key={i} >
+              <TouchableOpacity style={styles.boxReservation} onPress={()=>this._goToDetail(item)}>
+                <View style={{marginRight:10, width:'20%' }}>
+                  <Image style={{ height: 55, width:'100%',}} source={{uri:item.mediaSrc}} />
+                </View>
+                <View style={{width:'80%'}}>
+                  <Text style={styles.activityTitle}>
+                    {item.activityName}
+                  </Text>
+                  <Text style={styles.activityTanggal}>
+                    Pemesan: {item.contact.name}
+                  </Text>
+                  <Text style={styles.activityTanggal}>
+                    Peserta: {getPaxCountText(item.paxCount)}
+                  </Text>
+                  <Text style={styles.activityTanggal}>
+                    Batas akhir refund: {date(item.dueDate)}
+                  </Text>
+                  <Text style={styles.activityTanggal}>Yang harus direfund:
+                    <Text style={styles.nominalKecil}> {rupiah(item.refundAmount)}</Text>
+                  </Text>
+                  
+                </View>
+              </TouchableOpacity>
+              <View style={styles.divider} />
+            </View>
+          ) }
+        </ScrollView>
+      }
+      <OfflineNotificationBar/>
+      </View>
     );
   }
 }
