@@ -55,9 +55,9 @@ export default class BookedPageDetail extends React.Component {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
 
     if (bookingStatus == 'BOOK')
-      return <Text>Menunggu proses pembayaran</Text>;
+      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;
     else if (bookingStatus == 'FORW')
-      return <Text>Sedang menunggu konfirmasi operator</Text>;
+      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator</Text></View>;
     else if (bookingStatus == 'TKTD' && hasPdfVoucher && isPdfUploaded) {
       return (
         <Button
@@ -65,7 +65,7 @@ export default class BookedPageDetail extends React.Component {
           style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
           onPress={() => this._viewPdfVoucher()}
         >
-          Lihat Voucher
+          Lihat Tiket
         </Button>
       );
     }
@@ -83,7 +83,7 @@ export default class BookedPageDetail extends React.Component {
         </View>);
     }
     else if (bookingStatus == 'CONF')
-      return <Text>Tiket sedang dalam proses penerbitan</Text>;
+      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang dalam proses penerbitan</Text></View>;
   }
 
   render() {
@@ -315,8 +315,16 @@ const styles = StyleSheet.create({
   },
   labelWarning: {
     backgroundColor: '#ff5f5f',
-    padding: 5,
+    padding: 10,
     borderRadius: 3,
+    marginTop: 5,
+    alignItems: 'center',
+  },
+  labelText: {
+    borderColor: '#ff5f5f',
+    padding: 10,
+    borderRadius: 3,
+    borderWidth: 1,
     marginTop: 5,
     alignItems: 'center',
   },

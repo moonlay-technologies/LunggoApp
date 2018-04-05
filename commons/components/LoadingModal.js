@@ -25,7 +25,7 @@ export default class LoadingModal extends React.Component {
             <LoadingAnimation width={70} height={70} />
           </View>
           <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-            <Text>Loading...</Text>
+            <Text>Mohon tunggu...</Text>
           </View>
         </View>
       </Modal>

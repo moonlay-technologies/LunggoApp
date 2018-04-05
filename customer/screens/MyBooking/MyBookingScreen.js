@@ -36,8 +36,8 @@ export default class MyBookingScreen extends React.Component {
     this.setState({ isLoading: true });
     shouldRefreshMyBookingList();
     getMyBookingList().then(list => {
-      this.setState({ list, isLoading: false });
-    });
+      this.setState({ list });
+    }).finally(() => this.setState({ isLoading: false }));
   }
 
   _keyExtractor = (item, index) => index
