@@ -1,11 +1,10 @@
 'use strict';
 
 import React from 'react';
-import Button from 'react-native-button';
 import { Icon } from 'react-native-elements'
 import {
-  Platform, StyleSheet, Text, View,
-  Image, TextInput, ScrollView, TouchableHighlight, KeyboardAvoidingView
+  Platform, StyleSheet, Text, View, Image, TouchableOpacity, NetInfo,
+  TextInput, ScrollView, TouchableHighlight, KeyboardAvoidingView
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import { dateFullShort } from '../../customer/components/Formatter';
@@ -13,29 +12,72 @@ import { getPaxCountText } from '../../commons/otherCommonFunctions';
 
 export default class AppointmentDetail extends React.Component {
 
+  constructor(props) {
+    super(props);
+    let {reservations} = props.navigation.state.params.details;
+    this.state = {
+      reservations,
+      verificationCode: '',
+      showInputWarning: false,
+    };
+  }
+
   static navigationOptions = {
     title: 'Detail Appointment',
-  };
+  }
+
+  _verify = async () => {
+    let code = this.state.verificationCode;
+    let result;
+    try {
+      let isConnected = await NetInfo.isConnected.fetch();
+      if (isConnected) {
+        // console.log('fetch(code)');
+        throw 'cannot verify online';
+      } else throw 'cannot verify online';
+    } catch(e) { result = this._verifyOffline(code); }
+    this.setState({verificationCode: ''});
+    if (result) {
+      //
+    } else this.setState({showInputWarning: true})
+  }
+
+  _verifyOffline = code => {
+    let parsed = parseInt(code.slice(0,-2), 36);
+    let contactName = null;
+    let verifiedRsv = this.state.reservations.map( rsv => {
+      if (rsv.rsvNo == parsed) {
+        rsv.isVerified = true;
+        contactName = rsv.contact.name;
+      }
+      return rsv;
+    });
+    this.setState({reservations: verifiedRsv})
+    return !!contactName;
+  }
+
+  _onVerificationCodeChanged = verificationCode => {
+    this.setState({verificationCode, showInputWarning:false});
+  }
 
   render() {
     let { details } = this.props.navigation.state.params;
+    let {showInputWarning, verificationCode} = this.state;
     // let {paxGroups} = details;
     return (
       <ScrollView style={{flex:1,backgroundColor: '#f1f0f0' }}>
-         <KeyboardAvoidingView behavior="padding">
+        <KeyboardAvoidingView behavior="padding">
         <View style={{flex:1,backgroundColor: '#f1f0f0',}}>
 
           <View style={styles.containerListAppointmentHeader}>
             <Text style={styles.activityTitle2}>
-            {details.name}
+              {details.name}
             </Text>
 
             <View style={{flexDirection:'row', marginTop:20}}>
 
               <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10, marginRight:10}}>
-                {/*<Text style={styles.infoTitle}>
-                  Tanggal
-                </Text>*/}
+                {/*<Text style={styles.infoTitle}>Tanggal</Text>*/}
                 <View style={{marginBottom:-5, marginTop:5}}>
                   <Icon
                     name='ios-calendar'
@@ -56,64 +98,57 @@ export default class AppointmentDetail extends React.Component {
               </View>
 
               <View style={{alignItems:'center',flex:1, borderWidth:1, borderColor:'#00d3c5', borderRadius:3, paddingBottom:10}}>
-                {/*<Text style={styles.infoTitle}>
-                  Total Pax
-                </Text>*/}
-                <View style={{marginBottom:-5, marginTop:5}}>
-                  <Icon
-                    name='ios-people'
-                    type='ionicon'
-                    size={30}
-                    color='#00d3c5' />
-                </View>
-                <View>
-                  <Text style={styles.activityDesc}>
-                    {details.totalPax} orang peserta
-                  </Text>
-                </View>
+                {/*<Text style={styles.infoTitle}>Total Pax</Text>*/}
+                <Icon
+                  style={{marginBottom:-5, marginTop:5}}
+                  name='ios-people'
+                  type='ionicon'
+                  size={30}
+                  color='#00d3c5' />
+                <Text style={styles.activityDesc}>
+                  {details.totalPax} peserta
+                </Text>
               </View>
 
             </View>
 
           </View>
 
-          <View style={{paddingLeft:15}}>
-            <Text style={styles.activityTitle1}>
+          <Text style={styles.activityTitle1}>
             Detail Peserta
-            </Text>
+          </Text>
+
+          { this.state.reservations.map( (rsv, index) =>
+
+          <View key={rsv.rsvNo} style={styles.containerListAppointment}>
+            <TouchableHighlight
+              onPress={this._onPress}
+              underlayColor='#ddd'
+            >
+              <View style={{flexDirection: 'row',}}>
+                <View style={{flex:1}}>
+                  <View>
+                    <Text style={[styles.namaPeserta,{color:rsv.isVerified ? '#00d3c5' : '#454545'}]}>
+                      {rsv.contact.name}
+                    </Text>
+                    <Text style={styles.activityDesc}>{getPaxCountText(rsv.paxCount)}</Text>
+                  </View>
+                  <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
+                  <Text style={styles.activityDesc}>{rsv.contact.email}</Text>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Icon
+                    style={{marginTop:10}}
+                    name='chevron-thin-right'
+                    type='entypo'
+                    size={20}
+                    color='#707070'
+                  />
+                </View>
+              </View>
+            </TouchableHighlight> 
           </View>
 
-          { details.reservations.map( rsv =>
-          <View key={rsv.rsvNo} style={styles.containerListAppointment}>
-            
-              <TouchableHighlight
-                
-                onPress={this._onPress}
-                underlayColor='#ddd'
-              >
-                <View style={{flexDirection: 'row',}}>
-                  <View style={{flex:1}}>
-                    <View>
-                      <Text style={styles.namaPeserta}>{rsv.contact.name}</Text>
-                      <Text style={styles.activityDesc}>{getPaxCountText(rsv.paxCount)}</Text>
-                    </View>
-                    <Text style={styles.activityDesc}>{rsv.contact.countryCallCd+rsv.contact.phone}</Text>
-                    <Text style={styles.activityDesc}>{rsv.contact.email}</Text>
-                  </View>
-                  <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                    <View style={{marginTop:10,}}>
-                      <Icon
-                        name='chevron-thin-right'
-                        type='entypo'
-                        size={20}
-                        color='#707070'
-                      />
-                    </View>
-                  </View>
-                </View>
-              </TouchableHighlight> 
-            
-          </View>
           )}
 
 {/*paxGroups.map(pg =>
@@ -174,21 +209,21 @@ export default class AppointmentDetail extends React.Component {
 
 
           <View style={styles.containerListAppointmentVerifikasi}>
-            <View style={{}}>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.label}>Masukkan Kode Verifikasi</Text>
-              </View>
-              
+            <View>
+              <Text style={styles.label}>Masukkan Kode Verifikasi</Text>
               <TextInput
                 underlineColorAndroid= 'transparent'
-                style={styles.txtInput}
-                // onChangeText={ name => this.setState({name}) }
-                // value={this.state.name}
+                style={[styles.txtInput,{ borderColor: showInputWarning ? 'red' : '#e5e5e5'}]}
+                onChangeText={this._onVerificationCodeChanged}
+                value={verificationCode}
                 placeholder="Kode verifikasi"
               />
             </View>
 
-            <View style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:15}}>
+            <TouchableOpacity
+              style={{alignItems:'center', width:'100%', justifyContent:'center', marginTop:15}}
+              onPress={this._verify}
+            >
               <LinearGradient
                 colors={['#00d3c5', '#35eac6', '#6affc6']}
                 start={[0, 0]}
@@ -202,7 +237,7 @@ export default class AppointmentDetail extends React.Component {
                   Verifikasi
                 </Text>
               </LinearGradient>
-            </View>
+            </TouchableOpacity>
           </View>
 
 {/*              <View style={{marginTop:40, alignItems:'center'}}>
@@ -286,7 +321,8 @@ const styles = StyleSheet.create({
     height:15,
     marginRight:3,
   },
-  activityTitle1:{
+  activityTitle1: {
+    paddingLeft: 15,
     fontFamily: 'Hind-SemiBold',
     fontSize: 18,
     color: '#454545',
@@ -342,26 +378,26 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  infoTitle:{
-    fontFamily: 'Hind-SemiBold',
-    fontSize: 15,
-    color: '#454545',
-    backgroundColor:'transparent',
-    ...Platform.select({
-      ios: {
-        lineHeight: 19,
-        paddingTop:12,
-        marginBottom: -15,
-        paddingBottom:5,
-      },
-      android: {
-        lineHeight: 30,
-        marginBottom:5,
-        //paddingTop: 23 - (23* 1),
+  // infoTitle:{
+  //   fontFamily: 'Hind-SemiBold',
+  //   fontSize: 15,
+  //   color: '#454545',
+  //   backgroundColor:'transparent',
+  //   ...Platform.select({
+  //     ios: {
+  //       lineHeight: 19,
+  //       paddingTop:12,
+  //       marginBottom: -15,
+  //       paddingBottom:5,
+  //     },
+  //     android: {
+  //       lineHeight: 30,
+  //       marginBottom:5,
+  //       //paddingTop: 23 - (23* 1),
 
-      },
-    }),
-  },
+  //     },
+  //   }),
+  // },
   activityDesc: {
     fontSize: 14,
     color: '#454545',
@@ -381,6 +417,7 @@ const styles = StyleSheet.create({
     }),
   },
   label: {
+    marginBottom:10,
     fontSize: 15,
     color: '#000',
     fontFamily: 'Hind',
