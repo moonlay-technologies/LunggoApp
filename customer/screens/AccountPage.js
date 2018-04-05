@@ -10,6 +10,7 @@ import { Icon } from 'react-native-elements';
 import LogoutConfirmationModal from '../../commons/components/LogoutConfirmationModal';
 import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile, getProfile, shouldRefreshProfile } from '../../commons/ProfileController';
+import Avatar from './../../commons/components/Avatar';
 
 export default class AccountScreen extends React.Component {
 
@@ -92,22 +93,22 @@ export default class AccountScreen extends React.Component {
                     </TouchableOpacity>
                   }
 
-                  {/*<View style={{ alignItems: 'center', marginBottom: 10 }}>
-              <View style={{ marginBottom: 20 }}>
-                <Image style={styles.avatarBig} source={{ uri: this.state.avatar }} />
-              </View>
-              <View>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={styles.textCart}>Edit Profile</Text>
-                  <View style={{ marginHorizontal: 10 }}>
-                    <Text style={styles.textCart}>|</Text>
-                  </View>
-                  <Text style={styles.textCartColor}>100 point</Text>
-                </View>
-              </View>*/}
+                  {/* <View style={{ alignItems: 'center', marginBottom: 10 }}>
+                    <View style={{ marginBottom: 20 }}>
+                      <Avatar size={90} style={styles.avatarBig} name={this.state.name} source={{ uri: this.state.avatar }} />
+                    </View>
+                    <View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={styles.textCart}>Edit Profile</Text>
+                        <View style={{ marginHorizontal: 10 }}>
+                          <Text style={styles.textCart}>|</Text>
+                        </View>
+                        <Text style={styles.textCartColor}>100 point</Text>
+                      </View>
+                    </View> */}
 
                   <View style={{ flexDirection: 'row' }}>
 

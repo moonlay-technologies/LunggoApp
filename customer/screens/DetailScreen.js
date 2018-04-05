@@ -21,6 +21,7 @@ import {
 import { MultilineText } from '../components/StyledText'
 import { APP_TYPE } from '../../constants/env';
 import Maps from '../components/Maps';
+import Avatar from './../../commons/components/Avatar';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -251,7 +252,7 @@ class Header extends Component {
     return (
       <Animated.View style={[styles.headerBackground, { backgroundColor, elevation }]}>
         <View style={styles.headerContentContainer}>
-        {/*<View style={[ styles.headerContentContainer,
+          {/*<View style={[ styles.headerContentContainer,
           {
             ...Platform.select({
               ios: {borderBottomWidth}
@@ -263,8 +264,8 @@ class Header extends Component {
           </TouchableOpacity>
           <Animated.View style={{ opacity, flex: 6.5 }}>
             <Text
-              style={[ styles.activitydetailTitleHeader,
-                { marginTop: 4, textAlign: 'center' }
+              style={[styles.activitydetailTitleHeader,
+              { marginTop: 4, textAlign: 'center' }
               ]}
               numberOfLines={1}
             >
@@ -565,7 +566,7 @@ class ReviewAndRating extends Component {
               <View style={{ flexDirection: 'row', flex: 1 }}>
                 <View style={{ flex: 2, flexDirection: 'row' }}>
                   <View style={{ marginRight: 10 }}>
-                    <Image style={styles.avatar} source={(review.avatar && { uri: review.avatar }) || require('../../assets/images/dummyProfile.png')} />
+                    <Avatar size={45} style={styles.avatar} name={review.name} source={(review.avatar && { uri: review.avatar })} />
                   </View>
                   <View style={{ justifyContent: 'center' }}>
                     <Text style={styles.reviewTitle}>
@@ -678,7 +679,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: 45,
     height: 45,
-    resizeMode: 'cover',
     borderRadius: 22.5
   },
   activityTitle: {
