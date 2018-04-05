@@ -1,7 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { Platform, StyleSheet, Text, View, Image,
+import {
+  Platform, StyleSheet, Text, View, Image,
   ScrollView, TouchableOpacity, FlatList,
 } from 'react-native';
 import OfflineNotificationBar from '../../commons/components/OfflineNotificationBar';
@@ -19,13 +20,13 @@ import 'moment/locale/id';
 
 export default class F_AppointmentList extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isLoading: true,
       list: [],
       startDate: Moment().startOf('Month'),
-      endDate: Moment().endOf('Month'),
+      endDate: Moment(new Date()),
     };
   }
 
@@ -34,78 +35,83 @@ export default class F_AppointmentList extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({isLoading:true});
+    this.setState({ isLoading: true });
     this._getAppointmentList(this.state);
   }
 
-  _getAppointmentList = ({startDate, endDate}) => {
+  _getAppointmentList = ({ startDate, endDate }) => {
     let start = Moment(startDate).format('MM/DD/YYYY');
-    let end   = Moment( endDate ).format('MM/DD/YYYY');
+    let end = Moment(endDate).format('MM/DD/YYYY');
     // let start = Moment.utc(startDate).format('MM/DD/YYYY');
     // let end   = Moment.utc( endDate ).format('MM/DD/YYYY');
     let params = `type=order&startDate=${start}&endDate=${end}`;
     fetchAppointmentList(params)
-      .then( res => this.setState({list: res.appointments}) )
-      .catch( e => console.warn(e) )
-      .finally( () => this.setState({isLoading: false}) );
+      .then(res => this.setState({ list: res.appointments }))
+      .catch(e => console.warn(e))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _keyExtractor = (item, index) => index
-  _renderItem = ({item, index}) =>
+  _renderItem = ({ item, index }) =>
     <ListItem item={item} index={index} {...this.props} />
 
-  _changeDate = (date,whichDate) => {
-    date = Moment(date,'dddd, D MMM YYYY');
-    this._getAppointmentList({...this.state, [whichDate]:date});
-    this.setState({ [whichDate]:date, isLoading: true });
+  _changeDate = (date, whichDate) => {
+    date = Moment(date, 'dddd, D MMM YYYY');
+    this._getAppointmentList({ ...this.state, [whichDate]: date });
+    this.setState({ [whichDate]: date });
   }
 
   render() {
-    let {startDate, endDate, list, isLoading} = this.state;
+    let { startDate, endDate, list, isLoading } = this.state;
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ScrollView style={styles.container}>
           <View style={styles.center}>
             <Text style={styles.nominalBesar1}>Total Pendapatan</Text>
             <Text style={styles.nominalBesar}>{getPaymentSum(list)}</Text>
-            <View style={{marginTop:10, alignItems:'center'}}>
-              <Text style={styles.activityDesc}>Total yang sudah dibayar:
-                <Text style={styles.nominalKecil}> {getPaymentSum(list,'completed')}</Text>
+            <View style={{ marginTop: 10, alignItems: 'center' }}>
+              <Text style={styles.activityDesc}>Sudah Dibayar
+                <Text style={styles.nominalKecil}> {getPaymentSum(list, 'completed')}</Text>
               </Text>
-              <View style={{marginTop:3}}>
+              <View style={{ marginTop: 3 }}>
                 <Text style={styles.activityDesc}>
-                  Periode {dateFullShort(startDate)} - {dateFullShort(endDate)}
+                  Periode {dateFullShort(startDate)} ‒ {dateFullShort(endDate)}
                 </Text>
               </View>
             </View>
           </View>
           <View style={styles.divider} />
-          <View style={{flexDirection:'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <DatePicker
+              mode="date"
               date={startDate.format('dddd, D MMM YYYY')}
-              onDateChange={ d => this._changeDate( d,'startDate')}
+              maxDate={Moment(new Date())}
+              onDateChange={d => this._changeDate(d, 'startDate')}
             />
-            <View style={{justifyContent:'center'}}>
-              <Text>-</Text>
+            <View style={{ justifyContent: 'center' }}>
+              <Text>—</Text>
             </View>
             <DatePicker
+              mode="date"
               date={endDate.format('dddd, D MMM YYYY')}
-              onDateChange={ d => this._changeDate( d,'endDate')}
+              minDate={startDate}
+              maxDate={Moment(new Date())}
+              onDateChange={d => this._changeDate(d, 'endDate')}
             />
           </View>
           <View style={styles.divider}></View>
-          { isLoading ? <LoadingAnimation/> :
+          {isLoading ? <LoadingAnimation /> :
             list.length ?
-            <FlatList
-                style={{paddingTop:15}}
+              <FlatList
+                style={{ paddingTop: 15 }}
                 data={list}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem}
-            />
-          :
-            <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-              <Text>Tidak ada transaksi pada rentang tanggal ini</Text>
-            </View>
+              />
+              :
+              <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+                <Text>Tidak ada transaksi pada rentang tanggal ini</Text>
+              </View>
           }
         </ScrollView>
         <OfflineNotificationBar />
@@ -117,34 +123,36 @@ export default class F_AppointmentList extends React.Component {
 class ListItem extends React.PureComponent {
 
   _goToFAppointmentDetail = () => this.props.navigation.navigate(
-    'F_AppointmentDetail', {details: this.props.item}
+    'F_AppointmentDetail', { details: this.props.item }
   )
 
   render() {
-    let {item} = this.props;
+    let { item } = this.props;
     return (
       <View>
         <TouchableOpacity style={styles.boxReservation} onPress={this._goToFAppointmentDetail}>
-          <View style={{marginRight:10, width:'20%' }}>
-            <Image style={{ height: 55, width:'100%',}} source={{uri:item.mediaSrc}} />
+          <View style={{ marginRight: 10, width: '20%' }}>
+            <Image style={{ height: 55, width: '100%', }} source={{ uri: item.mediaSrc }} />
           </View>
-          <View style={{width:'80%'}}>
+          <View style={{ width: '80%' }}>
             <Text style={styles.activityTitle}>
               {item.name}
             </Text>
             <Text style={styles.activityTanggal}>
-              {dateFullShort(item.date)}{item.session&&' pk. '+item.session}
+              {dateFullShort(item.date)}{item.session && ' pk. ' + item.session}
             </Text>
             <Text style={styles.activityDesc}>{getTotalPaxCountsText(item.reservations)}</Text>
-            
-            <Text style={styles.activityTanggal}>
-              Yang sudah dibayar:
-              <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations,'completed')}</Text>
-            </Text>
-            <Text style={styles.activityTanggal}>
-              Total Pembayaran:
-              <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations)}</Text>
-            </Text>
+            <View style={{ width:'95%', flexDirection: 'row' }} >
+              <View style={{ flex: 1 }}>
+                <Text style={styles.activityTanggal}>Sudah Dibayar</Text>
+                <Text style={styles.activityTanggal}>Harga
+                </Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations, 'completed')}</Text>
+                <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations)}</Text>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
         <View style={styles.divider} />
@@ -155,9 +163,9 @@ class ListItem extends React.PureComponent {
 
 
 const DatePicker = props => (
-  <TouchableOpacity style={{flex:1, alignItems:'center'}}> 
+  <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
     <ReactNativeDatepicker
-      style={[styles.containerTanggal,{...props.style}]}
+      style={[styles.containerTanggal, { ...props.style }]}
       date={props.date}
       mode="date"
       placeholder="select date"
@@ -171,7 +179,7 @@ const DatePicker = props => (
         dateInput: {
           borderRadius: 3,
           borderColor: '#cdcdcd',
-          height:35,
+          height: 35,
         }
       }}
       onDateChange={props.onDateChange}
@@ -181,60 +189,60 @@ const DatePicker = props => (
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical:20,
+    paddingVertical: 20,
     backgroundColor: '#fff',
-    flex:1,
+    flex: 1,
   },
-  center:{
-    alignItems:'center',
+  center: {
+    alignItems: 'center',
   },
-  boxReservation:{
-    paddingHorizontal:15,
-    flexDirection:'row',
-    flex:1,
-    width:'100%',
+  boxReservation: {
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    flex: 1,
+    width: '100%',
   },
-  nominalBesar:{
+  nominalBesar: {
     fontFamily: 'Hind',
     fontSize: 35,
     color: '#00d3c5',
     ...Platform.select({
       ios: {
-        height:45
+        height: 45
       },
       android: {
         lineHeight: 30,
-        marginBottom:5,
-        paddingBottom:8
+        marginBottom: 5,
+        paddingBottom: 8
       },
     }),
   },
-  nominalBesar1:{
+  nominalBesar1: {
     fontFamily: 'Hind',
     fontSize: 18,
     color: '#454545',
     ...Platform.select({
       ios: {
-        height:22
+        height: 22
       },
       android: {
         lineHeight: 30,
-        marginBottom:5,
-        paddingBottom:8
+        marginBottom: 5,
+        paddingBottom: 8
       },
     }),
   },
-  nominalKecil:{
+  nominalKecil: {
     fontFamily: 'Hind',
     fontSize: 15,
     color: '#00d3c5',
     ...Platform.select({
       ios: {
-        height:45
+        height: 45
       },
       android: {
         lineHeight: 20,
-        marginBottom:5,
+        marginBottom: 5,
       },
     }),
   },
@@ -269,8 +277,8 @@ const styles = StyleSheet.create({
       },
     }),
   },
-   activityTanggal: {
-    fontSize: 15  ,
+  activityTanggal: {
+    fontSize: 15,
     color: '#636363',
     fontFamily: 'Hind-Light',
     ...Platform.select({
@@ -303,7 +311,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#e1e1e1',
-    marginVertical:15
+    marginVertical: 15
   },
   containerTanggal: {
     width: '90%',
