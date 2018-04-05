@@ -34,7 +34,7 @@ export default class F_ReservationDetail extends React.Component {
     let { rsv, activityDetail:{name, date, session} } =
       this.props.navigation.state.params;
     let activityTime = formatDate(date);
-    activityTime += session && ', ' +  session;
+    if (!!session) activityTime += ', ' +  session;
     let totalPayment = getPaymentSumInSteps(rsv.paymentSteps);
     let completedPayment = getPaymentSumInSteps(rsv.paymentSteps,true);
     let isSettled = completedPayment == totalPayment;

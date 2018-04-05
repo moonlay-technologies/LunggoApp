@@ -4,48 +4,99 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View, Image, ScrollView,
   TouchableOpacity
 } from 'react-native';
+import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
+import LoadingAnimation from '../../customer/components/LoadingAnimation';
+import { timeFromNow, date, rupiah } from '../../customer/components/Formatter';
+import { getPaxCountText } from '../../commons/otherCommonFunctions';
 
 export default class Refund extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      refunds: [],
+      isLoading: true,
+    }
+  }
 
   static navigationOptions = {
     title: 'Refund',
   }
 
+  componentDidMount() {
+    //// start with isLoading:true; in the constructor
+    this._fetchRefund().then( ({refunds}) => this.setState({refunds}) )
+      .catch( e => console.warn(e) )
+      .finally( () => this.setState({isLoading:false}) );
+  }
+
+  _fetchRefund = async () => {
+    const version = 'v1';
+    const path = `/${version}/operator/pendingrefunds`;
+    let request = { path, requiredAuthLevel: AUTH_LEVEL.User }
+    try {
+      return await fetchTravoramaApi(request);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  _goToDetail = rsv => this.props.navigation.navigate('F_ReservationDetail',{
+    rsv, activityDetail: {
+      name: rsv.activityName, date:rsv.activityDate, session:rsv.session
+    }
+  })
+
   render() {
-    return (
+    let { refunds, isLoading } = this.state;
+    let totalAmount = refunds.reduce( (total,refund) => {
+      return total + refund.refundAmount;
+    },0 );
+    let soonestRefund = refunds[0] || {}
+    let soonestDueDate = soonestRefund.dueDate || '0000-00-00';
+    let soonestAmount = soonestRefund.refundAmount || '';
+    return ( isLoading ? <LoadingAnimation/> :
       <ScrollView style={styles.container}>
         <View style={styles.center}>
           <Text style={styles.nominalBesar1}>Total Refund</Text>
-          <Text style={styles.nominalBesar}>*Rp 1.300.000* </Text>
-          <View style={{marginTop:1, alignItems:'center'}}>
-            <View style={{marginTop:3}}>
-              <Text style={styles.activityDesc}>*RP 520.000 dalam 3 hari lagi*</Text>
-            </View>
+          <Text style={styles.nominalBesar}>{rupiah(totalAmount)}</Text>
+          <View style={{marginTop:4, alignItems:'center'}}>
+            <Text style={styles.activityDesc}>
+              {rupiah(soonestAmount)} {timeFromNow(soonestDueDate)}
+            </Text>
           </View>
         </View>
-        <View style={styles.divider}></View>
+        <View style={styles.divider} />
 
 
-
-        <TouchableOpacity style={styles.boxReservation}>  
-          <View style={{marginRight:10, width:'20%' }}>
-            <Image style={{ height: 55, width:'100%',}} source={require('../../assets/images/bg1.jpg')} />
+        { refunds.map( (item,i) =>
+          <View key={i}>
+            <TouchableOpacity style={styles.boxReservation} onPress={()=>this._goToDetail(item)}>
+              <View style={{marginRight:10, width:'20%' }}>
+                <Image style={{ height: 55, width:'100%',}} source={{uri:item.mediaSrc}} />
+              </View>
+              <View style={{width:'80%'}}>
+                <Text style={styles.activityTitle}>
+                  {item.activityName}
+                </Text>
+                <Text style={styles.activityTanggal}>
+                  Pemesan: {item.contact.name}
+                </Text>
+                <Text style={styles.activityTanggal}>
+                  Peserta: {getPaxCountText(item.paxCount)}
+                </Text>
+                <Text style={styles.activityTanggal}>
+                  Batas akhir refund: {date(item.dueDate)}
+                </Text>
+                <Text style={styles.activityTanggal}>Yang harus direfund:
+                  <Text style={styles.nominalKecil}> {rupiah(item.refundAmount)}</Text>
+                </Text>
+                
+              </View>
+            </TouchableOpacity>
+            <View style={styles.divider} />
           </View>
-          <View style={{width:'80%'}}>
-            <Text style={styles.activityTitle}>
-              *Jalan-Jalan Ke Bali*
-            </Text>
-            <Text style={styles.activityTanggal}>*Pemesan: Ali Zainal*</Text>
-            <Text style={styles.activityTanggal}>*Peserta: 2 Dewasa, 3 Anak-anak*</Text>
-            <Text style={styles.activityTanggal}>*Batas akhir refund: 10-11-2018*</Text>
-            <Text style={styles.activityTanggal}>*Yang harus direfund:
-              <Text style={styles.nominalKecil}> Rp 520.000</Text>
-            </Text>
-            
-          </View>
-        </TouchableOpacity>
-        <View style={styles.divider}></View>
-        
+        ) }
 
          
       </ScrollView>
