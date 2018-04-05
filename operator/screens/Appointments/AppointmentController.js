@@ -2,11 +2,12 @@
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+const perPage = 'perPage=10000';
 
 export async function fetchAppointmentRequests() {
   const version = 'v1';
   let request = {
-    path: `/${version}/operator/appointments/request`,
+    path: `/${version}/operator/appointments/request?${perPage}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   try {
@@ -32,7 +33,7 @@ export const getAppointmentList = async () => {
 
 export const fetchAppointmentList = async (params = '') => {
   const version = 'v1';
-  const path = `/${version}/operator/appointments?${params}`;
+  const path = `/${version}/operator/appointments?${perPage}&${params}`;
   let request = { path, requiredAuthLevel: AUTH_LEVEL.User }
   try {
     let list = await fetchTravoramaApi(request);

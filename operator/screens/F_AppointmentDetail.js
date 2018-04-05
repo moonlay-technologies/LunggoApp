@@ -85,7 +85,6 @@ class ListItem extends React.PureComponent {
     let completedPayment = getPaymentInfo(item.paymentSteps, 'completed');
     let totalPayment = getPaymentInfo(item.paymentSteps);
     let paxCount = getPaxCountText(item.paxCount);
-    let nameInitial = item.contact.name.substr(0, 1);
     return (
       <View>
         <TouchableOpacity

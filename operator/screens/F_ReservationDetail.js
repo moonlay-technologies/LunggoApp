@@ -39,7 +39,10 @@ export default class F_ReservationDetail extends React.Component {
     let completedPayment = getPaymentSumInSteps(rsv.paymentSteps, true);
     let isSettled = completedPayment == totalPayment;
     console.warn('potensi bug di Tanggal Pelunasan: uda pasti blom kalo tanggal terakhir itu ada di array terakhir?')
-    let dueDate = formatDate(rsv.paymentSteps[rsv.paymentSteps.length - 1].date);
+    let dueDate = '';
+    if (rsv.paymentSteps)
+      dueDate = formatDate(rsv.paymentSteps[rsv.paymentSteps.length - 1].date);
+    else console.warn( 'no paymentSteps!' )
     let paxCount = getPaxCountText(rsv.paxCount);
     return (
       <ScrollView style={styles.container}>
@@ -56,7 +59,7 @@ export default class F_ReservationDetail extends React.Component {
             <View style={{ marginTop: 3 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={[styles.labelDesc, { flex: 1 }]}>Nama Aktivitas</Text>
-                <Text style={styles.activityDesc} numberOfLines={1}>{name}</Text>
+                <Text style={[styles.activityDesc,{ flex: 2 }]} numberOfLines={1}>{name}</Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={styles.labelDesc}>Waktu</Text>

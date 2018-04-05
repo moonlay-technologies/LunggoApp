@@ -58,7 +58,7 @@ export default class F_AppointmentList extends React.Component {
   _changeDate = (date, whichDate) => {
     date = Moment(date, 'dddd, D MMM YYYY');
     this._getAppointmentList({ ...this.state, [whichDate]: date });
-    this.setState({ [whichDate]: date });
+    this.setState({ [whichDate]: date, isLoading: true });
   }
 
   render() {
@@ -145,8 +145,7 @@ class ListItem extends React.PureComponent {
             <View style={{ width:'95%', flexDirection: 'row' }} >
               <View style={{ flex: 1 }}>
                 <Text style={styles.activityTanggal}>Sudah Dibayar</Text>
-                <Text style={styles.activityTanggal}>Harga
-                </Text>
+                <Text style={styles.activityTanggal}>Harga</Text>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end' }}>
                 <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations, 'completed')}</Text>
@@ -236,9 +235,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind',
     fontSize: 15,
     color: '#00d3c5',
+    lineHeight: 20,
     ...Platform.select({
       ios: {
-        height: 45
+        // height: 45
       },
       android: {
         lineHeight: 20,
