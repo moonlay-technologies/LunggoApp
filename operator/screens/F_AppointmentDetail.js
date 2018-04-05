@@ -53,8 +53,8 @@ export default class F_AppointmentDetail extends React.Component {
         <View style={styles.divider} />
         <View style={{ flexDirection: 'row', paddingHorizontal: 15 }}>
           <View style={{ flex: 1, }}>
-            <Text style={styles.activityDesc}>Yang sudah dibayar:</Text>
-            <Text style={styles.activityDesc}>Total Pendapatan:</Text>
+            <Text style={styles.activityDesc}>Sudah Dibayar</Text>
+            <Text style={styles.activityDesc}>Total Pendapatan</Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end' }}>
             <Text style={styles.nominalKecil}>
@@ -93,20 +93,21 @@ class ListItem extends React.PureComponent {
           onPress={this.props.onPressItem}
         >
           <Avatar size={40} style={styles.containerAvatar} name={item.contact.name} />
-          <View style={{ width: '80%' }}>
+          <View style={{ width: '80%', flexDirection: 'column' }}>
             <Text style={styles.namaPax}>{item.contact.name}</Text>
             <Text style={styles.activityDesc}>{paxCount}</Text>
-            <Text style={styles.activityTanggal}>
-              Tanggal Pesan: {dateFullShort(item.rsvTime)}
-            </Text>
-            <Text style={styles.activityTanggal}>
-              Yang sudah dibayar:
-              <Text style={styles.nominalKecil}> {completedPayment}</Text>
-            </Text>
-            <Text style={styles.activityTanggal}>
-              Total Pembayaran:
-              <Text style={styles.nominalKecil}> {totalPayment}</Text>
-            </Text>
+            <View style={{ flexDirection: 'row' }} >
+              <View style={{ flex: 1 }} >
+                <Text style={styles.activityTanggal}>Tanggal Pesan</Text>
+                <Text style={styles.activityTanggal}>Sudah Dibayar</Text>
+                <Text style={styles.activityTanggal}>Total Pembayaran</Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }} >
+                <Text style={styles.activityTanggal}>{dateFullShort(item.rsvTime)}</Text>
+                <Text style={styles.nominalKecil}> {completedPayment}</Text>
+                <Text style={styles.nominalKecil}> {totalPayment}</Text>
+              </View>
+            </View>
           </View>
         </TouchableOpacity>
         <View style={styles.divider} />
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
         marginBottom: -15,
       },
       android: {
-        lineHeight: 24,
+        lineHeight: 34,
 
       },
     }),
