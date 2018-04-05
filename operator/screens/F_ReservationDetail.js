@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements';
 import Timeline from 'react-native-timeline-listview';
 import { getPaxCountText, getPaymentSumInSteps } from '../../commons/otherCommonFunctions';
 import { date as formatDate, rupiah } from '../../customer/components/Formatter';
+import Moment from 'moment';
 
 export default class F_ReservationDetail extends React.Component {
 
@@ -18,10 +19,9 @@ export default class F_ReservationDetail extends React.Component {
     };
     this.timelineData = props.navigation.state.params.rsv
       .paymentSteps.map(step => ({
-        time: step.date,
-        title: step.description,
-        description: 'Jumlah: ' + rupiah(step.amount) +
-          '\nPada tanggal: ' + formatDate(step.date),
+        time: Moment(step.date).format('D MMM'),
+        title: 'Down Payment 1',
+        description: rupiah(step.amount),
         circleColor: timelineCircleColor[step.status]
       }));
   }
@@ -86,7 +86,7 @@ export default class F_ReservationDetail extends React.Component {
             <Text style={styles.labelHeader}>Detail Pesanan</Text>
             <View style={{ marginTop: 3 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.labelDesc}>No. Reservasi</Text>
+                <Text style={styles.labelDesc}>Nomor Pesanan</Text>
                 <Text style={styles.activityDesc}>{rsv.rsvNo}</Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -115,7 +115,7 @@ export default class F_ReservationDetail extends React.Component {
             <Text style={styles.labelHeader}>Detail Pembayaran</Text>
             <Timeline
               data={this.timelineData}
-              showTime={false}
+              showTime={true}
               circleSize={12}
               lineWidth={1}
               lineColor={'#e1e1e1'}
