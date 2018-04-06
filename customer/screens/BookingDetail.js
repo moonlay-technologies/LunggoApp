@@ -5,12 +5,11 @@ import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
-import { Rating, Icon, CheckBox } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform
 } from 'react-native';
-import { getProfile } from '../../commons/ProfileController';
 import ContinueToCartModal from '../components/ContinueToCartModal';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
@@ -146,6 +145,7 @@ export default class BookingDetail extends React.Component {
     this.props.navigation.navigate('AddBookingContact', {
       setContact: this.setContact,
       contact: this.state.contact,
+      isContactNeverFilled: this.state.isContactNeverFilled,
     });
   }
 
@@ -193,11 +193,6 @@ export default class BookingDetail extends React.Component {
     this.props.navigation.navigate('RincianHarga', { breakdown, total })
   }
 
-  _onBookForSelfRadioButtonPressed = async () => {
-    let contact = await getProfile();
-    this.setState({ contact, isContactFilled: true, isContactNeverFilled: false });
-  }
-
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
     let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
@@ -207,7 +202,7 @@ export default class BookingDetail extends React.Component {
 
     let addEditButton = isEdit => !!isEdit ?
       <View>
-        <Text style={{ color: '#00d3c5', fontWeight: 'bold', fontSize: 13, }}>UBAH</Text>
+        <Text style={styles.clickableText}>UBAH</Text>
       </View>
       :
       <View>
@@ -424,11 +419,15 @@ export default class BookingDetail extends React.Component {
                   <Text style={styles.activityTitle}>Jadwal</Text>
                   {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
                 </View>
-                <View style={{ justifyContent: 'center' }}><Text style={{ color: '#00d3c5', fontWeight: 'bold', fontSize: 13, }}>{isDateSelected ? 'UBAH' : 'PILIH'}</Text></View>
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={styles.clickableText}>
+                    {isDateSelected ? 'UBAH' : 'PILIH'}
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
 
-            {this.state.isDateSelected &&
+            { this.state.isDateSelected &&
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -465,7 +464,7 @@ export default class BookingDetail extends React.Component {
 
           <View>
             <Text style={styles.activityTitle}>
-              Kontak tamu yang dapat dihubungi
+              Kontak peserta yang dapat dihubungi
             </Text>
             <View style={{
               flexDirection: 'row',
@@ -483,45 +482,22 @@ export default class BookingDetail extends React.Component {
                   {/*contact.countryCallCd} - */}0{contact.phone}
                 </Text>
               }
-              {isContactNeverFilled &&
-                <View>
-                  <CheckBox
-                    size={18}
-                    textStyle={{ fontSize: 13 }}
-                    style={{ flex: 1, marginBottom: 20 }}
-                    title='Pesan untuk saya sendiri'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checkedColor='#01d4cb'
-                    uncheckedColor='grey'
-                    onPress={this._onBookForSelfRadioButtonPressed}
-                    checked={false}
-                  />
-                  <CheckBox
-                    size={18}
-                    textStyle={{ fontSize: 13 }}
-                    style={{ flex: 1 }}
-                    title='Pesan untuk orang lain'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checkedColor='#01d4cb'
-                    uncheckedColor='grey'
-                    onPress={this._goToBookingContact}
-                    checked={false}
-                  />
-                </View>
+              { isContactNeverFilled ?
+                <TouchableOpacity onPress={this._goToBookingContact}>
+                  <Text style={styles.clickableText}>Masukkan kontak peserta</Text>
+                </TouchableOpacity>
+              :
+                <TouchableOpacity containerStyle={styles.addButton}
+                  onPress={this._goToBookingContact} >
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
+                    </View>
+                </TouchableOpacity>
               }
-              <TouchableOpacity containerStyle={styles.addButton}
-                onPress={this._goToBookingContact} >
-                {isContactNeverFilled ||
-                  <View style={{ justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
-                  </View>}
-              </TouchableOpacity>
             </View>
             {!isContactFilled && isBookButtonPressed &&
               <Text style={styles.warningText} >
-                Mohon isi data kontak tamu
+                Mohon isi data kontak peserta
               </Text>
             }
           </View>
@@ -555,6 +531,11 @@ export default class BookingDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  clickableText: {
+    color: '#00d3c5',
+    fontWeight: 'bold',
+    fontSize: 13, 
+  },
   container: {
     padding: 20,
     backgroundColor: '#fff',
