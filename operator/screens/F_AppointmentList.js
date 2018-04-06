@@ -135,20 +135,23 @@ class ListItem extends React.PureComponent {
             <Image style={{ height: 55, width: '100%', }} source={{ uri: item.mediaSrc }} />
           </View>
           <View style={{ width: '80%' }}>
-            <Text style={styles.activityTitle}>
-              {item.name}
-            </Text>
-            <Text style={styles.activityTanggal}>
-              {dateFullShort(item.date)}{item.session && ' pk. ' + item.session}
-            </Text>
-            <Text style={styles.activityDesc}>{getTotalPaxCountsText(item.reservations)}</Text>
+            <View style={{marginBottom:10}}>
+              <Text style={styles.activityTitle}>
+                {item.name}
+              </Text>
+              <Text style={styles.activityTanggal}>
+                {dateFullShort(item.date)}{item.session && ' pk. ' + item.session}
+              </Text>
+            </View>
+            
             <View style={{ width:'95%', flexDirection: 'row' }} >
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1.5, }}>
+                <Text style={styles.activityTanggal}>Peserta</Text>
                 <Text style={styles.activityTanggal}>Sudah Dibayar</Text>
-                <Text style={styles.activityTanggal}>Harga
-                </Text>
+                <Text style={styles.activityTanggal}>Harga</Text>
               </View>
-              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <View style={{ flex: 1.5, alignItems: 'flex-end' }}>
+                <Text style={styles.activityTanggal}>{getTotalPaxCountsText(item.reservations)}</Text>
                 <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations, 'completed')}</Text>
                 <Text style={styles.nominalKecil}> {getPaymentInfo(item.reservations)}</Text>
               </View>
@@ -238,7 +241,9 @@ const styles = StyleSheet.create({
     color: '#00d3c5',
     ...Platform.select({
       ios: {
-        height: 45
+        lineHeight: 12,
+        paddingTop: 9,
+        marginBottom: -8,
       },
       android: {
         lineHeight: 20,
@@ -285,7 +290,7 @@ const styles = StyleSheet.create({
       ios: {
         lineHeight: 12,
         paddingTop: 9,
-        marginBottom: -10,
+        marginBottom: -8,
       },
       android: {
 
