@@ -20,7 +20,7 @@ export default class MyBookingScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Pesananku',
-  };
+  }
 
   componentDidMount() {
     let { params } = this.props.navigation.state;
@@ -49,6 +49,8 @@ export default class MyBookingScreen extends React.Component {
       navigation={this.props.navigation}
     />
   )
+  _refreshCtrl = () =>
+    <RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />
 
   render() {
     let { isLoading, list, status } = this.state;
@@ -60,12 +62,12 @@ export default class MyBookingScreen extends React.Component {
         data={list}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList.bind(this)} refreshing={this.state.isLoading} />}
+        refreshControl={<this._refreshCtrl />}
       />)
     else return (
       <ScrollView
         contentContainerStyle={styles.container}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList.bind(this)} refreshing={this.state.isLoading} />}>
+        refreshControl={<this._refreshCtrl />}>
         <BlankScreen {...props} />
       </ScrollView>)
   }

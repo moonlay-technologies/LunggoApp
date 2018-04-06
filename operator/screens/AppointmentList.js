@@ -2,12 +2,13 @@
 
 import React from 'react';
 import {
-  Platform, StyleSheet, Text, View, Image,
+  Platform, StyleSheet, Text, View, Image, RefreshControl,
   TextInput, ScrollView, TouchableHighlight, FlatList,
 } from 'react-native';
 import Moment from 'moment';
 import 'moment/locale/id';
 import { Icon } from 'react-native-elements';
+import { getAppointmentList } from './Appointments/AppointmentController';
 
 class ListItem extends React.PureComponent {
 
@@ -88,42 +89,64 @@ class ListItem extends React.PureComponent {
 
 export default class AppointmentList extends React.Component {
 
-  static navigationOptions = {
-    title: 'Jadwal Aktivitas',
-  };
-
   constructor (props) {
     super(props)
     this.state = {
-      list: this.props.navigation.state.params.list
+      list: this.props.navigation.state.params.list,
+      isLoading: false,
     };
   }
 
-  _keyExtractor = (item, index) => index;
+  static navigationOptions = {
+    title: 'Pesanan Terjadwal',
+  }
+
+  _refreshList = () => {
+    this.setState({isLoading:true})
+    getAppointmentList().then( r =>
+      this.setState({ list: r.appointments })
+    ).catch(e  => console.warn(e))
+    .finally( () => this.setState({isLoading:false}))
+  }
+
+  _keyExtractor = (item, index) => index
   _renderItem = ({item, index}) => (
     <ListItem
       item={item}
       index={index}
       onPressItem={this._onPressItem}
     />
-  );
+  )
+
   _onPressItem = (item) => {
     this.props.navigation.navigate(
       'AppointmentDetail',{details: item}
     );
-  };
+  }
+
+  _refreshCtrl = () =>
+    <RefreshControl onRefresh={this._refreshList} refreshing={this.state.isLoading} />
 
   render() {
+    let {list} = this.state;
     return (
-      <ScrollView style={{ backgroundColor: '#fff',}}>
-
-        <FlatList
+      ( list && list.length > 0 ) ?
+        <View style={{ backgroundColor: '#fff'}}>
+          <FlatList
             style={{paddingTop:15}}
-            data={this.state.list}
+            data={list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
-        />
-      </ScrollView>
+            refreshControl={<this._refreshCtrl />}
+          />
+        </View>
+      :
+        <ScrollView
+          style={{ backgroundColor: '#fff' }}
+          refreshControl={<this._refreshCtrl/>}
+        >
+          <Text>Anda belum memiliki pesanan terjadwal</Text>
+        </ScrollView>
     );
   }
 }

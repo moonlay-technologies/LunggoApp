@@ -52,16 +52,14 @@ export default class ActivityList extends React.Component {
 
   render() {
     return (
-      <ScrollView style={{backgroundColor: '#fff',}}>
-        <View style={styles.containerListAppointment}>
-          <FlatList
-            // numColumns={2}
-            data={this.props.list}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-          />
-        </View>
-      </ScrollView>
+      <View style={styles.containerListAppointment}>
+        <FlatList
+          data={this.props.list}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          refreshControl={this.props.refreshControl}
+        />
+      </View>
     );
   }
 }
@@ -70,7 +68,8 @@ const styles = StyleSheet.create({
   containerListAppointment: {
     padding:10,
     flexDirection: 'row',
-    flex:1
+    flex:1,
+    backgroundColor: '#fff',
   },
   divider: {
     height: 1,

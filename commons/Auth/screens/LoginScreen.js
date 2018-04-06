@@ -99,7 +99,8 @@ export default class LoginScreen extends React.Component {
       }).catch(error => {
         console.log("Login error!!");
         console.log(error);
-      }).finally(() => this.setState({ isLoading: false }));
+        this.setState({ isLoading: false })
+      });
   }
 
   _toggleShowPassword = () => {

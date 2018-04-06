@@ -4,7 +4,7 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, FlatList, Text, View, Image,
-  TextInput, ScrollView, TouchableHighlight,
+  TextInput, ScrollView, TouchableHighlight, RefreshControl,
 } from 'react-native';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import { dateFullShort, timeFromNow } from '../../customer/components/Formatter';
@@ -32,15 +32,9 @@ export default class AppointmentRequests extends React.Component {
     this._refreshList();
   }
 
-  _pullToRefresh = () => {
-    // TODO: pull to refresh
-  }
-
-  _refreshList = () => {
-    fetchAppointmentRequests().then(res =>
-      this.setState({ list: res.appointmentRequests })
-    );
-  }
+  _refreshList = () => fetchAppointmentRequests().then( res =>
+    this.setState({ list: res.appointmentRequests })
+  )
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -76,24 +70,32 @@ export default class AppointmentRequests extends React.Component {
 
   _acceptRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'confirm')
   _declineRequest = ({ rsvNo }) => this._respondRequest(rsvNo, 'decline')
+  _refreshCtrl = () =>
+    <RefreshControl onRefresh={this._refreshList} refreshing={this.state.isLoading} />
 
   render() {
-    return ((this.state.list && this.state.list.length > 0) ?
-      <ScrollView style={{ backgroundColor: '#fff', }}>
-        {/*<LoadingModal isVisible={this.state.isLoading} />*/}
-        <View style={{ marginBottom: 10 }}>
+    let { isLoading, list } = this.state;
+    return (
+      isLoading ? <LoadingModal isVisible={isLoading} />
+      :
+      ( list && list.length > 0 ) ?
+        <View style={{ marginBottom: 10,backgroundColor: '#fff', }}>
           <FlatList
             style={{ paddingTop: 15 }}
             data={this.state.list}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
+            refreshControl={<this._refreshCtrl/>}
           />
         </View>
-      </ScrollView>
       :
-        <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+        <ScrollView
+          style={{ backgroundColor: '#fff' }}
+          refreshControl={<this._refreshCtrl/>}
+          contentContainerStyle={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}
+        >
           <Text>Belum ada pesanan baru yang masuk</Text>
-        </View>
+        </ScrollView>
     );
   }
 }

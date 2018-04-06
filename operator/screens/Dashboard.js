@@ -279,7 +279,7 @@ export default class Dashboard extends React.Component {
                 color='#00d3c5'
               />
             </View>
-            <Text style={styles.labelHeader}>Aktivitas Terjadwal</Text>
+            <Text style={styles.labelHeader}>Pesanan Terjadwal</Text>
             <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
               <Icon
                 name='chevron-thin-right'
