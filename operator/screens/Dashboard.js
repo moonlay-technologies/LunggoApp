@@ -85,7 +85,7 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    getProfile().then(profile => this.setState(profile)).catch(e => console.warn(e));
+    getProfile().then(profile => this.setState(profile)).catch(e=>console.warn(e));
     checkUserLoggedIn().then(isLoggedIn => {
       if (!isLoggedIn) {
         let { reset, navigate } = NavigationActions;
@@ -112,28 +112,28 @@ export default class Dashboard extends React.Component {
     fetchAppointmentRequests().then(res =>
       // this.props.navigation.isFocused() &&
       this.setState({ requests: res.appointmentRequests })
-    ).catch(e => console.warn(e));;
+    ).catch( e => console.warn(e));;
   }
 
   _getAppointmentList = () => {
     getAppointmentList().then(({ appointments }) =>
       // this.props.navigation.isFocused() &&
       this.setState({ appointments })
-    ).catch(e => console.warn(e));
+    ).catch( e => console.warn(e));
   }
 
   _getActivityList = () => {
     getActivityList().then(({ activityList }) =>
       // this.props.navigation.isFocused() &&
       this.setState({ activities: activityList })
-    ).catch(e => console.warn(e));;
+    ).catch( e => console.warn(e));;
   }
 
   _getReservationList = () => {
     getReservationList().then(({ reservations }) =>
       // this.props.navigation.isFocused() &&
       this.setState({ reservations })
-    ).catch(e => console.warn(e));;
+    ).catch( e => console.warn(e));;
   }
 
   _goToAppointmentRequest = () => {
@@ -143,7 +143,7 @@ export default class Dashboard extends React.Component {
 
   _goToAppointmentList = () => {
     this.props.navigation.navigate(
-      'AppointmentList', { list: this.state.appointments || [] }
+      'AppointmentList', { list: this.state.appointments || []}
     );
   }
 
@@ -251,32 +251,32 @@ export default class Dashboard extends React.Component {
         <View style={styles.boxDetail}>
 
           <TouchableOpacity style={styles.row} onPress={this._goToActivityList}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='ios-bicycle'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Aktivitasku</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <TouchableOpacity style={styles.row} onPress={this._goToAppointmentList}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='md-clipboard'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Pesanan Terjadwal</Text>
@@ -285,27 +285,27 @@ export default class Dashboard extends React.Component {
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <TouchableOpacity style={styles.row} onPress={this._goToAppointmentRequest}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='new-message'
                 type='entypo'
                 size={24}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Pesanan Baru</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
@@ -314,108 +314,108 @@ export default class Dashboard extends React.Component {
         <View style={styles.boxDetail}>
 
           <TouchableOpacity style={styles.row} onPress={this._goToMutasi}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='md-trending-up'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Pencairan Dana</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
-          <View style={{ flexDirection: 'row', }}>
-            <View style={{ marginRight: 15 }}>
+          <TouchableOpacity style={styles.row}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='md-clock'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Riwayat Pesanan</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <TouchableOpacity style={styles.row} onPress={this._goToRefund}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='md-undo'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Pembatalan dan Pengembalian</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
           <View style={styles.separatorListDashbord}></View>
           <TouchableOpacity style={styles.row} onPress={this._goToFAppointmentList}>
-            <View style={{ marginRight: 15 }}>
+            <View style={{marginRight:15}}>
               <Icon
                 name='ios-cash'
                 type='ionicon'
                 size={26}
-                color='#00d3c5'
+                color='#00d3c5' 
               />
             </View>
             <Text style={styles.labelHeader}>Penghasilan</Text>
-            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+            <View style={{alignItems:'flex-end', justifyContent:'center'}}>
               <Icon
                 name='chevron-thin-right'
                 type='entypo'
                 size={18}
-                color='#cdcdcd'
+                color='#cdcdcd' 
               />
             </View>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity
-          style={[styles.boxDetail, styles.row]}
+          style={[styles.boxDetail,styles.row]}
           onPress={this._askLogout}
         >
           <Icon
-            style={{ marginRight: 15 }}
+            style={{marginRight:15}}
             name='ios-log-out'
             type='ionicon'
             size={26}
-            color='#00d3c5'
+            color='#00d3c5' 
           />
           <Text style={styles.labelHeader}>Keluar Akun</Text>
-          <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+          <View style={{alignItems:'flex-end', justifyContent:'center'}}>
             <Icon
               name='chevron-thin-right'
               type='entypo'
               size={18}
-              color='#cdcdcd'
+              color='#cdcdcd' 
             />
           </View>
         </TouchableOpacity>
-
+        
 
       </ScrollView>
     );
@@ -424,9 +424,6 @@ export default class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row'
-  },
   modalMenu: {
     backgroundColor: '#fff',
     width: 180,
@@ -459,11 +456,15 @@ const styles = StyleSheet.create({
     top: 30,
     width: '100%'
   },
-  separatorListDashbord: {
-    backgroundColor: '#eeeeee',
-    height: 1,
-    width: '100%',
-    marginVertical: 15,
+  row: {
+    flexDirection:'row',
+    paddingVertical:15,
+    
+  },
+  separatorListDashbord:{
+    backgroundColor:'#eeeeee',
+    height:1,
+    width:'100%',
   },
   containerBoxDashboard: {
     backgroundColor: '#ffffff',
@@ -486,13 +487,13 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  boxDetail: {
-    backgroundColor: '#fff',
-    borderBottomColor: '#e1e1e1',
+  boxDetail:{
+    backgroundColor:'#fff',
+    borderBottomColor:'#e1e1e1',
     borderBottomWidth: 1,
-    padding: 15,
-    marginBottom: 20,
-    flex: 1
+    paddingHorizontal:15,
+    marginBottom:20,
+    flex:1
   },
   avatarBig: {
     width: 90,
@@ -522,7 +523,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind',
     fontSize: 16,
     color: '#000',
-    marginTop: 2,
+    marginTop:2,
     ...Platform.select({
       ios: {
         lineHeight: 14,
