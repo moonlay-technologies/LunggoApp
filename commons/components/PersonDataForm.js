@@ -31,6 +31,10 @@ export default class PersonDataForm extends React.Component {
     this.passwordInput = {};
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState(nextProps.contact);
+  }
+
   _onSubmitForm = () => {
     let { name, email, countryCallCd, phone, password } = this.state;
     let errorName = validateRequiredField(name);
@@ -90,6 +94,7 @@ export default class PersonDataForm extends React.Component {
               {this.props.formTitle}
             </Text>
           </View>
+          {this.props.additionalContent}
           <KeyboardAvoidingView>
             {/*<KeyboardAwareScrollView
           style={{ backgroundColor: 'transparent' }}
