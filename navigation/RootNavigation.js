@@ -8,21 +8,13 @@ import { StackNavigator } from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/NotificationController';
-import { APP_TYPE } from '../constants/env';
-
 import {
   SearchActivity, MyBooking, BookedPageDetail, DetailScreen, Review,
   PaymentScreen, PaxChoice, BookingDetail, AddPax, CalendarPicker,
   AdvanceSearch, RincianHarga,
 } from '../customer/screens/Screens';
 
-import {
-  Dashboard, AppointmentList, AppointmentDetail, AppointmentRequest,
-  ActivityList, Mutasi,
-} from '../operator/screens/Screens';
 
-import EditActivity from '../operator/screens/EditActivity';
-import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
@@ -39,11 +31,6 @@ import WebViewScreen from '../customer/screens/WebViewScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
-import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
-import F_AppointmentList from '../operator/screens/F_AppointmentList';
-import F_ReservationDetail from '../operator/screens/F_ReservationDetail';
-// import ReservationDetail from '../operator/screens/ReservationDetail';
-import Refund from '../operator/screens/Refund';
 
 import IntroScreen from '../customer/screens/IntroScreen';
 // import Filter from '../screens/Filter';
@@ -58,9 +45,9 @@ export default class RootNavigator extends React.Component {
         //screen:Referral
         // screen:F_ReservationDetail
         // screen:Dashboard
-        screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        screen: MainTabNavigator
       } : {
-        screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        screen: MainTabNavigator 
       },
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
@@ -72,19 +59,12 @@ export default class RootNavigator extends React.Component {
       Registration: { screen: Registration },
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
-      AppointmentList: { screen: AppointmentList },
-      AppointmentDetail: { screen: AppointmentDetail },
-      AppointmentRequest: { screen: AppointmentRequest },
-      ActivityList: { screen: ActivityList },
       Review: { screen: Review },
-      Mutasi: { screen: Mutasi,  },
       RincianHarga: { screen: RincianHarga },
       ForgotPassword: { screen: ForgotPassword },
       MapScreen: { screen: MapScreen },
       Cart: { screen: Cart },
       AddBookingContact: { screen: AddBookingContact },
-      EditActivity: { screen: EditActivity },
-      EditDetailActivity: { screen: EditDetailActivity },
       OtpVerification: { screen: OtpVerification },
       NewPassword: { screen: NewPassword },
       SubmitRating: { screen: SubmitRating },
@@ -95,19 +75,12 @@ export default class RootNavigator extends React.Component {
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
       Referral: { screen: Referral },
-      F_AppointmentList: { screen: F_AppointmentList },
-      F_AppointmentDetail: { screen: F_AppointmentDetail },
-      F_ReservationDetail: { screen: F_ReservationDetail },
       // ReservationDetail: { screen: ReservationDetail },
-      Refund: { screen: Refund },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
     },
     {
-      initialRouteParams: { appType: APP_TYPE },
-      initialRouteName: (APP_TYPE == 'CUSTOMER') ?
-        (this.props.skipIntro) ? 'Main' : 'IntroScreen' :
-        (this.props.isLoggedIn) ? 'Main' : 'LoginScreen',
+      initialRouteName: (this.props.skipIntro) ? 'Main' : 'IntroScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',
