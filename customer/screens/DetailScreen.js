@@ -46,6 +46,7 @@ export default class DetailScreen extends Component {
       contents: [],
       scrollY: new Animated.Value(0),
       isLoading: true,
+      isDateLoading: true,
     };
   }
 
@@ -71,6 +72,7 @@ export default class DetailScreen extends Component {
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then(response => {
       this.setState(response);
+      this.setState({ isDateLoading: false });
       // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
     }).catch(error => console.log(error));
   }
@@ -81,10 +83,31 @@ export default class DetailScreen extends Component {
     });
   }
 
+  _isDateAvailable = (availableDates) => {
+    if (availableDates.length > 0) {
+      return (
+        <Footer price={this.state.price} details={this.state} {...this.props} />
+      );
+    }
+    else {
+      return (
+        <View style={globalStyles.bottomCtaBarContainer}>
+          <View>
+            <Text style={{
+              color: '#000',
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>Aktivitas Tidak Tersedia</Text>
+          </View>
+        </View>
+      )
+    }
+  }
+
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
-      review, reviewCount, rating, ratingCount, additionalContents } = this.state;
+      review, reviewCount, rating, ratingCount, additionalContents, isDateLoading, availableDateTimes } = this.state;
     return (
       <View>
         <ScrollView
@@ -100,11 +123,12 @@ export default class DetailScreen extends Component {
           <View style={styles.container}>
 
 
-            {isLoading && (
+            {(isLoading || isDateLoading) && (
               <LoadingAnimation />
             )}
 
-            {!isLoading && (
+
+            {(!isLoading && !isDateLoading) && (
               <View>
                 <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} />
                 <Contents contents={contents} />
@@ -146,11 +170,13 @@ export default class DetailScreen extends Component {
           <View style={{ paddingBottom: 95 }}></View>
 
         </ScrollView>
-
+        
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
-        {!isLoading && (
-          <Footer price={price} details={this.state} {...this.props} />
-        )}
+        {
+          (!isLoading && !isDateLoading) &&  (
+            this._isDateAvailable(availableDateTimes)
+          )
+        }
 
       </View>
     );
@@ -207,7 +233,7 @@ class Footer extends Component {
             containerStyle={globalStyles.ctaButton}
             style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
             onPress={this._onCtaButtonClick}
-            disabled={this.state.isLoading}
+            disabled={this.state.isDateLoading}
             styleDisabled={{ color: '#aaa' }}
           >
             {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
