@@ -49,8 +49,6 @@ export default class MyBookingScreen extends React.Component {
       navigation={this.props.navigation}
     />
   )
-  _refreshCtrl = () =>
-    <RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />
 
   render() {
     let { isLoading, list, status } = this.state;
@@ -62,12 +60,12 @@ export default class MyBookingScreen extends React.Component {
         data={list}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
-        refreshControl={<this._refreshCtrl />}
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
       />)
     else return (
       <ScrollView
         contentContainerStyle={styles.container}
-        refreshControl={<this._refreshCtrl />}>
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}>
         <BlankScreen {...props} />
       </ScrollView>)
   }

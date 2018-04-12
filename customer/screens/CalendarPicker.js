@@ -68,7 +68,7 @@ export default class CalendarPicker extends React.Component {
 
   _return = () => {
     this.props.navigation.state.params.setSchedule({
-      date: this.state.selectedDate,
+      date: this.state.selectdedDate,
       time: this.state.selectedTime || '',
     })
     this.props.navigation.goBack()
@@ -150,6 +150,7 @@ export default class CalendarPicker extends React.Component {
         <Modal
           style={styles.modal}
           transparent={true}
+
           isVisible={this.state.isModalVisible}
           onBackdropPress={this._closeModal}
           onBackButtonPress={this._closeModal}
