@@ -68,7 +68,7 @@ export default class CalendarPicker extends React.Component {
 
   _return = () => {
     this.props.navigation.state.params.setSchedule({
-      date: this.state.selectdedDate,
+      date: this.state.selectedDate,
       time: this.state.selectedTime || '',
     })
     this.props.navigation.goBack()
@@ -89,8 +89,9 @@ export default class CalendarPicker extends React.Component {
       this._setModalVisible(true);
     } else {
     //// if not, change marked date immediately
-      this._selectDate(selectedDate);
       this.setState({selectedTime: null})
+      this._selectDate(selectedDate);
+      
     }
   }
 
