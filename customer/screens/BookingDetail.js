@@ -198,7 +198,7 @@ export default class BookingDetail extends React.Component {
     let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      `${Formatter.dateFullShort(date)}, pk ${time}` : '';
+      `${Formatter.dateFullShort(date)}\n${time}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
       <View>
