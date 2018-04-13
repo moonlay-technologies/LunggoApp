@@ -19,7 +19,6 @@ import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { MultilineText } from '../components/StyledText'
-import { APP_TYPE } from '../../constants/env';
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 
@@ -206,9 +205,7 @@ class Footer extends Component {
 
   _onCtaButtonClick = () => {
     //// if customer
-    if (APP_TYPE == 'CUSTOMER') this._goToBookingDetail();
-    //// if operator
-    if (APP_TYPE == 'OPERATOR') this._goToEditActivity();
+    this._goToBookingDetail();
   }
 
   render() {
@@ -236,7 +233,7 @@ class Footer extends Component {
             disabled={this.state.isDateLoading}
             styleDisabled={{ color: '#aaa' }}
           >
-            {(APP_TYPE == 'CUSTOMER') ? 'Pesan' : 'Edit'}
+            {'Pesan'}
           </Button>
         </View>
       </View>

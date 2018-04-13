@@ -4,8 +4,8 @@ import {
 } from '../../constants/env';
 import { fetchProfile } from '../ProfileController';
 
-async function fetchAuth(data, isOperator) {
-  let url = API_DOMAIN + `/v1${isOperator ? '/operator' : ''}/login`;
+async function fetchAuth(data) {
+  let url = API_DOMAIN + `/v1/login`;
   console.log(url);
   console.log(data);
   let response = await fetch(url, {
@@ -32,14 +32,14 @@ async function setAccessToken(tokenData) {
   setItemAsync('expTime', expTime);
 }
 
-export async function fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, password, isOperator = false) {
+export async function fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, password) {
   let data = { clientId, clientSecret, deviceId, email, countryCallCd, phoneNumber, password };
 
   if (!data.email) delete data.email;
   if (!data.countryCallCd) delete data.countryCallCd;
   if (!data.phoneNumber) delete data.phoneNumber;
 
-  let response = await fetchAuth(data, isOperator);
+  let response = await fetchAuth(data);
 
   switch (response.status) {
     case 200:
