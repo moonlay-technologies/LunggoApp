@@ -90,6 +90,7 @@ export default class CalendarPicker extends React.Component {
     } else {
     //// if not, change marked date immediately
       this._selectDate(selectedDate);
+      this.setState({selectedTime: null})
     }
   }
 
