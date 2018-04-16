@@ -10,15 +10,17 @@ import {
 import { validateEmail, validatePassword, validateRequiredField, validatePhone }
   from '../FormValidation';
 import globalStyles from '../globalStyles';
-import { reversePhoneWithoutCountryCode_Indonesia, phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
+import {
+  reversePhoneWithoutCountryCode_Indonesia,
+  phoneWithoutCountryCode_Indonesia,
+} from '../../customer/components/Formatter';
 import { WideCTAButton } from './Buttons';
 
 
 export default class PersonDataForm extends React.Component {
 
-  constructor(props, context) {
-    super(props, context);
-    console.log(props.contact);
+  constructor(props) {
+    super(props);
     this.state = props.contact || {
       name: '',
       email: '',
@@ -36,7 +38,7 @@ export default class PersonDataForm extends React.Component {
   }
 
   _onSubmitForm = () => {
-    let { name, email, countryCallCd, phone, password } = this.state;
+    const { name, email, countryCallCd, phone, password } = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
     let errorPassword = this.props.hasPasswordField ? validatePassword(password) : false;
@@ -44,7 +46,9 @@ export default class PersonDataForm extends React.Component {
     let errorPhone = validatePhone(phone);
     if (!errorName && !errorEmail && !errorPassword &&
       !errorCountryCallCd && !errorPhone) {
-      this.props.onSubmit({ ...this.state, phone: phoneWithoutCountryCode_Indonesia(phone) });
+      this.props.onSubmit({
+        ...this.state, phone: phoneWithoutCountryCode_Indonesia(phone)
+      });
     } else this.setState({
       errorName, errorEmail, errorPassword,
       errorCountryCallCd, errorPhone
