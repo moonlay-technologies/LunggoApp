@@ -85,20 +85,12 @@ export default class DetailScreen extends Component {
   _isDateAvailable = (availableDates) => {
     if (availableDates.length > 0) {
       return (
-        <Footer price={this.state.price} details={this.state} {...this.props} />
+        true
       );
     }
     else {
       return (
-        <View style={globalStyles.bottomCtaBarContainer}>
-          <View>
-            <Text style={{
-              color: '#000',
-              fontWeight: 'bold',
-              fontSize: 20,
-            }}>Aktivitas Tidak Tersedia</Text>
-          </View>
-        </View>
+        false
       )
     }
   }
@@ -173,7 +165,7 @@ export default class DetailScreen extends Component {
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
         {
           (!isLoading && !isDateLoading) &&  (
-            this._isDateAvailable(availableDateTimes)
+            <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable = {this._isDateAvailable(availableDateTimes)} />
           )
         }
 
@@ -209,19 +201,19 @@ class Footer extends Component {
   }
 
   render() {
-    let { price } = this.props;
+    let { price, _isDateAvailable } = this.props;
     return (
       <View style={globalStyles.bottomCtaBarContainer}>
         <View style={{ alignItems: 'flex-start', flex: 1.5 }}>
           <View >
-            <Text style={{ fontSize: 12, color: '#676767', }}>Mulai dari</Text>
+            <Text style={{ fontSize: 12, color: '#676767', }}>{_isDateAvailable ? 'Mulai dari' : ''}</Text>
           </View>
           <View>
             <Text style={{
               color: '#000',
               fontWeight: 'bold',
               fontSize: 20,
-            }}>{Formatter.price(price)}</Text>
+            }}>{_isDateAvailable ? Formatter.price(price) : 'Tidak Tersedia'}</Text>
           </View>
 
         </View>
@@ -230,7 +222,7 @@ class Footer extends Component {
             containerStyle={globalStyles.ctaButton}
             style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
             onPress={this._onCtaButtonClick}
-            disabled={this.state.isDateLoading}
+            disabled={this.state.isDateLoading || !_isDateAvailable}
             styleDisabled={{ color: '#aaa' }}
           >
             {'Pesan'}

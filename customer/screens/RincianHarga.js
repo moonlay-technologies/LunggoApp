@@ -65,7 +65,7 @@ export default class RincianHarga extends Component {
                 </Text>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                <Text style={styles.activityDesc}>Sudah Termasuk</Text>
+                <Text style={styles.activityDesc}>Termasuk</Text>
               </View>
             </View>
 
