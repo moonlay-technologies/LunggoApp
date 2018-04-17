@@ -4,6 +4,9 @@ import {
   TextInput, TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { observer } from 'mobx-react';
+import { getCart } from '../Cart/CartController';
+import SubmitRatingScreen from './../SubmitRatingScreen';
 
 export default class SearchHeader extends React.Component {
 
@@ -45,9 +48,10 @@ export default class SearchHeader extends React.Component {
                 color='#ccc' />
             </View>
           </View>
-          <TouchableOpacity style={{flex:1,alignItems:'center',}} onPress={this._goToCart} activeOpacity={0.8} >
+          <TouchableOpacity style={{ flex: 1, alignItems: 'center', }} onPress={this._goToCart} activeOpacity={0.8} >
             <Icon name='ios-cart' type='ionicon' size={33} color='#00d3c5' />
-           {/* <View style={styles.notification}>
+            <CartBubble />
+            {/* <View style={styles.notification}>
               <Text style={styles.txtNotification}>3</Text>
             </View>*/}
           </TouchableOpacity>
@@ -57,6 +61,49 @@ export default class SearchHeader extends React.Component {
   }
 }
 
+class CartBubble extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      isLoading: true,
+      list: []
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    getCart().then(({ cartId, list, totalPrice, status }) => {
+      this.setState({ cartId, list, totalPrice, status, isLoading: false });
+    }).catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
+  }
+
+  //_refreshCart = () => {
+  //  this.setState({ isLoading: true });
+  //  getCart().then(({ cartId, list, totalPrice, status }) => {
+  //    this.setState({ cartId, list, totalPrice, status, isLoading: false });
+  //  }).catch(error => console.log(error))
+  //    .finally(() => this.setState({ isLoading: false }));
+  //}
+
+  render() {
+    //  this._refreshCart();
+    //  let jumlah = this.state.list;
+    //  console.log(jumlah);
+    let jumlah = this.state.list ? this.state.list.length > 0 ? this.state.list.length : null : null
+    return (
+      (!this.state.isLoading && jumlah) && (
+        <View style={styles.notification}>
+          {
+
+            <Text style={styles.txtNotification}> {jumlah} </Text>
+
+          }
+        </View>
+      )
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   flowRight: {
@@ -70,7 +117,7 @@ const styles = StyleSheet.create({
     width: 18,
     position: 'absolute',
     right: 0,
-    top: -3,
+    top: 0,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 9,
