@@ -4,9 +4,10 @@ import {
   TextInput, TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { observer } from 'mobx-react';
-import { getCart } from '../Cart/CartController';
+import { observer, Observer } from 'mobx-react';
+import { getCart, getCartCount } from '../Cart/CartController';
 import SubmitRatingScreen from './../SubmitRatingScreen';
+import cartCountStore from './../Cart/CartCountStorage';
 
 export default class SearchHeader extends React.Component {
 
@@ -15,6 +16,7 @@ export default class SearchHeader extends React.Component {
     this.state = {
       searchString: '',
       placeholder: 'Cari petualanganmu berikutnya...',
+      isLoading: false,
     };
   }
 
@@ -61,43 +63,35 @@ export default class SearchHeader extends React.Component {
   }
 }
 
-class CartBubble extends React.Component {
-  constructor(props) {
-    super();
-    this.state = {
-      isLoading: true,
-      list: []
-    };
-  }
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
-    getCart().then(({ cartId, list, totalPrice, status }) => {
-      this.setState({ cartId, list, totalPrice, status, isLoading: false });
-    }).catch(error => console.log(error))
-      .finally(() => this.setState({ isLoading: false }));
-  }
-
-  //_refreshCart = () => {
-  //  this.setState({ isLoading: true });
-  //  getCart().then(({ cartId, list, totalPrice, status }) => {
-  //    this.setState({ cartId, list, totalPrice, status, isLoading: false });
-  //  }).catch(error => console.log(error))
-  //    .finally(() => this.setState({ isLoading: false }));
-  //}
+@observer
+export class CartBubble extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isLoading: true,
+  //     list: [],
+  //     cartCount: this.props.cartCount
+  //   };
+  // }
+  // componentDidMount(){
+  //   this.setState({
+  //     isLoading: false,
+  //     cartCount: this.props.cartCount
+  //   });
+  // }
 
   render() {
     //  this._refreshCart();
     //  let jumlah = this.state.list;
     //  console.log(jumlah);
-    let jumlah = this.state.list ? this.state.list.length > 0 ? this.state.list.length : null : null
+    let jumlah = cartCountStore.cartCount ? cartCountStore.cartCount > 0 ? cartCountStore.cartCount : null : null
+    console.log('jumlah' + jumlah);
+    console.log('cartCountstore: ' + cartCountStore.cartCount)
     return (
-      (!this.state.isLoading && jumlah) && (
+      (jumlah) && (
         <View style={styles.notification}>
           {
-
             <Text style={styles.txtNotification}> {jumlah} </Text>
-
           }
         </View>
       )

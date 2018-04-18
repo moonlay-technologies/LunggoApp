@@ -9,10 +9,12 @@ import {
 import globalStyles from '../../../commons/globalStyles';
 import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../../components/Formatter';
-import { deleteCart } from './CartController';
+import { deleteCart, setCartCount } from './CartController';
 import LoadingAnimation from '../../components/LoadingAnimation';
 import BlankScreen from './CartBlankScreen';
 import { getCart } from './CartController';
+import SearchHeader from './../SearchActivity/SearchHeader';
+import cartCountStore from './CartCountStorage';
 
 export default class CartScreen extends React.Component {
 
@@ -78,12 +80,12 @@ export default class CartScreen extends React.Component {
     this.setState({ isLoading: true });
     let { list, totalPrice } = this.state;
     let deletedItemPrice = list[index].payment.originalPrice;
-    deleteCart(rsvNo).then(response => {
+    deleteCart(rsvNo).then(async response => {
       if (response.status == 200) {
         list.splice(index, 1);
         totalPrice -= deletedItemPrice;
         this.setState({ totalPrice, isLoading: false });
-        this.forceUpdate();
+        await cartCountStore.setCartCount();
       }
     }).catch(error => console.error(error));
   }

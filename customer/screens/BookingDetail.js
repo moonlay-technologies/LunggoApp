@@ -13,6 +13,7 @@ import {
 import ContinueToCartModal from '../components/ContinueToCartModal';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
+import cartCountStore from './Cart/CartCountStorage';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -131,6 +132,7 @@ export default class BookingDetail extends React.Component {
         this.setState({ isLoading: false });
         return;
       } else {
+        await cartCountStore.setCartCount();
         shouldRefreshMyBookingList();
         this.setState({ isContinueToCartModalVisible: true });
       }

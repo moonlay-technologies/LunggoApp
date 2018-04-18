@@ -20,8 +20,11 @@ import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import LoadingModal from './../../components/LoadingModal';
+import { observer } from 'mobx-react';
+import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
 const { setItemAsync } = Expo.SecureStore;
 
+@observer
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -63,13 +66,13 @@ export default class LoginScreen extends React.Component {
     this.setState({ isLoading: true });
 
     fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password)
-      .then(response => {
+      .then(async response => {
         this.setState({ isLoading: false });
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-
           registerForPushNotificationsAsync();
-          fetchWishlist();
+          await cartCountStore.setCartCount();
+          await fetchWishlist();
           let { resetAfter, thruBeforeLogin } = params;
           if (resetAfter)
             backToMain(navigation);

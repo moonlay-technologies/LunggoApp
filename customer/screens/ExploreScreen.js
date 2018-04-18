@@ -12,8 +12,9 @@ import search from './SearchActivity/SearchController';
 import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
-import LoadingAnimation from '../components/LoadingAnimation'
+import LoadingAnimation from '../components/LoadingAnimation';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
+import UpdateNotifModal from '../components/UpdateNotifModal';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -30,6 +31,10 @@ export default class ExploreScreen extends React.Component {
       promoList: [],
       isLoading: true,
       wishlists: {},
+      isNotifModalVisible: false,
+      currentVersion: '0.0.0',
+      latestVersion: '0.0.0',
+      urlPlatform: ''
     };
     setItemAsync('skipIntro', 'true');
     this._onWishlist = this._onWishlist.bind(this)
@@ -39,6 +44,40 @@ export default class ExploreScreen extends React.Component {
     title: 'Jelajah',
     header: (props) => <SearchHeader {...props} />
   };
+
+  _checkVersion = () => {
+    let currentVersion = "1.0.1";
+    // let currentVersion = Expo.Constants.manifest.version;
+    let urlPlatform = '';
+    let platform = Platform.OS;
+    if(platform = 'android'){
+      urlPlatform = 'https://play.google.com/store/apps/details?id=com.travorama&hl=in';
+    }
+    else{
+      urlPlatform = 'https://itunes.apple.com/id/app/travorama/id1142546215?mt=8';
+    }
+    const version = 'v1';
+    fetchTravoramaApi({
+      method: 'POST',
+      path: '/checkversion',
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+      data: { currentVersion, platform },
+    }).then(response => {
+      console.log('cek versi');
+      console.log(response);
+      console.log('tutub');
+      console.log(Platform);
+      console.log(Expo.Constants.manifest);
+      if (response.mustUpdate == true) {
+        this.setState({
+          isNotifModalVisible: true,
+          currentVersion: currentVersion,
+          latestVersion: response.latestVersion,
+          urlPlatform: urlPlatform
+        });
+      }
+    });
+  }
 
   _getWishlist = async () => {
     setTimeout(async () => {
@@ -81,10 +120,12 @@ export default class ExploreScreen extends React.Component {
     });
   }
 
-  componentDidMount() {
+  componentDidMount() {    
     this._refreshContents();
     this.props.navigation.addListener('willFocus', this._getWishlist);
+    //this.props.navigation.addListener('willFocus', this._cartCountGetter);
     this._getWishlist();
+    this._checkVersion();
   }
 
   _onWishlist = async ({ id, wishlisted }) => {
@@ -98,12 +139,14 @@ export default class ExploreScreen extends React.Component {
     let placeSrc = [require('../../assets/images/yogya.jpg'), require('../../assets/images/surabaya.jpg'), require('../../assets/images/bg.jpg')];
     let places = [...placeSrc, ...placeSrc, ...placeSrc];
     let placeList = places.map(place => { return { mediaSrc: place } });
-    if (this.state.isLoading)
+    if (this.state.isLoading){
       return <LoadingAnimation />
+    }
     else
+    console.log('version modal: ' + this.state.isNotifModalVisible);
       return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
-
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} />
           {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
@@ -160,9 +203,9 @@ export default class ExploreScreen extends React.Component {
 
           {this._renderHeader({ title: 'Promo Terkini' })}
           {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
-
+          
           <View style={{ paddingTop: 10 }}></View>
-
+          
         </ScrollView>
       );
   }
