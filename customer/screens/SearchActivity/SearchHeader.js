@@ -65,28 +65,12 @@ export default class SearchHeader extends React.Component {
 
 @observer
 export class CartBubble extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     isLoading: true,
-  //     list: [],
-  //     cartCount: this.props.cartCount
-  //   };
-  // }
-  // componentDidMount(){
-  //   this.setState({
-  //     isLoading: false,
-  //     cartCount: this.props.cartCount
-  //   });
-  // }
 
   render() {
-    //  this._refreshCart();
-    //  let jumlah = this.state.list;
-    //  console.log(jumlah);
-    let jumlah = cartCountStore.cartCount ? cartCountStore.cartCount > 0 ? cartCountStore.cartCount : null : null
+    let cartCount = cartCountStore.cartCount;
+    let jumlah = cartCount ? cartCount > 0 ? cartCount : null : null
     console.log('jumlah' + jumlah);
-    console.log('cartCountstore: ' + cartCountStore.cartCount)
+    console.log('cartCountstore: ' + cartCount)
     return (
       (jumlah) && (
         <View style={styles.notification}>

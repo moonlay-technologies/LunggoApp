@@ -46,6 +46,7 @@ export default class ExploreScreen extends React.Component {
   };
 
   _checkVersion = () => {
+    //currentVersion di Api masih 1.0.1
     let currentVersion = "1.0.1";
     // let currentVersion = Expo.Constants.manifest.version;
     let urlPlatform = '';
