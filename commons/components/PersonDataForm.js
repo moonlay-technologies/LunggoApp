@@ -12,6 +12,7 @@ import { validateEmail, validatePassword, validateRequiredField, validatePhone }
 import globalStyles from '../globalStyles';
 import { reversePhoneWithoutCountryCode_Indonesia, phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
 import { WideCTAButton } from './Buttons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 export default class PersonDataForm extends React.Component {
@@ -89,13 +90,14 @@ export default class PersonDataForm extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <View style={{ marginBottom: 25 }}>
             <Text style={globalStyles.categoryTitle1}>
               {this.props.formTitle}
             </Text>
           </View>
           {this.props.additionalContent}
-          <KeyboardAvoidingView>
+          {/*<KeyboardAvoidingView>*/}
             {/*<KeyboardAwareScrollView
           style={{ backgroundColor: 'transparent' }}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -237,9 +239,10 @@ export default class PersonDataForm extends React.Component {
               text={this.props.submitButtonText}
             />
 
-            {/*</KeyboardAwareScrollView>*/}
-          </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
+          {/*</KeyboardAvoidingView>}*/}
         </View>
+        
       </TouchableWithoutFeedback>
     );
   }

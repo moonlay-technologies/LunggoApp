@@ -20,6 +20,7 @@ import { sendOtp, verifyOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation';
 import Moment from 'moment';
 import LoadingModal from './../../components/LoadingModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const defaultCooldown = 120;
 
@@ -123,7 +124,7 @@ export default class OtpVerificationScreen extends React.Component {
     let loadingIndicator = isLoading ? <LoadingAnimation /> : null;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAvoidingView behavior="position" style={styles.container}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <LoadingModal isVisible={this.state.isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
@@ -237,7 +238,7 @@ export default class OtpVerificationScreen extends React.Component {
               {showCooldown ? `\n(tunggu ${cooldown} detik)` : null}
             </Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     );
   }
