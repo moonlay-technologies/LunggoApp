@@ -6,7 +6,7 @@
     "scheme": "travorama",
     "privacy": "public",
     "sdkVersion": "21.0.0",
-    "version": "2.0.0",
+    "version": "0.1.2",
     "orientation": "portrait",
     "primaryColor": "#01d4cb",
     "icon": "./assets/icons/app-icon.png",
