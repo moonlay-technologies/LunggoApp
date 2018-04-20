@@ -188,7 +188,8 @@ class Footer extends Component {
     this.props.navigation.navigate(nextScreen, {
       price, requiredPaxData, availableDateTimes,
       package: this.props.details.package,
-      activityId: id, title: name
+      activityId: id, title: name,
+      thruBeforeLogin: true
     });
     this.setState({ isLoading: false })
   }

@@ -154,6 +154,21 @@ export default class AccountScreen extends React.Component {
                 </View>
                 <View style={styles.divider}></View>
                 <View>
+                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('HelpScreen')}>
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <Icon
+                        name='md-help-circle'
+                        type='ionicon'
+                        size={26}
+                        color='#454545' />
+                    </View>
+                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                      <Text style={styles.optionProfile}>Bantuan</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.divider}></View>
+                <View>
                   <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
                     <View style={{ alignItems: 'flex-start' }}>
                       <Icon
@@ -198,6 +213,22 @@ export default class AccountScreen extends React.Component {
                   </View>
                   <View style={{ marginLeft: 20, justifyContent: 'center' }}>
                     <Text style={styles.optionProfile}>Daftar</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.divider}></View>
+              <View>
+                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('HelpScreen')}>
+                  <View style={{ alignItems: 'flex-start' }}>
+                    <Icon
+                      name='md-help-circle'
+                      type='ionicon'
+                      size={26}
+                      color='#454545' />
+                  </View>
+                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
+                    <Text style={styles.optionProfile}>Bantuan</Text>
                   </View>
                 </TouchableOpacity>
               </View>

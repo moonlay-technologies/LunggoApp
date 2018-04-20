@@ -12,7 +12,6 @@ export default class BeforeLoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.params = props.skipIntro ? { thruBeforeLogin: true } : { resetAfter: true };
   }
 
   static navigationOptions = {
@@ -57,7 +56,7 @@ export default class BeforeLoginScreen extends React.Component {
           </TouchableOpacity>
 
           <TouchableOpacity style={{ marginTop: 30, alignItems: 'center' }}
-            onPress={() => navigate('LoginScreen', this.params)}
+            onPress={() => navigate('LoginScreen', this.props.navigation.state.params)}
             activeOpacity={0.7}
             >
             <Text style={{ fontSize: 16, color: '#fff', fontFamily: 'Hind', backgroundColor:'transparent' }}>

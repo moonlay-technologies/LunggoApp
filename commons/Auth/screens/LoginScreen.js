@@ -74,6 +74,8 @@ export default class LoginScreen extends React.Component {
           await cartCountStore.setCartCount();
           await fetchWishlist();
           let { resetAfter, thruBeforeLogin } = params;
+          console.log('params');
+          console.log(params);
           if (resetAfter)
             backToMain(navigation);
           else if (thruBeforeLogin)
