@@ -47,11 +47,11 @@ export default class ExploreScreen extends React.Component {
 
   _checkVersion = () => {
     //currentVersion di Api masih 1.0.1
-    let currentVersion = "1.0.1";
+    let currentVersion = "1.0.0";
     // let currentVersion = Expo.Constants.manifest.version;
     let urlPlatform = '';
     let platform = Platform.OS;
-    if(platform = 'android'){
+    if(platform == 'android'){
       urlPlatform = 'https://play.google.com/store/apps/details?id=com.travorama&hl=in';
     }
     else{
@@ -71,7 +71,7 @@ export default class ExploreScreen extends React.Component {
       console.log(Expo.Constants.manifest);
       if (response.mustUpdate == true) {
         this.setState({
-          isNotifModalVisible: true,
+          isNotifModalVisible: false,
           currentVersion: currentVersion,
           latestVersion: response.latestVersion,
           urlPlatform: urlPlatform
@@ -115,7 +115,8 @@ export default class ExploreScreen extends React.Component {
       search('paket').then(paketList => this.setState({ paketList })),
       search('trip').then(tripList => this.setState({ tripList })),
       search('tur').then(turList => this.setState({ turList })),
-      this._getPromos().then(promoList => this.setState({ promoList }))
+      this._getPromos().then(promoList => this.setState({ promoList })),
+      this._getWishlist()
     ]).then(response => {
       this.setState({ isLoading: false });
     });
@@ -380,7 +381,7 @@ export default class ExploreScreen extends React.Component {
                   {Formatter.price(item.price)}
                 </Text>
               </View>
-              {itemsPerScreen < 3 && (
+              {(itemsPerScreen < 3) && (
                 <View>
                   <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
                     id={item.id} big={itemsPerScreen == 1} {...this.props} />

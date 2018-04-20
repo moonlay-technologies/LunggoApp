@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput,
-  TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
+  StyleSheet, Text, View, Image, TextInput, ScrollView, 
+  TouchableOpacity, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../AuthController'
 import {
@@ -22,6 +22,7 @@ import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/
 import LoadingModal from './../../components/LoadingModal';
 import { observer } from 'mobx-react';
 import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const { setItemAsync } = Expo.SecureStore;
 
 @observer
@@ -67,7 +68,6 @@ export default class LoginScreen extends React.Component {
 
     fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password)
       .then(async response => {
-        this.setState({ isLoading: false });
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
           registerForPushNotificationsAsync();
@@ -96,6 +96,7 @@ export default class LoginScreen extends React.Component {
           }
           this.setState({ error });
         }
+        this.setState({ isLoading: false });
       }).catch(error => {
         console.log("Login error!!");
         console.log(error);
@@ -122,10 +123,10 @@ export default class LoginScreen extends React.Component {
         <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
       </View> : null;
 
-    let errorMessage = error ?
+    let errorMessage = error ? !errorPassword ?  
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         <Text style={{ color: '#fc2b4e' }}>{error}</Text>
-      </View> : null;
+      </View> : null : null;
 
     let registerHereButton =
         <TouchableOpacity
@@ -141,8 +142,10 @@ export default class LoginScreen extends React.Component {
         </TouchableOpacity>
 
     return (
+      
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={globalStyles.categoryTitle1}>Login</Text>
@@ -224,17 +227,20 @@ export default class LoginScreen extends React.Component {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-
-
+         
+          
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
             <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
               Lupa Password?
               </Text>
           </TouchableOpacity>
+          </KeyboardAwareScrollView>
           {registerHereButton}
+          
         </View>
       </TouchableWithoutFeedback>
+      
     );
   }
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
@@ -12,7 +12,7 @@ import LoadingModal from './../../components/LoadingModal';
 import {
   validateUserName, validatePassword, validatePhone,
 } from '../../FormValidation';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class Registration extends React.Component {
@@ -122,9 +122,13 @@ export default class Registration extends React.Component {
 
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <LoadingModal isVisible={this.state.isLoading} />
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <ScrollView>
         <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
           submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
         />
+        </ScrollView>
+        </KeyboardAwareScrollView>
         <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
           onPress={this._goToLoginScreen}
         >
