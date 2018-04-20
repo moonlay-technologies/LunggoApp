@@ -47,8 +47,8 @@ export default class ExploreScreen extends React.Component {
 
   _checkVersion = () => {
     //currentVersion di Api masih 1.0.1
-    let currentVersion = "1.0.0";
-    // let currentVersion = Expo.Constants.manifest.version;
+    //let currentVersion = "1.0.0";
+    let currentVersion = Expo.Constants.manifest.version;
     let urlPlatform = '';
     let platform = Platform.OS;
     if(platform == 'android'){
@@ -71,10 +71,11 @@ export default class ExploreScreen extends React.Component {
       console.log(Expo.Constants.manifest);
       if (response.mustUpdate == true) {
         this.setState({
-          isNotifModalVisible: false,
+          isNotifModalVisible: true,
           currentVersion: currentVersion,
           latestVersion: response.latestVersion,
-          urlPlatform: urlPlatform
+          urlPlatform: urlPlatform,
+          forceToUpdate: response.forceToUpdate
         });
       }
     });
@@ -148,7 +149,7 @@ export default class ExploreScreen extends React.Component {
     console.log('version modal: ' + this.state.isNotifModalVisible);
       return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
-          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} />
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate}/>
           {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>

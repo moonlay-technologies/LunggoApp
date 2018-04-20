@@ -4,11 +4,12 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
-  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Keyboard
+  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Keyboard, KeyboardAvoidingView
 } from 'react-native';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMain,
 } from '../../api/Common';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class SubmitReviewScreen extends React.Component {
 
@@ -58,6 +59,7 @@ export default class SubmitReviewScreen extends React.Component {
   render() {
     let { navigate } = this.props.navigation;
     return (
+      
       <View style={styles.container}>
         <View style={styles.containerReview}>
           <View>
@@ -87,11 +89,13 @@ export default class SubmitReviewScreen extends React.Component {
               Review minimal memiliki 20 karakter
             </Text>}
         </View>
+        
         <TouchableOpacity style={styles.containerSubmit} onPress={() => this._submitReview()}>
           <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
         </TouchableOpacity>
       </View>
-
+      
+      
 
     );
   }

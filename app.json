@@ -6,7 +6,7 @@
     "scheme": "travorama",
     "privacy": "public",
     "sdkVersion": "21.0.0",
-    "version": "0.1.2",
+    "version": "0.1.1",
     "orientation": "portrait",
     "primaryColor": "#01d4cb",
     "icon": "./assets/icons/app-icon.png",
@@ -15,7 +15,7 @@
       "color": "#000000"
     },
     "splash": {
-      "image": "./assets/icons/loading-icon.jpg",
+      "image": "./assets/icons/loading-icon.png",
       "resizeMode": "cover"
     },
     "packagerOpts": {
@@ -25,10 +25,12 @@
     },
     "ios": {
       "bundleIdentifier": "com.travorama.TravoramaMobileApp",
+      "icon": "./assets/icons/logo-ios.png",
       "supportsTablet": true,
       "buildNumber": "2"
     },
     "android": {
+      "icon": "./assets/icons/logo-android.png",
       "package": "com.travorama",
       "versionCode": 20
     }

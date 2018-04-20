@@ -12,10 +12,16 @@ import RNExitApp from 'react-native-exit-app';
 
 export default class UpdateNotifModal extends React.Component {
 
+  constructor(props){
+    super(props);
+    this.state = {
+      isVisible: true
+    }
+  }
   render() {
     if (this.props.isVisible) return (
       <Modal
-        isVisible={true}
+        isVisible={this.state.isVisible}
         onBackButtonPress={BackHandler.exitApp}
       >
         <View style={{ flex: 1 }}></View>
@@ -34,6 +40,21 @@ export default class UpdateNotifModal extends React.Component {
               OK
             </Button>
           </View>
+          {
+            !this.props.forceToUpdate && (
+              <View >
+                <Button
+                  containerStyle={globalStyles.ctaButton3}
+                  style={{ fontSize: 14, color: '#ff5f5f', fontFamily: 'Hind', }}
+                  onPress={() => this.setState({
+                    isVisible: false
+                  })}
+                >
+                  Later
+            </Button>
+              </View>
+            )
+          }
         </View>
         <View style={{ flex: 1 }}></View>
       </Modal>
