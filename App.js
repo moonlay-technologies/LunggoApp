@@ -4,6 +4,8 @@ import Expo, { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 import Colors from './constants/Colors';
+import UpdateNotifModal from './customer/components/UpdateNotifModal';
+import { fetchTravoramaApi, AUTH_LEVEL } from './api/Common';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -18,6 +20,8 @@ export default class App extends React.Component {
     };
   }
 
+ 
+  
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -36,9 +40,40 @@ export default class App extends React.Component {
             skipIntro={this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate}/>
         </View>
       );
     }
+  }
+
+  _checkVersion = () => {
+    //currentVersion di Api masih 1.0.1
+    //let currentVersion = "1.0.0";
+    let currentVersion = Expo.Constants.manifest.version;
+    let urlPlatform = '';
+    let platform = Platform.OS;
+    const version = 'v1';
+    fetchTravoramaApi({
+      method: 'POST',
+      path: '/checkversion',
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+      data: { currentVersion, platform },
+    }).then(response => {
+      console.log('cek versi');
+      console.log(response);
+      console.log('tutub');
+      console.log(Platform);
+      console.log(Expo.Constants.manifest);
+      if (response.mustUpdate == true) {
+        this.setState({
+          isNotifModalVisible: true,
+          currentVersion: currentVersion,
+          latestVersion: response.latestVersion,
+          urlPlatform: response.updateUrl,
+          forceToUpdate: response.forceToUpdate
+        });
+      }
+    });
   }
 
   _loadResourcesAsync = async () => {
@@ -75,9 +110,9 @@ export default class App extends React.Component {
         { 'Hind': require('./assets/fonts/hind-regular.ttf') },
         { 'Hind-Bold': require('./assets/fonts/hind-bold.ttf') },
         { 'Hind-SemiBold': require('./assets/fonts/hind-semibold.ttf') },
-        { 'Hind-Light': require('./assets/fonts/hind-light.ttf') },
-
+        { 'Hind-Light': require('./assets/fonts/hind-light.ttf') },       
       ]),
+      this._checkVersion(),
     ]);
   };
 

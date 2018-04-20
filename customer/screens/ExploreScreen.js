@@ -51,12 +51,6 @@ export default class ExploreScreen extends React.Component {
     let currentVersion = Expo.Constants.manifest.version;
     let urlPlatform = '';
     let platform = Platform.OS;
-    if(platform == 'android'){
-      urlPlatform = 'https://play.google.com/store/apps/details?id=com.travorama&hl=in';
-    }
-    else{
-      urlPlatform = 'https://itunes.apple.com/id/app/travorama/id1142546215?mt=8';
-    }
     const version = 'v1';
     fetchTravoramaApi({
       method: 'POST',
@@ -74,7 +68,7 @@ export default class ExploreScreen extends React.Component {
           isNotifModalVisible: true,
           currentVersion: currentVersion,
           latestVersion: response.latestVersion,
-          urlPlatform: urlPlatform,
+          urlPlatform: response.updateUrl,
           forceToUpdate: response.forceToUpdate
         });
       }
