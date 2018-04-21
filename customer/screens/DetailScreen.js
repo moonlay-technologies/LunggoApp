@@ -161,11 +161,11 @@ export default class DetailScreen extends Component {
           <View style={{ paddingBottom: 95 }}></View>
 
         </ScrollView>
-        
+
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
         {
-          (!isLoading && !isDateLoading) &&  (
-            <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable = {this._isDateAvailable(availableDateTimes)} />
+          (!isLoading && !isDateLoading) && (
+            <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable={this._isDateAvailable(availableDateTimes)} />
           )
         }
 
@@ -184,13 +184,15 @@ class Footer extends Component {
     this.setState({ isLoading: true })
     const { requiredPaxData, price, id, availableDateTimes, name } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
-    let nextScreen = isUserLoggedIn ? 'BookingDetail' : 'BeforeLoginScreen';
-    this.props.navigation.navigate(nextScreen, {
-      price, requiredPaxData, availableDateTimes,
-      package: this.props.details.package,
-      activityId: id, title: name,
-      thruBeforeLogin: true
-    });
+    if (isUserLoggedIn) {
+      this.props.navigation.navigate('BookingDetail', {
+        price, requiredPaxData, availableDateTimes,
+        package: this.props.details.package,
+        activityId: id, title: name
+      });
+    } else {
+      this.props.navigation.navigate('BeforeLoginScreen');
+    }
     this.setState({ isLoading: false })
   }
 

@@ -37,7 +37,7 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
           <RootNavigation
-            skipIntro={this.state.skipIntro}
+            skipIntro={!this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
           <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate}/>
