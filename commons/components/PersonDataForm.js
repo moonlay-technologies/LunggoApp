@@ -33,7 +33,7 @@ export default class PersonDataForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(nextProps.contact);
+    this.setState({ error: nextProps.errorMessage });
   }
 
   _onSubmitForm = () => {
@@ -90,67 +90,60 @@ export default class PersonDataForm extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <View style={{ marginBottom: 25 }}>
             <Text style={globalStyles.categoryTitle1}>
               {this.props.formTitle}
             </Text>
           </View>
           {this.props.additionalContent}
-          {/*<KeyboardAvoidingView>*/}
-            {/*<KeyboardAwareScrollView
-          style={{ backgroundColor: 'transparent' }}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          scrollEnabled={true}
-        >*/}
 
-            <View style={{ marginBottom: 5 }}>
-              <Text style={styles.label}>Nama Lengkap</Text>
-            </View>
-            <View style={{ marginBottom: 15 }}>
-              <TextInput
-                style={this.state.errorName ?
-                  styles.searchInputFalse : styles.searchInput
-                }
-                underlineColorAndroid='transparent'
-                placeholder='contoh: Andi Budi'
-                value={name}
-                onChangeText={name => this.setState({
-                  name, errorName: null, error: null
-                })}
-                returnKeyType={"next"}
-                onSubmitEditing={() => this.refs.email.focus()}
-              />
-            </View>
-            {errorMessageName}
-            <View style={{ marginBottom: 5 }}>
-              <Text style={styles.label}>Email</Text>
-            </View>
-            <View style={{ marginBottom: 15 }}>
-              <TextInput
-                style={this.state.errorEmail ?
-                  styles.searchInputFalse : styles.searchInput
-                }
-                ref='email'
-                underlineColorAndroid='transparent'
-                placeholder='contoh@email.com'
-                keyboardType='email-address'
-                autoCapitalize='none'
-                autoCorrect={false}
-                value={email}
-                onChangeText={email => this.setState({
-                  email, errorEmail: null, error: null
-                })}
-                returnKeyType={"next"}
-                onSubmitEditing={() => this.refs.phone/*countryCallCd*/.focus()}
-              />
-            </View>
-            {errorMessageEmail}
-            <View style={{ marginBottom: 5 }}>
-              <Text style={styles.label}>No. Handphone</Text>
-            </View>
-            <View style={{ marginBottom: 15, flexDirection: 'row' }}>
-              {/*<View style={{ flex: 1.4 }}>
+          <View style={{ marginBottom: 5 }}>
+            <Text style={styles.label}>Nama Lengkap</Text>
+          </View>
+          <View style={{ marginBottom: 15 }}>
+            <TextInput
+              style={this.state.errorName ?
+                styles.searchInputFalse : styles.searchInput
+              }
+              underlineColorAndroid='transparent'
+              placeholder='contoh: Andi Budi'
+              value={name}
+              onChangeText={name => this.setState({
+                name, errorName: null, error: null
+              })}
+              returnKeyType={"next"}
+              onSubmitEditing={() => this.refs.email.focus()}
+            />
+          </View>
+          {errorMessageName}
+          <View style={{ marginBottom: 5 }}>
+            <Text style={styles.label}>Email</Text>
+          </View>
+          <View style={{ marginBottom: 15 }}>
+            <TextInput
+              style={this.state.errorEmail ?
+                styles.searchInputFalse : styles.searchInput
+              }
+              ref='email'
+              underlineColorAndroid='transparent'
+              placeholder='contoh@email.com'
+              keyboardType='email-address'
+              autoCapitalize='none'
+              autoCorrect={false}
+              value={email}
+              onChangeText={email => this.setState({
+                email, errorEmail: null, error: null
+              })}
+              returnKeyType={"next"}
+              onSubmitEditing={() => this.refs.phone/*countryCallCd*/.focus()}
+            />
+          </View>
+          {errorMessageEmail}
+          <View style={{ marginBottom: 5 }}>
+            <Text style={styles.label}>No. Handphone</Text>
+          </View>
+          <View style={{ marginBottom: 15, flexDirection: 'row' }}>
+            {/*<View style={{ flex: 1.4 }}>
               <TextInput
                 style={this.state.errorCountryCallCd ?
                   styles.searchInputFalse : styles.searchInput
@@ -168,81 +161,78 @@ export default class PersonDataForm extends React.Component {
                 onSubmitEditing={() => this.refs.phone.focus()}
               />
             </View>*/}
-              <View style={{ flex: 4 }}>
+            <View style={{ flex: 4 }}>
+              <TextInput
+                style={this.state.errorPhone ?
+                  styles.searchInputFalse : styles.searchInput
+                }
+                ref='phone'
+                underlineColorAndroid='transparent'
+                placeholder='08123456789'
+                keyboardType='numeric'
+                value={phone}
+                onChangeText={phone => this.setState({
+                  phone, errorPhone: null, error: null
+                })}
+                returnKeyType={this.props.hasPasswordField ? 'next' : 'done'}
+                onSubmitEditing={this.props.hasPasswordField ? this.passwordInput.focus : this._onSubmitForm}
+              />
+            </View>
+          </View>
+
+          {errorMessageCountryCallCd}
+          {errorMessagePhone}
+          {this.props.hasPasswordField &&
+            <View>
+              <View style={{ marginBottom: 5 }}>
+                <Text style={styles.label}>Password</Text>
+              </View>
+              <View style={{ marginBottom: 15 }}>
                 <TextInput
-                  style={this.state.errorPhone ?
+                  style={this.state.errorPassword ?
                     styles.searchInputFalse : styles.searchInput
                   }
-                  ref='phone'
+                  ref={ref => this.passwordInput = ref}
                   underlineColorAndroid='transparent'
-                  placeholder='08123456789'
-                  keyboardType='numeric'
-                  value={phone}
-                  onChangeText={phone => this.setState({
-                    phone, errorPhone: null, error: null
+                  placeholder='Password minimal 6 karakter'
+                  value={password}
+                  onChangeText={password => this.setState({
+                    password, errorPassword: null, error: null
                   })}
-                  returnKeyType={this.props.hasPasswordField ? 'next' : 'done'}
-                  onSubmitEditing={this.props.hasPasswordField ? this.passwordInput.focus : this._onSubmitForm}
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  secureTextEntry={!showPassword}
+                  returnKeyType={"done"}
+                  onSubmitEditing={this._onSubmitForm}
                 />
+                {errorMessagePassword}
+                {errorMessage}
+                <View style={{ position: 'absolute', right: 20, top: 11, }}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.setState({ showPassword: !showPassword })}
+                  >
+                    <View>
+                      <Icon
+                        name={showPassword ? 'eye' : 'eye-with-line'}
+                        type='entypo'
+                        size={22}
+                        color='#acacac'
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
+          }
 
-            {errorMessageCountryCallCd}
-            {errorMessagePhone}
-            {this.props.hasPasswordField &&
-              <View>
-                <View style={{ marginBottom: 5 }}>
-                  <Text style={styles.label}>Password</Text>
-                </View>
-                <View style={{ marginBottom: 15 }}>
-                  <TextInput
-                    style={this.state.errorPassword ?
-                      styles.searchInputFalse : styles.searchInput
-                    }
-                    ref={ref => this.passwordInput = ref}
-                    underlineColorAndroid='transparent'
-                    placeholder='Password minimal 6 karakter'
-                    value={password}
-                    onChangeText={password => this.setState({
-                      password, errorPassword: null, error: null
-                    })}
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    secureTextEntry={!showPassword}
-                    returnKeyType={"done"}
-                    onSubmitEditing={this._onSubmitForm}
-                  />
-                  {errorMessagePassword}
-                  {errorMessage}
-                  <View style={{ position: 'absolute', right: 20, top: 11, }}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.setState({ showPassword: !showPassword })}
-                    >
-                      <View>
-                        <Icon
-                          name={showPassword ? 'eye' : 'eye-with-line'}
-                          type='entypo'
-                          size={22}
-                          color='#acacac'
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            }
-
-            <WideCTAButton
-              onPress={this._onSubmitForm}
-              disabled={this.props.buttonDisabled}
-              text={this.props.submitButtonText}
-            />
-
-            </KeyboardAwareScrollView>
-          {/*</KeyboardAvoidingView>}*/}
+          <WideCTAButton
+            onPress={this._onSubmitForm}
+            disabled={this.props.buttonDisabled}
+            text={this.props.submitButtonText}
+          />
         </View>
-        
+
       </TouchableWithoutFeedback>
     );
   }

@@ -42,7 +42,7 @@ export default class ForgotPasswordScreen extends React.Component {
       return this.setState({ errorMessage });
     }
     this.setState({ isLoading: true });
-    sendOtp(countryCallCd, phone).then(response => {
+    sendOtp({ countryCallCd, phoneNumber: phone }).then(response => {
       if (response.status == 200 ||
         response.error == 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME') {
         this.props.navigation.replace('OtpVerification', {
@@ -57,7 +57,7 @@ export default class ForgotPasswordScreen extends React.Component {
     let { phone, isLoading, errorMessage } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-       <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true} style={styles.container} t>
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Lupa Password?</Text>

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {phoneWithoutCountryCode_Indonesia} from '../components/Formatter';
+import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { getProfile } from '../../commons/ProfileController';
 import { CheckBox } from 'react-native-elements';
@@ -20,7 +20,7 @@ export default class AddBookingContact extends React.Component {
 
   _fillMyContactInfo = async () => {
     let contact = await this.getProfile;
-    this.setState({isContactNeverFilled:false, ...contact});
+    this.setState({ isContactNeverFilled: false, ...contact });
   }
 
   _backAndSetContact = contactData => {
@@ -42,10 +42,12 @@ export default class AddBookingContact extends React.Component {
 
   render() {
     return (
-      <PersonDataForm onSubmit={this._backAndSetContact} formTitle='Kontak'
-        contact={{...this.state}} submitButtonText='OK'
-        additionalContent={<this._fillMyContactInfoCheckbox/>}
-      />
+      <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
+        <PersonDataForm onSubmit={this._backAndSetContact} formTitle='Kontak'
+          contact={{ ...this.state }} submitButtonText='OK'
+          additionalContent={<this._fillMyContactInfoCheckbox />}
+        />
+      </KeyboardAwareScrollView>
     );
   }
 }

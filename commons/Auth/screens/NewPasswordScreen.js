@@ -72,27 +72,25 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   render() {
-    let { password, showPassword, isLoading, errorMessage } = this.state;
+    let { password, showPassword, isLoading, errorMessage, errorPassword } = this.state;
+
+    let errorMessagePassword = errorPassword ?
+    <View style={{ alignItems: 'center', marginBottom: 10 }}>
+      <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
+    </View> : null;
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} style={styles.container}>
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
           </View>
-          <View style={{ marginBottom: 25 }}>
-            <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
-          </View>
-          {errorMessage ?
-            <View style={{ alignItems: 'center', marginBottom: 10 }}>
-              <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
-            </View> : null
-          }
           <View>
             <TextInput
               style={styles.searchInput}
               underlineColorAndroid='transparent'
-              placeholder='New Password'
+              placeholder='Password minimal 6 karakter'
               secureTextEntry={!showPassword}
               autoCapitalize='none'
               autoCorrect={false}
@@ -115,6 +113,12 @@ export default class NewPasswordScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
+          {errorMessagePassword}
+          {errorMessage ?
+            <View style={{ alignItems: 'center', marginBottom: 10 }}>
+              <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
+            </View> : null
+          }
           <Button
             containerStyle={{
               marginTop: 40,

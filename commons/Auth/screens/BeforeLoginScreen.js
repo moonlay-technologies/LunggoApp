@@ -38,7 +38,7 @@ export default class BeforeLoginScreen extends React.Component {
         )}
 
         <View style={{ alignItems: 'center' }}>
-          <Image style={{ width: 280, height: 280, marginTop: 80, }} source={require('../../../assets/images/logobaru.png')} />
+          <Image style={{ width: 280, height: 280, marginTop: 80, }} source={require('../../../assets/images/logotext-no-bg.png')} />
         </View>
         <View style={{ position: 'absolute', bottom: 40, alignItems: 'center', width: '100%' }}>
 
