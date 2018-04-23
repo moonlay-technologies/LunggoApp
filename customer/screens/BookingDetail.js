@@ -126,17 +126,16 @@ export default class BookingDetail extends React.Component {
 
       //// after done booking and get RsvNo, add item to cart
       response = await fetchTravoramaCartAddApi(response.rsvNo);
+      this.setState({ isLoading: false });
       if (response.status != 200) {
         console.error("Cart API: status other than 200 returned!");
         console.log(response);
-        this.setState({ isLoading: false });
         return;
       } else {
         await cartCountStore.setCartCount();
         shouldRefreshMyBookingList();
         this.setState({ isContinueToCartModalVisible: true });
       }
-      this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
       console.log(error);
@@ -318,6 +317,10 @@ export default class BookingDetail extends React.Component {
 
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <ContinueToCartModal
+          isVisible={this.state.isContinueToCartModalVisible}
+          {...this.props}
+        />
         {/* <View style={styles.container}>
           <Text style={styles.activityTitle}>Paket Tur</Text>
           <View style={styles.containerPackage}>
@@ -429,7 +432,7 @@ export default class BookingDetail extends React.Component {
               </View>
             </TouchableOpacity>
 
-            { this.state.isDateSelected &&
+            {this.state.isDateSelected &&
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -466,7 +469,7 @@ export default class BookingDetail extends React.Component {
 
           <View>
             <Text style={styles.activityTitle}>
-              Kontak peserta yang dapat dihubungi
+              Kontak Peserta
             </Text>
             <View style={{
               flexDirection: 'row',
@@ -484,16 +487,16 @@ export default class BookingDetail extends React.Component {
                   {/*contact.countryCallCd} - */}0{contact.phone}
                 </Text>
               }
-              { isContactNeverFilled ?
+              {isContactNeverFilled ?
                 <TouchableOpacity onPress={this._goToBookingContact}>
                   <Text style={styles.clickableText}>Masukkan kontak peserta</Text>
                 </TouchableOpacity>
-              :
+                :
                 <TouchableOpacity containerStyle={styles.addButton}
                   onPress={this._goToBookingContact} >
-                    <View style={{ justifyContent: 'center' }}>
-                      <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
-                    </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
+                  </View>
                 </TouchableOpacity>
               }
             </View>
@@ -522,11 +525,6 @@ export default class BookingDetail extends React.Component {
             </Button>
           </View>
         </View>
-        {/*bottom CTA button*/}
-        <ContinueToCartModal
-          isVisible={this.state.isContinueToCartModalVisible}
-          {...this.props}
-        />
       </ScrollView>
     );
   }
@@ -536,7 +534,7 @@ const styles = StyleSheet.create({
   clickableText: {
     color: '#00d3c5',
     fontWeight: 'bold',
-    fontSize: 13, 
+    fontSize: 13,
   },
   container: {
     padding: 20,

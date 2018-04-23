@@ -5,6 +5,7 @@ import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { getProfile } from '../../commons/ProfileController';
 import { CheckBox } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class AddBookingContact extends React.Component {
 
@@ -15,11 +16,12 @@ export default class AddBookingContact extends React.Component {
       isContactNeverFilled: props.navigation.state.params.isContactNeverFilled,
 
     }
-    this.getProfile = getProfile();
   }
 
   _fillMyContactInfo = async () => {
-    let contact = await this.getProfile;
+    let contact = await getProfile();
+    console.log('contact');
+    console.log(contact);
     this.setState({ isContactNeverFilled: false, ...contact });
   }
 
@@ -34,7 +36,7 @@ export default class AddBookingContact extends React.Component {
   _fillMyContactInfoCheckbox = () => (
     (this.state.isContactNeverFilled) ?
       <CheckBox size={18} textStyle={{ fontSize: 13 }} style={{ marginBottom: 20 }}
-        title='Pesan untuk saya sendiri'
+        title='Isi dengan data saya sendiri'
         checkedColor='#01d4cb' uncheckedColor='grey' checked={false}
         onPress={this._fillMyContactInfo}
       /> : null
@@ -44,7 +46,7 @@ export default class AddBookingContact extends React.Component {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
         <PersonDataForm onSubmit={this._backAndSetContact} formTitle='Kontak'
-          contact={{ ...this.state }} submitButtonText='OK'
+          contact={this.state} submitButtonText='OK'
           additionalContent={<this._fillMyContactInfoCheckbox />}
         />
       </KeyboardAwareScrollView>

@@ -19,6 +19,7 @@ export default class PersonDataForm extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    console.log('props.contact');
     console.log(props.contact);
     this.state = props.contact || {
       name: '',
@@ -33,7 +34,13 @@ export default class PersonDataForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ error: nextProps.errorMessage });
+    this.setState({
+      error: nextProps.errorMessage,
+      name: nextProps.contact.name,
+      phone: nextProps.contact.phone,
+      email: nextProps.contact.email,
+      // countryCallCd: nextProps.contact.countryCallCd
+    });
   }
 
   _onSubmitForm = () => {
@@ -56,6 +63,9 @@ export default class PersonDataForm extends React.Component {
     let { name, email, phone, countryCallCd, errorName, errorEmail,
       errorPhone, errorCountryCallCd, error, password, showPassword,
       errorPassword, } = this.state;
+
+    console.log('this.state');
+    console.log(this.state);
 
     let errorMessageName = errorName ?
       <View style={{ alignItems: 'center', marginBottom: 10 }}>

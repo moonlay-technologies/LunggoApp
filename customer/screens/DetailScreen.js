@@ -21,6 +21,7 @@ import {
 import { MultilineText } from '../components/StyledText'
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
+import LoadingModal from './../../commons/components/LoadingModal';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -45,7 +46,7 @@ export default class DetailScreen extends Component {
       contents: [],
       scrollY: new Animated.Value(0),
       isLoading: true,
-      isDateLoading: true,
+      isLoadingCta: false
     };
   }
 
@@ -60,7 +61,6 @@ export default class DetailScreen extends Component {
     };
     fetchTravoramaApi(request).then(response => {
       this.setState(response.activityDetail);
-      this.setState({ isLoading: false });
       if (!response.activityDetail.package) {
         console.log('PACKAGES:');
         console.log(response.activityDetail.package);
@@ -71,9 +71,8 @@ export default class DetailScreen extends Component {
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then(response => {
       this.setState(response);
-      this.setState({ isDateLoading: false });
-      // this.forceUpdate( () => {/*this.marker.showCallout()*/} );
-    }).catch(error => console.log(error));
+    }).catch(error => console.log(error)
+    ).finally(() => this.setState({ isLoading: false }));
   }
 
   _onWishlist = async ({ wishlisted }) => {
@@ -98,7 +97,7 @@ export default class DetailScreen extends Component {
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
-      review, reviewCount, rating, ratingCount, additionalContents, isDateLoading, availableDateTimes } = this.state;
+      review, reviewCount, rating, ratingCount, additionalContents, availableDateTimes } = this.state;
     return (
       <View>
         <ScrollView
@@ -113,13 +112,11 @@ export default class DetailScreen extends Component {
 
           <View style={styles.container}>
 
+            <LoadingModal isVisible={this.state.isLoadingCta} />
 
-            {(isLoading || isDateLoading) && (
-              <LoadingAnimation />
-            )}
+            {isLoading && <LoadingAnimation />}
 
-
-            {(!isLoading && !isDateLoading) && (
+            {!isLoading && (
               <View>
                 <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} />
                 <Contents contents={contents} />
@@ -152,9 +149,9 @@ export default class DetailScreen extends Component {
                   <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
                 </View>
 
-                <Accordion style={styles.containerdescriptionActivity}
-                  sections={additionalContents.contents} />
-                {/*<Recommendation />*/}
+                {additionalContents &&
+                  <Accordion style={styles.containerdescriptionActivity}
+                    sections={additionalContents.contents} />}
               </View>
             )}
           </View>
@@ -163,11 +160,9 @@ export default class DetailScreen extends Component {
         </ScrollView>
 
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
-        {
-          (!isLoading && !isDateLoading) && (
-            <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable={this._isDateAvailable(availableDateTimes)} />
-          )
-        }
+        {!isLoading && (
+          <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable={this._isDateAvailable(availableDateTimes)} />
+        )}
 
       </View>
     );
@@ -181,7 +176,7 @@ class Footer extends Component {
   }
 
   _goToBookingDetail = async () => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoadingCta: true })
     const { requiredPaxData, price, id, availableDateTimes, name } = this.props.details;
     let isUserLoggedIn = await checkUserLoggedIn();
     if (isUserLoggedIn) {
@@ -193,7 +188,7 @@ class Footer extends Component {
     } else {
       this.props.navigation.navigate('BeforeLoginScreen');
     }
-    this.setState({ isLoading: false })
+    this.setState({ isLoadingCta: false })
   }
 
   _goToEditActivity = () => this.props.navigation.navigate('EditDetailActivity')
@@ -225,7 +220,7 @@ class Footer extends Component {
             containerStyle={globalStyles.ctaButton}
             style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
             onPress={this._onCtaButtonClick}
-            disabled={this.state.isDateLoading || !_isDateAvailable}
+            disabled={!_isDateAvailable}
             styleDisabled={{ color: '#aaa' }}
           >
             {'Pesan'}
@@ -568,18 +563,18 @@ class ReviewAndRating extends Component {
   render() {
     let { rating, ratingCount, review, reviewCount, id } = this.props;
     return (
-      <View>
-        <View style={styles.containerdescriptionActivity}>
-          <Text style={styles.sectionTitle}>
-            Review
-        </Text>
-          {!reviewCount && (
+      <View style={styles.containerdescriptionActivity}>
+        <Text style={styles.sectionTitle}>
+          Review
+          </Text>
+        {!reviewCount && (
 
-            <Text style={styles.activityDesc}>
-              Belum ada review
+          <Text style={styles.activityDesc}>
+            Belum ada review
             </Text>
-          )}
-          {!!reviewCount && (
+        )}
+        {!!reviewCount && (
+          <View>
             <View>
               <View style={{ flexDirection: 'row', flex: 1 }}>
                 <View style={{ flex: 2, flexDirection: 'row' }}>
@@ -601,45 +596,41 @@ class ReviewAndRating extends Component {
                 </Text>
               </View>*/}
               </View>
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginVertical: 10 }}>
 
                 <MultilineText style={styles.isireview}>
                   {review.content}
                 </MultilineText>
               </View>
             </View>
-          )}
-        </View>
-        <View style={styles.divider} />
-
-        {!!reviewCount && (
-          <TouchableOpacity onPress={() => reviewCount != 0 && this.props.navigation.navigate('Review', { id, rating, ratingCount })} >
-            <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
-              <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
-                <View>
-                  <Text style={{ color: '#454545', fontSize: 18, fontWeight: 'bold' }}>{rating}</Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Review', { id, rating, ratingCount })} >
+              <View style={{ flex: 1, marginTop: 15, marginBottom: 15, flexDirection: 'row', }}>
+                <View style={{ marginTop: 3, flexDirection: 'row', flex: 1 }}>
+                  <View>
+                    <Text style={{ color: '#454545', fontSize: 18, fontWeight: 'bold' }}>{rating}</Text>
+                  </View>
+                  <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
                 </View>
-                <Icon name='star' type='fontawesome' size={20} color='#00c5bc' />
-              </View>
 
-              <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', flex: 2 }}>
+                <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row', flex: 2 }}>
 
-                <View style={{ marginBottom: 5 }}>
-                  <Text style={{ color: '#454545', fontSize: 16, }}>
-                    Lihat semua {reviewCount} review
+                  <View style={{ marginBottom: 5 }}>
+                    <Text style={{ color: '#454545', fontSize: 16, }}>
+                      Lihat semua {reviewCount} review
                   </Text>
-                </View>
-                <View style={{ marginLeft: 10, }}>
-                  <Icon
-                    name='chevron-right'
-                    type='entypo'
-                    size={24}
-                    color='#00c5bc' />
-                </View>
+                  </View>
+                  <View style={{ marginLeft: 10, }}>
+                    <Icon
+                      name='chevron-right'
+                      type='entypo'
+                      size={24}
+                      color='#00c5bc' />
+                  </View>
 
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     )
