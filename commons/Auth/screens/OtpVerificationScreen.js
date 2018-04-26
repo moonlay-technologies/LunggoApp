@@ -3,9 +3,6 @@
 ===== UNDESIRED BEHAVIOR =====
 - pindah fokus ketika input dan ketika backspace blm perfect
 
-===== FOR FUTURE IMPLEMENTATION =====
-- bikin timer untuk resend OTP biar user ga spam resend
-
 */
 
 'use strict';
@@ -17,10 +14,14 @@ import {
   KeyboardAvoidingView, TouchableOpacity, TouchableWithoutFeedback,
 } from 'react-native';
 import { sendOtp, verifyOtp } from '../ResetPasswordController';
-import LoadingAnimation from '../../../customer/components/LoadingAnimation';
 import Moment from 'moment';
 import LoadingModal from './../../components/LoadingModal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+<<<<<<< HEAD
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
+=======
+import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+>>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
 
 const defaultCooldown = 120;
 
@@ -36,16 +37,18 @@ export default class OtpVerificationScreen extends React.Component {
 
   componentDidMount() {
     let { countryCallCd, phone } = this.props.navigation.state.params;
-    this._sendOtp(countryCallCd, phone);
-    this._itv = setInterval(this._countingDown, 1000);
+    this._sendOtp({ countryCallCd, phoneNumber: phone });
   }
 
   componentWillUnmount() {
     clearInterval(this._itv);
   }
 
-  _startCooldown = (value = defaultCooldown) => {
+  _startCountDown = (value = defaultCooldown) => {
     let now = new Date();
+    console.log(now);
+    console.log(value);
+    this._itv = setInterval(this._countingDown, 1000);
     this.setState({
       cooldown: value,
       cooldownExpireAt: Moment(now).add(value, 'seconds'),
@@ -55,29 +58,30 @@ export default class OtpVerificationScreen extends React.Component {
   }
 
   _countingDown = () => {
-    let { cooldownExpireAt } = this.state;
-    let cooldown = Math.ceil((cooldownExpireAt - new Date()) / 1000) //// count cooldown (convert to second)
-    console.log(cooldownExpireAt);
-    console.log(cooldown);
-    if (cooldown < 0) cooldown = 0;
+    let cooldown = this.getRemainingCooldown();
     this.setState({ cooldown });
-    if (!cooldown) { //// If the cooldown is finished, clear interval
+    if (cooldown <= 0) {
       clearInterval(this._itv);
       this.setState({ showCooldown: false, cooldownExpireAt: null });
     }
   }
 
   _sendOtp = () => {
-    let { countryCallCd, phone } = this.props.navigation.state.params;
-    sendOtp(countryCallCd, phone).then(response => {
+    let cooldown = this.getRemainingCooldown();
+    if (cooldown > 0) return;
+
+    let { countryCallCd, phone, email } = this.props.navigation.state.params;
+    this.setState({ isLoading: true });
+    sendOtp({countryCallCd, phoneNumber: phone, email}).then(response => {
       if (response.error = 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME')
-        this._startCooldown(response.resendCooldown);
+        this._startCountDown(response.resendCooldown);
       else
-        this._startCooldown();
-    });
+        this._startCountDown();
+    }).finally(() => this.setState({ isLoading: false }));
   }
 
   _verifyOtp = () => {
+    Keyboard.dismiss();
     let { navigation } = this.props;
     let { countryCallCd, phone, email, onVerified } = navigation.state.params;
     let otp = this.state.inputs.join('');
@@ -87,8 +91,9 @@ export default class OtpVerificationScreen extends React.Component {
         clearInterval(this._itv);
         onVerified({ countryCallCd, phone, email, otp, navigation });
       } else
-        this.setState({ isLoading: false, errorMessage: response.message });
-    }).catch(err => console.error(err));
+        this.setState({ errorMessage: response.message })
+    }).catch(err => console.error(err)
+    ).finally(() => this.setState({ isLoading: false }));;
   }
 
   _onChangeText = (inputText, index) => {
@@ -119,16 +124,30 @@ export default class OtpVerificationScreen extends React.Component {
     }
   }
 
+  getRemainingCooldown() {
+    let { cooldownExpireAt } = this.state;
+    console.log(cooldownExpireAt);
+    console.log(Math.ceil((cooldownExpireAt - new Date()) / 1000));
+    return Math.ceil((cooldownExpireAt - new Date()) / 1000);
+  }
+
   render() {
     let { inputs, isLoading, errorMessage, cooldown, showCooldown } = this.state;
-    let loadingIndicator = isLoading ? <LoadingAnimation /> : null;
+    let { countryCallCd, phone, email } = this.props.navigation.state.params;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
+<<<<<<< HEAD
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
+=======
+        <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true} style={styles.container}>
+>>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
           <LoadingModal isVisible={this.state.isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
           </View>
+          <Text style={{ marginBottom: 30 }}>
+            Kode verifikasi telah dikirimkan ke {email || `nomor ${reversePhoneWithoutCountryCode_Indonesia(phone)}`}
+          </Text>
           {errorMessage ?
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
               <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
@@ -226,18 +245,17 @@ export default class OtpVerificationScreen extends React.Component {
           >
             Verifikasi
           </Button>
-          {loadingIndicator}
           <TouchableOpacity style={{ alignItems: 'center', marginTop: 15, }}
-            onPress={this._sendOtp}
+            onPress={this._sendOtp} activeOpacity={cooldown ? 1 : 0}
           >
             <Text style={{
               textAlign: 'center',
               color: cooldown ? 'gray' : '#01d4cb',
             }}>
-              Kirim ulang kode verifikasi
-              {showCooldown ? `\n(tunggu ${cooldown} detik)` : null}
+              {showCooldown ? `Tunggu ${cooldown} detik untuk dapat mengirim ulang kode verifikasi` : 'Kirim ulang kode verifikasi'}
             </Text>
           </TouchableOpacity>
+          <OfflineNotificationBar />
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     );

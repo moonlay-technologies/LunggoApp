@@ -14,12 +14,6 @@ export default class HelpScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Bantuan',
-      headerLeft: (
-        <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => backToMain(navigation) }>
-          <Icon name='close' type='evilicons' size={20} />
-        </TouchableOpacity>
-      ),
     }
   }
 

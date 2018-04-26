@@ -28,6 +28,7 @@ import {
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 import WebViewScreen from '../customer/screens/WebViewScreen';
+import HelpScreen from '../customer/screens/HelpScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
@@ -74,6 +75,7 @@ export default class RootNavigator extends React.Component {
       IntroScreen: { screen: IntroScreen },
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
+      HelpScreen: { screen: HelpScreen },
       Referral: { screen: Referral },
       // ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },

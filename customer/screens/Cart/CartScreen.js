@@ -15,6 +15,7 @@ import BlankScreen from './CartBlankScreen';
 import { getCart } from './CartController';
 import SearchHeader from './../SearchActivity/SearchHeader';
 import cartCountStore from './CartCountStorage';
+import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
 
 export default class CartScreen extends React.Component {
 
@@ -140,6 +141,7 @@ export default class CartScreen extends React.Component {
               Bayar
             </Button>
           </View>
+          <OfflineNotificationBar/>
         </View>
       </View>
     );

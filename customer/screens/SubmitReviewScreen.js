@@ -33,6 +33,7 @@ export default class SubmitReviewScreen extends React.Component {
   }
 
   _submitReview = async () => {
+    Keyboard.dismiss();
     await this._validate();
     if (!this.state.isValidated)
       return;
@@ -59,7 +60,7 @@ export default class SubmitReviewScreen extends React.Component {
   render() {
     let { navigate } = this.props.navigation;
     return (
-      <KeyboardAwareScrollView enableAutomaticScroll={true} enableOnAndroid={true} extraScrollHeight={94}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableAutomaticScroll={true} enableOnAndroid={true} extraScrollHeight={94}>
       <View style={styles.container}>      
         <View style={styles.containerReview}>
           <View>

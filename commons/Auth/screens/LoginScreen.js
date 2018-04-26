@@ -23,6 +23,7 @@ import LoadingModal from './../../components/LoadingModal';
 import { observer } from 'mobx-react';
 import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 const { setItemAsync } = Expo.SecureStore;
 
 @observer
@@ -33,6 +34,7 @@ export default class LoginScreen extends React.Component {
   }
 
   _onLoginPressed = () => {
+    Keyboard.dismiss();
     let { userName, password } = this.state;
     let errorUserName = validateUserName(userName);
     let errorPassword = validatePassword(password);
@@ -147,7 +149,7 @@ export default class LoginScreen extends React.Component {
       
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={globalStyles.categoryTitle1}>Login</Text>
@@ -239,7 +241,7 @@ export default class LoginScreen extends React.Component {
           </TouchableOpacity>
           </KeyboardAwareScrollView>
           {registerHereButton}
-          
+          <OfflineNotificationBar/>
         </View>
       </TouchableWithoutFeedback>
       

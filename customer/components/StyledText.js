@@ -11,13 +11,15 @@ export class MultilineText extends React.Component {
   }
 
   render() {
-    return (
-      <View>
-        {this.props.children.split(/\\n|\\\\n|\\r\\n|\\\\r\\\\n/).map((line, idx) => (
-          <Text {...this.props} key={idx}>{line}</Text>
-        ))}
-      </View>
-    );
+    if (this.props.children)
+      return (
+        <View>
+          {this.props.children.split(/\\n|\\\\n|\\r\\n|\\\\r\\\\n/).map((line, idx) => (
+            <Text {...this.props} key={idx}>{line}</Text>
+          ))}
+        </View>
+      );
+    else return null;
   }
 }
 

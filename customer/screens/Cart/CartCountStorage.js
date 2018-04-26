@@ -6,21 +6,28 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 class cartCountStoreMobx extends React.Component {
     @observable cartCount = '';
-    constructor(props){
+    constructor(props) {
         super(props);
-        getItemAsync('cartCount').then( res => {
+        getItemAsync('cartCount').then(res => {
             this.cartCount = res
-        });        
-    }
-    
-    @action setCartCount = async () => {
-        let response = await getCart();
-        let listCount = response.list.length;
-        this.cartCount = listCount;
-        await setItemAsync('cartCount', listCount.toString());
+        });
     }
 
-    @action deleteCartCount = async () =>{
+    @action setCartCount = async () => {
+        let response = await getCart();
+        if (response.status == 200) {
+            let listCount = response.list.length;
+            this.cartCount = listCount;
+            await setItemAsync('cartCount', listCount.toString());
+        }
+        else{
+            this.cartCount = '',
+            await deleteItemAsync('cartCount');
+        }
+
+    }
+
+    @action deleteCartCount = async () => {
         this.cartCount = '';
         await deleteItemAsync('cartCount');
     }
