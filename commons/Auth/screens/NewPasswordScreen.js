@@ -34,6 +34,7 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   _submit = () => {
+    Keyboard.dismiss();
     let { password } = this.state;
     let { countryCallCd, phone, email, otp } = this.props.navigation.state.params;
     let errorPassword = validatePassword(password);
@@ -51,6 +52,7 @@ export default class NewPasswordScreen extends React.Component {
               setItemAsync('isLoggedIn', 'true');
               registerForPushNotificationsAsync();
               fetchWishlist();
+              this.setState({ isLoading: false, errorMessage: message });
               backToMain(this.props.navigation);
             } else {
               console.log(response);
@@ -63,7 +65,7 @@ export default class NewPasswordScreen extends React.Component {
             console.log(error);
           });
       }
-      this.setState({ isLoading: false, errorMessage: message });
+      
     });
   }
 
@@ -81,7 +83,7 @@ export default class NewPasswordScreen extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} style={styles.container}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true} style={styles.container}>
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
