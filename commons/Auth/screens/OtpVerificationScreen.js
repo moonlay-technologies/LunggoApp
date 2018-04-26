@@ -17,11 +17,8 @@ import { sendOtp, verifyOtp } from '../ResetPasswordController';
 import Moment from 'moment';
 import LoadingModal from './../../components/LoadingModal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-<<<<<<< HEAD
 import OfflineNotificationBar from './../../components/OfflineNotificationBar';
-=======
 import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
 
 const defaultCooldown = 120;
 
@@ -136,11 +133,7 @@ export default class OtpVerificationScreen extends React.Component {
     let { countryCallCd, phone, email } = this.props.navigation.state.params;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-<<<<<<< HEAD
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
-=======
-        <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true} style={styles.container}>
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
           <LoadingModal isVisible={this.state.isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>

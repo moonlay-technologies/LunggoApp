@@ -101,10 +101,7 @@ export default class PersonDataForm extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-<<<<<<< HEAD
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
-=======
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
           <View style={{ marginBottom: 25 }}>
             <Text style={globalStyles.categoryTitle1}>
               {this.props.formTitle}
@@ -246,6 +243,7 @@ export default class PersonDataForm extends React.Component {
             disabled={this.props.buttonDisabled}
             text={this.props.submitButtonText}
           />
+          </KeyboardAwareScrollView>
         </View>
 
       </TouchableWithoutFeedback>

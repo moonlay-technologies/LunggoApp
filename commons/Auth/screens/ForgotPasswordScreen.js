@@ -43,7 +43,7 @@ export default class ForgotPasswordScreen extends React.Component {
       return this.setState({ errorMessage });
     }
     this.setState({ isLoading: true });
-    sendOtp(countryCallCd, phone).then(response => {
+    sendOtp({ countryCallCd, phoneNumber: phone }).then(response => {
       if (response.status == 200 ||
         response.error == 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME') {
         this.props.navigation.replace('OtpVerification', {

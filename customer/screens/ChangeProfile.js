@@ -5,11 +5,8 @@ import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { AUTH_LEVEL, fetchTravoramaApi, backToMain } from '../../api/Common';
 import { fetchProfile } from '../../commons/ProfileController';
-<<<<<<< HEAD
 import LoadingAnimation from './../components/LoadingAnimation';
-=======
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
 import LoadingModal from './../../commons/components/LoadingModal';
 
 export default class ChangeProfile extends React.Component {
@@ -18,11 +15,7 @@ export default class ChangeProfile extends React.Component {
     super(props, context);
     this.state = {
       isLoading: false
-<<<<<<< HEAD
-    }
-=======
     };
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
   }
 
   _changeProfile = async  profile => {
@@ -49,20 +42,13 @@ export default class ChangeProfile extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
     if (this.state.isLoading){
       return <LoadingModal isVisible={this.state.isLoading} />
     }
     else
-    return(      
-      <PersonDataForm
-        contact={this.props.navigation.state.params.profile}
-        onSubmit={this._changeProfile}
-        formTitle='Ubah Profil'
-        submitButtonText='OK' />
-=======
+
     return (
-      <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
         <LoadingModal isVisible={this.state.isLoading} />
         <PersonDataForm
           contact={this.props.navigation.state.params.profile}
@@ -70,7 +56,6 @@ export default class ChangeProfile extends React.Component {
           formTitle='Ubah Profil'
           submitButtonText='OK' />
       </KeyboardAwareScrollView>
->>>>>>> d165deb8ec6ce993c5a27816b27ec1b8c8a6a5fa
     );
   }
 }
