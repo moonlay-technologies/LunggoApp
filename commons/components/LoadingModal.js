@@ -20,13 +20,15 @@ export default class LoadingModal extends React.Component {
         onBackButtonPress={ () => {} }
         {...this.props}
       >
-        <View style={{ marginHorizontal: 50, paddingHorizontal: 30, paddingVertical: 30, backgroundColor: '#fff', flexDirection: 'row', }}>
+        <View style={{alignItems:'center'}}>
+        <View style={{paddingVertical: 20, backgroundColor: '#fff', flexDirection: 'row', width:'80%'}}>
           <View style={{ height: 50, }}>
             <LoadingAnimation width={70} height={70} />
           </View>
-          <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+          <View style={{ justifyContent: 'center', marginLeft: 20 }}>
             <Text>Mohon tunggu...</Text>
           </View>
+        </View>
         </View>
       </Modal>
     )
