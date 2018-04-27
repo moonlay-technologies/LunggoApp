@@ -41,6 +41,16 @@ export default class PersonDataForm extends React.Component {
       email: nextProps.contact.email,
       // countryCallCd: nextProps.contact.countryCallCd
     });
+
+    if(nextProps.resetValidator){
+      this.setState({
+        errorName: false,
+        errorCountryCallCd: false,
+        errorPhone: false,
+        errorEmail: false,
+        error: false
+      })
+    }
   }
 
   _onSubmitForm = () => {
@@ -64,6 +74,8 @@ export default class PersonDataForm extends React.Component {
     let { name, email, phone, countryCallCd, errorName, errorEmail,
       errorPhone, errorCountryCallCd, error, password, showPassword,
       errorPassword, } = this.state;
+    
+
 
     console.log('this.state');
     console.log(this.state);
@@ -97,6 +109,10 @@ export default class PersonDataForm extends React.Component {
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         <Text style={{ color: '#fc2b4e' }}>{error}</Text>
       </View> : null;
+
+    if(this.state.resetValidator){
+      errorName = null
+    }
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

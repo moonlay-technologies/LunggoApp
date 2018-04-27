@@ -14,7 +14,7 @@ export default class AddBookingContact extends React.Component {
     this.state = {
       ...props.navigation.state.params.contact,
       isContactNeverFilled: props.navigation.state.params.isContactNeverFilled,
-
+      resetValidator: false
     }
   }
 
@@ -22,7 +22,7 @@ export default class AddBookingContact extends React.Component {
     let contact = await getProfile();
     console.log('contact');
     console.log(contact);
-    this.setState({ isContactNeverFilled: false, ...contact });
+    this.setState({ isContactNeverFilled: false, ...contact, resetValidator: true });
   }
 
   _backAndSetContact = contactData => {
@@ -47,7 +47,7 @@ export default class AddBookingContact extends React.Component {
       <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
         <PersonDataForm onSubmit={this._backAndSetContact} formTitle='Kontak'
           contact={this.state} submitButtonText='OK'
-          additionalContent={<this._fillMyContactInfoCheckbox />}
+          additionalContent={<this._fillMyContactInfoCheckbox />} resetValidator={this.state.resetValidator}
         />
       </KeyboardAwareScrollView>
     );
