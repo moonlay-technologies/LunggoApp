@@ -135,7 +135,7 @@ export default class Registration extends React.Component {
         <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
         <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
-          submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
+          submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading} errorMessage={this.state.error}
         />
         
         </KeyboardAwareScrollView>
