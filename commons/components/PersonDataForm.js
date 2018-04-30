@@ -41,9 +41,20 @@ export default class PersonDataForm extends React.Component {
       email: nextProps.contact.email,
       // countryCallCd: nextProps.contact.countryCallCd
     });
+
+    if(nextProps.resetValidator){
+      this.setState({
+        errorName: false,
+        errorCountryCallCd: false,
+        errorPhone: false,
+        errorEmail: false,
+        error: false
+      })
+    }
   }
 
   _onSubmitForm = () => {
+    Keyboard.dismiss();
     let { name, email, countryCallCd, phone, password } = this.state;
     let errorName = validateRequiredField(name);
     let errorEmail = validateEmail(email);
@@ -63,6 +74,8 @@ export default class PersonDataForm extends React.Component {
     let { name, email, phone, countryCallCd, errorName, errorEmail,
       errorPhone, errorCountryCallCd, error, password, showPassword,
       errorPassword, } = this.state;
+    
+
 
     console.log('this.state');
     console.log(this.state);
@@ -97,9 +110,14 @@ export default class PersonDataForm extends React.Component {
         <Text style={{ color: '#fc2b4e' }}>{error}</Text>
       </View> : null;
 
+    if(this.state.resetValidator){
+      errorName = null
+    }
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <View style={{ marginBottom: 25 }}>
             <Text style={globalStyles.categoryTitle1}>
               {this.props.formTitle}
@@ -241,6 +259,7 @@ export default class PersonDataForm extends React.Component {
             disabled={this.props.buttonDisabled}
             text={this.props.submitButtonText}
           />
+          </KeyboardAwareScrollView>
         </View>
 
       </TouchableWithoutFeedback>

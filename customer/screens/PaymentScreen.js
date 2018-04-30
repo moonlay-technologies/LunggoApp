@@ -16,8 +16,8 @@ export default class PaymentScreen extends React.Component {
       title: 'Pembayaran',
       headerLeft: (
         <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => backToMain(navigation) }>
-          <Icon name='close' type='evilicons' size={20} />
+          onPress={() => navigation.goBack() }>
+          <Icon name='arrow-back' type='ionicons' size={20} />
         </TouchableOpacity>
       ),
     }

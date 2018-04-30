@@ -15,10 +15,14 @@ import Carousel from 'react-native-snap-carousel';
 import LoadingAnimation from '../components/LoadingAnimation';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import UpdateNotifModal from '../components/UpdateNotifModal';
+import { observer } from 'mobx-react';
+import cartCountStore from './Cart/CartCountStorage';
+import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
+@observer
 export default class ExploreScreen extends React.Component {
 
   constructor(props) {
@@ -122,7 +126,7 @@ export default class ExploreScreen extends React.Component {
     this.props.navigation.addListener('willFocus', this._getWishlist);
     //this.props.navigation.addListener('willFocus', this._cartCountGetter);
     this._getWishlist();
-    this._checkVersion();
+    cartCountStore.setCartCount();
   }
 
   _onWishlist = async ({ id, wishlisted }) => {
@@ -198,13 +202,13 @@ export default class ExploreScreen extends React.Component {
         {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
         {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
 
-        {this._renderHeader({ title: 'Promo Terkini' })}
-        {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
-
-        <View style={{ paddingTop: 10 }}></View>
-
-      </ScrollView>
-    );
+          {this._renderHeader({ title: 'Promo Terkini' })}
+          {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
+          
+          <View style={{ paddingTop: 10 }}></View>
+          <OfflineNotificationBar/>
+        </ScrollView>
+      );
   }
 
   _goTo = (screen, params) =>

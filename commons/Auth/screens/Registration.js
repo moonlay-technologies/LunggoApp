@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, Text, View, ScrollView } from 'react-native';
+import { TouchableOpacity, Text, View, ScrollView, Keyboard } from 'react-native';
 import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
@@ -14,6 +14,7 @@ import {
   validateUserName, validatePassword, validatePhone,
 } from '../../FormValidation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class Registration extends React.Component {
@@ -26,6 +27,7 @@ export default class Registration extends React.Component {
   }
 
   _register = accountData => {
+    Keyboard.dismiss();
     let { navigate, goBack, replace, pop, dispatch } = this.props.navigation;
     let { params } = this.props.navigation.state;
     this.setState({ isLoading: true, error: null });
@@ -130,20 +132,22 @@ export default class Registration extends React.Component {
 
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <LoadingModal isVisible={this.state.isLoading} />
-        <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
-          <ScrollView>
-            <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
-              submitButtonText='Daftar' buttonDisabled={this.state.isLoading} errorMessage={this.state.error}
-            />
-            <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
-              onPress={this._goToLoginScreen}
-            >
-              <Text style={{ fontSize: 14, color: '#000', fontFamily: 'Hind' }}>
-                Sudah punya akun? Login di sini
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
+          submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
+        />
+        
         </KeyboardAwareScrollView>
+        </ScrollView >
+        <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
+          onPress={this._goToLoginScreen}
+        >
+          <Text style={{ fontSize: 14, color: '#000', fontFamily: 'Hind' }}>
+            Sudah punya akun? Login di sini
+          </Text>
+        </TouchableOpacity>
+        <OfflineNotificationBar/>
       </View>
 
     );

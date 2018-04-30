@@ -5,6 +5,7 @@ import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { AUTH_LEVEL, fetchTravoramaApi, backToMain } from '../../api/Common';
 import { fetchProfile } from '../../commons/ProfileController';
+import LoadingAnimation from './../components/LoadingAnimation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingModal from './../../commons/components/LoadingModal';
 
@@ -41,8 +42,13 @@ export default class ChangeProfile extends React.Component {
   }
 
   render() {
+    if (this.state.isLoading){
+      return <LoadingModal isVisible={this.state.isLoading} />
+    }
+    else
+
     return (
-      <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
         <LoadingModal isVisible={this.state.isLoading} />
         <PersonDataForm
           contact={this.props.navigation.state.params.profile}

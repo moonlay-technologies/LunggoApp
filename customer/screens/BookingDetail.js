@@ -14,6 +14,7 @@ import ContinueToCartModal from '../components/ContinueToCartModal';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
 import cartCountStore from './Cart/CartCountStorage';
+import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -249,6 +250,7 @@ export default class BookingDetail extends React.Component {
               <Icon name='plus' type='octicon' size={10} color='#ff5f5f' />
             </TouchableOpacity>
           </View>
+          <OfflineNotificationBar/>
         </View>
       );
     }

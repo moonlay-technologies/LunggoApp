@@ -84,7 +84,12 @@ export default class BookedPageDetail extends React.Component {
         </View>);
     }
     else if (bookingStatus == 'CONF')
-      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang dalam proses penerbitan</Text></View>;
+      return (
+        <View style={styles.labelText}>
+          <Text style={{ color: '#ff5f5f' }}>
+            Tiket sedang dalam proses penerbitan
+          </Text>
+        </View>);
   }
 
   render() {
@@ -97,6 +102,7 @@ export default class BookedPageDetail extends React.Component {
     // switch (bookingStatus) {
     //   case 'PROC': bookingStatusText = 'dalam progres'; break;
     // }
+    console.log(selectedSession ? true : false);
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
         <View style={[styles.container, { flexDirection: 'row' }]}>
@@ -117,7 +123,7 @@ export default class BookedPageDetail extends React.Component {
                 {Formatter.dateFullLong(date)}
               </Text>
             </View>
-            {(selectedSession) &&
+            {!!selectedSession && (
               <View style={{ flexDirection: 'row', marginBottom: 5 }}>
                 <Icon
                   name='access-time'
@@ -128,7 +134,7 @@ export default class BookedPageDetail extends React.Component {
                 <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
                   {selectedSession}
                 </Text>
-              </View>
+              </View>)
             }
             <View style={{ flexDirection: 'row', marginBottom: 5 }}>
               <Icon
