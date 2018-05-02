@@ -72,9 +72,9 @@ export default class LoginScreen extends React.Component {
       .then(async response => {
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-          registerForPushNotificationsAsync();
           await cartCountStore.setCartCount();
           await fetchWishlist();
+          await registerForPushNotificationsAsync();
           let { resetAfter, thruBeforeLogin } = params;
           console.log('params');
           console.log(params);

@@ -14,6 +14,7 @@ import { NavigationActions } from 'react-navigation';
 import { purgeMyBookingList } from '../../customer/screens/MyBooking/MyBookingController';
 import { purgeProfile } from '../ProfileController';
 import cartCountStore from './../../customer/screens/Cart/CartCountStorage';
+import { deletePushNotificationAsync } from '../../api/NotificationController';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -29,6 +30,7 @@ export default class LogoutConfirmationModal extends React.Component {
       purgeMyBookingList();
       purgeProfile();
       this.purgeWishlist();
+      deletePushNotificationAsync();
       cartCountStore.deleteCartCount();
       let { reset, navigate } = NavigationActions;
       const action = reset({
