@@ -18,7 +18,7 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
-import { MultilineText } from '../components/StyledText'
+import { MultilineText, ListedText } from '../components/StyledText'
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 import LoadingModal from './../../commons/components/LoadingModal';
@@ -138,6 +138,28 @@ export default class DetailScreen extends Component {
 
                 <View style={styles.divider} />
 
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
+                  <View style={[styles.containerdescriptionActivity, { flexDirection: 'row' }]}>
+                    <View style={{flex:2,}}>
+                      <Text style={[styles.sectionTitle, { alignItems: 'flex-start' }]}>
+                        Kebijakan Pembatalan
+                      </Text>
+                      <Text style={styles.activityDesc}>
+                        Pemesanan aktivitas ini dapat di-refund sesuai ketentuan berlaku
+                      </Text>
+                    </View>
+                    <View style={{alignItems: 'flex-end', flex: 0.2,}}>
+                      <Icon
+                        name='chevron-right'
+                        type='entypo'
+                        size={22}
+                        color='black' />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+
+                <View style={styles.divider} />
+
                 <ReviewAndRating rating={rating} ratingCount={ratingCount} review={review} reviewCount={reviewCount} id={id} {...this.props} />
 
                 <View style={styles.divider} />
@@ -149,9 +171,9 @@ export default class DetailScreen extends Component {
                   <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
                 </View>
 
-                {additionalContents &&
+               {/* {additionalContents &&
                   <Accordion style={styles.containerdescriptionActivity}
-                    sections={additionalContents.contents} />}
+                    sections={additionalContents.contents} />}*/}
               </View>
             )}
           </View>
@@ -430,8 +452,27 @@ class Header extends Component {
 
 class Contents extends Component {
 
+  
+
   render() {
     let { contents } = this.props;
+    let renderText = (text) => {
+      if (text.startsWith('- ')) {
+        return (
+          <ListedText style={styles.activityDesc}>
+            {text}
+          </ListedText>
+        );
+      }
+      else {
+        return (
+          <MultilineText style={styles.activityDesc}>
+            {text}
+          </MultilineText>
+        );
+      }
+    }; 
+    
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
@@ -440,9 +481,7 @@ class Contents extends Component {
               <Text style={styles.sectionTitle}>
                 {content.title}
               </Text>
-              <MultilineText style={styles.activityDesc}>
-                {content.desc}
-              </MultilineText>
+              {renderText(content.desc)}
             </View>
             <View style={styles.divider} />
           </View>
@@ -460,62 +499,79 @@ class MainInfo extends Component {
     let { name, shortDesc, city, duration = {} } = this.props;
     return (
       <View>
-        <View style={{ paddingTop: 10, paddingBottom: 20 }}>
-          <View >
+        <View style={{ paddingTop: 10, paddingBottom: 25, flex:1 }}>
+          <View>
             <Text style={styles.activitydetailTitle}>
               {name}
             </Text>
           </View>
-          <View style={{ marginBottom: 15 }}>
+          <View>
             <MultilineText style={styles.activityDesc}>
               {shortDesc}
             </MultilineText>
           </View>
+
+          <View style={[styles.divider, {marginVertical:25}]} />
+
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Icon name='ios-pin' type='ionicon' size={18} color='#009389' />
-            <View style={{ marginTop: 1, marginLeft: 10 }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='location' type='octicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{ marginLeft: 10}}>
               <Text style={styles.activityDesc}>
                 {city}
               </Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-person' type='ionicon' size={18} color='#009389' />
-            <View style={{ marginTop: 1, marginLeft: 10 }}>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Maksimum 6 orang
                   </Text>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-calendar' type='ionicon' size={18} color='#009389' />
-            <View style={{ marginTop: 1, marginLeft: 10 }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='calendar' type='octicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Khusus hari minggu
                   </Text>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='ios-clipboard' type='ionicon' size={18} color='#009389' />
-            <View style={{ marginTop: 1, marginLeft: 10 }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='info' type='octicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 DUMMY Untuk usia diatas 10 tahun
                   </Text>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <Icon name='md-alarm' type='ionicon' size={18} color='#009389' />
-            <View style={{ marginTop: 1, marginLeft: 10 }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='md-alarm' type='ionicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 {duration.amount + " " + duration.unit}
               </Text>
             </View>
           </View>
-
-          <View style={{ flexDirection: 'row', marginBottom: 3 }}>
-            <Text>{'\u2022'}</Text>
-            <Text style={[styles.activityDesc,
-            { paddingLeft: 5 }]}>23.00 - 24.00: Guest picked-up in Surabaya city center jakarta selatan</Text>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <View style={{justifyContent:'center'}}>
+              <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{width:20}} />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                Aktivitas ini dapat di-refund
+              </Text>
+            </View>
           </View>
 
         </View>
