@@ -73,9 +73,8 @@ async function downloadPdfVouchers(bookings) {
 
   for (let i = 0; i < bookings.length; i++) {
     let booking = bookings[i];
-    if (!booking.hasPdfVoucher)
+    if (!booking.isPdfUploaded)
       continue;
-
     let { rsvNo, pdfUrl } = booking;
     let directory = Expo.FileSystem.documentDirectory;
     let path = directory + 'myBookings/';
