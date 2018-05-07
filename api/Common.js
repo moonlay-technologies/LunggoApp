@@ -106,3 +106,4 @@ export function backToMain(navigation) {
   });
   navigation.dispatch(action);
 }
+

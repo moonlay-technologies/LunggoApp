@@ -21,20 +21,34 @@ export default class MyBookingScreen extends React.Component {
   static navigationOptions = {
     title: 'Pesananku',
   }
+  
+  listenerSubcription = null;
 
   componentDidMount() {
     let { params } = this.props.navigation.state;
     if (params && !params.loggedIn) {
       return this.setState({ isLoading: false });
     }
-    getMyBookingList().then(list => {
-      this.setState({ list, isLoading: false });
-    });
+    console.log("did mount mybookingscreen");
+    this.listenerSubscription = this.props.navigation.addListener("didFocus",() => this._refreshMyBookingList(false, false));
   }
 
-  _refreshMyBookingList = () => {
-    this.setState({ isLoading: true });
-    shouldRefreshMyBookingList();
+  componentWillUnmount(){
+    console.log("melakukan unmount");
+    if(this.listenerSubscription)
+    {
+      this.listenerSubscription.remove();
+    }    
+  }
+  
+  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
+    if(shouldLoading)
+    {
+      this.setState({ isLoading: true });
+    }
+    if(refreshing){
+      shouldRefreshMyBookingList();
+    }
     getMyBookingList().then(list => {
       this.setState({ list });
     }).finally(() => this.setState({ isLoading: false }));

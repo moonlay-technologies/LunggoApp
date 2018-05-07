@@ -13,8 +13,7 @@ import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
-import registerForPushNotificationsAsync
-  from '../../../api/NotificationController';
+import registerForPushNotificationsAsync, { addMyBookingListener }  from '../../../api/NotificationController';
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';

@@ -1,5 +1,6 @@
 import { Permissions, Notifications } from 'expo';
 import { fetchTravoramaApi, AUTH_LEVEL } from './Common';
+import { shouldRefreshMyBookingList, myBookingListenerFunction } from '../customer/screens/MyBooking/MyBookingController';
 
 // Example server, implemented in Rails: https://git.io/vKHKv
 // const PUSH_ENDPOINT = 'https://expo-push-server.herokuapp.com/tokens';
@@ -48,4 +49,10 @@ export async function deletePushNotificationAsync(){
     data: { handle:token },
     requiredAuthLevel: AUTH_LEVEL.Guest
   })
+}
+
+listener = null;
+
+export async function addMyBookingListener(){
+  Notifications.addListener(myBookingListenerFunction); 
 }
