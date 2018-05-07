@@ -8,6 +8,7 @@ import { clientId, clientSecret } from '../../constants/env';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
+import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 
 export default class PaymentScreen extends React.Component {
 
@@ -25,6 +26,7 @@ export default class PaymentScreen extends React.Component {
 
   _onMessage = event => {
     if (event.nativeEvent.data == 'ExploreScreen') {
+      shouldRefreshMyBookingList();
       return backToMain(this.props.navigation);
     }
   }
