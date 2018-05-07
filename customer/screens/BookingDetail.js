@@ -318,7 +318,8 @@ export default class BookingDetail extends React.Component {
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ flex: 1}}>
+      <ScrollView style={{ flex: 1, height:'100%', backgroundColor: '#fff' }}>
         <ContinueToCartModal
           isVisible={this.state.isContinueToCartModalVisible}
           {...this.props}
@@ -416,9 +417,7 @@ export default class BookingDetail extends React.Component {
         <View style={styles.divider} /> */}
 
         <View style={styles.container}>
-
           <LoadingModal isVisible={this.state.isLoading} />
-
           <View style={{ marginBottom: 10 }}>
             <TouchableOpacity onPress={this._goToCalendarPicker} >
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -448,7 +447,6 @@ export default class BookingDetail extends React.Component {
                 </View>
               </View>
             }
-
             <View style={styles.divider}></View>
           </View>
 
@@ -508,12 +506,10 @@ export default class BookingDetail extends React.Component {
               </Text>
             }
           </View>
-
         </View>
 
-
-
-        <View style={globalStyles.bottomCtaBarContainer1}>
+      </ScrollView>
+        <View style={globalStyles.bottomCtaBarContainer3}>
           {rincianHarga}
           <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
             <Button
@@ -527,7 +523,7 @@ export default class BookingDetail extends React.Component {
             </Button>
           </View>
         </View>
-      </ScrollView>
+    </View>
     );
   }
 }
@@ -541,7 +537,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
-    flex: 1
+    flex: 1,
   },
   containerPackage: {
     backgroundColor: '#fff',
@@ -708,7 +704,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#e3e3e3',
+    backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
   },
