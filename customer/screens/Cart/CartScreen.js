@@ -74,7 +74,7 @@ export default class CartScreen extends React.Component {
   );
 
   _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail, hideFooter: true });
+    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail })
   };
 
   _onPressDelete = (index, rsvNo) => {

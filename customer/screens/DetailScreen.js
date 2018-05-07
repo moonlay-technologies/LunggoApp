@@ -37,7 +37,6 @@ export default class DetailScreen extends Component {
       item.mediaSrc = [details.mediaSrc];
 
     this.state = {
-      ...id,
       ...item,
       review: {
         rating: 0.0,
@@ -99,11 +98,6 @@ export default class DetailScreen extends Component {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
       review, reviewCount, rating, ratingCount, additionalContents, availableDateTimes } = this.state;
-    let hideFooter = this.props.navigation.state.params.hideFooter;
-    console.log("hide footer params: ");
-    console.log(this.props.navigation.state.params.hideFooter);
-    console.log("hide footer: ");
-    console.log(hideFooter);
     return (
       <View>
         <ScrollView
@@ -166,7 +160,7 @@ export default class DetailScreen extends Component {
         </ScrollView>
 
         <Header wishlisted={wishlisted} id={id} scrollY={this.state.scrollY} title={name} _onWishlist={this._onWishlist} {...this.props} />
-        {(!isLoading && !hideFooter) && (
+        {!isLoading && (
           <Footer price={this.state.price} details={this.state} {...this.props} _isDateAvailable={this._isDateAvailable(availableDateTimes)} />
         )}
 
