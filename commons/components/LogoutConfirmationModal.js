@@ -14,7 +14,7 @@ import { NavigationActions } from 'react-navigation';
 import { purgeMyBookingList } from '../../customer/screens/MyBooking/MyBookingController';
 import { purgeProfile } from '../ProfileController';
 import cartCountStore from './../../customer/screens/Cart/CartCountStorage';
-import { deletePushNotificationAsync, removeMyBookingListener } from '../../api/NotificationController';
+import { deletePushNotificationAsync } from '../../api/NotificationController';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 

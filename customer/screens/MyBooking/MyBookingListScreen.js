@@ -38,10 +38,7 @@ class ActivityListItem extends React.PureComponent {
   _voucherButton = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
-        case 'BOOK':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
         case 'FORW':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Respon Operator</Text></View>;
         case 'CONF':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Memproses Tiket</Text></View>;
         case 'TKTD':
@@ -62,6 +59,7 @@ class ActivityListItem extends React.PureComponent {
         case 'CAAD':
         case 'DENY':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Dibatalkan</Text></View>;
+        case 'BOOK':
         default:
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
       }
