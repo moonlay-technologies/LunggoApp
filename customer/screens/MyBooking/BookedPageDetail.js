@@ -37,7 +37,8 @@ export default class BookedPageDetail extends React.Component {
       details: {
         id: this.details.activityId,
         ...this.details,
-      }
+      },
+      hideFooter: true
     });
   }
 
