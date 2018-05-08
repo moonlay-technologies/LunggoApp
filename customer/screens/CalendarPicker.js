@@ -121,8 +121,8 @@ export default class CalendarPicker extends React.Component {
             >
               <View style={{flexDirection:'row', flex:1}}>
                 <View style={{flex:1}}>
-                  <Text style={styles.activityDesc1}>{currValue}</Text>
-                  <Text style={styles.activityDesc2}>Tersisa untuk 2 pax</Text>
+                  <Text style={styles.activityDesc1}>{currValue.availableHour}</Text>
+                  <Text style={styles.activityDesc2}>Tersisa untuk {currValue.paxSlot} pax</Text>
                 </View>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Button

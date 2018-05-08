@@ -79,6 +79,7 @@ export default class BookingDetail extends React.Component {
     scheduleObj.isDateSelected = true;
     scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
+    console.log(scheduleObj.paxSlot);
     if(scheduleObj.paxSlot < this.state.maxCount){
       this.setState({
         maxCount: scheduleObj.paxSlot
@@ -213,7 +214,7 @@ export default class BookingDetail extends React.Component {
     let { price, pax, date, time, paxSlot , isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      `${Formatter.dateFullShort(date)}\n${time}\n${paxSlot}` : '';
+      `${Formatter.dateFullShort(date)}\n${time}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
       <View>
@@ -346,6 +347,19 @@ export default class BookingDetail extends React.Component {
       </TouchableOpacity>
       :
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
+
+      let validasiPaxCount = () => {
+        console.log("jalanin validasi paxCount");
+        console.log("totalCount: ");
+        console.log(this.state.totalCount);
+        console.log(this.state.maxCount);
+        if(this.state.totalCount > this.state.maxCount){
+          console.log("masuk ke error");
+          return (
+          <Text style={{color:"red"}}>total pax lebih dari jumlah maksimal</Text>
+          )
+        }
+      }
 
     return (
       <View style={{ flex: 1,backgroundColor: '#FAFAFA', paddingBottom:100}}>
@@ -498,7 +512,9 @@ export default class BookingDetail extends React.Component {
             )} */}
             <View style={styles.containerPackage}>
               {paxForm}
+              {validasiPaxCount()}
             </View>
+            
           </View>
 
           <View>
