@@ -53,7 +53,7 @@ export default class BookingDetail extends React.Component {
       isDateSelected: false,
       isDateValid: true,
       isPaxFilled: true,
-      isContactFilled: true,
+      isContactFilled: false,
       isContactNeverFilled: true,
       isBookButtonPressed: false
     };
@@ -79,7 +79,7 @@ export default class BookingDetail extends React.Component {
   }
 
   setContact = contactObj => {
-    this.setState({ contact: contactObj, isContactFilled: true, isContactNeverFilled: false });
+    this.setState({ contact: contactObj, isContactFilled: true });
   }
 
   _book = async () => {
@@ -197,7 +197,7 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       `${Formatter.dateFullShort(date)}\n${time}` : '';
@@ -231,8 +231,8 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
-        <View style={{ flexDirection: 'row', marginBottom: 20 }} key={index}>
-          <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row',}} key={index}>
+          <View style={{ flex: 1}}>
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
@@ -285,12 +285,7 @@ export default class BookingDetail extends React.Component {
         </TouchableOpacity>
       </View>
       :*/
-      <View style={{
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginVertical: 20,
-      }}>
+      <View>
         {counterButtons(counter)}
       </View>;
 
@@ -318,139 +313,141 @@ export default class BookingDetail extends React.Component {
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
     return (
-      <View style={{ flex: 1}}>
-      <ScrollView style={{ flex: 1, height:'100%', backgroundColor: '#fff' }}>
+      <View style={{ flex: 1,backgroundColor: '#FAFAFA', paddingBottom:100}}>
+      <ScrollView style={{ flex: 1, }}>
         <ContinueToCartModal
           isVisible={this.state.isContinueToCartModalVisible}
           {...this.props}
         />
-        {/* <View style={styles.container}>
-          <Text style={styles.activityTitle}>Paket Tur</Text>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={{marginTop:10}}>
-              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-            </View>
-          </View>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={{marginTop:10}}>
-              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-            </View>
-          </View>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={styles.containerMoreDescription}>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #1
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #2
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #3
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.divider} /> */}
+        <LoadingModal isVisible={this.state.isLoading} />
 
         <View style={styles.container}>
-          <LoadingModal isVisible={this.state.isLoading} />
-          <View style={{ marginBottom: 10 }}>
+          {/*<View style={{marginBottom:30}}>
+            <Text style={styles.activityTitle}>Paket Tur</Text>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={styles.containerMoreDescription}>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #1
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #2
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #3
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>*/}
+
+          <View style={{marginBottom:30}}>
             <TouchableOpacity onPress={this._goToCalendarPicker} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
                 <View>
                   <Text style={styles.activityTitle}>Jadwal</Text>
                   {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
                 </View>
                 <View style={{ justifyContent: 'center' }}>
                   <Text style={styles.clickableText}>
-                    {isDateSelected ? 'UBAH' : 'PILIH'}
+                    {isDateSelected ? 'Ubah' : 'Pilih'}
                   </Text>
                 </View>
               </View>
+
+              {this.state.isDateSelected ||
+                <View style={styles.containerPackage}>
+                  <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                </View>
+              }
+
+
             </TouchableOpacity>
 
             {this.state.isDateSelected &&
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingBottom: 20
-              }}>
+              <View style={styles.containerPackage}>
                 <View style={{ justifyContent: 'center' }}>
                   <Text style={this.state.isDateSelected ?
-                    styles.normalText : styles.warningText} >
+                    styles.activityDesc : styles.warningText} >
                     {selectedDateText}
                   </Text>
                 </View>
               </View>
             }
-            <View style={styles.divider}></View>
           </View>
 
-          <View>
+          <View style={{marginBottom:30}}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.activityTitle}>Peserta</Text>
               <View style={{ flex: 1, alignItems: 'flex-end', }}>
@@ -464,48 +461,64 @@ export default class BookingDetail extends React.Component {
                 <Text>{item.name}</Text>
               </View>
             )} */}
-            {paxForm}
+            <View style={styles.containerPackage}>
+              {paxForm}
+            </View>
           </View>
 
           <View>
-            <Text style={styles.activityTitle}>
-              Kontak Peserta
-            </Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              // borderBottomColor: '#efefef',
-              // borderBottomWidth:1,
-              // paddingBottom:20,
-              paddingTop: 20,
-              // marginVertical:20,
-            }}>
-              {isContactFilled && contact &&
-                <Text style={styles.normalText}>
-                  {contact.name}{'\n'}
-                  {contact.email}{'\n'}
-                  {/*contact.countryCallCd} - */}0{contact.phone}
+          <TouchableOpacity onPress={this._goToBookingContact} >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
+                <View>
+                  <Text style={styles.activityTitle}>Kontak Peserta</Text>
+                  {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
+                </View>
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={styles.clickableText}>
+                    {isContactFilled ? 'Ubah' : 'Pilih'}
+                  </Text>
+                </View>
+              </View>
+
+              {isContactFilled ||
+                <View style={styles.containerPackage}>
+                  <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
+                </View>
+              }
+
+            </TouchableOpacity>
+            {/*<View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
+              <View>
+                <Text style={styles.activityTitle}>Kontak Peserta</Text>
+                {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={styles.clickableText}>
+                  {isDateSelected ? 'UBAH' : 'PILIH'}
                 </Text>
-              }
-              {isContactNeverFilled ?
-                <TouchableOpacity onPress={this._goToBookingContact}>
-                  <Text style={styles.clickableText}>Masukkan kontak peserta</Text>
-                </TouchableOpacity>
-                :
-                <TouchableOpacity containerStyle={styles.addButton}
-                  onPress={this._goToBookingContact} >
-                  <View style={{ justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
-                  </View>
-                </TouchableOpacity>
-              }
-            </View>
+              </View>
+            </View>*/}
+            {isContactFilled && contact &&
+              <View style={styles.containerPackage}>
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                  <Text style={styles.activityDesc}>
+                    {contact.name}{'\n'}
+                    {contact.email}{'\n'}
+                    {/*contact.countryCallCd} - */}0{contact.phone}
+                  </Text>
+                </View>
+              </View>
+            }
             {!isContactFilled && isBookButtonPressed &&
               <Text style={styles.warningText} >
                 Mohon isi data kontak peserta
               </Text>
             }
           </View>
+
         </View>
 
       </ScrollView>
@@ -536,23 +549,24 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
     flex: 1,
   },
   containerPackage: {
     backgroundColor: '#fff',
-    borderRadius: 3,
-    padding: 10,
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    paddingVertical:10,
     marginTop: 15,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: '#B0B0B0',
         shadowOffset: {
           width: 0,
           height: 1
         },
-        shadowRadius: 2,
-        shadowOpacity: 0.2
+        shadowRadius: 3,
+        shadowOpacity: 0.3
       },
       android: {
         elevation: 2,
@@ -580,7 +594,7 @@ const styles = StyleSheet.create({
     marginTop: 3
   },
   activityTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'Hind-SemiBold',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({

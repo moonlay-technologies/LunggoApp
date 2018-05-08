@@ -109,7 +109,7 @@ export default class CalendarPicker extends React.Component {
     let markedDates = {...this.state.markedDates};
     let date = (selectedDate)
       ? Formatter.dateFullShort(selectedDate)
-      : "Pilih Tanggal";
+      : <Text style={styles.activityDesc1}>Pilih Tanggal</Text>;
 
     let availableHoursList =
       (!!tempSelectedDate && !!markedDates[tempSelectedDate].availableHours) ?
@@ -120,7 +120,8 @@ export default class CalendarPicker extends React.Component {
             >
               <View style={{flexDirection:'row', flex:1}}>
                 <View style={{flex:1}}>
-                  <Text style={{marginTop:5, color:'#454545'}}>{currValue}</Text>
+                  <Text style={styles.activityDesc1}>{currValue}</Text>
+                  <Text style={styles.activityDesc2}>Tersisa untuk 2 pax</Text>
                 </View>
                 <View style={{flex:1, alignItems:'flex-end'}}>
                   <Button
@@ -152,7 +153,6 @@ export default class CalendarPicker extends React.Component {
         <Modal
           style={styles.modal}
           transparent={true}
-
           isVisible={this.state.isModalVisible}
           onBackdropPress={this._closeModal}
           onBackButtonPress={this._closeModal}
@@ -162,7 +162,7 @@ export default class CalendarPicker extends React.Component {
             <Text style={styles.activityTitle}>
               Pilih jadwal
             </Text>
-            <Text style={[styles.activityDesc,{marginBottom:20}]}>
+            <Text style={[styles.activityDesc,{marginBottom:10}]}>
               {Formatter.dateFullLong(this.state.tempSelectedDate)}
             </Text>
             {availableHoursList}
@@ -171,12 +171,12 @@ export default class CalendarPicker extends React.Component {
 
         <View style={globalStyles.bottomCtaBarContainer2}>
           <View style={styles.bottomDateTimeContainer}>
-            <Text>{date}</Text>
-            <Text>{selectedTime}</Text>
+            <Text style={styles.activityDesc}>{date}</Text>
+            <Text style={styles.activityDesc}>{selectedTime}</Text>
           </View>
           <View style={{flexDirection:'row'}}>
-            <View style={{alignItems: 'flex-start', flex:1.5}}>
-              <View style={{marginTop:3}}>
+            <View style={{alignItems: 'flex-start', flex:1.5, justifyContent:'center'}}>
+              <View>
                 <Text style={{
                   color:'#000',
                   fontWeight: 'bold',
@@ -213,9 +213,55 @@ var styles = StyleSheet.create({
     marginBottom:5
   },
   activityDesc: {
-    fontSize:14,
-    color:'#454545',
-    lineHeight: 20,
+    fontSize: 15,
+    color: '#454545',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityDesc1: {
+    fontSize: 16,
+    color: '#454545',
+    fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  activityDesc2: {
+    fontSize: 13,
+    color: '#767676',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   modal: {
     justifyContent: 'flex-end',
@@ -223,7 +269,7 @@ var styles = StyleSheet.create({
   },
   bottomDateTimeContainer: {
     borderBottomWidth: 1,
-    borderBottomColor: '#cdcdcd',
+    borderBottomColor: '#efefef',
     paddingBottom: 10,
     marginBottom: 20,
   },
