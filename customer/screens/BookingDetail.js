@@ -48,8 +48,11 @@ export default class BookingDetail extends React.Component {
       totalCount += minCount;
       price += amount * minCount;
     });
+
+    let maxCount = props.navigation.state.params.package[0].maxCount;
+    let defaultMaxCount = props.navigation.state.params.package[0].maxCount;
     this.state = {
-      counter, totalCount, price,
+      counter, totalCount, price, maxCount, defaultMaxCount,
       isDateSelected: false,
       isDateValid: true,
       isPaxFilled: true,
@@ -76,6 +79,16 @@ export default class BookingDetail extends React.Component {
     scheduleObj.isDateSelected = true;
     scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
+    if(scheduleObj.paxSlot < this.state.maxCount){
+      this.setState({
+        maxCount: scheduleObj.paxSlot
+      });
+    }
+    else{
+      this.setState({
+        maxCount: this.state.defaultMaxCount
+      });
+    }
   }
 
   setContact = contactObj => {
@@ -197,10 +210,10 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, paxSlot , isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      `${Formatter.dateFullShort(date)}\n${time}` : '';
+      `${Formatter.dateFullShort(date)}\n${time}\n${paxSlot}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
       <View>
@@ -236,21 +249,43 @@ export default class BookingDetail extends React.Component {
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#f9a3a3', justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => substract(counterObj)}
-            >
-              <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
-            </TouchableOpacity>
-
+            {
+              (counterObj.count > counterObj.minCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => substract(counterObj)}
+                >
+                  <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
+                </TouchableOpacity>
+              )
+            }
+            {
+              (counterObj.count <= counterObj.minCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}
+                  disabled={true}
+                >
+                  <Icon name='minus' type='entypo' size={10} color='#d3d3d3' />
+                </TouchableOpacity>
+              )
+            }
             <Text style={[styles.activityDesc, { width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
-
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => add(counterObj)}
-            >
-              <Icon name='plus' type='octicon' size={10} color='#ff5f5f' />
-            </TouchableOpacity>
+            {
+              (this.state.totalCount < this.state.maxCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => add(counterObj)}
+                >
+                  <Icon name='plus' type='octicon' size={10} color='#ff5f5f' />
+                </TouchableOpacity>
+              )
+            }
+            {
+              (this.state.totalCount >= this.state.maxCount) && (
+                <TouchableOpacity disabled = {true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
+                </TouchableOpacity>
+              )
+            }
           </View>
-          <OfflineNotificationBar/>
+          <OfflineNotificationBar />
         </View>
       );
     }
@@ -318,13 +353,13 @@ export default class BookingDetail extends React.Component {
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
     return (
-      <View style={{ flex: 1}}>
-      <ScrollView style={{ flex: 1, height:'100%', backgroundColor: '#fff' }}>
-        <ContinueToCartModal
-          isVisible={this.state.isContinueToCartModalVisible}
-          {...this.props}
-        />
-        {/* <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1, height: '100%', backgroundColor: '#fff' }}>
+          <ContinueToCartModal
+            isVisible={this.state.isContinueToCartModalVisible}
+            {...this.props}
+          />
+          {/* <View style={styles.container}>
           <Text style={styles.activityTitle}>Paket Tur</Text>
           <View style={styles.containerPackage}>
             <View style={{ flexDirection:'row'}}>
@@ -416,99 +451,99 @@ export default class BookingDetail extends React.Component {
 
         <View style={styles.divider} /> */}
 
-        <View style={styles.container}>
-          <LoadingModal isVisible={this.state.isLoading} />
-          <View style={{ marginBottom: 10 }}>
-            <TouchableOpacity onPress={this._goToCalendarPicker} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                <View>
-                  <Text style={styles.activityTitle}>Jadwal</Text>
-                  {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+          <View style={styles.container}>
+            <LoadingModal isVisible={this.state.isLoading} />
+            <View style={{ marginBottom: 10 }}>
+              <TouchableOpacity onPress={this._goToCalendarPicker} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Jadwal</Text>
+                    {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isDateSelected ? 'UBAH' : 'PILIH'}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.clickableText}>
-                    {isDateSelected ? 'UBAH' : 'PILIH'}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            {this.state.isDateSelected &&
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingBottom: 20
-              }}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={this.state.isDateSelected ?
-                    styles.normalText : styles.warningText} >
-                    {selectedDateText}
-                  </Text>
+              {this.state.isDateSelected &&
+                <View style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingBottom: 20
+                }}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={this.state.isDateSelected ?
+                      styles.normalText : styles.warningText} >
+                      {selectedDateText}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            }
-            <View style={styles.divider}></View>
-          </View>
-
-          <View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityTitle}>Peserta</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                <Text style={styles.seeMore}>{totalCount} orang</Text>
-              </View>
+              }
+              <View style={styles.divider}></View>
             </View>
 
-            {/* 
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityTitle}>Peserta</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                  <Text style={styles.seeMore}>{totalCount} orang</Text>
+                </View>
+              </View>
+
+              {/* 
             {pax && pax.map( item =>
               <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                 <Text>{item.name}</Text>
               </View>
             )} */}
-            {paxForm}
-          </View>
+              {paxForm}
+            </View>
 
-          <View>
-            <Text style={styles.activityTitle}>
-              Kontak Peserta
+            <View>
+              <Text style={styles.activityTitle}>
+                Kontak Peserta
             </Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              // borderBottomColor: '#efefef',
-              // borderBottomWidth:1,
-              // paddingBottom:20,
-              paddingTop: 20,
-              // marginVertical:20,
-            }}>
-              {isContactFilled && contact &&
-                <Text style={styles.normalText}>
-                  {contact.name}{'\n'}
-                  {contact.email}{'\n'}
-                  {/*contact.countryCallCd} - */}0{contact.phone}
-                </Text>
-              }
-              {isContactNeverFilled ?
-                <TouchableOpacity onPress={this._goToBookingContact}>
-                  <Text style={styles.clickableText}>Masukkan kontak peserta</Text>
-                </TouchableOpacity>
-                :
-                <TouchableOpacity containerStyle={styles.addButton}
-                  onPress={this._goToBookingContact} >
-                  <View style={{ justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
-                  </View>
-                </TouchableOpacity>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // borderBottomColor: '#efefef',
+                // borderBottomWidth:1,
+                // paddingBottom:20,
+                paddingTop: 20,
+                // marginVertical:20,
+              }}>
+                {isContactFilled && contact &&
+                  <Text style={styles.normalText}>
+                    {contact.name}{'\n'}
+                    {contact.email}{'\n'}
+                    {/*contact.countryCallCd} - */}0{contact.phone}
+                  </Text>
+                }
+                {isContactNeverFilled ?
+                  <TouchableOpacity onPress={this._goToBookingContact}>
+                    <Text style={styles.clickableText}>Masukkan kontak peserta</Text>
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity containerStyle={styles.addButton}
+                    onPress={this._goToBookingContact} >
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={{ fontSize: 13, color: '#01d4cb', fontWeight: 'bold' }}> UBAH</Text>
+                    </View>
+                  </TouchableOpacity>
+                }
+              </View>
+              {!isContactFilled && isBookButtonPressed &&
+                <Text style={styles.warningText} >
+                  Mohon isi data kontak peserta
+              </Text>
               }
             </View>
-            {!isContactFilled && isBookButtonPressed &&
-              <Text style={styles.warningText} >
-                Mohon isi data kontak peserta
-              </Text>
-            }
           </View>
-        </View>
 
-      </ScrollView>
+        </ScrollView>
         <View style={globalStyles.bottomCtaBarContainer3}>
           {rincianHarga}
           <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
@@ -523,7 +558,7 @@ export default class BookingDetail extends React.Component {
             </Button>
           </View>
         </View>
-    </View>
+      </View>
     );
   }
 }
