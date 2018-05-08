@@ -37,7 +37,7 @@ export class ListedText extends React.Component {
       return (
         <View>
           {this.props.children.split(/\\n- |\\\\n- |\\r\\n- |\\\\r\\\\n- |\r\n- |^- /m).map((line, idx) => idx != 0 &&(
-            <View style={{marginBottom:5}}>
+            <View key={idx} style={{marginBottom:5}}>
               <View style={{flexDirection:"row"}}>
                 <View style={{flex:0.1, }}><Text>-</Text></View>
                 <View style={{flex:2}}><Text style={styles.activityDesc} {...this.props} key={idx}>{line}</Text></View>
