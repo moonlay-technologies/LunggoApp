@@ -43,7 +43,7 @@ class ActivityListItem extends React.PureComponent {
         case 'FORW':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Respon Operator</Text></View>;
         case 'CONF':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Memproses Tiket</Text></View>;
+          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Tiket Sedang Diproses</Text></View>;
         case 'TKTD':
           return (
             <Button
@@ -150,7 +150,7 @@ export default class CartListItem extends React.PureComponent {
 
   _showInvoice = () => {
     let { item } = this.props;
-    let title = "Nomor Keranjang #" + item.cartId;
+    let title = "No. Transaksi: " + item.cartId;
     let total = item.totalFinalPrice;
     let breakdown = item.activities.map(rsv => {
       return {
@@ -193,11 +193,11 @@ export default class CartListItem extends React.PureComponent {
 
         <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
           <View>
-            <Text style={styles.headerText}>No. Order: <Text style={styles.activityDesc}>1234567</Text></Text>
+            <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
-          <View>
+          {/* <View>
             <Text style={styles.headerText}>Tanggal Pesanan: <Text style={styles.activityDesc}>20 Jan 2018, 12.00 PM</Text></Text>
-          </View>
+          </View> */}
         </View>
 
         <FlatList

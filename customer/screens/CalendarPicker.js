@@ -122,7 +122,7 @@ export default class CalendarPicker extends React.Component {
               <View style={{flexDirection:'row', flex:1}}>
                 <View style={{flex:1}}>
                   <Text style={styles.activityDesc1}>{currValue.availableHour}</Text>
-                  <Text style={styles.activityDesc2}>Tersisa untuk {currValue.paxSlot} pax</Text>
+                  {currValue.paxSlot <= 5 && <Text style={styles.slot}>Tersisa {currValue.paxSlot} slot lagi!</Text>}
                 </View>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Button
@@ -250,6 +250,23 @@ var styles = StyleSheet.create({
   activityDesc2: {
     fontSize: 13,
     color: '#767676',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  slot: {
+    fontSize: 13,
+    color: '#ff0000',
     fontFamily: 'Hind',
     ...Platform.select({
       ios: {
