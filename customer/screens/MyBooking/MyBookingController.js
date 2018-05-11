@@ -26,7 +26,7 @@ export async function getMyBookingList() {
   } else {
     let myBookings = await JSON.parse(myBookingsJson);
     let bookings = myBookings.reduce((a, b) => a.concat(b.activities), []);
-    setTimeout(() => downloadPdfVouchers(bookings), 0);
+    // setTimeout(() => downloadPdfVouchers(bookings), 0);
     return myBookings;
   }
 }

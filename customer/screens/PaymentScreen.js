@@ -9,6 +9,7 @@ import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import { backToMyBookings } from './../../api/Common';
 
 export default class PaymentScreen extends React.Component {
 
@@ -28,6 +29,10 @@ export default class PaymentScreen extends React.Component {
     if (event.nativeEvent.data == 'ExploreScreen') {
       shouldRefreshMyBookingList();
       return backToMain(this.props.navigation);
+    }
+    if (event.nativeEvent.data == 'backToMyBookings') {
+      shouldRefreshMyBookingList();
+      return backToMyBookings(this.props.navigation);
     }
   }
 
