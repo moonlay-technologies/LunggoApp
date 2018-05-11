@@ -58,7 +58,9 @@ export default class ForgotPasswordScreen extends React.Component {
     let { phone, isLoading, errorMessage } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-       <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
+       
+          <View style = {styles.container}>
+          <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }} >
             <Text style={styles.categoryTitle}>Lupa Password?</Text>
@@ -107,7 +109,9 @@ export default class ForgotPasswordScreen extends React.Component {
             Kirim
           </Button>
           <OfflineNotificationBar/>
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+          </View>
+        
         
       </TouchableWithoutFeedback>
     );

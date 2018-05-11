@@ -34,15 +34,23 @@ export default class PersonDataForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("error message" + nextProps.errorMessage);
     this.setState({
       error: nextProps.errorMessage,
-      name: nextProps.contact.name,
-      phone: nextProps.contact.phone,
-      email: nextProps.contact.email,
-      // countryCallCd: nextProps.contact.countryCallCd
     });
 
+    if(nextProps.contact){
+      this.setState({
+        name: nextProps.contact.name,
+        phone: nextProps.contact.phone,
+        email: nextProps.contact.email,
+        // countryCallCd: nextProps.contact.countryCallCd
+      });
+    }
+    
+    console.log("reset validator: " + nextProps.resetValidator);
     if(nextProps.resetValidator){
+      console.log("melakukan reset");
       this.setState({
         errorName: false,
         errorCountryCallCd: false,
@@ -109,10 +117,6 @@ export default class PersonDataForm extends React.Component {
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         <Text style={{ color: '#fc2b4e' }}>{error}</Text>
       </View> : null;
-
-    if(this.state.resetValidator){
-      errorName = null
-    }
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

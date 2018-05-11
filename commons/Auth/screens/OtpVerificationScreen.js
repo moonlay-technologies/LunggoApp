@@ -133,7 +133,9 @@ export default class OtpVerificationScreen extends React.Component {
     let { countryCallCd, phone, email } = this.props.navigation.state.params;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
+        
+         <View style = {styles.container}>
+         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
           <LoadingModal isVisible={this.state.isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={styles.categoryTitle}>Masukkan Kode Verifikasi</Text>
@@ -249,7 +251,9 @@ export default class OtpVerificationScreen extends React.Component {
             </Text>
           </TouchableOpacity>
           <OfflineNotificationBar />
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+          </View>
+        
       </TouchableWithoutFeedback>
     );
   }

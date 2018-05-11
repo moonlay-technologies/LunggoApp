@@ -17,10 +17,10 @@ export default class Maps extends React.Component {
   render() {
     let { name, address, city, lat, long } = this.props;
     return (
-      <View style={{flex: 1,paddingVertical: 20}}>
+      <View style={{flex: 1,paddingVertical: 10}}>
         <TouchableOpacity onPress={this._enlargeMapView}>
           <MapView
-            style={{ width: "100%", height: 150 }}
+            style={{ width: "100%", height: 150, marginBottom:10 }}
             region={{
               latitude: lat,
               longitude: long,

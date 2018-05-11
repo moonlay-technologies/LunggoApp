@@ -32,7 +32,12 @@
     "android": {
       "icon": "./assets/icons/logo-android.png",
       "package": "com.travorama",
-      "versionCode": 20
+      "versionCode": 20,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAO1G0xY7slJppr3ibKsjUCzWl5l9lsbZs"
+        }
+      }
     }
   }
 }

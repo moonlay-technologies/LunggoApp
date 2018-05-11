@@ -6,6 +6,7 @@ import RootNavigation from './navigation/RootNavigation';
 import Colors from './constants/Colors';
 import UpdateNotifModal from './customer/components/UpdateNotifModal';
 import { fetchTravoramaApi, AUTH_LEVEL } from './api/Common';
+import { addMyBookingListener } from './api/NotificationController';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -113,6 +114,7 @@ export default class App extends React.Component {
         { 'Hind-Light': require('./assets/fonts/hind-light.ttf') },       
       ]),
       this._checkVersion(),
+      addMyBookingListener(),
     ]);
   };
 

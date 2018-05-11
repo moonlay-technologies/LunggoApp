@@ -1,10 +1,13 @@
 'use strict';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
-
+import { Permissions, Notifications } from 'expo';
+import { NavigationActions } from 'react-navigation';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getMyBookingList() {
+  console.log("running getMyBookingList");
   let shouldRefresh = await getItemAsync('shouldRefresh.myBookingList');
+  console.log("shouldRefresh: " + shouldRefresh)
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.myBookingList');
     return (await fetchMyBookingList()).myBookings;
@@ -31,7 +34,7 @@ export async function getMyBookingList() {
 async function fetchMyBookingList() {
   const version = 'v1';
   let request = {
-    path: `/${version}/activities/mybooking`,
+    path: `/${version}/activities/mybooking?perpage=1000`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
@@ -39,7 +42,26 @@ async function fetchMyBookingList() {
 }
 
 export async function shouldRefreshMyBookingList() {
-  setItemAsync('shouldRefresh.myBookingList', 'true');
+    setItemAsync('shouldRefresh.myBookingList', 'true');
+    console.log("refreshing my bookinglist")
+}
+
+export async function myBookingListenerFunction({origin, data}){
+  console.log("cool data: " + origin + data);
+  if(data.function && data.function == "refreshMyBooking" && origin == "received"){
+    console.log("refreshing my bookinglist");
+    shouldRefreshMyBookingList();
+  }
+  if(data.function && data.function == "refreshMyBooking" && origin == "selected"){
+    console.log("selecting notif");
+    goToMyBookingScreen();
+  }
+}
+
+export function goToMyBookingScreen() {
+  let { reset, navigate } = NavigationActions;
+  shouldRefreshMyBookingList();
+  this.props.navigation.navigate("Main", 1);
 }
 
 export async function purgeMyBookingList() {
@@ -51,9 +73,8 @@ async function downloadPdfVouchers(bookings) {
 
   for (let i = 0; i < bookings.length; i++) {
     let booking = bookings[i];
-    if (!booking.hasPdfVoucher)
+    if (!booking.isPdfUploaded)
       continue;
-
     let { rsvNo, pdfUrl } = booking;
     let directory = Expo.FileSystem.documentDirectory;
     let path = directory + 'myBookings/';
