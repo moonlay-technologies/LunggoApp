@@ -31,7 +31,7 @@ export default class PaymentScreen extends React.Component {
 
   render() {
     let { rsvNo, cartId } = this.props.navigation.state.params;
-    let url = DOMAIN + '/id/Payment/Payment?cartId=' + cartId;
+    let url = DOMAIN + '/Payment_v2/Payment/Payment?cartId=' + cartId;
     console.log(url);
     return (
       <WebView
