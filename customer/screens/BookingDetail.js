@@ -425,7 +425,7 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>
                       {contact.name}{'\n'}
                       {contact.email}{'\n'}
-                      {phoneWithoutCountryCode_Indonesia(contact.phone)}
+                      {Formatter.reversePhoneWithoutCountryCode_Indonesia(contact.phone)}
                     </Text>
                   </View>
                 </View>

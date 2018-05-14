@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
+import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { getProfile } from '../../commons/ProfileController';
 import { CheckBox } from 'react-native-elements';
@@ -20,6 +20,7 @@ export default class AddBookingContact extends React.Component {
 
   _fillMyContactInfo = async () => {
     let contact = await getProfile();
+    contact.phone = reversePhoneWithoutCountryCode_Indonesia(contact.phone);
     console.log('contact');
     console.log(contact);
     this.setState({ isContactNeverFilled: false, ...contact, resetValidator: true });
