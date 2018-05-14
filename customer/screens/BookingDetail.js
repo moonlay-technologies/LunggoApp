@@ -18,6 +18,7 @@ import OfflineNotificationBar from './../../commons/components/OfflineNotificati
 import { deleteCart } from './Cart/CartController';
 import { Moment } from 'moment';
 import { NavigationActions } from 'react-navigation';
+import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -361,36 +362,7 @@ export default class BookingDetail extends React.Component {
       );
     }
 
-    let paxForm = /*(!!requiredPaxData) ?
-      <View style={{
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20,
-        marginTop: 20
-      }}>
-        <Text style={styles.activityDesc}>
-          Atur Peserta
-        </Text>
-        <TouchableOpacity
-          containerStyle={styles.addButton}
-          onPress={this._goToPaxChoice}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-              { isPaxFilled ||
-                <Text style={styles.validation}>
-                  Mohon isi peserta
-                </Text>
-              }
-            </View>
-            <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
-          </View>
-
-        </TouchableOpacity>
-      </View>
-      :*/
+    let paxForm =
       <View>
         {counterButtons(counter)}
       </View>;
@@ -574,12 +546,6 @@ export default class BookingDetail extends React.Component {
                 </View>
               </View>
 
-              {/* 
-            {pax && pax.map( item =>
-              <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
-                <Text>{item.name}</Text>
-              </View>
-            )} */}
               <View style={styles.containerPackage}>
                 {paxForm}
                 {validasiPaxCount()}
@@ -608,17 +574,6 @@ export default class BookingDetail extends React.Component {
                 }
 
               </TouchableOpacity>
-              {/*<View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-              <View>
-                <Text style={styles.activityTitle}>Kontak Peserta</Text>
-                {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
-              </View>
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.clickableText}>
-                  {isDateSelected ? 'UBAH' : 'PILIH'}
-                </Text>
-              </View>
-            </View>*/}
               {isContactFilled && contact &&
                 <View style={styles.containerPackage}>
                   <View style={{
@@ -628,7 +583,7 @@ export default class BookingDetail extends React.Component {
                     <Text style={styles.activityDesc}>
                       {contact.name}{'\n'}
                       {contact.email}{'\n'}
-                      {/*contact.countryCallCd} - */}0{contact.phone}
+                      {Formatter.reversePhoneWithoutCountryCode_Indonesia(contact.phone)}
                     </Text>
                   </View>
                 </View>
