@@ -15,6 +15,9 @@ import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import { deleteCart } from './Cart/CartController';
+import { Moment } from 'moment';
+import { NavigationActions } from 'react-navigation';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -42,24 +45,77 @@ export default class BookingDetail extends React.Component {
 
   constructor(props) {
     super(props);
+    let isDateSelected = false;
+    let isDateValid = true;
+    let isPaxFilled = true;
+    let isContactFilled = false;
+    let isContactNeverFilled = true;
+    let editRsv = null;
+    let rsvNo = null;
+    let contact = null;
+    let date = null;
+    let time = null;
     let counter = [], totalCount = 0, price = 0;
-    props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
-      counter.push({ type, amount, minCount, count: minCount });
-      totalCount += minCount;
-      price += amount * minCount;
-    });
-
+    console.log('lihat props availableDateTimes');
+    console.log(props.navigation.state.params.availableDateTimes);
+    console.log('konstruksi props');
+    console.log(props.navigation.state.params.editRsv);
+    console.log('ticket count');
+    console.log(props.navigation.state.params.ticketCount);
+    if (props.navigation.state.params.editRsv) {
+      props.navigation.state.params.package[0].price.map(({ type, minCount, amount }) => {
+        let count = 0;
+        let packageType = type;
+        props.navigation.state.params.ticketCount.map(({ count, totalPrice, type }) => {
+          if (type == packageType) {
+            count = count;
+          };
+          counter.push({ type, minCount, amount, count });
+          totalCount += count;
+          price += amount * count;
+        }
+        )
+      });
+      console.log("lihat props");
+      console.log(this.props.navigation.state.params);
+      editRsv = true;
+      rsvNo = props.navigation.state.params.rsvNo;
+      contact = props.navigation.state.params.contact;
+      date = props.navigation.state.params.selectedDateTime.date.substring(0,10);
+      time = props.navigation.state.params.selectedDateTime.session;
+      isDateSelected = true;
+      isContactFilled = true;
+      isContactNeverFilled = false;
+    }
+    else {
+      props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
+        counter.push({ type, amount, minCount, count: minCount });
+        totalCount += minCount;
+        price += amount * minCount;
+      });
+    }
+    console.log('date');
+    console.log(date);
     let maxCount = props.navigation.state.params.package[0].maxCount;
     let defaultMaxCount = props.navigation.state.params.package[0].maxCount;
     this.state = {
-      counter, totalCount, price, maxCount, defaultMaxCount,
-      isDateSelected: false,
-      isDateValid: true,
-      isPaxFilled: true,
-      isContactFilled: false,
-      isContactNeverFilled: true,
+      counter, totalCount, price, maxCount, defaultMaxCount, editRsv, rsvNo, contact, date, time,
+      isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled,
       isBookButtonPressed: false
     };
+  }
+
+
+  _goToCart = () => {
+    this.setState({ isVisible: false, isLoading: true });
+    let { reset, navigate } = NavigationActions;
+    const action = reset({
+      index: 1,
+      actions: [
+        navigate({ routeName: 'Main' }),
+        navigate({ routeName: 'Cart' })],
+    });
+    this.props.navigation.dispatch(action);
   }
 
   static navigationOptions = {
@@ -80,12 +136,12 @@ export default class BookingDetail extends React.Component {
     scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
     console.log(scheduleObj.paxSlot);
-    if(scheduleObj.paxSlot < this.state.maxCount){
+    if (scheduleObj.paxSlot < this.state.maxCount) {
       this.setState({
         maxCount: scheduleObj.paxSlot
       });
     }
-    else{
+    else {
       this.setState({
         maxCount: this.state.defaultMaxCount
       });
@@ -126,7 +182,7 @@ export default class BookingDetail extends React.Component {
 
     let data = {
       date, pax, contact, ticketCount, selectedSession,
-      packageId: params.activityId, activityId: params.activityId,
+      packageId: params.package[0].packageId, activityId: params.activityId,
       paxes: [contact],
     };
 
@@ -147,9 +203,17 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         return;
       } else {
+        if (this.state.editRsv) {
+          deleteCart(this.state.rsvNo);
+        }
         await cartCountStore.setCartCount();
         shouldRefreshMyBookingList();
-        this.setState({ isContinueToCartModalVisible: true });
+        if (this.state.editRsv){
+          this._goToCart();
+        }
+        else{
+          this.setState({ isContinueToCartModalVisible: true });
+        } 
       }
     } catch (error) {
       this.setState({ isLoading: false });
@@ -167,8 +231,14 @@ export default class BookingDetail extends React.Component {
 
   _goToCalendarPicker = () => {
     let { navigation } = this.props;
+    console.log('availableDateTimes');
+    console.log(navigation.state.params.availableDateTimes);
     let { availableDateTimes } = navigation.state.params;
     let { price, date, time } = this.state;
+    console.log("selected date");
+    console.log(date);
+    console.log("selected time");
+    console.log(time);
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
@@ -211,7 +281,7 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, paxSlot , isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, paxSlot, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       `${Formatter.dateFullShort(date)}\n${time}` : '';
@@ -245,8 +315,8 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
-        <View style={{ flexDirection: 'row', marginVertical:10}} key={index}>
-          <View style={{ flex: 1}}>
+        <View style={{ flexDirection: 'row', marginVertical: 10 }} key={index}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
@@ -280,8 +350,8 @@ export default class BookingDetail extends React.Component {
             }
             {
               (this.state.totalCount >= this.state.maxCount) && (
-                <TouchableOpacity disabled = {true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
+                <TouchableOpacity disabled={true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                  <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
                 </TouchableOpacity>
               )
             }
@@ -348,30 +418,30 @@ export default class BookingDetail extends React.Component {
       :
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
-      let validasiPaxCount = () => {
-        console.log("jalanin validasi paxCount");
-        console.log("totalCount: ");
-        console.log(this.state.totalCount);
-        console.log(this.state.maxCount);
-        if(this.state.totalCount > this.state.maxCount){
-          console.log("masuk ke error");
-          return (
-          <Text style={{color:"red"}}>total pax lebih dari jumlah maksimal</Text>
-          )
-        }
+    let validasiPaxCount = () => {
+      console.log("jalanin validasi paxCount");
+      console.log("totalCount: ");
+      console.log(this.state.totalCount);
+      console.log(this.state.maxCount);
+      if (this.state.totalCount > this.state.maxCount) {
+        console.log("masuk ke error");
+        return (
+          <Text style={{ color: "red" }}>total pax lebih dari jumlah maksimal</Text>
+        )
       }
+    }
 
     return (
-      <View style={{ flex: 1,backgroundColor: '#FAFAFA', paddingBottom:100}}>
-      <ScrollView style={{ flex: 1, }}>
-        <ContinueToCartModal
-          isVisible={this.state.isContinueToCartModalVisible}
-          {...this.props}
-        />
-        <LoadingModal isVisible={this.state.isLoading} />
+      <View style={{ flex: 1, backgroundColor: '#FAFAFA', paddingBottom: 100 }}>
+        <ScrollView style={{ flex: 1, }}>
+          <ContinueToCartModal
+            isVisible={this.state.isContinueToCartModalVisible}
+            {...this.props}
+          />
+          <LoadingModal isVisible={this.state.isLoading} />
 
-        <View style={styles.container}>
-          {/*<View style={{marginBottom:30}}>
+          <View style={styles.container}>
+            {/*<View style={{marginBottom:30}}>
             <Text style={styles.activityTitle}>Paket Tur</Text>
             <View style={styles.containerPackage}>
               <View style={{ flexDirection:'row'}}>
@@ -461,84 +531,84 @@ export default class BookingDetail extends React.Component {
             </View>
           </View>*/}
 
-          <View style={{marginBottom:30}}>
-            <TouchableOpacity onPress={this._goToCalendarPicker} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-                <View>
-                  <Text style={styles.activityTitle}>Jadwal</Text>
-                  {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+            <View style={{ marginBottom: 30 }}>
+              <TouchableOpacity onPress={this._goToCalendarPicker} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Jadwal</Text>
+                    {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isDateSelected ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.clickableText}>
-                    {isDateSelected ? 'Ubah' : 'Pilih'}
-                  </Text>
-                </View>
-              </View>
 
-              {this.state.isDateSelected ||
+                {this.state.isDateSelected ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                  </View>
+                }
+
+
+              </TouchableOpacity>
+
+              {this.state.isDateSelected &&
                 <View style={styles.containerPackage}>
-                  <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={this.state.isDateSelected ?
+                      styles.activityDesc : styles.warningText} >
+                      {selectedDateText}
+                    </Text>
+                  </View>
                 </View>
               }
-
-
-            </TouchableOpacity>
-
-            {this.state.isDateSelected &&
-              <View style={styles.containerPackage}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={this.state.isDateSelected ?
-                    styles.activityDesc : styles.warningText} >
-                    {selectedDateText}
-                  </Text>
-                </View>
-              </View>
-            }
-          </View>
-
-          <View style={{marginBottom:30}}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityTitle}>Peserta</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                <Text style={styles.seeMore}>{totalCount} orang</Text>
-              </View>
             </View>
 
-            {/* 
+            <View style={{ marginBottom: 30 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityTitle}>Peserta</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                  <Text style={styles.seeMore}>{totalCount} orang</Text>
+                </View>
+              </View>
+
+              {/* 
             {pax && pax.map( item =>
               <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
                 <Text>{item.name}</Text>
               </View>
             )} */}
-            <View style={styles.containerPackage}>
-              {paxForm}
-              {validasiPaxCount()}
-            </View>
-            
-          </View>
-
-          <View>
-          <TouchableOpacity onPress={this._goToBookingContact} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-                <View>
-                  <Text style={styles.activityTitle}>Kontak Peserta</Text>
-                  {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
-                </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.clickableText}>
-                    {isContactFilled ? 'Ubah' : 'Pilih'}
-                  </Text>
-                </View>
+              <View style={styles.containerPackage}>
+                {paxForm}
+                {validasiPaxCount()}
               </View>
 
-              {isContactFilled ||
-                <View style={styles.containerPackage}>
-                  <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
-                </View>
-              }
+            </View>
 
-            </TouchableOpacity>
-            {/*<View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
+            <View>
+              <TouchableOpacity onPress={this._goToBookingContact} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Kontak Peserta</Text>
+                    {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isContactFilled ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
+                </View>
+
+                {isContactFilled ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
+                  </View>
+                }
+
+              </TouchableOpacity>
+              {/*<View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
               <View>
                 <Text style={styles.activityTitle}>Kontak Peserta</Text>
                 {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
@@ -549,28 +619,28 @@ export default class BookingDetail extends React.Component {
                 </Text>
               </View>
             </View>*/}
-            {isContactFilled && contact &&
-              <View style={styles.containerPackage}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                  <Text style={styles.activityDesc}>
-                    {contact.name}{'\n'}
-                    {contact.email}{'\n'}
-                    {/*contact.countryCallCd} - */}0{contact.phone}
-                  </Text>
+              {isContactFilled && contact &&
+                <View style={styles.containerPackage}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Text style={styles.activityDesc}>
+                      {contact.name}{'\n'}
+                      {contact.email}{'\n'}
+                      {/*contact.countryCallCd} - */}0{contact.phone}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            }
-            {!isContactFilled && isBookButtonPressed &&
-              <Text style={styles.warningText} >
-                Mohon isi data kontak peserta
+              }
+              {!isContactFilled && isBookButtonPressed &&
+                <Text style={styles.warningText} >
+                  Mohon isi data kontak peserta
               </Text>
-            }
-          </View>
+              }
+            </View>
 
-        </View>
+          </View>
 
         </ScrollView>
         <View style={globalStyles.bottomCtaBarContainer3}>
@@ -583,7 +653,7 @@ export default class BookingDetail extends React.Component {
               disabled={this.state.isLoading}
               styleDisabled={{ color: '#aaa' }}
             >
-              Pesan
+              {this.state.editRsv ? 'Edit' : 'Pesan'}
             </Button>
           </View>
         </View>
@@ -607,7 +677,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     paddingHorizontal: 15,
-    paddingVertical:10,
+    paddingVertical: 10,
     marginTop: 15,
     ...Platform.select({
       ios: {

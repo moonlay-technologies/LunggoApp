@@ -16,6 +16,7 @@ import { getCart } from './CartController';
 import SearchHeader from './../SearchActivity/SearchHeader';
 import cartCountStore from './CartCountStorage';
 import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
+import { AUTH_LEVEL, fetchTravoramaApi } from '../../../api/Common';
 
 export default class CartScreen extends React.Component {
 
@@ -34,6 +35,7 @@ export default class CartScreen extends React.Component {
 
   componentDidMount() {
     this._refreshCart();
+    cartCountStore.setCartCount();
   }
 
   _refreshCart = () => {
@@ -69,8 +71,42 @@ export default class CartScreen extends React.Component {
       index={index}
       onPress={() => this._onPressItem(item)}
       onPressDelete={this._onPressDelete}
+      onPressEdit={() => this._onPressEdit(item)}
     />
   );
+
+  navigateToBookingScreen = (availableDateTimes, item) => {
+    console.log("navigasi ke bookingscreen");
+    let activityPackage = item.activityDetail.package;
+    console.log(activityPackage);
+    this.props.navigation.navigate('BookingDetail', {
+      editRsv: true,
+      package: activityPackage,
+      ticketCount: item.ticketCount,
+      totalPrice: item.totalPrice,
+      rsvNo: item.rsvNo,
+      contact: item.contact,
+      selectedDateTime: item.selectedDateTime,
+      availableDateTimes,
+      activityId: item.activityDetail.id
+    });
+  }
+
+  goToBookingScreen = (id, item) => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/${id}/availabledates`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    };
+    fetchTravoramaApi(request).then(response => {
+      this.setState(response);
+      this.navigateToBookingScreen(this.state.availableDateTimes, item);
+    }).catch(error => console.log(error));
+  }
+response
+  _onPressEdit = item => {
+    this.goToBookingScreen(item.activityDetail.id, item);
+  }
 
   _onPressItem = item => {
     this.props.navigation.navigate('DetailScreen', { details: item.activityDetail, hideFooter: true });
@@ -140,7 +176,7 @@ export default class CartScreen extends React.Component {
               Bayar
             </Button>
           </View>
-          <OfflineNotificationBar/>
+          <OfflineNotificationBar />
         </View>
       </View>
     );
@@ -199,9 +235,9 @@ class ListItem extends React.PureComponent {
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'flex-end' }}>
-            {/*<TouchableOpacity style={{marginRight:20}}>
+            <TouchableOpacity onPress={() => this.props.onPressEdit(this.props)} style={{ marginRight: 20 }}>
               <Text style={styles.actionText}>Edit</Text>
-            </TouchableOpacity>*/}
+            </TouchableOpacity>
             <TouchableOpacity onPress={this._onPressDelete}>
               <Text style={styles.actionText}>Hapus</Text>
             </TouchableOpacity>
