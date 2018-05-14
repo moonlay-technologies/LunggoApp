@@ -9,6 +9,7 @@ import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import { backToMyBookings } from './../../api/Common';
 
 export default class PaymentScreen extends React.Component {
 
@@ -29,11 +30,15 @@ export default class PaymentScreen extends React.Component {
       shouldRefreshMyBookingList();
       return backToMain(this.props.navigation);
     }
+    if (event.nativeEvent.data == 'backToMyBookings') {
+      shouldRefreshMyBookingList();
+      return backToMyBookings(this.props.navigation);
+    }
   }
 
   render() {
     let { rsvNo, cartId } = this.props.navigation.state.params;
-    let url = DOMAIN + '/id/Payment/Payment?cartId=' + cartId;
+    let url = DOMAIN + '/Payment_v2/Payment/Payment?cartId=' + cartId;
     console.log(url);
     return (
       <WebView
