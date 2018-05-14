@@ -15,6 +15,7 @@ import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -80,12 +81,12 @@ export default class BookingDetail extends React.Component {
     scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
     console.log(scheduleObj.paxSlot);
-    if(scheduleObj.paxSlot < this.state.maxCount){
+    if (scheduleObj.paxSlot < this.state.maxCount) {
       this.setState({
         maxCount: scheduleObj.paxSlot
       });
     }
-    else{
+    else {
       this.setState({
         maxCount: this.state.defaultMaxCount
       });
@@ -211,7 +212,7 @@ export default class BookingDetail extends React.Component {
 
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, paxSlot , isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, paxSlot, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
       `${Formatter.dateFullShort(date)}\n${time}` : '';
@@ -245,8 +246,8 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
-        <View style={{ flexDirection: 'row',}} key={index}>
-          <View style={{ flex: 1}}>
+        <View style={{ flexDirection: 'row', }} key={index}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
@@ -280,8 +281,8 @@ export default class BookingDetail extends React.Component {
             }
             {
               (this.state.totalCount >= this.state.maxCount) && (
-                <TouchableOpacity disabled = {true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
+                <TouchableOpacity disabled={true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                  <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
                 </TouchableOpacity>
               )
             }
@@ -291,36 +292,7 @@ export default class BookingDetail extends React.Component {
       );
     }
 
-    let paxForm = /*(!!requiredPaxData) ?
-      <View style={{
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20,
-        marginTop: 20
-      }}>
-        <Text style={styles.activityDesc}>
-          Atur Peserta
-        </Text>
-        <TouchableOpacity
-          containerStyle={styles.addButton}
-          onPress={this._goToPaxChoice}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-              { isPaxFilled ||
-                <Text style={styles.validation}>
-                  Mohon isi peserta
-                </Text>
-              }
-            </View>
-            <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
-          </View>
-
-        </TouchableOpacity>
-      </View>
-      :*/
+    let paxForm =
       <View>
         {counterButtons(counter)}
       </View>;
@@ -348,229 +320,124 @@ export default class BookingDetail extends React.Component {
       :
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
-      let validasiPaxCount = () => {
-        console.log("jalanin validasi paxCount");
-        console.log("totalCount: ");
-        console.log(this.state.totalCount);
-        console.log(this.state.maxCount);
-        if(this.state.totalCount > this.state.maxCount){
-          console.log("masuk ke error");
-          return (
-          <Text style={{color:"red"}}>total pax lebih dari jumlah maksimal</Text>
-          )
-        }
+    let validasiPaxCount = () => {
+      console.log("jalanin validasi paxCount");
+      console.log("totalCount: ");
+      console.log(this.state.totalCount);
+      console.log(this.state.maxCount);
+      if (this.state.totalCount > this.state.maxCount) {
+        console.log("masuk ke error");
+        return (
+          <Text style={{ color: "red" }}>total pax lebih dari jumlah maksimal</Text>
+        )
       }
+    }
 
     return (
-      <View style={{ flex: 1,backgroundColor: '#FAFAFA', paddingBottom:100}}>
-      <ScrollView style={{ flex: 1, }}>
-        <ContinueToCartModal
-          isVisible={this.state.isContinueToCartModalVisible}
-          {...this.props}
-        />
-        <LoadingModal isVisible={this.state.isLoading} />
+      <View style={{ flex: 1, backgroundColor: '#FAFAFA', paddingBottom: 100 }}>
+        <ScrollView style={{ flex: 1, }}>
+          <ContinueToCartModal
+            isVisible={this.state.isContinueToCartModalVisible}
+            {...this.props}
+          />
+          <LoadingModal isVisible={this.state.isLoading} />
 
-        <View style={styles.container}>
-          {/*<View style={{marginBottom:30}}>
-            <Text style={styles.activityTitle}>Paket Tur</Text>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={styles.containerMoreDescription}>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #1
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #2
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #3
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>*/}
+          <View style={styles.container}>
 
-          <View style={{marginBottom:30}}>
-            <TouchableOpacity onPress={this._goToCalendarPicker} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-                <View>
-                  <Text style={styles.activityTitle}>Jadwal</Text>
-                  {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+            <View style={{ marginBottom: 30 }}>
+              <TouchableOpacity onPress={this._goToCalendarPicker} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Jadwal</Text>
+                    {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isDateSelected ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.clickableText}>
-                    {isDateSelected ? 'Ubah' : 'Pilih'}
-                  </Text>
-                </View>
-              </View>
 
-              {this.state.isDateSelected ||
+                {this.state.isDateSelected ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                  </View>
+                }
+
+
+              </TouchableOpacity>
+
+              {this.state.isDateSelected &&
                 <View style={styles.containerPackage}>
-                  <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={this.state.isDateSelected ?
+                      styles.activityDesc : styles.warningText} >
+                      {selectedDateText}
+                    </Text>
+                  </View>
                 </View>
               }
+            </View>
 
+            <View style={{ marginBottom: 30 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityTitle}>Peserta</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                  <Text style={styles.seeMore}>{totalCount} orang</Text>
+                </View>
+              </View>
 
-            </TouchableOpacity>
-
-            {this.state.isDateSelected &&
               <View style={styles.containerPackage}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={this.state.isDateSelected ?
-                    styles.activityDesc : styles.warningText} >
-                    {selectedDateText}
-                  </Text>
-                </View>
+                {paxForm}
+                {validasiPaxCount()}
               </View>
-            }
-          </View>
 
-          <View style={{marginBottom:30}}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityTitle}>Peserta</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                <Text style={styles.seeMore}>{totalCount} orang</Text>
-              </View>
             </View>
 
-            {/* 
-            {pax && pax.map( item =>
-              <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
-                <Text>{item.name}</Text>
-              </View>
-            )} */}
-            <View style={styles.containerPackage}>
-              {paxForm}
-              {validasiPaxCount()}
-            </View>
-            
-          </View>
-
-          <View>
-          <TouchableOpacity onPress={this._goToBookingContact} >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-                <View>
-                  <Text style={styles.activityTitle}>Kontak Peserta</Text>
-                  {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
+            <View>
+              <TouchableOpacity onPress={this._goToBookingContact} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Kontak Peserta</Text>
+                    {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isContactFilled ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={styles.clickableText}>
-                    {isContactFilled ? 'Ubah' : 'Pilih'}
-                  </Text>
-                </View>
-              </View>
 
-              {isContactFilled ||
+                {isContactFilled ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
+                  </View>
+                }
+
+              </TouchableOpacity>
+
+              {isContactFilled && contact &&
                 <View style={styles.containerPackage}>
-                  <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Text style={styles.activityDesc}>
+                      {contact.name}{'\n'}
+                      {contact.email}{'\n'}
+                      {phoneWithoutCountryCode_Indonesia(contact.phone)}
+                    </Text>
+                  </View>
                 </View>
               }
-
-            </TouchableOpacity>
-            {/*<View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
-              <View>
-                <Text style={styles.activityTitle}>Kontak Peserta</Text>
-                {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
-              </View>
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.clickableText}>
-                  {isDateSelected ? 'UBAH' : 'PILIH'}
-                </Text>
-              </View>
-            </View>*/}
-            {isContactFilled && contact &&
-              <View style={styles.containerPackage}>
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                  <Text style={styles.activityDesc}>
-                    {contact.name}{'\n'}
-                    {contact.email}{'\n'}
-                    {/*contact.countryCallCd} - */}0{contact.phone}
-                  </Text>
-                </View>
-              </View>
-            }
-            {!isContactFilled && isBookButtonPressed &&
-              <Text style={styles.warningText} >
-                Mohon isi data kontak peserta
+              {!isContactFilled && isBookButtonPressed &&
+                <Text style={styles.warningText} >
+                  Mohon isi data kontak peserta
               </Text>
-            }
-          </View>
+              }
+            </View>
 
-        </View>
+          </View>
 
         </ScrollView>
         <View style={globalStyles.bottomCtaBarContainer3}>
@@ -607,7 +474,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     paddingHorizontal: 15,
-    paddingVertical:10,
+    paddingVertical: 10,
     marginTop: 15,
     ...Platform.select({
       ios: {
