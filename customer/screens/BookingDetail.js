@@ -15,6 +15,9 @@ import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import { deleteCart } from './Cart/CartController';
+import { Moment } from 'moment';
+import { NavigationActions } from 'react-navigation';
 import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
@@ -43,24 +46,77 @@ export default class BookingDetail extends React.Component {
 
   constructor(props) {
     super(props);
+    let isDateSelected = false;
+    let isDateValid = true;
+    let isPaxFilled = true;
+    let isContactFilled = false;
+    let isContactNeverFilled = true;
+    let editRsv = null;
+    let rsvNo = null;
+    let contact = null;
+    let date = null;
+    let time = null;
     let counter = [], totalCount = 0, price = 0;
-    props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
-      counter.push({ type, amount, minCount, count: minCount });
-      totalCount += minCount;
-      price += amount * minCount;
-    });
-
+    console.log('lihat props availableDateTimes');
+    console.log(props.navigation.state.params.availableDateTimes);
+    console.log('konstruksi props');
+    console.log(props.navigation.state.params.editRsv);
+    console.log('ticket count');
+    console.log(props.navigation.state.params.ticketCount);
+    if (props.navigation.state.params.editRsv) {
+      props.navigation.state.params.package[0].price.map(({ type, minCount, amount }) => {
+        let count = 0;
+        let packageType = type;
+        props.navigation.state.params.ticketCount.map(({ count, totalPrice, type }) => {
+          if (type == packageType) {
+            count = count;
+          };
+          counter.push({ type, minCount, amount, count });
+          totalCount += count;
+          price += amount * count;
+        }
+        )
+      });
+      console.log("lihat props");
+      console.log(this.props.navigation.state.params);
+      editRsv = true;
+      rsvNo = props.navigation.state.params.rsvNo;
+      contact = props.navigation.state.params.contact;
+      date = props.navigation.state.params.selectedDateTime.date.substring(0,10);
+      time = props.navigation.state.params.selectedDateTime.session;
+      isDateSelected = true;
+      isContactFilled = true;
+      isContactNeverFilled = false;
+    }
+    else {
+      props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
+        counter.push({ type, amount, minCount, count: minCount });
+        totalCount += minCount;
+        price += amount * minCount;
+      });
+    }
+    console.log('date');
+    console.log(date);
     let maxCount = props.navigation.state.params.package[0].maxCount;
     let defaultMaxCount = props.navigation.state.params.package[0].maxCount;
     this.state = {
-      counter, totalCount, price, maxCount, defaultMaxCount,
-      isDateSelected: false,
-      isDateValid: true,
-      isPaxFilled: true,
-      isContactFilled: false,
-      isContactNeverFilled: true,
+      counter, totalCount, price, maxCount, defaultMaxCount, editRsv, rsvNo, contact, date, time,
+      isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled,
       isBookButtonPressed: false
     };
+  }
+
+
+  _goToCart = () => {
+    this.setState({ isVisible: false, isLoading: true });
+    let { reset, navigate } = NavigationActions;
+    const action = reset({
+      index: 1,
+      actions: [
+        navigate({ routeName: 'Main' }),
+        navigate({ routeName: 'Cart' })],
+    });
+    this.props.navigation.dispatch(action);
   }
 
   static navigationOptions = {
@@ -127,7 +183,7 @@ export default class BookingDetail extends React.Component {
 
     let data = {
       date, pax, contact, ticketCount, selectedSession,
-      packageId: params.activityId, activityId: params.activityId,
+      packageId: params.package[0].packageId, activityId: params.activityId,
       paxes: [contact],
     };
 
@@ -148,8 +204,17 @@ export default class BookingDetail extends React.Component {
         console.log(response);
         return;
       } else {
+        if (this.state.editRsv) {
+          deleteCart(this.state.rsvNo);
+        }
         await cartCountStore.setCartCount();
-        this.setState({ isContinueToCartModalVisible: true });
+        shouldRefreshMyBookingList();
+        if (this.state.editRsv){
+          this._goToCart();
+        }
+        else{
+          this.setState({ isContinueToCartModalVisible: true });
+        } 
       }
     } catch (error) {
       this.setState({ isLoading: false });
@@ -167,8 +232,14 @@ export default class BookingDetail extends React.Component {
 
   _goToCalendarPicker = () => {
     let { navigation } = this.props;
+    console.log('availableDateTimes');
+    console.log(navigation.state.params.availableDateTimes);
     let { availableDateTimes } = navigation.state.params;
     let { price, date, time } = this.state;
+    console.log("selected date");
+    console.log(date);
+    console.log("selected time");
+    console.log(time);
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
@@ -245,8 +316,8 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
-        <View style={{ flexDirection: 'row', marginVertical:10}} key={index}>
-          <View style={{ flex: 1}}>
+        <View style={{ flexDirection: 'row', marginVertical: 10 }} key={index}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
@@ -342,6 +413,95 @@ export default class BookingDetail extends React.Component {
           <LoadingModal isVisible={this.state.isLoading} />
 
           <View style={styles.container}>
+            {/*<View style={{marginBottom:30}}>
+            <Text style={styles.activityTitle}>Paket Tur</Text>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={styles.containerMoreDescription}>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #1
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #2
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #3
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>*/}
 
             <View style={{ marginBottom: 30 }}>
               <TouchableOpacity onPress={this._goToCalendarPicker} >
@@ -414,7 +574,6 @@ export default class BookingDetail extends React.Component {
                 }
 
               </TouchableOpacity>
-
               {isContactFilled && contact &&
                 <View style={styles.containerPackage}>
                   <View style={{
@@ -449,7 +608,7 @@ export default class BookingDetail extends React.Component {
               disabled={this.state.isLoading}
               styleDisabled={{ color: '#aaa' }}
             >
-              Pesan
+              {this.state.editRsv ? 'Edit' : 'Pesan'}
             </Button>
           </View>
         </View>
