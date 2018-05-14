@@ -246,8 +246,13 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
+<<<<<<< HEAD
         <View style={{ flexDirection: 'row', }} key={index}>
           <View style={{ flex: 1 }}>
+=======
+        <View style={{ flexDirection: 'row', marginVertical:10}} key={index}>
+          <View style={{ flex: 1}}>
+>>>>>>> 05ccbfca0a7ab440014072239a1c8b8b340645ab
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
