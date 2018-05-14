@@ -10,18 +10,13 @@ import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
 import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
 import { backToMyBookings } from './../../api/Common';
+import cartCountStore from './Cart/CartCountStorage';
 
 export default class PaymentScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Pembayaran',
-      headerLeft: (
-        <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => navigation.goBack() }>
-          <Icon name='arrow-back' type='ionicons' size={20} />
-        </TouchableOpacity>
-      ),
+      title: 'Pembayaran'
     }
   }
 
@@ -34,6 +29,10 @@ export default class PaymentScreen extends React.Component {
       shouldRefreshMyBookingList();
       return backToMyBookings(this.props.navigation);
     }
+  }
+
+  componentWillUnmount() {
+    cartCountStore.setCartCount();
   }
 
   render() {

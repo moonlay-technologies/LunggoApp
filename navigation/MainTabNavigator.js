@@ -13,6 +13,8 @@ import MyBooking from '../customer/screens/MyBooking/MyBookingScreen';
 import Wishlist from '../customer/screens/Wishlist/WishlistScreen';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
+import { observer } from 'mobx-react';
+import { myBookingStore } from '../customer/screens/MyBooking/MyBookingController';
 
 export default TabNavigator(
   {
@@ -66,13 +68,14 @@ export default TabNavigator(
       },
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let iconName, control;
         switch (routeName) {
           case 'Explore':
             iconName = `ios-search${focused ? '' : '-outline'}`;
             break;
           case 'MyBooking':
             iconName = `ios-paper${focused ? '' : '-outline'}`;
+            control = myBookingBubbleControl;
             break;
           case 'Favorit':
             iconName = `ios-heart${focused ? '' : '-outline'}`;
@@ -84,12 +87,15 @@ export default TabNavigator(
             iconName = `ios-person${focused ? '' : '-outline'}`;
         }
         return (
-          <Ionicons
-            name={iconName}
-            size={28}
-            style={{ marginBottom: -4, }}
-            color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
-          />
+          <View>
+            <Ionicons
+              name={iconName}
+              size={28}
+              style={{ marginBottom: -4, }}
+              color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
+            />
+            <IconBubble control={control} />
+          </View>
         );
       },
       // tabBarOnPress: ({ scene }) => {
@@ -130,6 +136,29 @@ export default TabNavigator(
     },
   }
 );
+
+myBookingBubbleControl = () => {
+  return myBookingStore.hasNewBooking;
+}
+
+@observer
+class IconBubble extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    if (this.props.control) {
+      let display = this.props.control();
+      return display && (
+        <View style={styles.notification} />
+      );
+    } else {
+      return null;
+    }
+  }
+}
 
 const styles = StyleSheet.create({
 
@@ -197,5 +226,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
       },
     }),
+  },
+  notification: {
+    backgroundColor: Colors.primaryColor,
+    height: 8,
+    width: 8,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 9,
   },
 });

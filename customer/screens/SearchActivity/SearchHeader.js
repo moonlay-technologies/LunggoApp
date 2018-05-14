@@ -8,6 +8,7 @@ import { observer, Observer } from 'mobx-react';
 import { getCart, getCartCount } from '../Cart/CartController';
 import SubmitRatingScreen from './../SubmitRatingScreen';
 import cartCountStore from './../Cart/CartCountStorage';
+import Colors from '../../../constants/Colors';
 
 export default class SearchHeader extends React.Component {
 
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   notification: {
-    backgroundColor: '#ffc943',
+    backgroundColor: Colors.primaryColor,
     height: 18,
     width: 18,
     position: 'absolute',

@@ -2,6 +2,7 @@
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
 import { Permissions, Notifications } from 'expo';
 import { NavigationActions } from 'react-navigation';
+import { observable, action } from 'mobx';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getMyBookingList() {
@@ -10,7 +11,13 @@ export async function getMyBookingList() {
   console.log("shouldRefresh: " + shouldRefresh)
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.myBookingList');
-    return (await fetchMyBookingList()).myBookings;
+    myBookingStore.removeNewBookingMark();
+    
+    let fetched = await fetchMyBookingList();
+    if (fetched.status != 200)
+      return [];
+
+    return fetched.myBookings;
   }
 
   let myBookingsJson = await getItemAsync('myBookings');
@@ -18,9 +25,6 @@ export async function getMyBookingList() {
     let fetched = await fetchMyBookingList();
     if (fetched.status != 200)
       return [];
-
-    let myBookingsJson = await JSON.stringify(fetched.myBookings);
-    await setItemAsync('myBookings', myBookingsJson);
 
     return fetched.myBookings;
   } else {
@@ -38,21 +42,24 @@ async function fetchMyBookingList() {
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
+  let myBookingsJson = await JSON.stringify(response.myBookings);
+  await setItemAsync('myBookings', myBookingsJson);
   return response;
 }
 
 export async function shouldRefreshMyBookingList() {
-    setItemAsync('shouldRefresh.myBookingList', 'true');
-    console.log("refreshing my bookinglist")
+  setItemAsync('shouldRefresh.myBookingList', 'true');
+  myBookingStore.setNewBookingMark();
+  console.log("refreshing my bookinglist")
 }
 
-export async function myBookingListenerFunction({origin, data}){
+export async function myBookingListenerFunction({ origin, data }) {
   console.log("cool data: " + origin + data);
-  if(data.function && data.function == "refreshMyBooking" && origin == "received"){
+  if (data.function && data.function == "refreshMyBooking" && origin == "received") {
     console.log("refreshing my bookinglist");
     shouldRefreshMyBookingList();
   }
-  if(data.function && data.function == "refreshMyBooking" && origin == "selected"){
+  if (data.function && data.function == "refreshMyBooking" && origin == "selected") {
     console.log("selecting notif");
     goToMyBookingScreen();
   }
@@ -90,3 +97,19 @@ async function downloadPdfVouchers(bookings) {
     }
   }
 }
+
+class MyBookingStoreMobx {
+  @observable hasNewBooking = false;
+
+  @action setNewBookingMark = () => {
+    console.log('diset');
+    this.hasNewBooking = true;
+  }
+
+  @action removeNewBookingMark = () => {
+    console.log('dibuang');
+    this.hasNewBooking = false;
+  }
+}
+
+export const myBookingStore = new MyBookingStoreMobx;

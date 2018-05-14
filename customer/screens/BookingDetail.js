@@ -149,7 +149,6 @@ export default class BookingDetail extends React.Component {
         return;
       } else {
         await cartCountStore.setCartCount();
-        shouldRefreshMyBookingList();
         this.setState({ isContinueToCartModalVisible: true });
       }
     } catch (error) {
