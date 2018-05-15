@@ -97,7 +97,7 @@ export default class BookedPageDetail extends React.Component {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
       selectedSession, operatorName, operatorPhone, ticketNumber,
       operatorEmail, totalPaxCount, latitude, longitude, paxes,
-      hasPdfVoucher, isPdfUploaded,
+      hasPdfVoucher, isPdfUploaded, paxCount
     } = this.details;
     // let bookingStatusText = bookingStatus;
     // switch (bookingStatus) {
@@ -137,6 +137,17 @@ export default class BookedPageDetail extends React.Component {
                 </Text>
               </View>)
             }
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+              <Icon
+                name='md-people'
+                type='ionicon'
+                size={16}
+                color='#454545'
+              />
+              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
+                {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
+              </Text>
+            </View>
             <View style={{ flexDirection: 'row', marginBottom: 5 }}>
               <Icon
                 name='location'
@@ -234,7 +245,7 @@ export default class BookedPageDetail extends React.Component {
             address={address} city={city} {...this.props} />
         </View>
         <View style={styles.divider} />
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <View>
             <Text style={[styles.activityTitle, { marginBottom: 10 }]}>
               Peserta: {totalPaxCount} orang
@@ -256,17 +267,17 @@ export default class BookedPageDetail extends React.Component {
                   color='#707070' />
               </TouchableOpacity>
             )}
-          </View>
-          {/*<View style={{marginTop:25,}}>
+          </View> */}
+        {/* <View style={{marginTop:25,}}>
             <Text style={styles.activityTitle}>
               Hal yang Perlu Diperhatikan
             </Text>
             <Text style={{marginTop:8,fontSize:13, color:'#454545',}}>
               Arung jeram dapat diikuti oleh peserta dewasa, remaja dana anak-anak berusia di atas 12 tahun.
             </Text>
-          </View>*/}
-        </View>{/* end container */}
-      </ScrollView>
+          </View>
+        </View>*/}
+      </ScrollView >
     );
   }
 }
