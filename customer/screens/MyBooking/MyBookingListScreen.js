@@ -39,11 +39,11 @@ class ActivityListItem extends React.PureComponent {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
         case 'BOOK':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
+          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
         case 'FORW':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Respon Operator</Text></View>;
+          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Respon Operator</Text></View>;
         case 'CONF':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Tiket Sedang Diproses</Text></View>;
+          return <View style={styles.labelText}><Text style={styles.statusText}>Tiket Sedang Diproses</Text></View>;
         case 'TKTD':
           return (
             <Button
@@ -61,9 +61,9 @@ class ActivityListItem extends React.PureComponent {
         case 'CAOP':
         case 'CAAD':
         case 'DENY':
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Dibatalkan</Text></View>;
+          return <View style={styles.labelText}><Text style={styles.statusText}>Dibatalkan</Text></View>;
         default:
-          return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
+          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
       }
     }
 
@@ -191,7 +191,7 @@ export default class CartListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-        <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
+        <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10 }}>
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
@@ -206,7 +206,7 @@ export default class CartListItem extends React.PureComponent {
           renderItem={this._renderItem}
         />
 
-        <View style={styles.total}>
+        <View>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.totalText}>Total</Text>
@@ -311,8 +311,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 14,
-    color: '#2d2d2d',
-    fontFamily: 'Hind',
+    color: '#454545',
+    fontFamily: 'Hind-Bold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -334,7 +334,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#bfbfbf',
     height: 0.3,
     width: '100%',
-    marginVertical: 25
+    marginTop:25,
+    marginBottom:15
   },
   total: {
     paddingBottom: 1,
@@ -444,5 +445,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end'
   },
+  statusText: {
+    fontSize: 13,
+    color: '#00d3c5',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
 
+      },
+    }),
+  },
 });
