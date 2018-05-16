@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView } from 'react-native';
+import { View, ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import CartListItem from './MyBookingListScreen';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
