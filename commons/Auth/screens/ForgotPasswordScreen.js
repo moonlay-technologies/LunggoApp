@@ -34,7 +34,8 @@ export default class ForgotPasswordScreen extends React.Component {
     navigation.replace('NewPassword', { countryCallCd, phone, email, otp });
   }
 
-  _submit = () => {
+  _submit = async () => {
+    if ( await this.networkBar.checkIsConnected() == false) return;
     let { countryCallCd } = this.state;
     let phone = phoneWithoutCountryCode_Indonesia(this.state.phone);
     let errorMessage = validatePhone(phone);
@@ -108,7 +109,7 @@ export default class ForgotPasswordScreen extends React.Component {
           >
             Kirim
           </Button>
-          <OfflineNotificationBar/>
+          <OfflineNotificationBar ref={ i => this.networkBar = i } />
           </KeyboardAwareScrollView>
           </View>
         

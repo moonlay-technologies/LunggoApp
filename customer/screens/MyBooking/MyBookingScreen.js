@@ -6,6 +6,7 @@ import BlankScreen from './MyBookingBlankScreen';
 import CartListItem from './MyBookingListScreen';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
 
 
 export default class MyBookingScreen extends React.Component {
@@ -68,20 +69,33 @@ export default class MyBookingScreen extends React.Component {
     let { isLoading, list, status } = this.state;
     let { props } = this;
 
-    if (isLoading) return <LoadingAnimation />
+    if (isLoading) return (
+      <View>
+        <OfflineNotificationBar/>
+        <LoadingAnimation />
+      </View>
+    );
     else if (list && list.length > 0) return (
-      <FlatList
-        data={list}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
-      />)
+      <View>
+        <OfflineNotificationBar/>
+        <FlatList
+          data={list}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
+        />
+      </View>
+    );
     else return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}>
-        <BlankScreen {...props} />
-      </ScrollView>)
+      <View>
+        <OfflineNotificationBar/>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}>
+          <BlankScreen {...props} />
+        </ScrollView>
+      </View>
+    );
   }
 }
 

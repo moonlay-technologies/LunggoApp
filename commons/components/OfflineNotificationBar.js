@@ -5,19 +5,21 @@ import { StyleSheet, View, Text, NetInfo, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements';
 
 export default class OfflineNotificationBar extends React.Component {
-  state = {
-    isConnected: null,
-    isClosed: false,
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isConnected: null,
+      isClosed: false,
+    };
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
   }
 
   componentDidMount() {
-    NetInfo.isConnected.addEventListener(
-        'connectionChange',
-        this._handleConnectivityChange
-    );
-    NetInfo.isConnected.fetch().done(
-        isConnected => { this.setState({isConnected}); }
-    );
+    this.checkIsConnected();
   }
 
   componentWillUnmount() {
@@ -31,9 +33,14 @@ export default class OfflineNotificationBar extends React.Component {
     this.setState({isClosed});
   }
 
-  _handleConnectivityChange = (isConnected) => {
-    this.setState({isConnected});
+  checkIsConnected = async () => {
+    const isConnected = await NetInfo.isConnected.fetch();
+    this._handleConnectivityChange(isConnected);
+    return isConnected;
   }
+  
+  _handleConnectivityChange = isConnected =>
+    this.setState({isConnected})
 
   _onClose = () => this.setState({isClosed: true})
 

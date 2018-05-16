@@ -32,7 +32,8 @@ export default class LoginScreen extends React.Component {
     this.state = { error: [], isLoading: false };
   }
 
-  _onLoginPressed = () => {
+  _onLoginPressed = async () => {
+    if ( await this.networkBar.checkIsConnected() == false) return;
     Keyboard.dismiss();
     let { userName, password } = this.state;
     let errorUserName = validateUserName(userName);
@@ -240,7 +241,7 @@ export default class LoginScreen extends React.Component {
           </TouchableOpacity>
           </KeyboardAwareScrollView>
           {registerHereButton}
-          <OfflineNotificationBar/>
+          <OfflineNotificationBar ref={ i => this.networkBar = i } />
         </View>
       </TouchableWithoutFeedback>
       
