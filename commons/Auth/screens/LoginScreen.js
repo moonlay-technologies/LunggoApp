@@ -33,7 +33,9 @@ export default class LoginScreen extends React.Component {
   }
 
   _onLoginPressed = async () => {
-    if ( await this.networkBar.checkIsConnected() == false) return;
+    // if ( await this.networkBar.checkIsConnected() == false) return;
+    const isConnected = await this.networkBar.checkIsConnected();
+    if (isConnected == false) return;
     Keyboard.dismiss();
     let { userName, password } = this.state;
     let errorUserName = validateUserName(userName);
@@ -146,102 +148,101 @@ export default class LoginScreen extends React.Component {
         </TouchableOpacity>
 
     return (
-      
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
-          <LoadingModal isVisible={isLoading} />
-          <View style={{ marginBottom: 30 }}>
-            <Text style={globalStyles.categoryTitle1}>Login</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.label}>Email / No. Handphone</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <TextInput
-              style={this.state.errorUserName ?
-                styles.searchInputFalse : styles.searchInput
-              }
-              keyboardType='email-address'
-              underlineColorAndroid='transparent'
-              autoCapitalize='none'
-              autoCorrect={false}
-              returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
-              // blurOnSubmit={false}
-              onChangeText={userName => this.setState({
-                userName, errorUserName: null, error: null
-              })}
-            />
-          </View>
-
-          {errorMessageUserName}
-          <View style={{ marginTop: 0 }}>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.label}>Password</Text>
-            </View>
-            <TextInput
-              ref='passwordInput'
-              style={this.state.errorPassword ?
-                styles.searchInputFalse : styles.searchInput
-              }
-              underlineColorAndroid='transparent'
-              secureTextEntry={!showPassword}
-              autoCapitalize='none'
-              autoCorrect={false}
-              blurOnSubmit={true}
-              onChangeText={password => this.setState({
-                password, errorPassword: null, error: null
-              })}
-              onSubmitEditing={this._onLoginPressed}
-              returnKeyType='done'
-            />
-            <View style={{ position: 'absolute', right: 20, top: 40, }}>
-              <TouchableOpacity onPress={this._toggleShowPassword}>
-                <Icon
-                  name={showPassword ? 'eye' : 'eye-with-line'}
-                  type='entypo' size={22} color='#acacac'
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          {errorMessagePassword}
-          {errorMessage}
-
-          <TouchableOpacity
-            onPress={this._onLoginPressed}
-            style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
-            activeOpacity={0.6}
-            disabled={isLoading}
-            styleDisabled={{ opacity: .7 }}
-          >
-            <LinearGradient
-              colors={['#00d3c5', '#35eac6', '#6affc6']}
-              start={[0, 0]}
-              end={[1, 0]}
-              style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
-              <Text style={{
-                backgroundColor: 'transparent',
-                fontSize: 18, color: '#ffffff',
-                fontFamily: 'Hind-SemiBold',
-              }}>
-                Masuk
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-         
-          
-          <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
-            onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-            <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
-              Lupa Password?
-              </Text>
-          </TouchableOpacity>
-          </KeyboardAwareScrollView>
-          {registerHereButton}
+        <View style={{ flex: 1, position:'relative' }}>
           <OfflineNotificationBar ref={ i => this.networkBar = i } />
+          <View style={styles.container}>
+            <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
+              <LoadingModal isVisible={isLoading} />
+              <View style={{ marginBottom: 30 }}>
+                <Text style={globalStyles.categoryTitle1}>Login</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.label}>Email / No. Handphone</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <TextInput
+                  style={this.state.errorUserName ?
+                    styles.searchInputFalse : styles.searchInput
+                  }
+                  keyboardType='email-address'
+                  underlineColorAndroid='transparent'
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  returnKeyType='next'
+                  onSubmitEditing={(event) => {
+                    this.refs.passwordInput.focus();
+                  }}
+                  // blurOnSubmit={false}
+                  onChangeText={userName => this.setState({
+                    userName, errorUserName: null, error: null
+                  })}
+                />
+              </View>
+
+              {errorMessageUserName}
+              <View style={{ marginTop: 0 }}>
+                <View style={{ marginBottom: 10 }}>
+                  <Text style={styles.label}>Password</Text>
+                </View>
+                <TextInput
+                  ref='passwordInput'
+                  style={this.state.errorPassword ?
+                    styles.searchInputFalse : styles.searchInput
+                  }
+                  underlineColorAndroid='transparent'
+                  secureTextEntry={!showPassword}
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  blurOnSubmit={true}
+                  onChangeText={password => this.setState({
+                    password, errorPassword: null, error: null
+                  })}
+                  onSubmitEditing={this._onLoginPressed}
+                  returnKeyType='done'
+                />
+                <View style={{ position: 'absolute', right: 20, top: 40, }}>
+                  <TouchableOpacity onPress={this._toggleShowPassword}>
+                    <Icon
+                      name={showPassword ? 'eye' : 'eye-with-line'}
+                      type='entypo' size={22} color='#acacac'
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {errorMessagePassword}
+              {errorMessage}
+
+              <TouchableOpacity
+                onPress={this._onLoginPressed}
+                style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
+                activeOpacity={0.6}
+                disabled={isLoading}
+                styleDisabled={{ opacity: .7 }}
+              >
+                <LinearGradient
+                  colors={['#00d3c5', '#35eac6', '#6affc6']}
+                  start={[0, 0]}
+                  end={[1, 0]}
+                  style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
+                  <Text style={{
+                    backgroundColor: 'transparent',
+                    fontSize: 18, color: '#ffffff',
+                    fontFamily: 'Hind-SemiBold',
+                  }}>
+                    Masuk
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
+                onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
+                  Lupa Password?
+                  </Text>
+              </TouchableOpacity>
+            </KeyboardAwareScrollView>
+            {registerHereButton}
+          </View>
         </View>
       </TouchableWithoutFeedback>
       

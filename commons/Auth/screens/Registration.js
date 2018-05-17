@@ -131,6 +131,7 @@ export default class Registration extends React.Component {
     return (
 
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <OfflineNotificationBar ref={ i => this.networkBar = i } />
         <LoadingModal isVisible={this.state.isLoading} />
         <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
@@ -139,7 +140,7 @@ export default class Registration extends React.Component {
         />
         
         </KeyboardAwareScrollView>
-        </ScrollView >
+        </ScrollView>
         <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
           onPress={this._goToLoginScreen}
         >
@@ -147,7 +148,6 @@ export default class Registration extends React.Component {
             Sudah punya akun? Login di sini
           </Text>
         </TouchableOpacity>
-        <OfflineNotificationBar/>
       </View>
 
     );

@@ -9,8 +9,7 @@ export default class OfflineNotificationBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isConnected: null,
-      isClosed: false,
+      showNotification: false,
     };
     NetInfo.isConnected.addEventListener(
       'connectionChange',
@@ -29,10 +28,6 @@ export default class OfflineNotificationBar extends React.Component {
     );
   }
 
-  componentWillReceiveProps({isClosed}) {
-    this.setState({isClosed});
-  }
-
   checkIsConnected = async () => {
     const isConnected = await NetInfo.isConnected.fetch();
     this._handleConnectivityChange(isConnected);
@@ -40,12 +35,14 @@ export default class OfflineNotificationBar extends React.Component {
   }
   
   _handleConnectivityChange = isConnected =>
-    this.setState({isConnected})
+    setTimeout(
+      () => this.setState({showNotification: !isConnected})
+    , 300)
 
-  _onClose = () => this.setState({isClosed: true})
+  _onClose = () => this.setState({showNotification: false})
 
   render() {
-    return ( !this.state.isConnected && !this.state.isClosed &&
+    return ( this.state.showNotification &&
     	<View style={styles.offlineState}>
         <Text style={{color:'#454545'}}>
           <Text style={{color:'#f57b76'}}>Error! </Text>
@@ -78,5 +75,6 @@ const styles = StyleSheet.create({
     height:60,  
     borderTopColor:'#e1e1e1', 
     borderTopWidth:1,
+    zIndex: 999,
   },
 });
