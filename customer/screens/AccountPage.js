@@ -11,6 +11,7 @@ import LogoutConfirmationModal from '../../commons/components/LogoutConfirmation
 import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile, getProfile, shouldRefreshProfile } from '../../commons/ProfileController';
 import Avatar from './../../commons/components/Avatar';
+import { reversePhoneWithoutCountryCode_Indonesia } from './../components/Formatter';
 
 export default class AccountScreen extends React.Component {
 
@@ -39,10 +40,10 @@ export default class AccountScreen extends React.Component {
     });
   };
 
-  _openModal = () => this.refs.modal.openModal()
+  _openModal = () => this.refs.modal.openModal();
 
-  _goToReferral = () => this.props.navigation.navigate('Referral')
-  _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile: this.state.profile })
+  _goToReferral = () => this.props.navigation.navigate('Referral');
+  _goToEditProfile = () => this.props.navigation.navigate('ChangeProfile', { profile: this.state.profile });
   _goToPhoneVerification = () => this.props.navigation.navigate('OtpVerification', {
     countryCallCd: this.state.profile.countryCallCd,
     phone: this.state.profile.phone,
@@ -120,7 +121,7 @@ export default class AccountScreen extends React.Component {
                         <Text style={styles.descProfile}>{profile.email}</Text>
                       </View>
                       <View>
-                        <Text style={styles.descProfile}>0{profile.phone}</Text>
+                        <Text style={styles.descProfile}>{reversePhoneWithoutCountryCode_Indonesia(profile.phone)}</Text>
                       </View>
                     </View>
 
