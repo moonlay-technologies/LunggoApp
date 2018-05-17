@@ -63,7 +63,7 @@ export default class BookedPageDetail extends React.Component {
     else if (bookingStatus == 'TKTD' && hasPdfVoucher && isPdfUploaded) {
       return (
         <Button
-          containerStyle={styles.labelWarning}
+          containerStyle={styles.labelOk}
           style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
           onPress={() => this._viewPdfVoucher()}
         >
@@ -90,7 +90,14 @@ export default class BookedPageDetail extends React.Component {
           <Text style={{ color: '#ff5f5f' }}>
             Tiket sedang dalam proses penerbitan
           </Text>
-        </View>);
+        </View>)
+    else 
+      return (
+        <View style={styles.labelText}>
+          <Text style={{ color: '#ff5f5f' }}>
+            {bookingStatus}
+          </Text>
+        </View>)
   }
 
   render() {
@@ -107,92 +114,131 @@ export default class BookedPageDetail extends React.Component {
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
         <View style={[styles.container, { flexDirection: 'row' }]}>
-          <Image style={[{ flex: 1 }, styles.thumbnailMedium]}
-            source={{ uri: mediaSrc }}
-          />
-          <View style={{ flex: 2, paddingLeft: 10 }}>
-            <Text style={[{ marginBottom: 15 }, styles.activityTitle]}>
-              {name}
-            </Text>
-            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-              <Icon
-                name='event'
-                type='materialicons'
-                size={16}
-                color='#454545' />
-              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
-                {Formatter.dateFullLong(date)}
+
+          <Image style={styles.thumbprofile} source={{ uri: mediaSrc }}/>
+
+          <View style={{ flex: 3, paddingLeft: 15 }}>
+            <View style={{marginBottom:3}}>
+              <Text style={styles.activityTitle}>
+                {name}
               </Text>
             </View>
-            {!!selectedSession && (
-              <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                <Icon
-                  name='access-time'
-                  type='materialicons'
-                  size={16}
-                  color='#454545'
-                />
-                <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
-                  {selectedSession}
+
+            <View style={{ flex: 1, flexDirection: 'row',}}>
+             {/* <View style={{justifyContent:'center'}}>
+                <Icon name='calendar' type='octicon' size={18} color='#009389' style={{width:20}} />
+              </View>*/}
+              <View>
+                <Text style={styles.activityDesc}>
+                  {Formatter.dateFullLong(date)}
                 </Text>
+              </View>
+            </View>
+
+            {!!selectedSession && (
+              <View style={{ flex: 1, flexDirection: 'row'}}>
+                {/* <View style={{justifyContent:'center'}}>
+                  <Icon name='ios-time' type='ionicon' size={18} color='#009389' style={{width:20}} />
+                </View> */}
+                <View>
+                  <Text style={styles.activityDesc}>
+                    {selectedSession}
+                  </Text>
+                </View>
               </View>)
             }
-            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-              <Icon
-                name='md-people'
-                type='ionicon'
-                size={16}
-                color='#454545'
-              />
-              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
-                {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
-              </Text>
+
+            <View style={{ flex: 1, flexDirection: 'row'}}>
+              {/*<View style={{justifyContent:'center'}}>
+                <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
+              </View>*/}
+              <View>
+                <Text style={styles.activityDesc}>
+                  {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
+                </Text>
+              </View>
             </View>
-            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-              <Icon
-                name='location'
-                type='entypo'
-                size={16}
-                color='#454545'
-              />
-              <Text style={{ marginTop: 1, marginLeft: 10, fontSize: 12 }}>
-                {city}
-              </Text>
+
+            <View style={{ flex: 1, flexDirection: 'row'}}>
+              {/*<View style={{justifyContent:'center'}}>
+                <Icon  name='location' type='octicon' size={18} color='#009389' style={{width:20}} />
+              </View>*/}
+              <View>
+                <Text style={styles.activityDesc}>
+                  {city}
+                </Text>
+              </View>
             </View>
+
           </View>
-          <TouchableOpacity onPress={this._viewActivityDetail}>
-            <Text style={{ flex: 0.5, alignItems: 'flex-end', fontSize: 12, color: '#676767', }}>
-              Detail
+
+          <TouchableOpacity onPress={this._viewActivityDetail} style={{alignItems: 'flex-end'}}>
+            <Text style={{fontSize: 12, color: '#00d3c5', }}>
+              Lihat Detail
             </Text>
           </TouchableOpacity>
         </View>{/* end container */}
+
         <View style={styles.divider} />
         <View style={styles.container}>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Text style={styles.activityTitle}>
+          <View style={{marginBottom:10}}>
+            <Text style={styles.sectionTitle}>
               Kontak Operator
             </Text>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-              <TouchableOpacity onPress={this._callOperator}>
-                <Image style={{ width: 40, height: 40, resizeMode: 'cover', marginRight: 10 }} source={require('../../../assets/images/phone.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this._smsOperator}>
-                <Image style={{ width: 40, height: 40, resizeMode: 'cover', }} source={require('../../../assets/images/sms.png')} />
-              </TouchableOpacity>
-            </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 10 }]} />
-            <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#454545' }}>
-                {operatorName}
-              </Text>
-              <Text style={{ fontSize: 13, color: '#454545' }}>
-                {operatorPhone} - {operatorEmail}
-              </Text>
+            <View style={{flex:2, flexDirection: 'row' }}>
+              <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 15 }]} />
+              <View>
+                <View style={{marginBottom:7}}>
+                  <Text style={styles.reviewTitle}>
+                    {operatorName}
+                  </Text>
+                </View>
+                <Text style={styles.activityDesc}>
+                  {operatorPhone}
+                </Text>
+                <Text style={styles.activityDesc}>
+                  {operatorEmail}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+              <TouchableOpacity onPress={this._callOperator} style={{width:35, height:35, marginRight:10, borderWidth:1, borderRadius:25, borderColor:'#00d3c5', justifyContent:'center'}}>
+                <Icon
+                  name='ios-call'
+                  type='ionicon'
+                  size={23}
+                  color='#00d3c5' />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this._smsOperator} style={{width:35, height:35,borderWidth:1, borderRadius:25, borderColor:'#00d3c5', justifyContent:'center'}}>
+                 <Icon
+                  name='ios-mail'
+                  type='ionicon'
+                  size={23}
+                  color='#00d3c5' />
+              </TouchableOpacity>
             </View>
           </View>
+
+         {/* <View style={{marginTop:15}}>
+            {this._showTicket()}
+          </View>*/}
+
         </View>{/* end container */}
+
+        <View style={styles.divider} />
+        <View style={styles.container}>
+          <View style={{marginBottom:10}}>
+            <Text style={styles.sectionTitle}>
+              Kode Tiket
+            </Text>
+          </View>
+          <View style={{alignItems:'center'}}>
+            <Text style={styles.kodetiket}>LDRSJWC</Text>
+          </View>
+        </View>
+
         {/*<View style={styles.divider}/>
         <View style={styles.container}>
           <View style={{flex:1, flexDirection:'row',}}>
@@ -231,14 +277,10 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>{/* end container */}
-        <View style={styles.divider} />
-        <View style={styles.container}>
-          {this._showTicket()}
-        </View>
 
         <View style={styles.divider} />
         <View style={[styles.container, { flex: 1, }]}>
-          <Text style={styles.activityTitle}>
+          <Text style={styles.sectionTitle}>
             Lokasi
           </Text>
           <Maps lat={latitude} long={longitude} name={name}
@@ -277,7 +319,7 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>*/}
-      </ScrollView >
+      </ScrollView>
     );
   }
 }
@@ -299,20 +341,47 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 170,
   },
+  thumbprofile: {
+    height: 60,
+    width: 60,
+  },
   activityTitle: {
-    fontWeight: 'bold',
+    fontFamily: 'Hind-Bold',
     fontSize: 15,
     color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 10,
+        paddingTop: 10,
+        marginBottom: -12,
+      },
+      android: {
+        lineHeight: 20,
+
+      },
+    }),
+  },
+  activityDesc: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind-Light',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
   status: {
     color: '#f19a4b',
     fontSize: 12,
     marginTop: 2,
-  },
-  descriptionActivity: {
-    fontSize: 11,
-    marginTop: 0,
-    color: 'blue'
   },
   avatar: {
     width: 40,
@@ -338,6 +407,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     alignItems: 'center',
   },
+  labelOk: {
+    backgroundColor: '#00d3c5',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 5,
+    alignItems: 'center',
+  },
   labelText: {
     borderColor: '#ff5f5f',
     padding: 10,
@@ -345,5 +421,61 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 5,
     alignItems: 'center',
+  },
+  sectionTitle: {
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 18,
+    color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: 0,
+      },
+      android: {
+        lineHeight: 24,
+        marginBottom: 10
+      },
+    }),
+  },
+  reviewTitle: {
+    fontFamily: 'Hind-SemiBold',
+    fontSize: 17,
+    color: '#454545',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 20 - (19 * 0.4),
+        marginBottom: -15,
+        //backgroundColor:'red'
+      },
+      android: {
+        lineHeight: 13
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  reviewDate: {
+    fontSize: 13,
+    color: '#9a9a9a',
+    marginTop: 2
+
+  },
+  kodetiket: {
+    fontFamily: 'Hind-Bold',
+    fontSize: 24,
+    color: '#00d3c5',
+    ...Platform.select({
+      ios: {
+        lineHeight: 10,
+        paddingTop: 20,
+        marginBottom: -15,
+      },
+      android: {
+        lineHeight: 20,
+
+      },
+    }),
   },
 });

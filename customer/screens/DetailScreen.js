@@ -652,11 +652,6 @@ class ReviewAndRating extends Component {
                     </Text>
                   </View>
                 </View>
-                {/*<View style={{ flex: 1, alignItems: 'flex-end', justifyContent:'center' }}>
-                <Text style={styles.reviewDate}>
-                  {Formatter.dateLong(review.date)}
-                </Text>
-              </View>*/}
               </View>
               <View style={{ marginVertical: 10 }}>
 
