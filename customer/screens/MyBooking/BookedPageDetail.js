@@ -277,7 +277,7 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>*/}
-      </ScrollView >
+      </ScrollView>
     );
   }
 }
