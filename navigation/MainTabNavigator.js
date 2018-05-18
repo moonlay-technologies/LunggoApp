@@ -7,9 +7,7 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../customer/screens/HomeScreen';
 import Explore from '../customer/screens/ExploreScreen';
-import MyBooking from '../customer/screens/MyBooking/MyBookingScreen';
-// import LinksScreen from '../customer/screens/LinksScreen';
-// import SettingsScreen from '../customer/screens/SettingsScreen';
+import MyBooking from '../navigation/MyBookingTabNavigator';
 import Wishlist from '../customer/screens/Wishlist/WishlistScreen';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
@@ -59,12 +57,25 @@ export default TabNavigator(
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
-            backgroundColor: '#fbfbfb',
-            borderBottomColor: '#ececec',
             height: 20,
             marginTop: 0
           },
         }),
+      },
+      tabBarLabel: () => {
+        const { routeName } = navigation.state;
+        switch (routeName) {
+          case 'Explore':
+            return 'Jelajah';
+          case 'MyBooking':
+            return 'Pesananku';
+          case 'Favorit':
+            return 'Favorit';
+          case 'MessageBlank':
+            return 'Inbox';
+          case 'AccountPage':
+            return 'Akun';
+        }
       },
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
@@ -98,20 +109,9 @@ export default TabNavigator(
           </View>
         );
       },
-      // tabBarOnPress: ({ scene }) => {
-      //   let focused = scene.focused;
-      //   let route = scene.route.routeName;
-      //   if (!focused) {
-      //     if (route == 'Favorit') {
-      //       navigation.setParams({ shouldRefresh: true });
-      //     }
-      //     navigation.navigate(route);
-      //   }
-      // }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
-    //initialLayout: {width:100, height:300},
     animationEnabled: false,
     swipeEnabled: true,
     lazy: false,
@@ -137,7 +137,7 @@ export default TabNavigator(
   }
 );
 
-myBookingBubbleControl = () => {
+const myBookingBubbleControl = () => {
   return myBookingStore.hasNewBooking;
 }
 
@@ -161,7 +161,6 @@ class IconBubble extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
   containerCart: {
     ...Platform.select({
       ios: {

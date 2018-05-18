@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView } from 'react-native';
+import { View, ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView, Platform } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import CartListItem from './MyBookingListScreen';
+import CartListItem, { ActivityListItem } from './MyBookingListScreen';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
 
@@ -19,9 +19,9 @@ export default class MyBookingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Pembelian',
+    title: 'Aktivitas',
   }
-  
+
   listenerSubcription = null;
 
   componentDidMount() {
@@ -30,33 +30,32 @@ export default class MyBookingScreen extends React.Component {
       return this.setState({ isLoading: false });
     }
     console.log("did mount mybookingscreen");
-    this.listenerSubscription = this.props.navigation.addListener("didFocus",() => this._refreshMyBookingList(false, false));
+    this.listenerSubscription = this.props.navigation.addListener("didFocus", () => this._refreshMyBookingList(false, false));
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log("melakukan unmount");
-    if(this.listenerSubscription)
-    {
+    if (this.listenerSubscription) {
       this.listenerSubscription.remove();
-    }    
+    }
   }
-  
+
   _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
-    if(shouldLoading)
-    {
+    if (shouldLoading) {
       this.setState({ isLoading: true });
     }
-    if(refreshing){
+    if (refreshing) {
       shouldRefreshMyBookingList();
     }
     getMyBookingList().then(list => {
-      this.setState({ list });
+      let activities = list.reduce((result, cart) => result.concat(cart.activities), []);
+      this.setState({ list: activities });
     }).finally(() => this.setState({ isLoading: false }));
   }
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
-    <CartListItem
+    <ActivityListItem
       item={item}
       index={index}
       // onPressItem={this._onPressItem}
@@ -70,12 +69,14 @@ export default class MyBookingScreen extends React.Component {
 
     if (isLoading) return <LoadingAnimation />
     else if (list && list.length > 0) return (
-      <FlatList
-        data={list}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
-      />)
+      <View style={styles.container}>
+        <FlatList
+          data={list}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
+        />
+      </View>)
     else return (
       <ScrollView
         contentContainerStyle={styles.container}
@@ -87,8 +88,8 @@ export default class MyBookingScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 0,
-    backgroundColor: '#f1f0f0',
-  },
+    backgroundColor: '#fff',
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  }
 });

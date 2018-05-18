@@ -20,7 +20,7 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 import { WebBrowser } from 'expo';
 import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 
-class ActivityListItem extends React.PureComponent {
+export class ActivityListItem extends React.PureComponent {
 
   _viewPdfVoucher = async item => {
     // TODO uncomment this buat local PDF
@@ -35,7 +35,7 @@ class ActivityListItem extends React.PureComponent {
       ('BookedPageDetail', { details: this.props.item })
   };
 
-  _voucherButton = item => {
+  _buttons = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
         case 'BOOK':
@@ -67,17 +67,17 @@ class ActivityListItem extends React.PureComponent {
       }
     }
 
-    let renderRatingButton = item => {
+    let renderRatingButton = item => (
       (item.requestRating || item.requestReview) &&
-        <Button
-          containerStyle={styles.labelReview}
-          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
-          onPress={() => item.requestRating ?
-            this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
-            this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}>
-          {item.requestRating ? 'Beri Rating' : 'Beri Review'}
-        </Button>
-    }
+      <Button
+        containerStyle={styles.labelReview}
+        style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+        onPress={() => item.requestRating ?
+          this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
+          this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}>
+        {item.requestRating ? 'Beri Rating' : 'Beri Review'}
+      </Button>
+    );
 
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -95,41 +95,25 @@ class ActivityListItem extends React.PureComponent {
     let { item } = this.props;
     return (
       <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
-          <View style={{ flex: 3 }}>
-            <Text style={styles.activityTitle}>
-              {item.name}
-            </Text>
-            <View style={{ flexDirection: 'row', }}>
-              <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
-              <Text style={styles.activityDesc}>, </Text>
-              <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+        <View style={{ paddingVertical: 25 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+            <View style={{ flex: 3 }}>
+              <Text style={styles.activityTitle}>
+                {item.name}
+              </Text>
+              <View style={{ flexDirection: 'row', }}>
+                <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+                <Text style={styles.activityDesc}>, </Text>
+                <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+              </View>
+              <Text style={styles.activityDesc}>
+                {getPaxCountText(item.paxCount)}
+              </Text>
             </View>
-            <Text style={styles.activityDesc}>
-              {getPaxCountText(item.paxCount)}
-            </Text>
           </View>
+          {this._buttons(item)}
         </View>
-        {this._voucherButton(item)}
-        {/*
-        {(item.requestRating || item.requestReview) && (
-          <View style={{ marginTop: 25 }}>
-            <View style={{ flex: 1 }}>
-              <Button
-                containerStyle={globalStyles.ctaButtonReview}
-                style={{ fontSize: 12, color: '#000', fontWeight: 'bold' }}
-                onPress={
-                  () => item.requestRating ?
-                    this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
-                    this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}
-              >
-                {item.requestRating ? 'Beri Rating' : 'Beri Review'}
-              </Button>
-            </View>
-          </View>
-        )}
-        */}
         <View style={styles.separator} />
       </TouchableOpacity>
     )
@@ -334,7 +318,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#bfbfbf',
     height: 0.3,
     width: '100%',
-    marginVertical: 25
   },
   total: {
     paddingBottom: 1,
