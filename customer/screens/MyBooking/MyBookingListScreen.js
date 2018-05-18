@@ -112,7 +112,7 @@ export class ActivityListItem extends React.PureComponent {
               </Text>
             </View>
           </View>
-          {this._buttons(item)}
+          {this.props.showActionButtons && this._buttons(item)}
         </View>
         <View style={styles.separator} />
       </TouchableOpacity>
@@ -129,6 +129,7 @@ export default class CartListItem extends React.PureComponent {
       index={index}
       // onPressItem={this._onPressItem}
       navigation={this.props.navigation}
+      showActionButtons={false}
     />
   )
 
@@ -175,7 +176,7 @@ export default class CartListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-        <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
@@ -320,6 +321,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   total: {
+    marginTop:20,
     paddingBottom: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#ececec'

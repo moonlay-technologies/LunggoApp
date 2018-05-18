@@ -60,6 +60,7 @@ export default class MyBookingScreen extends React.Component {
       index={index}
       // onPressItem={this._onPressItem}
       navigation={this.props.navigation}
+      showActionButtons={true}
     />
   )
 

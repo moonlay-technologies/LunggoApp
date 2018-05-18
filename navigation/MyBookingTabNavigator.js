@@ -20,6 +20,7 @@ export default class MyBookingTabNavigator extends React.Component {
       header: null
     }
   }
+  
 
   myBookingTabNavigator = TabNavigator(
     {
