@@ -24,35 +24,15 @@ export default TabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
-      /*headerRight:
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-          <View style={styles.containerCart}>
-            <Entypo name='shopping-basket' size={26} color='#23d3c3' />
-            <View style={styles.notification}>
-              <Text style={styles.txtNotification}>5</Text>
-            </View>
-          </View>
-        </TouchableOpacity>,*/
       headerStyle: {
         backgroundColor: '#fff',
         ...Platform.select({
           ios: {
-            /* paddingHorizontal:15,
-             paddingTop:30,
-             paddingBottom:10,
-             shadowColor: '#cdcdcd',
-             shadowOffset: { height: 3 },
-             shadowOpacity: 0.2,
-             shadowRadius: 2,
-             paddingVertical:15,*/
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
             height: 51
           },
           android: {
-            //paddingHorizontal:12.6,
-            //paddingVertical:12.6,
-            //paddingRight:25,
             backgroundColor: 'cyan',
             elevation: 0,
             borderBottomColor: "#ececec",
