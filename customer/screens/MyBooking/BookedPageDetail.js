@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 
 import React from 'react';
 import Button from 'react-native-button';
@@ -113,7 +113,7 @@ export default class BookedPageDetail extends React.Component {
     console.log(selectedSession ? true : false);
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={[styles.container, { flexDirection: 'row' }]}>
+        <View style={[styles.container, { flexDirection: 'row', paddingBottom:0 }]}>
 
           <Image style={styles.thumbprofile} source={{ uri: mediaSrc }}/>
 
@@ -179,6 +179,79 @@ export default class BookedPageDetail extends React.Component {
           </TouchableOpacity>
         </View>{/* end container */}
 
+        <View style={styles.container}>
+          {this._showTicket()}
+
+          <View style={{alignItems:'center', marginTop:15}}>
+            <Text style={[styles.activityDesc, {textAlign:'center', color:'#1e1e1e'}]}>
+              Aktivitas akan dibatalkan jika dalam 2 hari{"\n"}operator tidak mengkonfirmasi pesanan kamu
+            </Text>
+          </View>
+
+        </View>
+
+        <View style={styles.divider} />
+        <View style={styles.container}>
+          <View style={{marginBottom:10}}>
+            <Text style={styles.sectionTitle}>
+              Kode Tiket
+            </Text>
+          </View>
+          <View style={{alignItems:'center'}}>
+            <Text style={styles.kodetiket}>LDRSJWC</Text>
+          </View>
+        </View>
+
+        <View style={styles.divider} />
+        <View style={styles.container}>
+          <View style={{marginBottom:0}}>
+            <Text style={styles.sectionTitle}>
+              Kontak peserta
+            </Text>
+          </View>
+          <View style={{ flex: 1}}>
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.iconKontaksmall}>
+                 <Icon
+                  name='ios-person'
+                  type='ionicon'
+                  size={22}
+                  color='#00d3c5' />
+              </View>
+              <Text style={styles.activityDesc}>
+                Jane Doe
+              </Text>
+            </View>
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.iconKontaksmall}>
+                 <Icon
+                  name='ios-call'
+                  type='ionicon'
+                  size={22}
+                  color='#00d3c5' />
+              </View>
+              <Text style={styles.activityDesc}>
+                08134322342
+              </Text>
+            </View>
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.iconKontaksmall}>
+                 <Icon
+                  name='ios-mail'
+                  type='ionicon'
+                  size={22}
+                  color='#00d3c5' />
+              </View>
+              <Text style={styles.activityDesc}>
+                jane@doe.com
+              </Text>
+            </View>
+          </View>
+        </View>{/* end container */}
+
         <View style={styles.divider} />
         <View style={styles.container}>
           <View style={{marginBottom:10}}>
@@ -204,14 +277,14 @@ export default class BookedPageDetail extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-              <TouchableOpacity onPress={this._callOperator} style={{width:35, height:35, marginRight:10, borderWidth:1, borderRadius:25, borderColor:'#00d3c5', justifyContent:'center'}}>
+              <TouchableOpacity onPress={this._callOperator} style={[styles.iconKontak, {marginRight:15}]}>
                 <Icon
                   name='ios-call'
                   type='ionicon'
                   size={23}
                   color='#00d3c5' />
               </TouchableOpacity>
-              <TouchableOpacity onPress={this._smsOperator} style={{width:35, height:35,borderWidth:1, borderRadius:25, borderColor:'#00d3c5', justifyContent:'center'}}>
+              <TouchableOpacity onPress={this._smsOperator} style={styles.iconKontak}>
                  <Icon
                   name='ios-mail'
                   type='ionicon'
@@ -220,24 +293,7 @@ export default class BookedPageDetail extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-
-         {/* <View style={{marginTop:15}}>
-            {this._showTicket()}
-          </View>*/}
-
         </View>{/* end container */}
-
-        <View style={styles.divider} />
-        <View style={styles.container}>
-          <View style={{marginBottom:10}}>
-            <Text style={styles.sectionTitle}>
-              Kode Tiket
-            </Text>
-          </View>
-          <View style={{alignItems:'center'}}>
-            <Text style={styles.kodetiket}>LDRSJWC</Text>
-          </View>
-        </View>
 
         {/*<View style={styles.divider}/>
         <View style={styles.container}>
@@ -287,6 +343,41 @@ export default class BookedPageDetail extends React.Component {
             address={address} city={city} {...this.props} />
         </View>
         <View style={styles.divider} />
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.sectionTitle}>
+              Hubungi Kami
+            </Text>
+          </View>
+
+          <View style={{ flex: 1, marginBottom:15 }}>
+            <Text style={styles.activityDesc}>Butuh Bantuan? Customer Service kami dengan senang hati akan membantu kamu mengenai pertanyaan atau seputar masalah aktivitas yang telah dipilih. 
+            Pastikan kamu menyebutkan No. Pesanan saat menghubungi agar kami dapat lebih cepat memberikan respons.{"\n"}{"\n"}Silahkan hubungi kami melalui kontak di bawah ini:</Text>
+          </View>
+
+          <View style={{flexDirection:'row',}}>
+            <View style={styles.iconKontaksmall}>
+               <Icon
+                name='ios-call'
+                type='ionicon'
+                size={22}
+                color='#00d3c5' />
+            </View>
+            <Text style={styles.activityDesc}>0855-7467-9737</Text>
+          </View>
+
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.iconKontaksmall}>
+               <Icon
+                name='ios-mail'
+                type='ionicon'
+                size={22}
+                color='#00d3c5' />
+            </View>
+            <Text style={styles.activityDesc}>cs@travorama.com</Text>
+          </View>
+
+        </View>{/* end container */}
         {/* <View style={styles.container}>
           <View>
             <Text style={[styles.activityTitle, { marginBottom: 10 }]}>
@@ -477,5 +568,19 @@ const styles = StyleSheet.create({
 
       },
     }),
+  },
+  iconKontak: {
+    width:35, 
+    height:35,
+    borderWidth:1, 
+    borderRadius:25, 
+    borderColor:'#00d3c5', 
+    justifyContent:'center'
+  },
+  iconKontaksmall: {
+    width:26, 
+    height:26, 
+    justifyContent:'center',
+    marginRight:5
   },
 });

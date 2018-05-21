@@ -19,6 +19,8 @@ import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 import { WebBrowser } from 'expo';
 import { getPaxCountText } from '../../../commons/otherCommonFunctions';
+import { Icon } from 'react-native-elements';
+import Modal from '../../../commons/components/Modal';
 
 class ActivityListItem extends React.PureComponent {
 
@@ -34,6 +36,9 @@ class ActivityListItem extends React.PureComponent {
     this.props.navigation.navigate
       ('BookedPageDetail', { details: this.props.item })
   };
+
+  _openSettingModal = () => this.refs.settingModal.openModal();
+  _closeSettingModal = () => this.refs.settingModal.closeModal();
 
   _voucherButton = item => {
     let renderTicketButton = item => {
@@ -94,12 +99,12 @@ class ActivityListItem extends React.PureComponent {
   render() {
     let { item } = this.props;
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail} style={{position:'relative'}}>
+        <View style={{ flexDirection: 'row', position:'relative'}}>
+          <View style={{ width:70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 3 }}>
             <Text style={styles.activityTitle}>
-              {item.name}
+              {item.name} tes
             </Text>
             <View style={{ flexDirection: 'row', }}>
               <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
@@ -109,6 +114,37 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>
               {getPaxCountText(item.paxCount)}
             </Text>
+          </View>
+          <View style={{position:'relative'}}>
+            <TouchableOpacity
+              style={{ width: 25, alignItems: 'center' }}
+              onPress={this._openSettingModal}>
+                <Icon
+                name='md-more'
+                type='ionicon'
+                size={26}
+                color='#454545' />
+            </TouchableOpacity>
+
+            <Modal ref='settingModal'
+            style={styles.modalMenu}
+            animationIn='fadeIn'
+            animationOut='fadeOut'
+            backdropOpacity={0}
+            >
+
+            <TouchableOpacity>
+              <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+            </TouchableOpacity>
+
+            <View style={styles.separatorOption}></View>
+
+            <TouchableOpacity>
+              <Text style={styles.teks3a}>Hapus Aktivitas</Text>
+            </TouchableOpacity>
+
+            </Modal>
+
           </View>
         </View>
         {this._voucherButton(item)}
@@ -461,5 +497,47 @@ const styles = StyleSheet.create({
 
       },
     }),
+  },
+  modalMenu: {
+    backgroundColor: '#fff',
+    width: 150,
+    padding: 10,
+    position: 'absolute',
+    right: 7,
+    top: 145,
+    zIndex: 100,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 4,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation: 2
+      },
+    }),
+  },
+    teks3a: {
+    fontSize: 14,
+    color: '#454545',
+    fontFamily: 'Hind',
+    textAlign: 'left',
+    ...Platform.select({
+      ios: {
+        // lineHeight:19*0.8,
+        // paddingTop: 20 - (19 * 0.4),
+        marginBottom: -10,
+      },
+      android: {
+
+      },
+    }),
+  },
+  separatorOption: {
+    paddingVertical: 8
   },
 });
