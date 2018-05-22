@@ -43,17 +43,26 @@ class ActivityListItem extends React.PureComponent {
   _voucherButton = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
-        case 'BOOK':
-          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
-        case 'FORW':
-          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Respon Operator</Text></View>;
-        case 'CONF':
-          return <View style={styles.labelText}><Text style={styles.statusText}>Tiket Sedang Diproses</Text></View>;
-        case 'TKTD':
+        case 'Booked':
+          return <View style={{flexDirection:'row'}}>
+                    <Text style={styles.activityDesc}>Status: </Text>
+                    <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
+                  </View>;
+        case 'ForwardedToOperator':
+          return <View style={{flexDirection:'row'}}>
+                    <Text style={styles.activityDesc}>Status: </Text>
+                    <Text style={styles.statusText}>Menunggu Respon Operator</Text>
+                  </View>;
+        case 'Confirmed':
+          return <View style={{flexDirection:'row'}}>
+                    <Text style={styles.activityDesc}>Status: </Text>
+                    <Text style={styles.statusText}>Tiket Sedang Diproses</Text>
+                  </View>;
+        case 'Ticketed':
           return (
             <Button
-              containerStyle={styles.labelWarning}
-              style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+              containerStyle={styles.containerbtn}
+              style={styles.statusbtn}
               onPress={() =>
                 item.hasPdfVoucher
                   ? this._viewPdfVoucher(item)
@@ -66,9 +75,18 @@ class ActivityListItem extends React.PureComponent {
         case 'CAOP':
         case 'CAAD':
         case 'DENY':
-          return <View style={styles.labelText}><Text style={styles.statusText}>Dibatalkan</Text></View>;
+          return <View><Text style={styles.statusText}>Dibatalkan</Text></View>;
         default:
-          return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
+          return <View>
+                    <View style={{flexDirection:'row'}}>
+                      <Text style={styles.activityDesc}>Status: </Text>
+                      <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                      <Text style={styles.activityDesc}>Otomatis Batal: </Text>
+                      <Text style={styles.statusText}>22:05:01</Text>
+                    </View>
+                  </View>;
       }
     }
 
@@ -76,7 +94,7 @@ class ActivityListItem extends React.PureComponent {
       (item.requestRating || item.requestReview) &&
         <Button
           containerStyle={styles.labelReview}
-          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold' }}
+          style={styles.statusText}
           onPress={() => item.requestRating ?
             this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
             this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}>
@@ -86,10 +104,10 @@ class ActivityListItem extends React.PureComponent {
 
     return (
       <View style={{ flexDirection: 'row' }}>
-        <View style={{ flex: 1 }}>
+        <View>
           {renderTicketButton(item)}
         </View>
-        <View style={{ flex: 1 }}>
+        <View>
           {renderRatingButton(item)}
         </View>
       </View>
@@ -104,7 +122,7 @@ class ActivityListItem extends React.PureComponent {
           <View style={{ width:70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 3 }}>
             <Text style={styles.activityTitle}>
-              {item.name} tes
+              {item.name}
             </Text>
             <View style={{ flexDirection: 'row', }}>
               <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
@@ -114,6 +132,9 @@ class ActivityListItem extends React.PureComponent {
             <Text style={styles.activityDesc}>
               {getPaxCountText(item.paxCount)}
             </Text>
+            <View>
+              {this._voucherButton(item)}
+            </View>
           </View>
           <View style={{position:'relative'}}>
             <TouchableOpacity
@@ -147,7 +168,7 @@ class ActivityListItem extends React.PureComponent {
 
           </View>
         </View>
-        {this._voucherButton(item)}
+        
         {/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
@@ -477,10 +498,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  labelOk: {
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end'
-  },
   statusText: {
     fontSize: 13,
     color: '#00d3c5',
@@ -539,5 +556,37 @@ const styles = StyleSheet.create({
   },
   separatorOption: {
     paddingVertical: 8
+  },
+
+  labelOk: {
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
+  },
+
+  containerbtn: {
+    backgroundColor: '#00d3c5',
+    paddingHorizontal:8,
+    paddingVertical:5,
+    borderRadius: 3,
+    alignItems: 'center',
+    marginTop:7
+  },
+  statusbtn: {
+    fontSize: 12,
+    color: '#fff',
+    fontFamily: 'Hind-SemiBold',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 4,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
 });

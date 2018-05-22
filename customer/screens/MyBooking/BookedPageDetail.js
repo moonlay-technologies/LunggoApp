@@ -112,8 +112,22 @@ export default class BookedPageDetail extends React.Component {
     // }
     console.log(selectedSession ? true : false);
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={[styles.container, { flexDirection: 'row', paddingBottom:0 }]}>
+      <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
+
+        <View style={styles.container}>
+          <View style={{marginBottom:0, alignItems:'center'}}>
+            <Text style={styles.sectionTitle}>
+              Kode Tiket
+            </Text>
+          </View>
+          <View style={{alignItems:'center'}}>
+            <Text style={styles.kodetiket}>LDRSJWC</Text>
+          </View>
+        </View>
+
+        <View style={styles.container}>
+
+          <View style={{flexDirection:'row'}}>
 
           <Image style={styles.thumbprofile} source={{ uri: mediaSrc }}/>
 
@@ -177,30 +191,20 @@ export default class BookedPageDetail extends React.Component {
               Lihat Detail
             </Text>
           </TouchableOpacity>
+          </View>
+
+          <View style={{marginTop:15}}>
+            {this._showTicket()}
+            <View style={{alignItems:'center', marginTop:15}}>
+              <Text style={[styles.activityDesc, {textAlign:'center', color:'#1e1e1e'}]}>
+                Aktivitas akan dibatalkan jika dalam 2 hari{"\n"}operator tidak mengkonfirmasi pesanan kamu
+              </Text>
+            </View>
+          </View>
+
         </View>{/* end container */}
 
-        <View style={styles.container}>
-          {this._showTicket()}
-
-          <View style={{alignItems:'center', marginTop:15}}>
-            <Text style={[styles.activityDesc, {textAlign:'center', color:'#1e1e1e'}]}>
-              Aktivitas akan dibatalkan jika dalam 2 hari{"\n"}operator tidak mengkonfirmasi pesanan kamu
-            </Text>
-          </View>
-
-        </View>
-
-        <View style={styles.divider} />
-        <View style={styles.container}>
-          <View style={{marginBottom:10}}>
-            <Text style={styles.sectionTitle}>
-              Kode Tiket
-            </Text>
-          </View>
-          <View style={{alignItems:'center'}}>
-            <Text style={styles.kodetiket}>LDRSJWC</Text>
-          </View>
-        </View>
+  
 
         <View style={styles.divider} />
         <View style={styles.container}>
@@ -333,8 +337,6 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>{/* end container */}
-
-        <View style={styles.divider} />
         <View style={[styles.container, { flex: 1, }]}>
           <Text style={styles.sectionTitle}>
             Lokasi
@@ -342,7 +344,7 @@ export default class BookedPageDetail extends React.Component {
           <Maps lat={latitude} long={longitude} name={name}
             address={address} city={city} {...this.props} />
         </View>
-        <View style={styles.divider} />
+
         <View style={styles.container}>
           <View>
             <Text style={styles.sectionTitle}>
@@ -419,7 +421,23 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     backgroundColor: '#fff',
-    flex: 1
+    flex: 1,
+    marginHorizontal:15,
+    marginVertical:7.5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#e8f0fe',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 2,
+        shadowOpacity: 0.9
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   thumbnailMedium: {
     resizeMode: 'cover',
@@ -486,10 +504,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    width: '100%',
-    backgroundColor: '#efefef',
-    marginTop: 5,
-    marginBottom: 5,
   },
   labelWarning: {
     backgroundColor: '#ff5f5f',
@@ -564,7 +578,7 @@ const styles = StyleSheet.create({
         marginBottom: -15,
       },
       android: {
-        lineHeight: 20,
+        lineHeight: 18,
 
       },
     }),
