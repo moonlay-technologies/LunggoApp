@@ -11,6 +11,7 @@ import LogoutConfirmationModal from '../../commons/components/LogoutConfirmation
 import { checkUserLoggedIn, fetchTravoramaApi, AUTH_LEVEL, backToMain } from '../../api/Common'; //'../../commons/Auth/AuthController';
 import { fetchProfile, getProfile, shouldRefreshProfile } from '../../commons/ProfileController';
 import Avatar from './../../commons/components/Avatar';
+import MenuButton from './../../commons/components/MenuButton';
 
 export default class AccountScreen extends React.Component {
 
@@ -93,23 +94,6 @@ export default class AccountScreen extends React.Component {
                     </TouchableOpacity>
                   }
 
-                  {/* <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                    <View style={{ marginBottom: 20 }}>
-                      <Avatar size={90} style={styles.avatarBig} name={this.state.name} source={{ uri: this.state.avatar }} />
-                    </View>
-                    <View>
-                      <View style={{ alignItems: 'center' }}>
-                        <Text style={styles.activitydetailTitle}>{this.state.name}</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={styles.textCart}>Edit Profile</Text>
-                        <View style={{ marginHorizontal: 10 }}>
-                          <Text style={styles.textCart}>|</Text>
-                        </View>
-                        <Text style={styles.textCartColor}>100 point</Text>
-                      </View>
-                    </View> */}
-
                   <View style={{ flexDirection: 'row' }}>
 
                     <View style={{ flex: 2 }}>
@@ -137,101 +121,83 @@ export default class AccountScreen extends React.Component {
 
               </View>
 
-              <View style={styles.container}>
-                <View>
-                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._goToReferral}>
-                    <View style={{ alignItems: 'flex-start' }}>
-                      <Icon
-                        name='ios-contacts-outline'
-                        type='ionicon'
-                        size={26}
-                        color='#454545' />
-                    </View>
-                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                      <Text style={styles.optionProfile}>Undang Teman</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.divider}></View>
-                <View>
-                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('HelpScreen')}>
-                    <View style={{ alignItems: 'flex-start' }}>
-                      <Icon
-                        name='md-help-circle'
-                        type='ionicon'
-                        size={26}
-                        color='#454545' />
-                    </View>
-                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                      <Text style={styles.optionProfile}>Bantuan</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.divider}></View>
-                <View>
-                  <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this._openModal}>
-                    <View style={{ alignItems: 'flex-start' }}>
-                      <Icon
-                        name='ios-log-out'
-                        type='ionicon'
-                        size={26}
-                        color='#454545' />
-                    </View>
-                    <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                      <Text style={styles.optionProfile}>Log Out</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            :
-            <View style={styles.container}>
               <View>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('LoginScreen', { resetAfter: true })}>
-                  <View style={{ alignItems: 'flex-start' }}>
+                <MenuButton
+                  label='Undang Teman'
+                  icon={
                     <Icon
-                      name='ios-log-in'
+                      name='ios-contacts-outline'
                       type='ionicon'
                       size={26}
-                      color='#454545' />
-                  </View>
-                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                    <Text style={styles.optionProfile}>Login</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.divider}></View>
-              <View>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('Registration', { resetAfter: true })}>
-                  <View style={{ alignItems: 'flex-start' }}>
-                    <Icon
-                      name='ios-laptop'
-                      type='ionicon'
-                      size={26}
-                      color='#454545' />
-                  </View>
-                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                    <Text style={styles.optionProfile}>Daftar</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.divider}></View>
-              <View>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => navigate('HelpScreen')}>
-                  <View style={{ alignItems: 'flex-start' }}>
+                      color='#454545'
+                    />
+                  }
+                  onPress={this._goToReferral}
+                />
+                <MenuButton
+                  label='Bantuan'
+                  icon={
                     <Icon
                       name='md-help-circle'
                       type='ionicon'
                       size={26}
-                      color='#454545' />
-                  </View>
-                  <View style={{ marginLeft: 20, justifyContent: 'center' }}>
-                    <Text style={styles.optionProfile}>Bantuan</Text>
-                  </View>
-                </TouchableOpacity>
+                      color='#454545'
+                    />
+                  }
+                  onPress={() => navigate('HelpScreen')}
+                />
+                <MenuButton
+                  label='Log Out'
+                  icon={
+                    <Icon
+                      name='ios-log-out'
+                      type='ionicon'
+                      size={26}
+                      color='#454545'
+                    />
+                  }
+                  onPress={this._openModal}
+                />
               </View>
+            </View>
+            :
+            <View>
+              <MenuButton
+                label='Login'
+                icon={
+                  <Icon
+                    name='ios-log-in'
+                    type='ionicon'
+                    size={26}
+                    color='#454545'
+                  />
+                }
+                onPress={() => navigate('LoginScreen', { resetAfter: true })}
+              />
+              <MenuButton
+                label='Daftar'
+                icon={
+                  <Icon
+                    name='ios-laptop'
+                    type='ionicon'
+                    size={26}
+                    color='#454545'
+                  />
+                }
+                onPress={() => navigate('Registration', { resetAfter: true })}
+              />
+              <MenuButton
+                label='Bantuan'
+                icon={
+                  <Icon
+                    name='md-help-circle'
+                    type='ionicon'
+                    size={26}
+                    color='#454545'
+                  />
+                }
+                onPress={() => navigate('HelpScreen')}
+              />
             </View>
         }
       </ScrollView >
