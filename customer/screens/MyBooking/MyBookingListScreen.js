@@ -71,11 +71,13 @@ class ActivityListItem extends React.PureComponent {
             >
               Lihat Tiket
             </Button>);
-        case 'CACU':
-        case 'CAOP':
-        case 'CAAD':
-        case 'DENY':
-          return <View><Text style={styles.statusText}>Dibatalkan</Text></View>;
+
+        case 'CancelByCustomer':
+        case 'CancelByOperator':
+        case 'CancelByAdmin':
+        case 'DeniedByOperator':
+        case 'DeniedByAdmin':
+          return <View style={styles.labelText}><Text style={styles.statusText}>Dibatalkan</Text></View>;
         default:
           return <View>
                     <View style={{flexDirection:'row'}}>
