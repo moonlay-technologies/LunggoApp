@@ -43,13 +43,14 @@ class ActivityListItem extends React.PureComponent {
   _voucherButton = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
-        case 'BOOK':
+        case 'Booked':
           return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
-        case 'FORW':
+        case 'ForwardedToOperator':
           return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Respon Operator</Text></View>;
-        case 'CONF':
+        case 'Confirmed':
           return <View style={styles.labelText}><Text style={styles.statusText}>Tiket Sedang Diproses</Text></View>;
-        case 'TKTD':
+        case 'Ticketing':
+        case 'Ticketed':
           return (
             <Button
               containerStyle={styles.labelWarning}
@@ -62,10 +63,11 @@ class ActivityListItem extends React.PureComponent {
             >
               Lihat Tiket
             </Button>);
-        case 'CACU':
-        case 'CAOP':
-        case 'CAAD':
-        case 'DENY':
+        case 'CancelByCustomer':
+        case 'CancelByOperator':
+        case 'CancelByAdmin':
+        case 'DeniedByOperator':
+        case 'DeniedByAdmin':
           return <View style={styles.labelText}><Text style={styles.statusText}>Dibatalkan</Text></View>;
         default:
           return <View style={styles.labelText}><Text style={styles.statusText}>Menunggu Konfirmasi</Text></View>;
