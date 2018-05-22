@@ -18,7 +18,7 @@ export default class OfflineNotificationBar extends React.Component {
   }
 
   componentDidMount() {
-    this.checkIsConnected();
+    NetInfo.isConnected.fetch().then(this._handleConnectivityChange);
   }
 
   componentWillUnmount() {
@@ -26,12 +26,6 @@ export default class OfflineNotificationBar extends React.Component {
         'connectionChange',
         this._handleConnectivityChange
     );
-  }
-
-  checkIsConnected = async () => {
-    const isConnected = await NetInfo.isConnected.fetch();
-    this._handleConnectivityChange(isConnected);
-    return isConnected;
   }
   
   _handleConnectivityChange = isConnected =>

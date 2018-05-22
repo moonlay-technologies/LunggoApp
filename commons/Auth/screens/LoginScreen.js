@@ -1,41 +1,36 @@
 'use strict';
 
 import React from 'react';
+//// FOR LAYOUT:
 import {
-  StyleSheet, Text, View, Image, TextInput, ScrollView, 
-  TouchableOpacity, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform,
+  StyleSheet, Text, View, Image, TextInput, 
+  TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
 } from 'react-native';
-import { fetchTravoramaLoginApi } from '../AuthController'
-import {
-  validateUserName, validatePassword, validatePhone,
-} from '../../FormValidation';
 import { Icon } from 'react-native-elements';
-import Button from 'react-native-button';
 import globalStyles from '../../globalStyles';
-import { Notifications } from 'expo';
-import registerForPushNotificationsAsync, { addMyBookingListener }  from '../../../api/NotificationController';
-import { fetchWishlist, backToMain } from '../../../api/Common';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo';
+import { observer } from 'mobx-react';
+
+//// FOR LOGICAL:
+import { fetchTravoramaLoginApi } from '../AuthController';
+import { validateUserName, validatePassword, validatePhone } from '../../FormValidation';
+import registerForPushNotificationsAsync from '../../../api/NotificationController';
+import { fetchWishlist, backToMain } from '../../../api/Common';
 import { fetchProfile } from '../../ProfileController';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
-import LoadingModal from './../../components/LoadingModal';
-import { observer } from 'mobx-react';
 import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import OfflineNotificationBar from './../../components/OfflineNotificationBar';
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 const { setItemAsync } = Expo.SecureStore;
 
 @observer
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { error: [], isLoading: false };
   }
 
   _onLoginPressed = async () => {
-    // if ( await this.networkBar.checkIsConnected() == false) return;
-    const isConnected = await this.networkBar.checkIsConnected();
-    if (isConnected == false) return;
     Keyboard.dismiss();
     let { userName, password } = this.state;
     let errorUserName = validateUserName(userName);
@@ -56,9 +51,6 @@ export default class LoginScreen extends React.Component {
   };
 
   _login = () => {
-    let { navigation } = this.props;
-    let { navigate, goBack, replace, pop } = navigation;
-    let { params } = navigation.state;
     let isPhoneNo = !validatePhone(this.state.userName);
     let phoneNumber, countryCallCd, email;
     if (isPhoneNo) {
@@ -69,30 +61,29 @@ export default class LoginScreen extends React.Component {
     }
 
     this.setState({ isLoading: true });
-
-    fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password)
-      .then(async response => {
+    this.props.withConnectivityHandler( () => fetchTravoramaLoginApi(
+      email, countryCallCd, phoneNumber, this.state.password
+    )).then( async response => {
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-          await cartCountStore.setCartCount();
-          await fetchWishlist();
-          await registerForPushNotificationsAsync();
-          let { resetAfter, thruBeforeLogin } = params;
-          console.log('params');
-          console.log(params);
+          await Promise.all([
+            cartCountStore.setCartCount(), fetchWishlist(),
+            fetchProfile(), registerForPushNotificationsAsync()
+          ]);
+          const { navigation } = this.props;
+          const { resetAfter, thruBeforeLogin } = navigation.state.params;
           if (resetAfter)
             backToMain(navigation);
           else if (thruBeforeLogin)
-            pop(2);
+            navigation.pop(2);
           else
-            pop();
+            navigation.pop();
 
         } else {
-          console.log(response);
           let error;
           switch (response.error) {
             case 'ERR_NOT_REGISTERED':
-              error = 'Akun ' + this.state.userName + ' tidak ditemukan'
+              error = `Akun ${this.state.userName} tidak ditemukan`;
               break;
             case 'ERR_INVALID_PASSWORD':
               error = 'Password salah';
@@ -102,12 +93,10 @@ export default class LoginScreen extends React.Component {
           }
           this.setState({ error });
         }
-        this.setState({ isLoading: false });
       }).catch(error => {
         console.log("Login error!!");
         console.log(error);
-        this.setState({ isLoading: false })
-      });
+      }).finally( () => this.setState({ isLoading: false }) );
   }
 
   _toggleShowPassword = () => {
@@ -149,100 +138,97 @@ export default class LoginScreen extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{ flex: 1, position:'relative' }}>
-          <OfflineNotificationBar ref={ i => this.networkBar = i } />
-          <View style={styles.container}>
-            <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
-              <LoadingModal isVisible={isLoading} />
-              <View style={{ marginBottom: 30 }}>
-                <Text style={globalStyles.categoryTitle1}>Login</Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.label}>Email / No. Handphone</Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <TextInput
-                  style={this.state.errorUserName ?
-                    styles.searchInputFalse : styles.searchInput
-                  }
-                  keyboardType='email-address'
-                  underlineColorAndroid='transparent'
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='next'
-                  onSubmitEditing={(event) => {
-                    this.refs.passwordInput.focus();
-                  }}
-                  // blurOnSubmit={false}
-                  onChangeText={userName => this.setState({
-                    userName, errorUserName: null, error: null
-                  })}
-                />
-              </View>
+        <View style={styles.container}>
+          <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
+            {/*<LoadingModal isVisible={isLoading} />*/}
+            <View style={{ marginBottom: 30 }}>
+              <Text style={globalStyles.categoryTitle1}>Login</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.label}>Email / No. Handphone</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <TextInput
+                style={this.state.errorUserName ?
+                  styles.searchInputFalse : styles.searchInput
+                }
+                keyboardType='email-address'
+                underlineColorAndroid='transparent'
+                autoCapitalize='none'
+                autoCorrect={false}
+                returnKeyType='next'
+                onSubmitEditing={(event) => {
+                  this.refs.passwordInput.focus();
+                }}
+                // blurOnSubmit={false}
+                onChangeText={userName => this.setState({
+                  userName, errorUserName: null, error: null
+                })}
+              />
+            </View>
 
-              {errorMessageUserName}
-              <View style={{ marginTop: 0 }}>
-                <View style={{ marginBottom: 10 }}>
-                  <Text style={styles.label}>Password</Text>
-                </View>
-                <TextInput
-                  ref='passwordInput'
-                  style={this.state.errorPassword ?
-                    styles.searchInputFalse : styles.searchInput
-                  }
-                  underlineColorAndroid='transparent'
-                  secureTextEntry={!showPassword}
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  blurOnSubmit={true}
-                  onChangeText={password => this.setState({
-                    password, errorPassword: null, error: null
-                  })}
-                  onSubmitEditing={this._onLoginPressed}
-                  returnKeyType='done'
-                />
-                <View style={{ position: 'absolute', right: 20, top: 40, }}>
-                  <TouchableOpacity onPress={this._toggleShowPassword}>
-                    <Icon
-                      name={showPassword ? 'eye' : 'eye-with-line'}
-                      type='entypo' size={22} color='#acacac'
-                    />
-                  </TouchableOpacity>
-                </View>
+            {errorMessageUserName}
+            <View style={{ marginTop: 0 }}>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.label}>Password</Text>
               </View>
-              {errorMessagePassword}
-              {errorMessage}
+              <TextInput
+                ref='passwordInput'
+                style={this.state.errorPassword ?
+                  styles.searchInputFalse : styles.searchInput
+                }
+                underlineColorAndroid='transparent'
+                secureTextEntry={!showPassword}
+                autoCapitalize='none'
+                autoCorrect={false}
+                blurOnSubmit={true}
+                onChangeText={password => this.setState({
+                  password, errorPassword: null, error: null
+                })}
+                onSubmitEditing={this._onLoginPressed}
+                returnKeyType='done'
+              />
+              <View style={{ position: 'absolute', right: 20, top: 40, }}>
+                <TouchableOpacity onPress={this._toggleShowPassword}>
+                  <Icon
+                    name={showPassword ? 'eye' : 'eye-with-line'}
+                    type='entypo' size={22} color='#acacac'
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            {errorMessagePassword}
+            {errorMessage}
 
-              <TouchableOpacity
-                onPress={this._onLoginPressed}
-                style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
-                activeOpacity={0.6}
-                disabled={isLoading}
-                styleDisabled={{ opacity: .7 }}
-              >
-                <LinearGradient
-                  colors={['#00d3c5', '#35eac6', '#6affc6']}
-                  start={[0, 0]}
-                  end={[1, 0]}
-                  style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
-                  <Text style={{
-                    backgroundColor: 'transparent',
-                    fontSize: 18, color: '#ffffff',
-                    fontFamily: 'Hind-SemiBold',
-                  }}>
-                    Masuk
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
-                onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
-                  Lupa Password?
-                  </Text>
-              </TouchableOpacity>
-            </KeyboardAwareScrollView>
-            {registerHereButton}
-          </View>
+            <TouchableOpacity
+              onPress={this._onLoginPressed}
+              style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
+              activeOpacity={0.6}
+              disabled={isLoading}
+              styleDisabled={{ opacity: .7 }}
+            >
+              <LinearGradient
+                colors={['#00d3c5', '#35eac6', '#6affc6']}
+                start={[0, 0]}
+                end={[1, 0]}
+                style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
+                <Text style={{
+                  backgroundColor: 'transparent',
+                  fontSize: 18, color: '#ffffff',
+                  fontFamily: 'Hind-SemiBold',
+                }}>
+                  Masuk
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
+              onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+              <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
+                Lupa Password?
+              </Text>
+            </TouchableOpacity>
+          </KeyboardAwareScrollView>
+          {registerHereButton}
         </View>
       </TouchableWithoutFeedback>
       
@@ -319,3 +305,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind',
   },
 });
+
+export default withConnectivityHandler(LoginScreen);

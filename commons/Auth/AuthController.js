@@ -35,17 +35,12 @@ async function setAccessToken(tokenData) {
 export async function fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, password) {
   let data = { clientId, clientSecret, deviceId, email, countryCallCd, phoneNumber, password };
 
-  if (!data.email) delete data.email;
-  if (!data.countryCallCd) delete data.countryCallCd;
-  if (!data.phoneNumber) delete data.phoneNumber;
-
   let response = await fetchAuth(data);
 
   switch (response.status) {
     case 200:
       response.authLevel = AUTH_LEVEL.User;
       setAccessToken(response);
-      await fetchProfile();
       break;
     case 400:
     case 500:
