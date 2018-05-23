@@ -70,20 +70,20 @@ class ActivityListItem extends React.PureComponent {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusText}>Menunggu Konfirmasi (maks. {timeLimitString})</Text>
+                <Text style={styles.statusTextOk}>Menunggu Konfirmasi (maks. {timeLimitString})</Text>
               </View>
             </View>);
         case 'Ticketing':
           return <View style={{ flexDirection: 'row' }}>
             <Text style={styles.activityDesc}>Status: </Text>
-            <Text style={styles.statusText}>Tiket Sedang Diproses</Text>
+            <Text style={styles.statusTextOk}>Tiket Sedang Diproses</Text>
           </View>;
         case 'Ticketed':
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusText}>Tiket Terbit</Text>
+                <Text style={styles.statusTextOk}>Tiket Terbit</Text>
               </View>
               <View>
                 <Button
@@ -108,7 +108,7 @@ class ActivityListItem extends React.PureComponent {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusText}>Dibatalkan</Text>
+                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
               </View>
               <View>
                 <Button
@@ -544,9 +544,26 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  statusText: {
+  statusTextOk: {
     fontSize: 13,
-    color: '#00d3c5',
+    color: '#1c7ce7',
+    fontFamily: 'Hind',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  statusTextDanger: {
+    fontSize: 13,
+    color: '#F57B76',
     fontFamily: 'Hind',
     ...Platform.select({
       ios: {
@@ -617,6 +634,7 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 10,
     zIndex: 100,
+    margin:-5,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
