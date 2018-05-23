@@ -104,6 +104,7 @@ export default TabNavigator(
         ...Platform.select({
           ios: {
             marginBottom: -8,
+            marginTop:-8
           },
           android: {
             lineHeight: 18,
