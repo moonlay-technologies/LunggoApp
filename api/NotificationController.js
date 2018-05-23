@@ -13,8 +13,10 @@ export default (async function registerForPushNotificationsAsync() {
   let { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
   // Stop here if the user did not grant permissions
-  if (status !== 'granted') return;
-
+  if (status !== 'granted') {
+    return;
+    console.log("permission gagal");
+  }
   // Get the token that uniquely identifies this device
   let token = await Notifications.getExpoPushTokenAsync();
 

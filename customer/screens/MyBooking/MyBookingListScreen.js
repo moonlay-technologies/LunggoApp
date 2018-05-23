@@ -38,13 +38,13 @@ export class ActivityListItem extends React.PureComponent {
   _buttons = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
-        case 'BOOK':
+        case 'Booked':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;
-        case 'FORW':
+        case 'ForwardedToOperator':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Respon Operator</Text></View>;
-        case 'CONF':
+        case 'Confirmed':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Tiket Sedang Diproses</Text></View>;
-        case 'TKTD':
+        case 'Ticketed':
           return (
             <Button
               containerStyle={styles.labelWarning}
@@ -57,10 +57,10 @@ export class ActivityListItem extends React.PureComponent {
             >
               Lihat Tiket
             </Button>);
-        case 'CACU':
-        case 'CAOP':
-        case 'CAAD':
-        case 'DENY':
+        case 'CancelByCustomer':
+        case 'CancelByOperator':
+        case 'CancelByAdmin':
+        case 'DeniedByOperator':
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Dibatalkan</Text></View>;
         default:
           return <View style={styles.labelText}><Text style={{ fontSize: 12, color: '#00d3c5', fontWeight: 'bold' }}>Menunggu Konfirmasi</Text></View>;

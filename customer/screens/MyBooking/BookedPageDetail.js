@@ -55,6 +55,7 @@ export default class BookedPageDetail extends React.Component {
 
   _showTicket() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
+    console.log("ticcketnumber =" + ticketNumber);
 
     if (bookingStatus == 'BOOK')
       return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;

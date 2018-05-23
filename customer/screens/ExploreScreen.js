@@ -18,6 +18,8 @@ import UpdateNotifModal from '../components/UpdateNotifModal';
 import { observer } from 'mobx-react';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import intervalController from './IntervalController';
+import { getMyBookingList, fetchMyBookingList, fetchMyBookingActivityList } from './MyBooking/MyBookingController';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -123,7 +125,9 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
-    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this.props.navigation.addListener('didFocus', this._getWishlist);
+    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingList));
+    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingActivityList));
     //this.props.navigation.addListener('willFocus', this._cartCountGetter);
     this._getWishlist();
     cartCountStore.setCartCount();

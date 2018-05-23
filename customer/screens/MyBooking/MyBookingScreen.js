@@ -4,10 +4,12 @@ import React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import CartListItem from './MyBookingListScreen';
-import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
+import { getMyBookingList, shouldRefreshMyBookingList, myBookingCartItemStore, myBookingActivityItemStore, getMyBookingActivityList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import { observer } from 'mobx-react';
 
-
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
+@observer
 export default class MyBookingScreen extends React.Component {
 
   constructor(props) {
@@ -30,6 +32,8 @@ export default class MyBookingScreen extends React.Component {
       return this.setState({ isLoading: false });
     }
     console.log("did mount mybookingscreen");
+    this.props.navigation.addListener('didFocus', () => setItemAsync("onMyBookingCartPage", "true"));
+    this.props.navigation.addListener('didBlur', () => deleteItemAsync("onMyBookingCartPage"));
     this.listenerSubscription = this.props.navigation.addListener("didFocus",() => this._refreshMyBookingList(false, false));
   }
 
@@ -49,9 +53,12 @@ export default class MyBookingScreen extends React.Component {
     if(refreshing){
       shouldRefreshMyBookingList();
     }
+    
     getMyBookingList().then(list => {
       this.setState({ list });
     }).finally(() => this.setState({ isLoading: false }));
+
+    getMyBookingActivityList().then();
   }
 
   _keyExtractor = (item, index) => index
@@ -67,11 +74,10 @@ export default class MyBookingScreen extends React.Component {
   render() {
     let { isLoading, list, status } = this.state;
     let { props } = this;
-
     if (isLoading) return <LoadingAnimation />
     else if (list && list.length > 0) return (
       <FlatList
-        data={list}
+        data={myBookingCartItemStore.myBookingCartItem}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
         refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}

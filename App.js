@@ -7,6 +7,7 @@ import Colors from './constants/Colors';
 import UpdateNotifModal from './customer/components/UpdateNotifModal';
 import { fetchTravoramaApi, AUTH_LEVEL } from './api/Common';
 import { addMyBookingListener } from './api/NotificationController';
+import intervalController from './customer/screens/IntervalController';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -21,8 +22,10 @@ export default class App extends React.Component {
     };
   }
 
- 
-  
+  componentWillUnmount() {
+    intervalController.stop();
+  }
+
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -41,7 +44,7 @@ export default class App extends React.Component {
             skipIntro={this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
-          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate}/>
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
         </View>
       );
     }
@@ -79,7 +82,7 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      getItemAsync('skipIntro').then(res => this.setState({ skipIntro:res })),
+      getItemAsync('skipIntro').then(res => this.setState({ skipIntro: res })),
       getItemAsync('isLoggedIn').then(isLoggedIn => this.setState({ isLoggedIn })),
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
@@ -111,10 +114,11 @@ export default class App extends React.Component {
         { 'Hind': require('./assets/fonts/hind-regular.ttf') },
         { 'Hind-Bold': require('./assets/fonts/hind-bold.ttf') },
         { 'Hind-SemiBold': require('./assets/fonts/hind-semibold.ttf') },
-        { 'Hind-Light': require('./assets/fonts/hind-light.ttf') },       
+        { 'Hind-Light': require('./assets/fonts/hind-light.ttf') },
       ]),
       this._checkVersion(),
       addMyBookingListener(),
+      intervalController.start(),
     ]);
   };
 

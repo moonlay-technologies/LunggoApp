@@ -4,10 +4,11 @@ import React from 'react';
 import { View, ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView, Platform } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import CartListItem, { ActivityListItem } from './MyBookingListScreen';
-import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
+import { getMyBookingList, shouldRefreshMyBookingList, myBookingActivityItemStore, getMyBookingActivityList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import { observer } from 'mobx-react';
 
-
+@observer
 export default class MyBookingScreen extends React.Component {
 
   constructor(props) {
@@ -41,15 +42,15 @@ export default class MyBookingScreen extends React.Component {
   }
 
   _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
+    console.log("melakuka refresh activity list my booking");
     if (shouldLoading) {
       this.setState({ isLoading: true });
     }
     if (refreshing) {
-      shouldRefreshMyBookingList();
+      shouldRefreshMyBookingActivityList();
     }
-    getMyBookingList().then(list => {
-      let activities = list.reduce((result, cart) => result.concat(cart.activities), []);
-      this.setState({ list: activities });
+    getMyBookingActivityList().then(list => {
+      this.setState({ list });
     }).finally(() => this.setState({ isLoading: false }));
   }
 
@@ -72,7 +73,7 @@ export default class MyBookingScreen extends React.Component {
     else if (list && list.length > 0) return (
       <View style={styles.container}>
         <FlatList
-          data={list}
+          data={myBookingActivityItemStore.myBookingActivityItem}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
