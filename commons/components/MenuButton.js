@@ -14,8 +14,9 @@ export default class MenuButton extends React.Component {
         onPress={this.props.onPress}
         fallback={TouchableHighlight}
         underlayColor={'lightgray'}
+        style={styles.row}
       >
-        <View style={styles.row}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ width: '15%' }}>
             {this.props.icon}
           </View>
@@ -37,11 +38,12 @@ export default class MenuButton extends React.Component {
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
     height: 50,
-    alignItems: 'center',
+    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    borderBottomColor: '#eee',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   labelHeader: {
     flex: 1,

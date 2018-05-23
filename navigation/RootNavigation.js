@@ -32,6 +32,8 @@ import HelpScreen from '../customer/screens/HelpScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
+import MyBookingActivityHistory from '../customer/screens/MyBooking/MyBookingActivityHistoryScreen';
+import MyBookingTrxHistory from '../customer/screens/MyBooking/MyBookingTrxHistoryScreen';
 
 import IntroScreen from '../customer/screens/IntroScreen';
 // import Filter from '../screens/Filter';
@@ -80,6 +82,8 @@ export default class RootNavigator extends React.Component {
       // ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
+      MyBookingActivityHistory: { screen: MyBookingActivityHistory },
+      MyBookingTrxHistory: { screen: MyBookingTrxHistory },
     },
     {
       initialRouteName: (this.props.skipIntro) ? 'Main' : 'IntroScreen',

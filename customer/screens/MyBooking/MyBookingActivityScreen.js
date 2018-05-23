@@ -1,11 +1,14 @@
 'use strict';
 
 import React from 'react';
-import { View, ActivityIndicator, FlatList, RefreshControl, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, ActivityIndicator, FlatList, StyleSheet, Platform } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import CartListItem, { ActivityListItem } from './MyBookingListScreen';
+import { TrxListItem, ActivityListItem } from './MyBookingListItems';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import MenuButton from './../../../commons/components/MenuButton';
+import { Icon } from 'react-native-elements';
+import { checkUserLoggedIn } from '../../../api/Common';
 
 
 export default class MyBookingScreen extends React.Component {
@@ -14,7 +17,8 @@ export default class MyBookingScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      list: [],
+      activityList: [],
+      isLoggedIn: false,
     };
   }
 
@@ -25,10 +29,7 @@ export default class MyBookingScreen extends React.Component {
   listenerSubcription = null;
 
   componentDidMount() {
-    let { params } = this.props.navigation.state;
-    if (params && !params.loggedIn) {
-      return this.setState({ isLoading: false });
-    }
+    this._checkLoggedIn();
     console.log("did mount mybookingscreen");
     this.listenerSubscription = this.props.navigation.addListener("didFocus", () => this._refreshMyBookingList(false, false));
   }
@@ -40,6 +41,11 @@ export default class MyBookingScreen extends React.Component {
     }
   }
 
+  _checkLoggedIn = async () => {
+    let isLoggedIn = await checkUserLoggedIn();
+    this.setState({ isLoggedIn });
+  }
+
   _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
     if (shouldLoading) {
       this.setState({ isLoading: true });
@@ -49,48 +55,69 @@ export default class MyBookingScreen extends React.Component {
     }
     getMyBookingList().then(list => {
       let activities = list.reduce((result, cart) => result.concat(cart.activities), []);
-      this.setState({ list: activities });
+      this.setState({ activityList: activities });
     }).finally(() => this.setState({ isLoading: false }));
   }
 
-  _keyExtractor = (item, index) => index
+  _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
+  _keyExtractor = (item, index) => index;
   _renderItem = ({ item, index }) => (
-    <ActivityListItem
-      item={item}
-      index={index}
-      // onPressItem={this._onPressItem}
-      navigation={this.props.navigation}
-      showActionButtons={true}
-    />
+    <View style={{ backgroundColor: 'white' }}>
+      <ActivityListItem
+        item={item}
+        index={index}
+        // onPressItem={this._onPressItem}
+        navigation={this.props.navigation}
+        showActionButtons={true}
+      />
+    </View>
+  )
+
+  header = () => (
+    <View style={{ height: 90, justifyContent: 'center' }}>
+      <MenuButton
+        label='Lihat Riwayat Aktivitas'
+        icon={
+          <Icon
+            name='ios-time-outline'
+            type='ionicon'
+            size={26}
+            color='#454545'
+          />
+        }
+        onPress={this._goToActivityHistory}
+      />
+    </View>
   )
 
   render() {
-    let { isLoading, list, status } = this.state;
+    let { isLoading, isLoggedIn, activityList, status } = this.state;
     let { props } = this;
 
-    if (isLoading) return <LoadingAnimation />
-    else if (list && list.length > 0) return (
-      <View style={styles.container}>
-        <FlatList
-          data={list}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
-        />
-      </View>)
-    else return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}>
+    if (isLoggedIn)
+      return (
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: -1 }}>
+            <FlatList
+              data={activityList}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+              onRefresh={this._refreshMyBookingList}
+              refreshing={this.state.isLoading}
+              ListHeaderComponent={this.header}
+              ListEmptyComponent={<BlankScreen {...props} />}
+            />
+          </View>
+        </View>);
+    else
+      return (
         <BlankScreen {...props} />
-      </ScrollView>)
+      )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 15,
-    borderRadius: 5,
+  separator: {
+    height: 20
   }
 });

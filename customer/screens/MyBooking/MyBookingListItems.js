@@ -94,33 +94,35 @@ export class ActivityListItem extends React.PureComponent {
   render() {
     let { item } = this.props;
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail}>
-        <View style={{ paddingVertical: 25 }}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
-            <View style={{ flex: 3 }}>
-              <Text style={styles.activityTitle}>
-                {item.name}
-              </Text>
-              <View style={{ flexDirection: 'row', }}>
-                <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
-                <Text style={styles.activityDesc}>, </Text>
-                <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+      <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
+        <View>
+          <View style={{ paddingVertical: 25, paddingHorizontal: 15 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+              <View style={{ flex: 3 }}>
+                <Text style={styles.activityTitle}>
+                  {item.name}
+                </Text>
+                <View style={{ flexDirection: 'row', }}>
+                  <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+                  <Text style={styles.activityDesc}>, </Text>
+                  <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+                </View>
+                <Text style={styles.activityDesc}>
+                  {getPaxCountText(item.paxCount)}
+                </Text>
               </View>
-              <Text style={styles.activityDesc}>
-                {getPaxCountText(item.paxCount)}
-              </Text>
             </View>
+            {this.props.showActionButtons && this._buttons(item)}
           </View>
-          {this.props.showActionButtons && this._buttons(item)}
+          <View style={styles.separator} />
         </View>
-        <View style={styles.separator} />
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     )
   }
 }
 
-export default class CartListItem extends React.PureComponent {
+export class TrxListItem extends React.PureComponent {
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -176,7 +178,7 @@ export default class CartListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-        <View style={{ borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: '#bfbfbf', paddingBottom: 20, paddingHorizontal: 15 }}>
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
@@ -226,8 +228,7 @@ const styles = StyleSheet.create({
   },
   cartbox: {
     backgroundColor: '#fff',
-    padding: 15,
-    marginVertical: 15,
+    paddingVertical: 15,
     borderRadius: 5,
     ...Platform.select({
       ios: {
@@ -317,14 +318,12 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#bfbfbf',
-    height: 0.3,
+    height: 0.5,
     width: '100%',
   },
   total: {
-    marginTop:20,
-    paddingBottom: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ececec'
+    marginTop: 20,
+    paddingHorizontal: 15,
   },
   totalText: {
     fontSize: 16,
