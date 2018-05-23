@@ -24,6 +24,18 @@ import Modal from '../../../commons/components/Modal';
 
 class ActivityListItem extends React.PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalLocation: {
+        left: null,
+        right: null,
+        top: null,
+        bottom: null,
+      }
+    }
+  }
+
   _viewPdfVoucher = async item => {
     // TODO uncomment this buat local PDF
     // let localUri = await getItemAsync('myBookings.pdfVoucher.' + item.rsvNo);
@@ -37,58 +49,87 @@ class ActivityListItem extends React.PureComponent {
       ('BookedPageDetail', { details: this.props.item })
   };
 
-  _openSettingModal = () => this.refs.settingModal.openModal();
+  _openSettingModal = (evt) => {
+
+    this.setState({ tapX: evt.nativeEvent.pageX, tapY: evt.nativeEvent.pageY })
+    this.refs.settingModal.openModal();
+  }
   _closeSettingModal = () => this.refs.settingModal.closeModal();
 
   _voucherButton = item => {
     let renderTicketButton = item => {
       switch (item.bookingStatus) {
         case 'Booked':
-          return <View style={{flexDirection:'row'}}>
-                    <Text style={styles.activityDesc}>Status: </Text>
-                    <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
-                  </View>;
         case 'ForwardedToOperator':
-          return <View style={{flexDirection:'row'}}>
-                    <Text style={styles.activityDesc}>Status: </Text>
-                    <Text style={styles.statusText}>Menunggu Respon Operator</Text>
-                  </View>;
-        case 'Confirmed':
-          return <View style={{flexDirection:'row'}}>
-                    <Text style={styles.activityDesc}>Status: </Text>
-                    <Text style={styles.statusText}>Tiket Sedang Diproses</Text>
-                  </View>;
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Otomatis Batal: </Text>
+                <Text style={styles.statusText}>22:05:01*</Text>
+              </View>
+            </View>);
+        case 'Ticketing':
+          return <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.activityDesc}>Status: </Text>
+            <Text style={styles.statusText}>Tiket Sedang Diproses</Text>
+          </View>;
         case 'Ticketed':
           return (
-            <Button
-              containerStyle={styles.containerbtn}
-              style={styles.statusbtn}
-              onPress={() =>
-                item.hasPdfVoucher
-                  ? this._viewPdfVoucher(item)
-                  : this._goToBookedPageDetail()
-              }
-            >
-              Lihat Tiket
-            </Button>);
-
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusText}>Dibatalkan</Text>
+              </View>
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={() =>
+                    item.hasPdfVoucher
+                      ? this._viewPdfVoucher(item)
+                      : this._goToBookedPageDetail()
+                  }
+                >
+                  Lihat Tiket
+                </Button>
+              </View>
+            </View>);
         case 'CancelByCustomer':
         case 'CancelByOperator':
         case 'CancelByAdmin':
         case 'DeniedByOperator':
         case 'DeniedByAdmin':
-          return <View style={styles.labelText}><Text style={styles.statusText}>Dibatalkan</Text></View>;
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusText}>Dibatalkan</Text>
+              </View>
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={() =>
+                    item.hasPdfVoucher
+                      ? this._viewPdfVoucher(item)
+                      : this._goToBookedPageDetail()
+                  }
+                >
+                  Refund
+                </Button>
+              </View>
+            </View>);
         default:
-          return <View>
-                    <View style={{flexDirection:'row'}}>
-                      <Text style={styles.activityDesc}>Status: </Text>
-                      <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                      <Text style={styles.activityDesc}>Otomatis Batal: </Text>
-                      <Text style={styles.statusText}>22:05:01</Text>
-                    </View>
-                  </View>;
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Terjadi kesalahan pada server</Text>
+              </View>
+            </View>);
       }
     }
 
@@ -119,9 +160,9 @@ class ActivityListItem extends React.PureComponent {
   render() {
     let { item } = this.props;
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail} style={{position:'relative'}}>
-        <View style={{ flexDirection: 'row', position:'relative'}}>
-          <View style={{ width:70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail} style={{ position: 'relative' }}>
+        <View style={{ flexDirection: 'row', position: 'relative' }}>
+          <View style={{ width: 70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
           <View style={{ flex: 3 }}>
             <Text style={styles.activityTitle}>
               {item.name}
@@ -138,11 +179,11 @@ class ActivityListItem extends React.PureComponent {
               {this._voucherButton(item)}
             </View>
           </View>
-          <View style={{position:'relative'}}>
+          <View style={{ position: 'relative' }}>
             <TouchableOpacity
               style={{ width: 25, alignItems: 'center' }}
-              onPress={this._openSettingModal}>
-                <Icon
+              onPress={evt => this._openSettingModal(evt)}>
+              <Icon
                 name='md-more'
                 type='ionicon'
                 size={26}
@@ -150,27 +191,29 @@ class ActivityListItem extends React.PureComponent {
             </TouchableOpacity>
 
             <Modal ref='settingModal'
-            style={styles.modalMenu}
-            animationIn='fadeIn'
-            animationOut='fadeOut'
-            backdropOpacity={0}
+              style={styles.modalStyle}
+              animationIn='fadeIn'
+              animationOut='fadeOut'
+              backdropOpacity={0}
+              tapX={this.state.tapX}
+              tapY={this.state.tapY}
             >
 
-            <TouchableOpacity>
-              <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
-            </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+              </TouchableOpacity>
 
-            <View style={styles.separatorOption}></View>
+              <View style={styles.separatorOption}></View>
 
-            <TouchableOpacity>
-              <Text style={styles.teks3a}>Hapus Aktivitas</Text>
-            </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.teks3a}>Hapus Aktivitas</Text>
+              </TouchableOpacity>
 
             </Modal>
 
           </View>
         </View>
-        
+
         {/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
@@ -393,8 +436,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#bfbfbf',
     height: 0.3,
     width: '100%',
-    marginTop:25,
-    marginBottom:15
+    marginTop: 25,
+    marginBottom: 15
   },
   total: {
     paddingBottom: 1,
@@ -517,30 +560,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  modalMenu: {
-    backgroundColor: '#fff',
-    width: 150,
-    padding: 10,
-    position: 'absolute',
-    right: 7,
-    top: 145,
-    zIndex: 100,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 1
-        },
-        shadowRadius: 4,
-        shadowOpacity: 0.2
-      },
-      android: {
-        elevation: 2
-      },
-    }),
-  },
-    teks3a: {
+  teks3a: {
     fontSize: 14,
     color: '#454545',
     fontFamily: 'Hind',
@@ -567,17 +587,17 @@ const styles = StyleSheet.create({
 
   containerbtn: {
     backgroundColor: '#00d3c5',
-    paddingHorizontal:8,
-    paddingVertical:5,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
     borderRadius: 3,
     alignItems: 'center',
-    marginTop:7
+    marginTop: 7
   },
   statusbtn: {
     fontSize: 12,
     color: '#fff',
     fontFamily: 'Hind-SemiBold',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -591,4 +611,24 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  modalStyle: {
+    backgroundColor: '#fff',
+    width: 150,
+    padding: 10,
+    zIndex: 100,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 4,
+        shadowOpacity: 0.2
+      },
+      android: {
+        elevation: 2
+      },
+    }),
+  }
 });
