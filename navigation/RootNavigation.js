@@ -47,7 +47,7 @@ export default class RootNavigator extends React.Component {
         //screen:Referral
         // screen:F_ReservationDetail
         // screen:Dashboard
-        screen: RefundPage
+        screen: MainTabNavigator
       } : {
         screen: MainTabNavigator 
       },

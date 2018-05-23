@@ -69,7 +69,7 @@ class ActivityListItem extends React.PureComponent {
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Otomatis Batal: </Text>
-                <Text style={styles.statusText}>22:05:01*</Text>
+                <Text style={styles.statusText}>{item.timeLimit}</Text>
               </View>
             </View>);
         case 'Ticketing':
@@ -82,7 +82,7 @@ class ActivityListItem extends React.PureComponent {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusText}>Dibatalkan</Text>
+                <Text style={styles.statusText}>Tiket Terbit</Text>
               </View>
               <View>
                 <Button
@@ -127,7 +127,7 @@ class ActivityListItem extends React.PureComponent {
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>Terjadi kesalahan pada server</Text>
+                <Text style={styles.activityDesc}>Terjadi kesalahan pada sistem</Text>
               </View>
             </View>);
       }

@@ -1,4 +1,4 @@
-  'use strict';
+'use strict';
 
 import React from 'react';
 import Button from 'react-native-button';
@@ -11,6 +11,7 @@ import {
 import Maps from '../../components/Maps';
 import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
+import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -56,218 +57,245 @@ export default class BookedPageDetail extends React.Component {
   _showTicket() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
 
-    if (bookingStatus == 'BOOK')
-      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;
-    else if (bookingStatus == 'FORW')
-      return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator</Text></View>;
-    else if (bookingStatus == 'TKTD' && hasPdfVoucher && isPdfUploaded) {
+    if (bookingStatus == 'Ticketed' && hasPdfVoucher && isPdfUploaded) {
       return (
-        <Button
-          containerStyle={styles.labelOk}
-          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
-          onPress={() => this._viewPdfVoucher()}
-        >
-          Lihat Tiket
+        <View style={styles.container}>
+          <View style={{ marginBottom: 0, alignItems: 'center' }}>
+            <Text style={styles.sectionTitle}>
+              Tiket
+            </Text>
+          </View>
+          <Button
+            containerStyle={styles.labelOk}
+            style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+            onPress={() => this._viewPdfVoucher()}
+          >
+            Lihat Tiket
         </Button>
+          <View style={{ alignItems: 'center', marginTop: 15 }}>
+            <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
+              Tunjukkan tiket ini kepada pihak operator saat kamu sudah berada di tempat dan waktu aktivitas
+            </Text>
+          </View>
+        </View>
+
       );
     }
-    else if (bookingStatus == 'TKTD' && ticketNumber) {
+    else if (bookingStatus == 'Ticketed' && ticketNumber) {
       return (
-        <View>
-          <Text style={styles.activityTitle}>
-            Kode Tiket
-          </Text>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-              {ticketNumber}
+        <View style={styles.container}>
+          <View style={{ marginBottom: 0, alignItems: 'center' }}>
+            <Text style={styles.sectionTitle}>
+              Kode Tiket
+            </Text>
+          </View>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.kodetiket}>{ticketNumber}</Text>
+          </View>
+          <View style={{ alignItems: 'center', marginTop: 15 }}>
+            <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
+              Tunjukkan kode ini kepada pihak operator saat kamu sudah berada di tempat dan waktu aktivitas.
+              Jangan berikan kode ini kepada operator sebelum saatnya!
             </Text>
           </View>
         </View>);
     }
-    else if (bookingStatus == 'CONF')
-      return (
-        <View style={styles.labelText}>
-          <Text style={{ color: '#ff5f5f' }}>
-            Tiket sedang dalam proses penerbitan
+    else
+      return null;
+  }
+
+  _showStatus() {
+    let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
+
+    switch (bookingStatus) {
+      case 'Booked':
+        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;
+      case 'ForwardedToOperator':
+        return (
+          <View><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator</Text></View>
+            <View style={{ alignItems: 'center', marginTop: 15 }}>
+              <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
+                Aktivitas akan dibatalkan otomatis jika dalam *2 hari*{"\n"}operator tidak mengonfirmasi pesanan kamu
+            </Text>
+            </View>
+          </View>);
+      case 'Ticketing':
+        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang diproses</Text></View>;
+      case 'Ticketed':
+        return null;
+
+      case 'CancelByOperator':
+      case 'CancelByAdmin':
+      case 'DeniedByOperator':
+      case 'DeniedByAdmin':
+        return (
+          <View>
+            <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh operator</Text></View>
+            <View style={{ alignItems: 'center', marginTop: 15 }}>
+              <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
+                *karena operator males*
+              </Text>
+            </View>
+          </View>);
+      case 'CancelByCustomer':
+        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan sendiri</Text></View>;
+      default:
+        return (
+          <View style={styles.labelText}>
+            <Text style={{ color: '#ff5f5f' }}>
+              Terjadi kesalahan pada sistem
           </Text>
-        </View>)
-    else 
-      return (
-        <View style={styles.labelText}>
-          <Text style={{ color: '#ff5f5f' }}>
-            {bookingStatus}
-          </Text>
-        </View>)
+          </View>);
+    }
   }
 
   render() {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
       selectedSession, operatorName, operatorPhone, ticketNumber,
       operatorEmail, totalPaxCount, latitude, longitude, paxes,
-      hasPdfVoucher, isPdfUploaded, paxCount
+      hasPdfVoucher, isPdfUploaded, paxCount, contact
     } = this.details;
-    // let bookingStatusText = bookingStatus;
-    // switch (bookingStatus) {
-    //   case 'PROC': bookingStatusText = 'dalam progres'; break;
-    // }
-    console.log(selectedSession ? true : false);
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
 
-        <View style={styles.container}>
-          <View style={{marginBottom:0, alignItems:'center'}}>
-            <Text style={styles.sectionTitle}>
-              Kode Tiket
-            </Text>
-          </View>
-          <View style={{alignItems:'center'}}>
-            <Text style={styles.kodetiket}>LDRSJWC</Text>
-          </View>
-        </View>
+        {this._showTicket()}
 
         <View style={styles.container}>
 
-          <View style={{flexDirection:'row'}}>
+          <View style={{ flexDirection: 'row' }}>
 
-          <Image style={styles.thumbprofile} source={{ uri: mediaSrc }}/>
+            <Image style={styles.thumbprofile} source={{ uri: mediaSrc }} />
 
-          <View style={{ flex: 3, paddingLeft: 15 }}>
-            <View style={{marginBottom:3}}>
-              <Text style={styles.activityTitle}>
-                {name}
-              </Text>
-            </View>
+            <View style={{ flex: 3, paddingLeft: 15 }}>
+              <View style={{ marginBottom: 3 }}>
+                <Text style={styles.activityTitle}>
+                  {name}
+                </Text>
+              </View>
 
-            <View style={{ flex: 1, flexDirection: 'row',}}>
-             {/* <View style={{justifyContent:'center'}}>
+              <View style={{ flex: 1, flexDirection: 'row', }}>
+                {/* <View style={{justifyContent:'center'}}>
                 <Icon name='calendar' type='octicon' size={18} color='#009389' style={{width:20}} />
               </View>*/}
-              <View>
-                <Text style={styles.activityDesc}>
-                  {Formatter.dateFullLong(date)}
-                </Text>
-              </View>
-            </View>
-
-            {!!selectedSession && (
-              <View style={{ flex: 1, flexDirection: 'row'}}>
-                {/* <View style={{justifyContent:'center'}}>
-                  <Icon name='ios-time' type='ionicon' size={18} color='#009389' style={{width:20}} />
-                </View> */}
                 <View>
                   <Text style={styles.activityDesc}>
-                    {selectedSession}
+                    {Formatter.dateFullLong(date)}
                   </Text>
                 </View>
-              </View>)
-            }
+              </View>
 
-            <View style={{ flex: 1, flexDirection: 'row'}}>
-              {/*<View style={{justifyContent:'center'}}>
+              {!!selectedSession && (
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                  {/* <View style={{justifyContent:'center'}}>
+                  <Icon name='ios-time' type='ionicon' size={18} color='#009389' style={{width:20}} />
+                </View> */}
+                  <View>
+                    <Text style={styles.activityDesc}>
+                      {selectedSession}
+                    </Text>
+                  </View>
+                </View>)
+              }
+
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                {/*<View style={{justifyContent:'center'}}>
                 <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
               </View>*/}
-              <View>
-                <Text style={styles.activityDesc}>
-                  {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
-                </Text>
+                <View>
+                  <Text style={styles.activityDesc}>
+                    {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
+                  </Text>
+                </View>
               </View>
-            </View>
 
-            <View style={{ flex: 1, flexDirection: 'row'}}>
-              {/*<View style={{justifyContent:'center'}}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                {/*<View style={{justifyContent:'center'}}>
                 <Icon  name='location' type='octicon' size={18} color='#009389' style={{width:20}} />
               </View>*/}
-              <View>
-                <Text style={styles.activityDesc}>
-                  {city}
-                </Text>
+                <View>
+                  <Text style={styles.activityDesc}>
+                    {city}
+                  </Text>
+                </View>
               </View>
+
             </View>
 
-          </View>
-
-          <TouchableOpacity onPress={this._viewActivityDetail} style={{alignItems: 'flex-end'}}>
-            <Text style={{fontSize: 12, color: '#00d3c5', }}>
-              Lihat Detail
+            <TouchableOpacity onPress={this._viewActivityDetail} style={{ alignItems: 'flex-end' }}>
+              <Text style={{ fontSize: 12, color: '#00d3c5', }}>
+                Lihat Detail
             </Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
           </View>
 
-          <View style={{marginTop:15}}>
-            {this._showTicket()}
-            <View style={{alignItems:'center', marginTop:15}}>
-              <Text style={[styles.activityDesc, {textAlign:'center', color:'#1e1e1e'}]}>
-                Aktivitas akan dibatalkan jika dalam 2 hari{"\n"}operator tidak mengkonfirmasi pesanan kamu
-              </Text>
-            </View>
+          <View style={{ marginTop: 15 }}>
+            {this._showStatus()}
           </View>
 
-        </View>{/* end container */}
-
-  
+        </View>
 
         <View style={styles.divider} />
         <View style={styles.container}>
-          <View style={{marginBottom:0}}>
+          <View style={{ marginBottom: 0 }}>
             <Text style={styles.sectionTitle}>
-              Kontak peserta
+              Kontak Peserta
             </Text>
           </View>
-          <View style={{ flex: 1}}>
+          <View style={{ flex: 1 }}>
 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={styles.iconKontaksmall}>
-                 <Icon
+                <Icon
                   name='ios-person'
                   type='ionicon'
                   size={22}
                   color='#00d3c5' />
               </View>
               <Text style={styles.activityDesc}>
-                Jane Doe
+                {contact.name}
               </Text>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={styles.iconKontaksmall}>
-                 <Icon
+                <Icon
                   name='ios-call'
                   type='ionicon'
                   size={22}
                   color='#00d3c5' />
               </View>
               <Text style={styles.activityDesc}>
-                08134322342
+                {reversePhoneWithoutCountryCode_Indonesia(contact.phone)}
               </Text>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={styles.iconKontaksmall}>
-                 <Icon
+                <Icon
                   name='ios-mail'
                   type='ionicon'
                   size={22}
                   color='#00d3c5' />
               </View>
               <Text style={styles.activityDesc}>
-                jane@doe.com
+                {contact.email}
               </Text>
             </View>
           </View>
-        </View>{/* end container */}
+        </View>
 
         <View style={styles.divider} />
         <View style={styles.container}>
-          <View style={{marginBottom:10}}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={styles.sectionTitle}>
               Kontak Operator
             </Text>
           </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{flex:2, flexDirection: 'row' }}>
+            <View style={{ flex: 2, flexDirection: 'row' }}>
               <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 15 }]} />
               <View>
-                <View style={{marginBottom:7}}>
+                <View style={{ marginBottom: 7 }}>
                   <Text style={styles.reviewTitle}>
                     {operatorName}
                   </Text>
@@ -281,7 +309,7 @@ export default class BookedPageDetail extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-              <TouchableOpacity onPress={this._callOperator} style={[styles.iconKontak, {marginRight:15}]}>
+              <TouchableOpacity onPress={this._callOperator} style={[styles.iconKontak, { marginRight: 15 }]}>
                 <Icon
                   name='ios-call'
                   type='ionicon'
@@ -289,7 +317,7 @@ export default class BookedPageDetail extends React.Component {
                   color='#00d3c5' />
               </TouchableOpacity>
               <TouchableOpacity onPress={this._smsOperator} style={styles.iconKontak}>
-                 <Icon
+                <Icon
                   name='ios-mail'
                   type='ionicon'
                   size={23}
@@ -297,46 +325,7 @@ export default class BookedPageDetail extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-        </View>{/* end container */}
-
-        {/*<View style={styles.divider}/>
-        <View style={styles.container}>
-          <View style={{flex:1, flexDirection:'row',}}>
-            <View>
-              <Text style={styles.activityTitle}>
-                Status
-              </Text>
-              <Text style={styles.status}>
-                {bookingStatusText}
-              </Text>
-            </View>
-            <View style={{flex:1, flexDirection:'row', alignItems:'flex-end', justifyContent:'flex-end'}}>
-              <Button
-                containerStyle={{height:35, width:'70%', paddingTop:10, paddingBottom:10, borderRadius:4, backgroundColor: '#00c8be'}}
-                style={{fontSize: 12, color: '#fff', fontWeight:'bold'}}
-                onPress={this._onContinuePaymentPressed}
-              >
-                Lanjut Bayar
-              </Button>
-            </View>
-          </View>
-          <View style={{flex:1, flexDirection:'row', marginTop:25}}>
-            <Text style={{flex:1,fontSize:12, color:'#454545',}}>
-              Total yang harus dibayar
-            </Text>
-            <Text style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end',fontSize:12}}>
-              {Formatter.price(price)}
-            </Text>
-          </View>
-          <View style={{flex:1, flexDirection:'row', marginTop:5}}>
-            <Text style={{flex:1,fontSize:12, color:'#454545',}}>
-              Sisa waktu pembayaran
-            </Text>
-            <Text style={{flex:1, alignItems:'flex-end', justifyContent:'flex-end',fontSize:12, color:'#00c8be'}}>
-              {this.state.timeLeft}
-            </Text>
-          </View>
-        </View>{/* end container */}
+        </View>
         <View style={[styles.container, { flex: 1, }]}>
           <Text style={styles.sectionTitle}>
             Lokasi
@@ -348,18 +337,18 @@ export default class BookedPageDetail extends React.Component {
         <View style={styles.container}>
           <View>
             <Text style={styles.sectionTitle}>
-              Hubungi Kami
+              Butuh Bantuan?
             </Text>
           </View>
 
-          <View style={{ flex: 1, marginBottom:15 }}>
-            <Text style={styles.activityDesc}>Butuh Bantuan? Customer Service kami dengan senang hati akan membantu kamu mengenai pertanyaan atau seputar masalah aktivitas yang telah dipilih. 
+          <View style={{ flex: 1, marginBottom: 15 }}>
+            <Text style={styles.activityDesc}>Customer Service kami dengan senang hati akan membantu kamu mengenai pertanyaan atau seputar masalah aktivitas yang telah dipilih.
             Pastikan kamu menyebutkan No. Pesanan saat menghubungi agar kami dapat lebih cepat memberikan respons.{"\n"}{"\n"}Silahkan hubungi kami melalui kontak di bawah ini:</Text>
           </View>
 
-          <View style={{flexDirection:'row',}}>
+          <View style={{ flexDirection: 'row', }}>
             <View style={styles.iconKontaksmall}>
-               <Icon
+              <Icon
                 name='ios-call'
                 type='ionicon'
                 size={22}
@@ -368,9 +357,9 @@ export default class BookedPageDetail extends React.Component {
             <Text style={styles.activityDesc}>0855-7467-9737</Text>
           </View>
 
-          <View style={{flexDirection:'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.iconKontaksmall}>
-               <Icon
+              <Icon
                 name='ios-mail'
                 type='ionicon'
                 size={22}
@@ -379,9 +368,10 @@ export default class BookedPageDetail extends React.Component {
             <Text style={styles.activityDesc}>cs@travorama.com</Text>
           </View>
 
-        </View>{/* end container */}
+        </View>
         {/* <View style={styles.container}>
           <View>
+          
             <Text style={[styles.activityTitle, { marginBottom: 10 }]}>
               Peserta: {totalPaxCount} orang
             </Text>
@@ -422,8 +412,8 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
     flex: 1,
-    marginHorizontal:15,
-    marginVertical:7.5,
+    marginHorizontal: 15,
+    marginVertical: 7.5,
     ...Platform.select({
       ios: {
         shadowColor: '#e8f0fe',
@@ -584,17 +574,17 @@ const styles = StyleSheet.create({
     }),
   },
   iconKontak: {
-    width:35, 
-    height:35,
-    borderWidth:1, 
-    borderRadius:25, 
-    borderColor:'#00d3c5', 
-    justifyContent:'center'
+    width: 35,
+    height: 35,
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: '#00d3c5',
+    justifyContent: 'center'
   },
   iconKontaksmall: {
-    width:26, 
-    height:26, 
-    justifyContent:'center',
-    marginRight:5
+    width: 26,
+    height: 26,
+    justifyContent: 'center',
+    marginRight: 5
   },
 });
