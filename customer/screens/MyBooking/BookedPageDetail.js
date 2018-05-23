@@ -12,6 +12,7 @@ import Maps from '../../components/Maps';
 import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
 import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
+import Moment from 'moment';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -105,17 +106,21 @@ export default class BookedPageDetail extends React.Component {
   }
 
   _showStatus() {
-    let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
+    let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber, cancellationReason, timeLimit } = this.details;
 
     switch (bookingStatus) {
       case 'Booked':
         return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;
       case 'ForwardedToOperator':
+        let now = Moment();
+        let daysDiff = Moment(now).diff(timeLimit, 'days');
+        let hoursDiff = Moment(now).diff(timeLimit, 'hours') - (daysDiff * 24);
+        let timeLimitString = (daysDiff ? `${daysDiff} hari ` : '') + `${hoursDiff} jam`;
         return (
-          <View><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator</Text></View>
+          <View><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator*</Text></View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
-                Aktivitas akan dibatalkan otomatis jika dalam *2 hari*{"\n"}operator tidak mengonfirmasi pesanan kamu
+                * Aktivitas akan dibatalkan otomatis jika dalam <Text style={{ fontWeight: 'bold' }}>{timeLimitString}</Text>{"\n"}operator tidak mengonfirmasi pesanan kamu
             </Text>
             </View>
           </View>);
@@ -133,7 +138,7 @@ export default class BookedPageDetail extends React.Component {
             <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh operator</Text></View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
-                *karena operator males*
+                Alasan: {cancellationReason}
               </Text>
             </View>
           </View>);
@@ -199,17 +204,6 @@ export default class BookedPageDetail extends React.Component {
 
               <View style={{ flex: 1, flexDirection: 'row' }}>
                 {/*<View style={{justifyContent:'center'}}>
-                <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
-              </View>*/}
-                <View>
-                  <Text style={styles.activityDesc}>
-                    {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{ flex: 1, flexDirection: 'row' }}>
-                {/*<View style={{justifyContent:'center'}}>
                 <Icon  name='location' type='octicon' size={18} color='#009389' style={{width:20}} />
               </View>*/}
                 <View>
@@ -238,7 +232,15 @@ export default class BookedPageDetail extends React.Component {
         <View style={styles.container}>
           <View style={{ marginBottom: 0 }}>
             <Text style={styles.sectionTitle}>
-              Kontak Peserta
+              Jumlah Peserta
+            </Text>
+          </View>
+          <Text style={[styles.activityDesc, { paddingBottom: 5 }]}>
+            {paxCount.filter(t => t.count != 0).map((t) => `${t.count} ${t.type}`).join(', ')}
+          </Text>
+          <View style={{ marginBottom: 0 }}>
+            <Text style={styles.sectionTitle}>
+              Atas Nama
             </Text>
           </View>
           <View style={{ flex: 1 }}>

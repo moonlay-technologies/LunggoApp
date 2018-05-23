@@ -21,6 +21,7 @@ import { WebBrowser } from 'expo';
 import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 import { Icon } from 'react-native-elements';
 import Modal from '../../../commons/components/Modal';
+import Moment from 'moment';
 
 class ActivityListItem extends React.PureComponent {
 
@@ -61,15 +62,15 @@ class ActivityListItem extends React.PureComponent {
       switch (item.bookingStatus) {
         case 'Booked':
         case 'ForwardedToOperator':
+          let now = Moment();
+          let daysDiff = Moment(now).diff(item.timeLimit, 'days');
+          let hoursDiff = Moment(now).diff(item.timeLimit, 'hours') - (daysDiff * 24);
+          let timeLimitString = (daysDiff ? `${daysDiff} hari ` : '') + `${hoursDiff} jam`;
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusText}>Menunggu Konfirmasi</Text>
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>Otomatis Batal: </Text>
-                <Text style={styles.statusText}>{item.timeLimit}</Text>
+                <Text style={styles.statusText}>Menunggu Konfirmasi (maks. {timeLimitString})</Text>
               </View>
             </View>);
         case 'Ticketing':
