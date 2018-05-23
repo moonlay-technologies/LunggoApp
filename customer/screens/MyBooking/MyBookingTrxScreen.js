@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
 
 
-export default class MyBookingScreen extends React.Component {
+export default class MyBookingTrxScreen extends React.Component {
 
   constructor(props) {
     super(props);

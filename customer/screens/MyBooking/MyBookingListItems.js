@@ -1,10 +1,3 @@
-/*
-
-  ===== TODO =====
-  invoice screen dan instruction screen
-
-*/
-
 'use strict';
 
 import React from 'react';

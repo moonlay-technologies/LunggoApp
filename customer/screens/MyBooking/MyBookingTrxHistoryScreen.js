@@ -11,7 +11,7 @@ import ReactNativeDatepicker from 'react-native-datepicker';
 import Colors from '../../../constants/Colors';
 
 
-export default class MyBookingScreen extends React.Component {
+export default class MyBookingTrxHistoryScreen extends React.Component {
 
   perPage = 1000;
 

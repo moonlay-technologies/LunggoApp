@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
 
 
-export default class MyBookingScreen extends React.Component {
+export default class MyBookingActivityScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,12 +30,10 @@ export default class MyBookingScreen extends React.Component {
 
   componentDidMount() {
     this._checkLoggedIn();
-    console.log("did mount mybookingscreen");
     this.listenerSubscription = this.props.navigation.addListener("didFocus", () => this._refreshMyBookingList(false, false));
   }
 
   componentWillUnmount() {
-    console.log("melakukan unmount");
     if (this.listenerSubscription) {
       this.listenerSubscription.remove();
     }
