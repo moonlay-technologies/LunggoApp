@@ -10,7 +10,6 @@ import { Icon } from 'react-native-elements';
 import globalStyles from '../../globalStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo';
-import { observer } from 'mobx-react';
 
 //// FOR LOGICAL:
 import { fetchTravoramaLoginApi } from '../AuthController';
@@ -20,6 +19,7 @@ import { fetchWishlist, backToMain } from '../../../api/Common';
 import { fetchProfile } from '../../ProfileController';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
+import { observer } from 'mobx-react';
 import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 const { setItemAsync } = Expo.SecureStore;
 
@@ -235,6 +235,7 @@ class LoginScreen extends React.Component {
     );
   }
 }
+export default withConnectivityHandler(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -305,5 +306,3 @@ const styles = StyleSheet.create({
     fontFamily: 'Hind',
   },
 });
-
-export default withConnectivityHandler(LoginScreen);

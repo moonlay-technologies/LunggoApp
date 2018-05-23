@@ -18,12 +18,12 @@ import UpdateNotifModal from '../components/UpdateNotifModal';
 import { observer } from 'mobx-react';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import withConnectivityHandler from '../../higherOrderComponents/withConnectivityHandler';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-@observer
-export default class ExploreScreen extends React.Component {
+@observer class ExploreScreen extends React.Component {
 
   constructor(props) {
     super(props)
@@ -33,15 +33,15 @@ export default class ExploreScreen extends React.Component {
       tripList: [],
       turList: [],
       promoList: [],
-      isLoading: true,
-      wishlists: {},
+      isLoading: undefined,
+      // wishlists: {},
       isNotifModalVisible: false,
       currentVersion: '0.0.0',
       latestVersion: '0.0.0',
-      urlPlatform: ''
+      urlPlatform: '',
+      errorMessage:'',
     };
     setItemAsync('skipIntro', 'true');
-    this._onWishlist = this._onWishlist.bind(this)
   }
 
   static navigationOptions = {
@@ -109,16 +109,18 @@ export default class ExploreScreen extends React.Component {
   }
 
   _refreshContents = () => {
-    Promise.all([
-      search('tiket').then(tiketList => this.setState({ tiketList })),
-      search('paket').then(paketList => this.setState({ paketList })),
-      search('trip').then(tripList => this.setState({ tripList })),
-      search('tur').then(turList => this.setState({ turList })),
-      this._getPromos().then(promoList => this.setState({ promoList })),
-      this._getWishlist()
-    ]).then(response => {
-      this.setState({ isLoading: false });
-    });
+    this.setState({isLoading: true});
+    this.props.withConnectivityHandler( () => {
+      Promise.all([
+        search('tiket').then(tiketList => this.setState({ tiketList })),
+        search('paket').then(paketList => this.setState({ paketList })),
+        search('trip').then(tripList => this.setState({ tripList })),
+        search('tur').then(turList => this.setState({ turList })),
+        this._getPromos().then(promoList => this.setState({ promoList })),
+        this._getWishlist(),
+      ]);
+    }, true).catch( err => this.setState({errorMessage: err}))
+            .finally( () => this.setState({ isLoading: false }) );
   }
 
   componentDidMount() {
@@ -129,17 +131,14 @@ export default class ExploreScreen extends React.Component {
     cartCountStore.setCartCount();
   }
 
-  _onWishlist = async ({ id, wishlisted }) => {
-    let wishlists = this.state.wishlists;
-    wishlists[id] = wishlisted;
-    this.setState({ wishlists });
-  }
-
   render() {
-    let allList = [...this.state.turList, ...this.state.tripList, ...this.state.paketList, ...this.state.tiketList];
+    const { props } = this;
+    const { turList, tripList, paketList, tiketList } = this.state;
+    let allList = [...turList, ...tripList, ...paketList, ...tiketList];
     let placeSrc = [require('../../assets/images/yogya.jpg'), require('../../assets/images/surabaya.jpg'), require('../../assets/images/bg.jpg')];
     let places = [...placeSrc, ...placeSrc, ...placeSrc];
     let placeList = places.map(place => { return { mediaSrc: place } });
+
     if (this.state.isLoading) {
       return <LoadingAnimation />
     }
@@ -148,257 +147,242 @@ export default class ExploreScreen extends React.Component {
     return (
       <ScrollView style={{ backgroundColor: '#fff' }}>
         <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
-        {/*<View style={{flexDirection:'row', marginTop:20}}>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
-              <View>
-                <Icon
-                name='md-pin'
-                type='ionicon'
-                size={20}
-                color='#fff'/>
-              </View>
-              <View style={{marginLeft:5}}>
-                <Text style={{color:'#fff', fontSize:18,}}>Activity</Text>
-              </View>
-            </View>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center', marginLeft:10, marginRight:10,}}>
-              <View>
-                <Icon
-                name='flight'
-                type='materialicon'
-                size={20}
-                color='#3adfb5'/>
-              </View>
-              <View style={{marginLeft:5}}>
-                <Text style={{color:'#acacac', fontSize:18, }}>Flight</Text>
-              </View>
-            </View>
-            <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
-              <View>
-                <Icon
-                name='hotel'
-                type='materialicons'
-                size={20}
-                color='#3adfb5'/>
-              </View>
-              <View style={{marginLeft:5}}>
-                <Text style={{color:'#acacac', fontSize:18,}}>Hotel</Text>
-              </View>
-            </View>
-          </View> */}
+        {/*<ActivityFlightHotelTab/>*/}
 
-        {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-        {this._renderContent({ list: this.state.tiketList, itemsPerScreen: 1, height: 200 })}
+        { this.state.errorMessage ?
+          <Text>{this.state.errorMessage}</Text>
+          :
+          <View>
+            <RenderHeader title='Tiket' searchUrl='tiket' {...props}/>
+            <RenderContent list={this.state.tiketList} itemsPerScreen={1} height={200} {...props}/>
 
-        {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-        {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
-
-        {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-        {this._renderContent({ list: this.state.tripList, itemsPerScreen: 3, height: 150 })}
-
-        {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-        {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
-
-        {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
-        {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
-
-          {this._renderHeader({ title: 'Promo Terkini' })}
-          {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
+            <RenderHeader title='Paket' searchUrl='paket' {...props}/>
+            <RenderContent list={this.state.paketList} itemsPerScreen={2} height={150} {...props}/>
+           
+            <RenderHeader title='Trip' searchUrl='trip' {...props}/>
+            <RenderContent list={this.state.tripList} itemsPerScreen={3} height={150} {...props}/>
+           
+            <RenderHeader title='Tur Keliling Kota' searchUrl='tur' {...props}/>
+            <RenderContent list={this.state.turList} itemsPerScreen={1} height={100} {...props}/>
+           
+            <RenderHeader title='Promo Terkini' {...props}/>
+            <RenderPromo list={this.state.promoList} itemsPerScreen={1} height={100} {...props}/>
+            {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
+            {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
+          </View>
           
+        }
+
           <View style={{ paddingTop: 10 }}></View>
-          <OfflineNotificationBar/>
         </ScrollView>
       );
   }
 
-  _goTo = (screen, params) =>
-    this.props.navigation.navigate(screen, params);
+}
+export default withConnectivityHandler(ExploreScreen);
 
-  _onPressProduct = item => this._goTo('DetailScreen', { details: item });
-  _onPressPromo = promo => this._goTo('WebViewScreen', { title: promo.title, url: promo.detailsUrl });
-  _onPressCategory = str => this._goTo('SearchActivity', { searchString: str });
-
-  _renderHeader({ title, searchUrl }) {
-    return (
-      <View style={[styles.container, { flexDirection: 'row', }]}>
-        <Text style={[{ flex: 2 }, styles.categoryTitle]}>{title}</Text>
-        {searchUrl && (
-          <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}
-            onPress={() => this._onPressCategory(searchUrl)} >
-            <Text style={styles.seeMore}>Lihat Semua</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    )
-  }
-
-  _renderPromo({ list, itemsPerScreen, height }) {
-    let itemWidth = ((width - 1.5 * THUMBNAIL_SPACING) / itemsPerScreen - THUMBNAIL_SPACING);
-    let style = StyleSheet.create({
-      containerThumbnail: {
-        backgroundColor: 'transparent',
-        paddingBottom: 8,
-        ...Platform.select({
-          ios: {
-            shadowColor: '#000000',
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowRadius: 3,
-            shadowOpacity: 0.7
-          },
-        })
-      },
-      thumbnail: {
-        backgroundColor: 'transparent',
-        resizeMode: 'cover',
-        width: itemWidth,
-        height: height,
-        borderRadius: 5,
-        ...Platform.select({
-          ios: {
-            shadowColor: '#000000',
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowRadius: 6,
-            shadowOpacity: 0.7
-          },
-
-        }),
-      }
-    });
-
-    let _renderItem = ({ item, index }) => {
-      return (
-        <TouchableOpacity key={item.id}
-          style={{
-            width: itemWidth,
-            marginLeft: THUMBNAIL_SPACING,
-
-          }}
-          activeOpacity={1}
-          onPress={() => this._onPressPromo(item)}
-        >
-          <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
-            <Image
-              style={style.thumbnail}
-              source={{ uri: item.bannerUrl }}
-            />
-          </View>
+function RenderHeader({ title, searchUrl, navigation }) {
+  const _onPressCategory = str => navigation.navigate('SearchActivity', { searchString: str });
+  return (
+    <View style={[styles.container, { flexDirection: 'row', }]}>
+      <Text style={[{ flex: 2 }, styles.categoryTitle]}>{title}</Text>
+      {searchUrl && (
+        <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}
+          onPress={() => this._onPressCategory(searchUrl)} >
+          <Text style={styles.seeMore}>Lihat Semua</Text>
         </TouchableOpacity>
-      );
-    }
+      )}
+    </View>
+  )
+}
 
+function RenderPromo({ list, itemsPerScreen, height, navigation }) {
+  const _onPressPromo = promo => navigation.navigate('WebViewScreen', { title: promo.title, url: promo.detailsUrl });
+  let itemWidth = ((width - 1.5 * THUMBNAIL_SPACING) / itemsPerScreen - THUMBNAIL_SPACING);
+  let style = StyleSheet.create({
+    containerThumbnail: {
+      backgroundColor: 'transparent',
+      paddingBottom: 8,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000000',
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowRadius: 3,
+          shadowOpacity: 0.7
+        },
+      })
+    },
+    thumbnail: {
+      backgroundColor: 'transparent',
+      resizeMode: 'cover',
+      width: itemWidth,
+      height: height,
+      borderRadius: 5,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000000',
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowRadius: 6,
+          shadowOpacity: 0.7
+        },
+
+      }),
+    }
+  });
+
+  let _renderItem = ({ item, index }) => {
     return (
-      <Carousel
-        ref={c => this._carousel = c}
-        data={list}
-        renderItem={_renderItem}
-        sliderWidth={width}
-        itemWidth={itemWidth + THUMBNAIL_SPACING}
-        layout={'default'}
-        firstItem={0}
-        activeSlideAlignment={'start'}
-        inactiveSlideScale={1}
-        inactiveSlideOpacity={1}
-      />
+      <TouchableOpacity key={item.id}
+        style={{
+          width: itemWidth,
+          marginLeft: THUMBNAIL_SPACING,
+
+        }}
+        activeOpacity={1}
+        onPress={() => _onPressPromo(item)}
+      >
+        <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
+          <Image
+            style={style.thumbnail}
+            source={{ uri: item.bannerUrl }}
+          />
+        </View>
+      </TouchableOpacity>
     );
   }
 
-  _renderContent({ list, itemsPerScreen, height }) {
-    let itemWidth = (width - THUMBNAIL_PEEK) / itemsPerScreen - THUMBNAIL_SPACING;
-    let style = StyleSheet.create({
-      containerThumbnail: {
-        backgroundColor: 'transparent',
-        paddingBottom: 8,
-        ...Platform.select({
-          ios: {
-            shadowColor: '#000000',
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowRadius: 3,
-            shadowOpacity: 0.7
-          },
-        })
-      },
-      thumbnail: {
-        backgroundColor: 'transparent',
-        resizeMode: 'cover',
-        width: itemWidth,
-        height: height,
-        borderRadius: 5,
-        ...Platform.select({
-          ios: {
-            shadowColor: '#000000',
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowRadius: 6,
-            shadowOpacity: 0.7
-          },
+  return (
+    <Carousel
+      data={list}
+      renderItem={_renderItem}
+      sliderWidth={width}
+      itemWidth={itemWidth + THUMBNAIL_SPACING}
+      layout={'default'}
+      firstItem={0}
+      activeSlideAlignment={'start'}
+      inactiveSlideScale={1}
+      inactiveSlideOpacity={1}
+    />
+  );
+}
 
-        }),
-      }
-    });
 
-    let _renderItem = ({ item, index }) => {
-      return (
-        <TouchableOpacity key={item.id}
-          style={{
-            width: itemWidth,
-            marginLeft: THUMBNAIL_SPACING,
-          }}
-          activeOpacity={1}
-          onPress={() => this._onPressProduct(item)}
-        >
-          <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
-            <Image
-              style={style.thumbnail}
-              source={item.mediaSrc.toString().startsWith('http') ? { uri: item.mediaSrc } : item.mediaSrc}
-            />
+class RenderContent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      list: props.list,
+      wishlists: {},
+    };
+    this._onWishlist.bind(this);
+  }
+
+  componentWillReceiveProps({list}) {
+    if (list && list.length > 0) this.setState({list});
+  }
+
+  _onWishlist = async ({ id, wishlisted }) => {
+    const { wishlists } = this.state;
+    wishlists[id] = wishlisted;
+    this.setState({ wishlists });
+  }
+
+  itemWidth = (width - THUMBNAIL_PEEK) / this.props.itemsPerScreen - THUMBNAIL_SPACING;
+  style = StyleSheet.create({
+    containerThumbnail: {
+      backgroundColor: 'transparent',
+      paddingBottom: 8,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000000',
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowRadius: 3,
+          shadowOpacity: 0.7
+        },
+      })
+    },
+    thumbnail: {
+      backgroundColor: 'transparent',
+      resizeMode: 'cover',
+      width: this.itemWidth,
+      height: this.props.height,
+      borderRadius: 5,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000000',
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowRadius: 6,
+          shadowOpacity: 0.7
+        },
+
+      }),
+    }
+  });
+  
+  _onPressProduct = item => this.props.navigation.navigate('DetailScreen', { details: item });
+  
+  _renderItem = ({ item, index }) => (
+    <TouchableOpacity key={item.id}
+      style={{
+        width: this.itemWidth,
+        marginLeft: THUMBNAIL_SPACING,
+      }}
+      activeOpacity={1}
+      onPress={() => this._onPressProduct(item)}
+    >
+      <View style={[this.style.containerThumbnail, { paddingTop: 0 }]}>
+        <Image
+          style={this.style.thumbnail}
+          source={item.mediaSrc.toString().startsWith('http') ? { uri: item.mediaSrc } : item.mediaSrc}
+        />
+      </View>
+      {item.name && (
+        <View style={{ marginTop: 5, flexDirection: 'row', paddingTop: 0 }}>
+          <View style={{
+            flex: 4,
+            paddingBottom: 20,
+            backgroundColor: 'transparent',
+          }}>
+            <Text style={this.props.itemsPerScreen == 1 ? styles.namaKotaBig : styles.namaKota}>
+              {item.city}
+            </Text>
+            <Text style={this.props.itemsPerScreen == 1 ? styles.activityTitleBig : styles.activityTitle}>
+              {item.name}
+            </Text>
+            <Text style={this.props.itemsPerScreen == 1 ? styles.priceTitleBig : styles.priceTitle}>
+              {Formatter.price(item.price)}
+            </Text>
           </View>
-          {item.name && (
-            <View style={{ marginTop: 5, flexDirection: 'row', paddingTop: 0 }}>
-              <View style={{
-                flex: 4,
-                paddingBottom: 20,
-                backgroundColor: 'transparent',
-              }}>
-                <Text style={itemsPerScreen == 1 ? styles.namaKotaBig : styles.namaKota}>
-                  {item.city}
-                </Text>
-                <Text style={itemsPerScreen == 1 ? styles.activityTitleBig : styles.activityTitle}>
-                  {item.name}
-                </Text>
-                <Text style={itemsPerScreen == 1 ? styles.priceTitleBig : styles.priceTitle}>
-                  {Formatter.price(item.price)}
-                </Text>
-              </View>
-              {(itemsPerScreen < 3) && (
-                <View>
-                  <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
-                    id={item.id} big={itemsPerScreen == 1} {...this.props} />
-                </View>
-              )}
+          { (this.props.itemsPerScreen < 3) && (
+            <View>
+              <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
+                id={item.id} big={this.props.itemsPerScreen == 1} {...this.props} />
             </View>
           )}
-        </TouchableOpacity>
-      );
-    }
+        </View>
+      )}
+    </TouchableOpacity>
+  )
 
+  render() {
     return (
       <Carousel
-        ref={c => this._carousel = c}
-        data={list}
-        renderItem={_renderItem}
+        data={this.state.list}
+        renderItem={this._renderItem}
         sliderWidth={width}
-        itemWidth={itemWidth + THUMBNAIL_SPACING}
+        itemWidth={this.itemWidth + THUMBNAIL_SPACING}
         layout={'default'}
         firstItem={0}
         activeSlideAlignment={'start'}
@@ -407,6 +391,49 @@ export default class ExploreScreen extends React.Component {
       />
     );
   }
+}
+
+function ActivityFlightHotelTab(props) {
+  return(
+    <View style={{flexDirection:'row', marginTop:20}}>
+      <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
+        <View>
+          <Icon
+          name='md-pin'
+          type='ionicon'
+          size={20}
+          color='#fff'/>
+        </View>
+        <View style={{marginLeft:5}}>
+          <Text style={{color:'#fff', fontSize:18,}}>Activity</Text>
+        </View>
+      </View>
+      <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center', marginLeft:10, marginRight:10,}}>
+        <View>
+          <Icon
+          name='flight'
+          type='materialicon'
+          size={20}
+          color='#3adfb5'/>
+        </View>
+        <View style={{marginLeft:5}}>
+          <Text style={{color:'#acacac', fontSize:18, }}>Flight</Text>
+        </View>
+      </View>
+      <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#fff', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
+        <View>
+          <Icon
+          name='hotel'
+          type='materialicons'
+          size={20}
+          color='#3adfb5'/>
+        </View>
+        <View style={{marginLeft:5}}>
+          <Text style={{color:'#acacac', fontSize:18,}}>Hotel</Text>
+        </View>
+      </View>
+    </View>
+  )
 }
 
 const THUMBNAIL_SPACING = 10;

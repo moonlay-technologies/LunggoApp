@@ -22,10 +22,11 @@ import { MultilineText, ListedText } from '../components/StyledText'
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 import LoadingModal from './../../commons/components/LoadingModal';
+import withConnectivityHandler from '../../higherOrderComponents/withConnectivityHandler';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-export default class DetailScreen extends Component {
+class DetailScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -196,6 +197,7 @@ export default class DetailScreen extends Component {
     );
   }
 }
+export default withConnectivityHandler(DetailScreen, {hasOfflineNotificationBar: false});
 
 class Footer extends Component {
   constructor(props) {
@@ -223,7 +225,7 @@ class Footer extends Component {
 
   _onCtaButtonClick = () => {
     //// if customer
-    this._goToBookingDetail();
+    this.props.withConnectivityHandler(this._goToBookingDetail);
   }
 
   render() {
@@ -251,7 +253,7 @@ class Footer extends Component {
             disabled={!_isDateAvailable}
             styleDisabled={{ color: '#aaa' }}
           >
-            {'Pesan'}
+            Pesan
           </Button>
         </View>
       </View>

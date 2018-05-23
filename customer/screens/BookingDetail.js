@@ -19,6 +19,7 @@ import { deleteCart } from './Cart/CartController';
 import { Moment } from 'moment';
 import { NavigationActions } from 'react-navigation';
 import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
+import withConnectivityHandler from '../../higherOrderComponents/withConnectivityHandler';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -41,8 +42,7 @@ async function fetchTravoramaBookApi(data) {
   return response;
 }
 
-
-export default class BookingDetail extends React.Component {
+class BookingDetail extends React.Component {
 
   constructor(props) {
     super(props);
@@ -188,7 +188,9 @@ export default class BookingDetail extends React.Component {
     };
 
     try {
-      let response = await fetchTravoramaBookApi(data);
+      let response = await this.props.withConnectivityHandler(
+        () => fetchTravoramaBookApi(data)
+      );
       if (response.status != 200) {
         console.log("Book API: status other than 200 returned!");
         console.log(response);
@@ -616,6 +618,7 @@ export default class BookingDetail extends React.Component {
     );
   }
 }
+export default withConnectivityHandler(BookingDetail);
 
 const styles = StyleSheet.create({
   clickableText: {

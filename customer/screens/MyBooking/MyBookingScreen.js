@@ -7,9 +7,9 @@ import CartListItem from './MyBookingListScreen';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
 import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 
-
-export default class MyBookingScreen extends React.Component {
+class MyBookingScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -31,7 +31,9 @@ export default class MyBookingScreen extends React.Component {
       return this.setState({ isLoading: false });
     }
     console.log("did mount mybookingscreen");
-    this.listenerSubscription = this.props.navigation.addListener("didFocus",() => this._refreshMyBookingList(false, false));
+    this.listenerSubscription = this.props.navigation.addListener(
+      "didFocus", () => this._refreshMyBookingList(false, false)
+    );
   }
 
   componentWillUnmount(){
@@ -42,17 +44,17 @@ export default class MyBookingScreen extends React.Component {
     }    
   }
   
-  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
-    if(shouldLoading)
+  _refreshMyBookingList = (shouldShowLoadingIndicator = true, shouldRefreshFromDatabase = true) => {
+    if(shouldShowLoadingIndicator)
     {
       this.setState({ isLoading: true });
     }
-    if(refreshing){
+    if(shouldRefreshFromDatabase){
       shouldRefreshMyBookingList();
     }
-    getMyBookingList().then(list => {
-      this.setState({ list });
-    }).finally(() => this.setState({ isLoading: false }));
+    this.props.withConnectivityHandler(getMyBookingList)
+      .then(list => this.setState({ list }))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _keyExtractor = (item, index) => index
@@ -69,35 +71,25 @@ export default class MyBookingScreen extends React.Component {
     let { isLoading, list, status } = this.state;
     let { props } = this;
 
-    if (isLoading) return (
-      <View>
-        <OfflineNotificationBar/>
-        <LoadingAnimation />
-      </View>
-    );
+    if (isLoading) return null// <LoadingAnimation />
     else if (list && list.length > 0) return (
-      <View>
-        <OfflineNotificationBar/>
-        <FlatList
-          data={list}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}
-        />
-      </View>
+      <FlatList
+        data={list}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={isLoading} />}
+      />
     );
     else return (
-      <View>
-        <OfflineNotificationBar/>
-        <ScrollView
-          contentContainerStyle={styles.container}
-          refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={this.state.isLoading} />}>
-          <BlankScreen {...props} />
-        </ScrollView>
-      </View>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={<RefreshControl onRefresh={this._refreshMyBookingList} refreshing={isLoading} />}>
+        <BlankScreen {...props} />
+      </ScrollView>
     );
   }
 }
+export default withConnectivityHandler(MyBookingScreen, {hasOfflineNotificationBar: false});
 
 const styles = StyleSheet.create({
   container: {
