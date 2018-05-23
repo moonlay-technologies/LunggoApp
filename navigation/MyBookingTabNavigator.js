@@ -44,7 +44,10 @@ export default TabNavigator(
 
     tabBarOptions: {
       activeTintColor: Colors.bottomTabSelected,
-      inactiveTintColor: '#eee',
+      inactiveTintColor: '#49ddd3',
+      indicatorStyle: {
+            backgroundColor: '#00d3c5',
+        },
       labelStyle: {
         fontSize: 12,
         fontFamily: 'Hind-SemiBold',
@@ -59,7 +62,7 @@ export default TabNavigator(
           },
         }),
       },
-      style: { paddingBottom: 5, height: 50, backgroundColor: '#fbfbfb', borderTopColor: '#ececec', }
+      style: { paddingBottom: 5, height: 50, backgroundColor: '#fbfbfb', borderTopColor: '#ececec', borderBottomColor:'#00d3c5'}
     },
   }
 );

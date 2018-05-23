@@ -139,7 +139,7 @@ export default class Registration extends React.Component {
         />
         
         </KeyboardAwareScrollView>
-        </ScrollView >
+        </ScrollView>
         <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
           onPress={this._goToLoginScreen}
         >
@@ -149,6 +149,7 @@ export default class Registration extends React.Component {
         </TouchableOpacity>
         <OfflineNotificationBar/>
       </View>
+
 
     );
   }
