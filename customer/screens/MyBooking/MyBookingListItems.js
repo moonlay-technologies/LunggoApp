@@ -23,7 +23,7 @@ import { Icon } from 'react-native-elements';
 import Modal from '../../../commons/components/Modal';
 import Moment from 'moment';
 
-class ActivityListItem extends React.PureComponent {
+export class ActivityListItem extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -57,8 +57,8 @@ class ActivityListItem extends React.PureComponent {
   }
   _closeSettingModal = () => this.refs.settingModal.closeModal();
 
-  _voucherButton = item => {
-    let renderTicketButton = item => {
+  _buttons = item => {
+    let renderStatus = item => {
       switch (item.bookingStatus) {
         case 'Booked':
         case 'ForwardedToOperator':
@@ -134,88 +134,95 @@ class ActivityListItem extends React.PureComponent {
       }
     }
 
-    let renderRatingButton = item => {
-      (item.requestRating || item.requestReview) &&
-        <Button
-          containerStyle={styles.labelReview}
-          style={styles.statusText}
-          onPress={() => item.requestRating ?
-            this.props.navigation.navigate('SubmitRating', { rsvNo: item.rsvNo }) :
-            this.props.navigation.navigate('SubmitReview', { rsvNo: item.rsvNo })}>
-          {item.requestRating ? 'Beri Rating' : 'Beri Review'}
-        </Button>
-    }
-
     return (
       <View style={{ flexDirection: 'row' }}>
         <View>
-          {renderTicketButton(item)}
+          {renderStatus(item)}
         </View>
-        <View>
-          {renderRatingButton(item)}
-        </View>
-      </View>
+      </View >
     );
   }
 
   render() {
     let { item } = this.props;
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this._goToBookedPageDetail} style={{ position: 'relative' }}>
-        <View style={{ flexDirection: 'row', position: 'relative' }}>
-          <View style={{ width: 70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
-          <View style={{ flex: 3 }}>
-            <Text style={styles.activityTitle}>
-              {item.name}
-            </Text>
-            <View style={{ flexDirection: 'row', }}>
-              <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
-              <Text style={styles.activityDesc}>, </Text>
-              <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+      <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
+        <View>
+          <View style={{ paddingVertical: 25, paddingHorizontal: 15 }}>
+            <View style={{ flexDirection: 'row', position: 'relative' }}>
+              <View style={{ width: 70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+              <View style={{ flex: 3 }}>
+                <Text style={styles.activityTitle}>
+                  {item.name}
+                </Text>
+                <View style={{ flexDirection: 'row', }}>
+                  <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+                  <Text style={styles.activityDesc}>, </Text>
+                  <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+                </View>
+                <Text style={styles.activityDesc}>
+                  {getPaxCountText(item.paxCount)}
+                </Text>
+                <View>
+                  {this.props.showActionButtons && this._buttons(item)}
+                </View>
+              </View>
+              <View style={{ position: 'relative' }}>
+                <TouchableOpacity
+                  style={{ width: 25, alignItems: 'center' }}
+                  onPress={evt => this._openSettingModal(evt)}>
+                  <Icon
+                    name='md-more'
+                    type='ionicon'
+                    size={26}
+                    color='#454545' />
+                </TouchableOpacity>
+
+                <Modal ref='settingModal'
+                  style={styles.modalStyle}
+                  animationIn='fadeIn'
+                  animationOut='fadeOut'
+                  backdropOpacity={0}
+                  tapX={this.state.tapX}
+                  tapY={this.state.tapY}
+                >
+
+                  <TouchableOpacity>
+                    <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.separatorOption}></View>
+
+                  <TouchableOpacity>
+                    <Text style={styles.teks3a}>Hapus Aktivitas</Text>
+                  </TouchableOpacity>
+
+                </Modal>
+
+                {/* <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
+        <View>
+          <View style={{ paddingVertical: 25, paddingHorizontal: 15 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+              <View style={{ flex: 3 }}>
+                <Text style={styles.activityTitle}>
+                  {item.name}
+                </Text>
+                <View style={{ flexDirection: 'row', }}>
+                  <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+                  <Text style={styles.activityDesc}>, </Text>
+                  <Text style={styles.activityDesc}>{item.selectedSession}</Text>
+                </View>
+                <Text style={styles.activityDesc}>
+                  {getPaxCountText(item.paxCount)}
+                </Text>
+              </View>
             </View>
-            <Text style={styles.activityDesc}>
-              {getPaxCountText(item.paxCount)}
-            </Text>
-            <View>
-              {this._voucherButton(item)}
+            {this.props.showActionButtons && this._buttons(item)} */}
+              </View>
             </View>
-          </View>
-          <View style={{ position: 'relative' }}>
-            <TouchableOpacity
-              style={{ width: 25, alignItems: 'center' }}
-              onPress={evt => this._openSettingModal(evt)}>
-              <Icon
-                name='md-more'
-                type='ionicon'
-                size={26}
-                color='#454545' />
-            </TouchableOpacity>
 
-            <Modal ref='settingModal'
-              style={styles.modalStyle}
-              animationIn='fadeIn'
-              animationOut='fadeOut'
-              backdropOpacity={0}
-              tapX={this.state.tapX}
-              tapY={this.state.tapY}
-            >
-
-              <TouchableOpacity>
-                <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
-              </TouchableOpacity>
-
-              <View style={styles.separatorOption}></View>
-
-              <TouchableOpacity>
-                <Text style={styles.teks3a}>Hapus Aktivitas</Text>
-              </TouchableOpacity>
-
-            </Modal>
-
-          </View>
-        </View>
-
-        {/*
+            {/*
         {(item.requestRating || item.requestReview) && (
           <View style={{ marginTop: 25 }}>
             <View style={{ flex: 1 }}>
@@ -233,13 +240,15 @@ class ActivityListItem extends React.PureComponent {
           </View>
         )}
         */}
-        <View style={styles.separator} />
-      </TouchableOpacity>
+          </View>
+          <View style={styles.separator} />
+        </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
 
-export default class CartListItem extends React.PureComponent {
+export class TrxListItem extends React.PureComponent {
 
   _keyExtractor = (item, index) => index
   _renderItem = ({ item, index }) => (
@@ -248,6 +257,7 @@ export default class CartListItem extends React.PureComponent {
       index={index}
       // onPressItem={this._onPressItem}
       navigation={this.props.navigation}
+      showActionButtons={false}
     />
   )
 
@@ -294,7 +304,7 @@ export default class CartListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-        <View style={{ marginBottom: 20, borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10 }}>
+        <View style={{borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10, paddingHorizontal: 15 }}>
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
@@ -309,7 +319,7 @@ export default class CartListItem extends React.PureComponent {
           renderItem={this._renderItem}
         />
 
-        <View>
+        <View style={{ paddingHorizontal: 15 }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.totalText}>Total</Text>
@@ -344,8 +354,7 @@ const styles = StyleSheet.create({
   },
   cartbox: {
     backgroundColor: '#fff',
-    padding: 15,
-    marginVertical: 15,
+    paddingVertical: 15,
     borderRadius: 5,
     ...Platform.select({
       ios: {
@@ -435,15 +444,12 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: '#bfbfbf',
-    height: 0.3,
+    height: 0.5,
     width: '100%',
-    marginTop: 25,
-    marginBottom: 15
   },
   total: {
-    paddingBottom: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ececec'
+    marginTop: 20,
+    paddingHorizontal: 15,
   },
   totalText: {
     fontSize: 16,
@@ -634,7 +640,7 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 10,
     zIndex: 100,
-    margin:-5,
+    margin: -5,
     ...Platform.select({
       ios: {
         shadowColor: '#000',

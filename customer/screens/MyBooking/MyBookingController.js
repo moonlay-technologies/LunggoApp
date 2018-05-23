@@ -75,6 +75,26 @@ export async function purgeMyBookingList() {
   deleteItemAsync('myBookings');
 }
 
+export async function fetchMyBookingActivityHistoryList(startDate, endDate, page, perPage) {
+  const version = 'v1';
+  let request = {
+    path: `/${version}/activities/mybooking?startDate=${startDate}&endDate=${endDate}&page=${page}&perPage=${perPage}`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+  }
+  let response = await fetchTravoramaApi(request);
+  return response;
+}
+
+export async function fetchMyBookingTrxHistoryList(startDate, endDate, page, perPage) {
+  const version = 'v1';
+  let request = {
+    path: `/${version}/activities/mybooking?startDate=${startDate}&endDate=${endDate}&page=${page}&perPage=${perPage}`,
+    requiredAuthLevel: AUTH_LEVEL.User,
+  }
+  let response = await fetchTravoramaApi(request);
+  return response;
+}
+
 async function downloadPdfVouchers(bookings) {
   console.log('download');
 
@@ -97,7 +117,6 @@ async function downloadPdfVouchers(bookings) {
     }
   }
 }
-
 class MyBookingStoreMobx {
   @observable hasNewBooking = false;
 

@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { View, ActivityIndicator, FlatList, StyleSheet, Platform } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import { TrxListItem } from './MyBookingListItems';
+import { TrxListItem, ActivityListItem } from './MyBookingListItems';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
 import MenuButton from './../../../commons/components/MenuButton';
@@ -17,35 +17,35 @@ export default class MyBookingScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
+      activityList: [],
       isLoggedIn: false,
-      list: [],
     };
   }
 
   static navigationOptions = {
-    title: 'Pembelian',
+    title: 'Aktivitas',
   }
 
   listenerSubcription = null;
 
   componentDidMount() {
     this._checkLoggedIn();
+    console.log("did mount mybookingscreen");
     this.listenerSubscription = this.props.navigation.addListener("didFocus", () => this._refreshMyBookingList(false, false));
   }
 
   componentWillUnmount() {
+    console.log("melakukan unmount");
     if (this.listenerSubscription) {
       this.listenerSubscription.remove();
     }
   }
 
   _checkLoggedIn = async () => {
-    this.setState({ isLoading: true });
     let isLoggedIn = await checkUserLoggedIn();
-    this.setState({ isLoggedIn, isLoading: false });
+    this.setState({ isLoggedIn });
   }
 
-  _goToTrxHistory = () => this.props.navigation.navigate('MyBookingTrxHistory');
   _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
     if (shouldLoading) {
       this.setState({ isLoading: true });
@@ -54,24 +54,29 @@ export default class MyBookingScreen extends React.Component {
       shouldRefreshMyBookingList();
     }
     getMyBookingList().then(list => {
-      this.setState({ list });
+      let activities = list.reduce((result, cart) => result.concat(cart.activities), []);
+      this.setState({ activityList: activities });
     }).finally(() => this.setState({ isLoading: false }));
   }
 
-  _keyExtractor = (item, index) => index
+  _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
+  _keyExtractor = (item, index) => index;
   _renderItem = ({ item, index }) => (
-    <TrxListItem
-      item={item}
-      index={index}
-      // onPressItem={this._onPressItem}
-      navigation={this.props.navigation}
-    />
+    <View style={{ backgroundColor: 'white' }}>
+      <ActivityListItem
+        item={item}
+        index={index}
+        // onPressItem={this._onPressItem}
+        navigation={this.props.navigation}
+        showActionButtons={true}
+      />
+    </View>
   )
 
   header = () => (
     <View style={{ height: 90, justifyContent: 'center' }}>
       <MenuButton
-        label='Lihat Riwayat Pembelian'
+        label='Lihat Riwayat Aktivitas'
         icon={
           <Icon
             name='ios-time-outline'
@@ -80,27 +85,25 @@ export default class MyBookingScreen extends React.Component {
             color='#454545'
           />
         }
-        onPress={this._goToTrxHistory}
+        onPress={this._goToActivityHistory}
       />
     </View>
-  );
+  )
 
   render() {
-    let { isLoading, isLoggedIn, list, status } = this.state;
+    let { isLoading, isLoggedIn, activityList, status } = this.state;
     let { props } = this;
-
 
     if (isLoggedIn)
       return (
         <View style={{ flex: 1 }}>
           <View style={{ flex: -1 }}>
             <FlatList
-              data={list}
+              data={activityList}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}
               refreshing={this.state.isLoading}
-              ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
               ListHeaderComponent={this.header}
               ListEmptyComponent={<BlankScreen {...props} />}
             />
@@ -114,11 +117,6 @@ export default class MyBookingScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 0,
-    backgroundColor: '#f1f0f0',
-  },
   separator: {
     height: 20
   }

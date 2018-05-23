@@ -33,6 +33,8 @@ import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
 import RefundPage from '../customer/screens/RefundPage';
+import MyBookingActivityHistory from '../customer/screens/MyBooking/MyBookingActivityHistoryScreen';
+import MyBookingTrxHistory from '../customer/screens/MyBooking/MyBookingTrxHistoryScreen';
 
 import IntroScreen from '../customer/screens/IntroScreen';
 // import Filter from '../screens/Filter';
@@ -46,7 +48,7 @@ export default class RootNavigator extends React.Component {
         //screen:Referral
         // screen:F_ReservationDetail
         // screen:Dashboard
-        screen: MainTabNavigator
+        screen: MainTabNavigator 
       } : {
         screen: MainTabNavigator 
       },
@@ -81,6 +83,8 @@ export default class RootNavigator extends React.Component {
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
       RefundPage: { screen: RefundPage },
+      MyBookingActivityHistory: { screen: MyBookingActivityHistory },
+      MyBookingTrxHistory: { screen: MyBookingTrxHistory },
     },
     {
       initialRouteName: (this.props.skipIntro) ? 'Main' : 'IntroScreen',
