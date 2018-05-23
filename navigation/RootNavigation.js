@@ -32,6 +32,7 @@ import HelpScreen from '../customer/screens/HelpScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
+import RefundPage from '../customer/screens/RefundPage';
 
 import IntroScreen from '../customer/screens/IntroScreen';
 // import Filter from '../screens/Filter';
@@ -46,7 +47,7 @@ export default class RootNavigator extends React.Component {
         //screen:Referral
         // screen:F_ReservationDetail
         // screen:Dashboard
-        screen: MainTabNavigator
+        screen: RefundPage
       } : {
         screen: MainTabNavigator 
       },
@@ -80,6 +81,7 @@ export default class RootNavigator extends React.Component {
       // ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
+      RefundPage: { screen: RefundPage },
     },
     {
       initialRouteName: (this.props.skipIntro) ? 'Main' : 'IntroScreen',
