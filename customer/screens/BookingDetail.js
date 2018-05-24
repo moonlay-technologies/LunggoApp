@@ -11,7 +11,7 @@ import {
   ScrollView, Platform
 } from 'react-native';
 import ContinueToCartModal from '../components/ContinueToCartModal';
-import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import { shouldRefreshMyBookingTrxList } from './MyBooking/MyBookingController';
 import LoadingModal from './../../commons/components/LoadingModal';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
@@ -208,7 +208,7 @@ export default class BookingDetail extends React.Component {
           deleteCart(this.state.rsvNo);
         }
         await cartCountStore.setCartCount();
-        shouldRefreshMyBookingList();
+        shouldRefreshMyBookingTrxList();
         if (this.state.editRsv){
           this._goToCart();
         }

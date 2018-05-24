@@ -19,7 +19,7 @@ import { observer } from 'mobx-react';
 import cartCountStore from './Cart/CartCountStorage';
 import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
 import intervalController from './IntervalController';
-import { getMyBookingList, fetchMyBookingList, fetchMyBookingActivityList } from './MyBooking/MyBookingController';
+import { fetchMyBookingTrxList, fetchMyBookingActivityList } from './MyBooking/MyBookingController';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -48,7 +48,7 @@ export default class ExploreScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Jelajah',
-    header: (props) => <SearchHeader {...props} />
+    header: null
   };
 
   _checkVersion = () => {
@@ -126,7 +126,7 @@ export default class ExploreScreen extends React.Component {
   componentDidMount() {
     this._refreshContents();
     this.props.navigation.addListener('didFocus', this._getWishlist);
-    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingList));
+    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingTrxList));
     this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingActivityList));
     //this.props.navigation.addListener('willFocus', this._cartCountGetter);
     this._getWishlist();
@@ -150,9 +150,11 @@ export default class ExploreScreen extends React.Component {
     else
       console.log('version modal: ' + this.state.isNotifModalVisible);
     return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
-        <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
-        {/*<View style={{flexDirection:'row', marginTop:20}}>
+      <View>
+        <SearchHeader {...this.props} />
+        <ScrollView style={{ backgroundColor: '#fff' }}>
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
+          {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
                 <Icon
@@ -191,28 +193,29 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */}
 
-        {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
-        {this._renderContent({ list: this.state.tiketList, itemsPerScreen: 1, height: 200 })}
+          {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
+          {this._renderContent({ list: this.state.tiketList, itemsPerScreen: 1, height: 200 })}
 
-        {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-        {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
+          {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
+          {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
 
-        {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-        {this._renderContent({ list: this.state.tripList, itemsPerScreen: 3, height: 150 })}
+          {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
+          {this._renderContent({ list: this.state.tripList, itemsPerScreen: 3, height: 150 })}
 
-        {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-        {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
+          {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
+          {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
 
-        {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
-        {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
+          {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
+          {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
 
           {this._renderHeader({ title: 'Promo Terkini' })}
           {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
-          
+
           <View style={{ paddingTop: 10 }}></View>
-          <OfflineNotificationBar/>
+          <OfflineNotificationBar />
         </ScrollView>
-      );
+      </View>
+    );
   }
 
   _goTo = (screen, params) =>

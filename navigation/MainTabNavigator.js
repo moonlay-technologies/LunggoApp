@@ -82,7 +82,7 @@ export default TabNavigator(
             <Ionicons
               name={iconName}
               size={28}
-              style={{ marginBottom: -4, }}
+              style={{ marginBottom: 0, }}
               color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
             />
             <IconBubble control={control} />
@@ -104,6 +104,7 @@ export default TabNavigator(
         ...Platform.select({
           ios: {
             marginBottom: -8,
+            marginTop:-8
           },
           android: {
             lineHeight: 18,

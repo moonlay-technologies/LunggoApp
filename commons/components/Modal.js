@@ -2,6 +2,9 @@
 
 import React from 'react';
 import ModalPlugin from 'react-native-modal';
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export default class Modal extends React.Component {
 
@@ -12,8 +15,26 @@ export default class Modal extends React.Component {
     }
   }
 
-  componentWillReceiveProps({ isVisible }) {
-    this.setState({ isVisible });
+  componentWillReceiveProps({ isVisible, tapX, tapY }) {
+    if (isVisible != undefined)
+      this.setState({ isVisible });
+
+    let location = {}
+    if (tapX != undefined && tapY != undefined) {
+      if (tapX > (width / 2))
+        location.right = width - tapX;
+      else
+        location.left = tapX;
+
+      if (tapY > (height / 2))
+        location.bottom = height - tapY;
+      else
+        location.top = tapY;
+
+      this.setState({ position: 'absolute', location });
+    } else {
+      this.setState({ position: 'relative', location });
+    }
   }
 
   setVisibility = vis => this.setState({ isVisible: vis });
@@ -25,7 +46,7 @@ export default class Modal extends React.Component {
     let { props } = this;
     return (
       <ModalPlugin
-        style={props.style}
+        style={[props.style, this.state.location, { position: this.state.position }]}
         animationIn={props.animationIn}
         animationOut={props.animationOut}
         backdropOpacity={props.backdropOpacity}

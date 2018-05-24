@@ -8,7 +8,7 @@ import { clientId, clientSecret } from '../../constants/env';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
-import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import { shouldRefreshMyBookingTrxList } from './MyBooking/MyBookingController';
 import { backToMyBookings } from './../../api/Common';
 import cartCountStore from './Cart/CartCountStorage';
 
@@ -22,11 +22,11 @@ export default class PaymentScreen extends React.Component {
 
   _onMessage = event => {
     if (event.nativeEvent.data == 'ExploreScreen') {
-      shouldRefreshMyBookingList();
+      shouldRefreshMyBookingTrxList();
       return backToMain(this.props.navigation);
     }
     if (event.nativeEvent.data == 'backToMyBookings') {
-      shouldRefreshMyBookingList();
+      shouldRefreshMyBookingTrxList();
       return backToMyBookings(this.props.navigation);
     }
   }
