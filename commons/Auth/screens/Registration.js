@@ -154,6 +154,7 @@ class Registration extends React.Component {
         </TouchableOpacity>
       </View>
 
+
     );
   }
 }

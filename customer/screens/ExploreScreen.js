@@ -46,7 +46,7 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
   static navigationOptions = {
     title: 'Jelajah',
-    header: (props) => <SearchHeader {...props} />
+    header: null
   };
 
   _checkVersion = () => {
@@ -145,37 +145,40 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
     else
       console.log('version modal: ' + this.state.isNotifModalVisible);
     return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
-        <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
-        {/*<ActivityFlightHotelTab/>*/}
+      <View>
+        <SearchHeader {...this.props} />
+        <ScrollView style={{ backgroundColor: '#fff' }}>
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
+          {/*<ActivityFlightHotelTab/>*/}
 
-        { this.state.errorMessage ?
-          <Text>{this.state.errorMessage}</Text>
-          :
-          <View>
-            <RenderHeader title='Tiket' searchUrl='tiket' {...props}/>
-            <RenderContent list={this.state.tiketList} itemsPerScreen={1} height={200} {...props}/>
+          { this.state.errorMessage ?
+            <Text>{this.state.errorMessage}</Text>
+            :
+            <View>
+              <RenderHeader title='Tiket' searchUrl='tiket' {...props}/>
+              <RenderContent list={this.state.tiketList} itemsPerScreen={1} height={200} {...props}/>
 
-            <RenderHeader title='Paket' searchUrl='paket' {...props}/>
-            <RenderContent list={this.state.paketList} itemsPerScreen={2} height={150} {...props}/>
-           
-            <RenderHeader title='Trip' searchUrl='trip' {...props}/>
-            <RenderContent list={this.state.tripList} itemsPerScreen={3} height={150} {...props}/>
-           
-            <RenderHeader title='Tur Keliling Kota' searchUrl='tur' {...props}/>
-            <RenderContent list={this.state.turList} itemsPerScreen={1} height={100} {...props}/>
-           
-            <RenderHeader title='Promo Terkini' {...props}/>
-            <RenderPromo list={this.state.promoList} itemsPerScreen={1} height={100} {...props}/>
-            {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
-            {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
-          </View>
-          
-        }
+              <RenderHeader title='Paket' searchUrl='paket' {...props}/>
+              <RenderContent list={this.state.paketList} itemsPerScreen={2} height={150} {...props}/>
+            
+              <RenderHeader title='Trip' searchUrl='trip' {...props}/>
+              <RenderContent list={this.state.tripList} itemsPerScreen={3} height={150} {...props}/>
+            
+              <RenderHeader title='Tur Keliling Kota' searchUrl='tur' {...props}/>
+              <RenderContent list={this.state.turList} itemsPerScreen={1} height={100} {...props}/>
+            
+              <RenderHeader title='Promo Terkini' {...props}/>
+              <RenderPromo list={this.state.promoList} itemsPerScreen={1} height={100} {...props}/>
+              {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
+              {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
+            </View>
+            
+          }
 
           <View style={{ paddingTop: 10 }}></View>
         </ScrollView>
-      );
+      </View>
+    );
   }
 
 }

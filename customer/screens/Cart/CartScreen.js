@@ -51,6 +51,7 @@ class CartScreen extends React.Component {
 
   _goToRincian = () => {
     let { cartId, list, totalPrice, status } = this.state;
+    let title = __DEV__ && `dev only - cartId : ${cartId}`
     let total = totalPrice;
     let breakdown = list.map(rsv => ({
       name: rsv.activityDetail.name,
@@ -63,7 +64,7 @@ class CartScreen extends React.Component {
         }
       })
     }));
-    this.props.navigation.navigate('RincianHarga', { total, breakdown });
+    this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
   }
 
   _keyExtractor = (item, index) => index;

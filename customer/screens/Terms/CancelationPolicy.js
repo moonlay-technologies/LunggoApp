@@ -17,7 +17,7 @@ export default class CancelationPolicy extends React.Component {
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/terms/cancelationpolicy',
+          uri: DOMAIN + '/id/webview/cancellationpolicy',
           // uri: DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
