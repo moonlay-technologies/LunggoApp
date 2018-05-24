@@ -32,7 +32,7 @@ import HelpScreen from '../customer/screens/HelpScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
-import RefundPage from '../customer/screens/RefundPage';
+import RefundScreen from '../customer/screens/RefundScreen';
 import MyBookingActivityHistory from '../customer/screens/MyBooking/MyBookingActivityHistoryScreen';
 import MyBookingTrxHistory from '../customer/screens/MyBooking/MyBookingTrxHistoryScreen';
 
@@ -82,7 +82,7 @@ export default class RootNavigator extends React.Component {
       // ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
-      RefundPage: { screen: RefundPage },
+      RefundScreen: { screen: RefundScreen },
       MyBookingActivityHistory: { screen: MyBookingActivityHistory },
       MyBookingTrxHistory: { screen: MyBookingTrxHistory },
     },

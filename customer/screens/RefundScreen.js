@@ -13,38 +13,73 @@ import {
   ScrollView
 } from 'react-native';
 import { LinearGradient } from 'expo';
+import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
+import LoadingModal from './../../commons/components/LoadingModal';
 
-export default class LoginScreen extends Component<{}> {
+export default class RefundScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { ...this.props.navigation.state.params, isLoading: false };
+  }
+
+  static navigationOptions = {
+    title: 'Rekening Refund',
+  }
+
+  _submit = async () => {
+    this.setState({ isLoading: true });
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/mybooking/${this.state.rsvNo}/refund/bankaccount`,
+      method: 'POST',
+      requiredAuthLevel: AUTH_LEVEL.User,
+      data: {
+        rsvNo: this.state.rsvNo,
+        bankAccount: {
+          accountNumber: this.state.accountNumber,
+          bankName: this.state.bankName,
+          ownerName: this.state.ownerName,
+          branch: this.state.branch
+        }
+      }
+    }
+    let response = await fetchTravoramaApi(request);
+    console.log(response);
+    let success = (response.status === 200);
+    if (success)
+      this.props.navigation.goBack();
+    this.setState({ isLoading: true });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{marginTop:30}}></View>
-          <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#ececec', paddingBottom:20, marginBottom:15 }}>
+        {this.state.isLoading && <LoadingModal />}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ marginTop: 30 }}></View>
+          {/* <View style={{flexDirection:'row', borderBottomWidth:1, borderBottomColor:'#ececec', paddingBottom:20, marginBottom:15 }}>
             <View><Text style={styles.labelRefund}>Jumlah Uang: </Text></View>
             <View><Text style={styles.labelUangRefund}>Rp 400.000</Text></View>
-          </View>
+          </View> */}
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.label}>Nama Rekening</Text>
+            <Text style={styles.label}>No. Rekening</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
             <TextInput
-              style={ styles.searchInput
-              }
-              keyboardType='email-address'
+              style={styles.searchInput}
+              ref='accountNumberInput'
+              keyboardType='default'
               underlineColorAndroid='transparent'
               autoCapitalize='none'
               autoCorrect={false}
               returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
+              onSubmitEditing={() => this.refs.bankNameInput.focus()}
               // blurOnSubmit={false}
-              onChangeText={userName => this.setState({
-                userName, errorUserName: null, error: null
-              })}
+              onChangeText={accountNumber => this.setState({ accountNumber })}
+              value={this.state.accountNumber}
             />
           </View>
           <View style={{ marginBottom: 10 }}>
@@ -52,20 +87,35 @@ export default class LoginScreen extends Component<{}> {
           </View>
           <View style={{ marginBottom: 10 }}>
             <TextInput
-              style={ styles.searchInput
-              }
-              keyboardType='email-address'
+              style={styles.searchInput}
+              ref='bankNameInput'
+              keyboardType='default'
               underlineColorAndroid='transparent'
               autoCapitalize='none'
               autoCorrect={false}
               returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
+              onSubmitEditing={() => this.refs.ownerNameInput.focus()}
               // blurOnSubmit={false}
-              onChangeText={userName => this.setState({
-                userName, errorUserName: null, error: null
-              })}
+              onChangeText={bankName => this.setState({ bankName })}
+              value={this.state.bankName}
+            />
+          </View>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.label}>Nama Pemilik Rekening</Text>
+          </View>
+          <View style={{ marginBottom: 10 }}>
+            <TextInput
+              style={styles.searchInput}
+              ref='ownerNameInput'
+              keyboardType='default'
+              underlineColorAndroid='transparent'
+              autoCapitalize='none'
+              autoCorrect={false}
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.branchInput.focus()}
+              // blurOnSubmit={false}
+              onChangeText={ownerName => this.setState({ ownerName })}
+              value={this.state.ownerName}
             />
           </View>
           <View style={{ marginBottom: 10 }}>
@@ -73,50 +123,26 @@ export default class LoginScreen extends Component<{}> {
           </View>
           <View style={{ marginBottom: 10 }}>
             <TextInput
-              style={ styles.searchInput
-              }
-              keyboardType='email-address'
+              style={styles.searchInput}
+              ref='branchInput'
+              keyboardType='default'
               underlineColorAndroid='transparent'
               autoCapitalize='none'
               autoCorrect={false}
               returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
+              onSubmitEditing={this._submit}
               // blurOnSubmit={false}
-              onChangeText={userName => this.setState({
-                userName, errorUserName: null, error: null
-              })}
-            />
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.label}>No. Rekening</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <TextInput
-              style={ styles.searchInput
-              }
-              keyboardType='email-address'
-              underlineColorAndroid='transparent'
-              autoCapitalize='none'
-              autoCorrect={false}
-              returnKeyType='next'
-              onSubmitEditing={(event) => {
-                this.refs.passwordInput.focus();
-              }}
-              // blurOnSubmit={false}
-              onChangeText={userName => this.setState({
-                userName, errorUserName: null, error: null
-              })}
+              onChangeText={branch => this.setState({ branch })}
+              value={this.state.branch}
             />
           </View>
 
 
-          <View style={{marginVertical:15}}>
-            <View style={{marginBottom:8}}>
+          <View style={{ marginVertical: 15 }}>
+            <View style={{ marginBottom: 8 }}>
               <Text style={styles.activityDesc}>*) Penarikan dana ke rekening BRI akan dikenakan biaya transfer Rp 1,000.- oleh Bank BRI.</Text>
             </View>
-            <View style={{marginBottom:8}}>
+            <View style={{ marginBottom: 8 }}>
               <Text style={styles.activityDesc}>*) Pengembalian dana akan diproses dalam 2x24 jam.</Text>
             </View>
             <View>
@@ -128,6 +154,7 @@ export default class LoginScreen extends Component<{}> {
             style={{ alignItems: 'center', width: '100%', marginTop: 20 }}
             activeOpacity={0.6}
             styleDisabled={{ opacity: .7 }}
+            onPress={this._submit}
           >
             <LinearGradient
               colors={['#00d3c5', '#35eac6', '#6affc6']}
@@ -139,12 +166,12 @@ export default class LoginScreen extends Component<{}> {
                 fontSize: 18, color: '#ffffff',
                 fontFamily: 'Hind-SemiBold',
               }}>
-                Refund
+                OK
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        <View style={{marginBottom:30}}></View>
-      </ScrollView>
+          <View style={{ marginBottom: 30 }}></View>
+        </ScrollView>
       </View>
     );
   }
@@ -152,9 +179,9 @@ export default class LoginScreen extends Component<{}> {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal:15,
+    paddingHorizontal: 15,
     backgroundColor: '#fff',
-    flex:1,
+    flex: 1,
   },
   label: {
     fontSize: 14,

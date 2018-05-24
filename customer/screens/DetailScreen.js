@@ -22,6 +22,7 @@ import { MultilineText, ListedText } from '../components/StyledText'
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 import LoadingModal from './../../commons/components/LoadingModal';
+import { rupiah } from './../components/Formatter';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -97,7 +98,7 @@ export default class DetailScreen extends Component {
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,
-      mediaSrc, address, lat, long, wishlisted, shortDesc, contents,
+      mediaSrc, address, lat, long, wishlisted, shortDesc, contents, cancellation,
       review, reviewCount, rating, ratingCount, additionalContents, availableDateTimes } = this.state;
     let hideFooter = this.props.navigation.state.params.hideFooter;
     console.log("hide footer params: ");
@@ -129,32 +130,16 @@ export default class DetailScreen extends Component {
 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
                   <View style={[styles.containerdescriptionActivity, { flexDirection: 'row' }]}>
-                    <Text style={[styles.sectionTitle, { alignItems: 'flex-start' }]}>
-                      Ketentuan Pembatalan
-                    </Text>
-                    <View style={{ marginLeft: 10, alignItems: 'flex-end', flex: 2 }}>
-                      <Icon
-                        name='chevron-right'
-                        type='entypo'
-                        size={22}
-                        color='black' />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-
-                <View style={styles.divider} />
-
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
-                  <View style={[styles.containerdescriptionActivity, { flexDirection: 'row' }]}>
-                    <View style={{flex:2,}}>
+                    <View style={{ flex: 2, }}>
                       <Text style={[styles.sectionTitle, { alignItems: 'flex-start' }]}>
-                        Kebijakan Pembatalan
+                        Ketentuan Pembatalan
                       </Text>
                       <Text style={styles.activityDesc}>
-                        Pemesanan aktivitas ini dapat di-refund sesuai ketentuan berlaku
+                        {cancellation.map(c =>
+                          `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}% + ${rupiah(c.valueConstant)}.\n`)}
                       </Text>
                     </View>
-                    <View style={{alignItems: 'flex-end', flex: 0.2,}}>
+                    <View style={{ alignItems: 'flex-end', flex: 0.2, }}>
                       <Icon
                         name='chevron-right'
                         type='entypo'
@@ -177,7 +162,7 @@ export default class DetailScreen extends Component {
                   <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
                 </View>
 
-               {/* {additionalContents &&
+                {/* {additionalContents &&
                   <Accordion style={styles.containerdescriptionActivity}
                     sections={additionalContents.contents} />}*/}
               </View>
@@ -199,7 +184,7 @@ export default class DetailScreen extends Component {
 
 class Footer extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = { isLoading: false };
   }
 
@@ -458,7 +443,7 @@ class Header extends Component {
 
 class Contents extends Component {
 
-  
+
 
   render() {
     let { contents } = this.props;
@@ -477,8 +462,8 @@ class Contents extends Component {
           </MultilineText>
         );
       }
-    }; 
-    
+    };
+
     return contents.length ?
       (<View>
         {contents.map((content, index) => (
@@ -502,10 +487,10 @@ class MainInfo extends Component {
 
   render() {
     console.log('main info rerendered');
-    let { name, shortDesc, city, duration = {} } = this.props;
+    let { name, shortDesc, city, duration = {}, cancellation } = this.props;
     return (
       <View>
-        <View style={{ paddingTop: 10, paddingBottom: 25, flex:1 }}>
+        <View style={{ paddingTop: 10, paddingBottom: 25, flex: 1 }}>
           <View>
             <Text style={styles.activitydetailTitle}>
               {name}
@@ -517,19 +502,19 @@ class MainInfo extends Component {
             </MultilineText>
           </View>
 
-          <View style={[styles.divider, {marginVertical:25}]} />
+          <View style={[styles.divider, { marginVertical: 25 }]} />
 
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='location' type='octicon' size={18} color='#009389' style={{width:20}} />
+            <View style={{ justifyContent: 'center' }}>
+              <Icon name='location' type='octicon' size={18} color='#009389' style={{ width: 20 }} />
             </View>
-            <View style={{ marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 {city}
               </Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, }}>
+          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, }}>
             <View style={{justifyContent:'center'}}>
               <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
             </View>
@@ -538,8 +523,8 @@ class MainInfo extends Component {
                 DUMMY Maksimum 6 orang
                   </Text>
             </View>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+          </View> */}
+          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
             <View style={{justifyContent:'center'}}>
               <Icon name='calendar' type='octicon' size={18} color='#009389' style={{width:20}} />
             </View>
@@ -548,8 +533,8 @@ class MainInfo extends Component {
                 DUMMY Khusus hari minggu
                   </Text>
             </View>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+          </View> */}
+          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
             <View style={{justifyContent:'center'}}>
               <Icon name='info' type='octicon' size={18} color='#009389' style={{width:20}} />
             </View>
@@ -558,24 +543,24 @@ class MainInfo extends Component {
                 DUMMY Untuk usia diatas 10 tahun
                   </Text>
             </View>
-          </View>
+          </View> */}
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='md-alarm' type='ionicon' size={18} color='#009389' style={{width:20}} />
+            <View style={{ justifyContent: 'center' }}>
+              <Icon name='md-alarm' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
             </View>
-            <View style={{marginLeft: 10 }}>
+            <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
                 {duration.amount + " " + duration.unit}
               </Text>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{width:20}} />
+            <View style={{ justifyContent: 'center' }}>
+              <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
             </View>
             <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
-                Aktivitas ini dapat di-refund
+                {cancellation.some(c => c.valuePercentage < 100) ? 'Aktivitas ini tidak dapat dibatalkan' : 'Aktivitas ini dapat di-refund'}
               </Text>
             </View>
           </View>

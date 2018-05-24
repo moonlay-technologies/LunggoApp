@@ -55,6 +55,11 @@ export default class BookedPageDetail extends React.Component {
   _callOperator = () => Linking.openURL('tel:' + this.details.operatorPhone)
   _smsOperator = () => Linking.openURL('sms:' + this.details.operatorPhone)
 
+  _goToRefundScreen = () => {
+    this.props.navigation.navigate
+      ('RefundScreen', { rsvNo: this.details.rsvNo, ...this.details.refundBankAccount });
+  };
+
   _showTicket() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
 
@@ -105,6 +110,41 @@ export default class BookedPageDetail extends React.Component {
       return null;
   }
 
+  _showRefundButton() {
+    let { bookingStatus, needRefundBankAccount, refundBankAccount } = this.details;
+
+    if (bookingStatus == 'CancelByOperator' ||
+      bookingStatus == 'CancelByAdmin' ||
+      bookingStatus == 'DeniedByOperator' ||
+      bookingStatus == 'DeniedByAdmin' ||
+      bookingStatus == 'CancelByCustomer') {
+      return (
+        <View style={styles.container}>
+          <View style={{ marginBottom: 0, alignItems: 'center' }}>
+            <Text style={styles.sectionTitle}>
+              Refund
+            </Text>
+          </View>
+          <Button
+            containerStyle={styles.labelOk}
+            style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+            onPress={this._goToRefundScreen}
+          >
+            {refundBankAccount ? 'Ubah Nomor Rekening Refund' : 'Isi Nomor Rekening Refund'}
+          </Button>
+          <View style={{ alignItems: 'center', marginTop: 15 }}>
+            <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
+              Berikan data nomor rekening kamu untuk proses refund dana
+            </Text>
+          </View>
+        </View>
+
+      );
+    }
+    else
+      return null;
+  }
+
   _showStatus() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber, cancellationReason, timeLimit } = this.details;
 
@@ -138,7 +178,7 @@ export default class BookedPageDetail extends React.Component {
             <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh operator</Text></View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
-                Alasan: {cancellationReason}
+                <Text style={{ fontWeight: 'bold' }}>Alasan: </Text>{cancellationReason}
               </Text>
             </View>
           </View>);
@@ -227,6 +267,8 @@ export default class BookedPageDetail extends React.Component {
           </View>
 
         </View>
+
+        {this._showRefundButton()}
 
         <View style={styles.divider} />
         <View style={styles.container}>

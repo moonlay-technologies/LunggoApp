@@ -3,10 +3,10 @@
 import React from 'react';
 import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, Text, View, Image, ScrollView,
-  RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback
+  Platform, StyleSheet, Text, View, Image, ScrollView, Dimensions,
+  RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback, Alert
 } from 'react-native';
-import { getMyBookingList } from './MyBookingController';
+import { getMyBookingList, cancelReservation } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -15,6 +15,8 @@ import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 import { Icon } from 'react-native-elements';
 import Modal from '../../../commons/components/Modal';
 import Moment from 'moment';
+
+const { width } = Dimensions.get('window');
 
 export class ActivityListItem extends React.PureComponent {
 
@@ -38,9 +40,15 @@ export class ActivityListItem extends React.PureComponent {
   }
 
   _goToBookedPageDetail = () => {
-    console.log(this.props.item);
     this.props.navigation.navigate
       ('BookedPageDetail', { details: this.props.item })
+  };
+
+  _goToRefundScreen = () => {
+    console.log(this.props);
+    console.log('this.props');
+    this.props.navigation.navigate
+      ('RefundScreen', { rsvNo: this.props.item.rsvNo, ...this.props.item.refundBankAccount });
   };
 
   _openSettingModal = (evt) => {
@@ -49,6 +57,18 @@ export class ActivityListItem extends React.PureComponent {
     this.refs.settingModal.openModal();
   }
   _closeSettingModal = () => this.refs.settingModal.closeModal();
+
+  _cancelActivity = () => {
+    Alert.alert('Membatalkan Aktivitas', 'Kamu yakin akan membatalkan aktivitas ini?\nNo. Pesanan ' + this.props.item.rsvNo, [
+      { text: 'Ya', onPress: this._confirmCancelActivity },
+      { text: 'Tidak' },
+    ]);
+  };
+
+  _confirmCancelActivity = () => {
+    console.log('canceled');
+    cancelReservation(this.props.item.rsvNo);
+  }
 
   _buttons = item => {
     let renderStatus = item => {
@@ -103,19 +123,17 @@ export class ActivityListItem extends React.PureComponent {
                 <Text style={styles.activityDesc}>Status: </Text>
                 <Text style={styles.statusTextDanger}>Dibatalkan</Text>
               </View>
-              <View>
-                <Button
-                  containerStyle={styles.containerbtn}
-                  style={styles.statusbtn}
-                  onPress={() =>
-                    item.hasPdfVoucher
-                      ? this._viewPdfVoucher(item)
-                      : this._goToBookedPageDetail()
-                  }
-                >
-                  Refund
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
                 </Button>
-              </View>
+                </View>
+              }
             </View>);
         default:
           return (
@@ -180,16 +198,57 @@ export class ActivityListItem extends React.PureComponent {
                   tapY={this.state.tapY}
                 >
 
-                  <TouchableOpacity>
-                    <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+                  {item.bookingStatus == 'Ticketed' &&
+                    <TouchableOpacity
+                      onPress={(() => {
+                        this._closeSettingModal();
+                        item.hasPdfVoucher
+                          ? this._viewPdfVoucher(item)
+                          : this._goToBookedPageDetail();
+                      })}
+                      style={{ padding: 10, }}
+                    >
+                      <Text style={styles.teks3a}>Lihat Tiket</Text>
+                    </TouchableOpacity>
+                  }
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      this._closeSettingModal()
+                      this._goToBookedPageDetail();
+                    }}
+                    style={{ padding: 10, }}
+                  >
+                    <Text style={styles.teks3a}>Lihat Detail</Text>
                   </TouchableOpacity>
 
-                  <View style={styles.separatorOption}></View>
+                  {(item.refundBankAccount || item.needRefundBankAccount) &&
+                    <TouchableOpacity
+                      onPress={() => {
+                        this._closeSettingModal()
+                        this._goToRefundScreen();
+                      }}
+                      style={{ padding: 10, }}
+                    >
+                      <Text style={styles.teks3a}>{item.refundBankAccount ? 'Ubah Nomor Rekening Refund' : 'Isi Nomor Rekening Refund'}</Text>
+                    </TouchableOpacity>
+                  }
 
-                  <TouchableOpacity>
-                    <Text style={styles.teks3a}>Hapus Aktivitas</Text>
-                  </TouchableOpacity>
-
+                  {item.bookingStatus != 'CancelByCustomer' &&
+                    item.bookingStatus != 'CancelByOperator' &&
+                    item.bookingStatus != 'CancelByAdmin' &&
+                    item.bookingStatus != 'DeniedByOperator' &&
+                    item.bookingStatus != 'DeniedByAdmin' &&
+                    <TouchableOpacity
+                      onPress={() => {
+                        this._closeSettingModal()
+                        this._cancelActivity();
+                      }}
+                      style={{ padding: 10, }}
+                    >
+                      <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+                    </TouchableOpacity>
+                  }
                 </Modal>
 
                 {/* <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
@@ -297,7 +356,7 @@ export class TrxListItem extends React.PureComponent {
     return (
       <View style={styles.cartbox}>
 
-        <View style={{borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10, paddingHorizontal: 15 }}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10, paddingHorizontal: 15 }}>
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
@@ -630,8 +689,7 @@ const styles = StyleSheet.create({
   },
   modalStyle: {
     backgroundColor: '#fff',
-    width: 150,
-    padding: 10,
+    maxWidth: width / 2,
     zIndex: 100,
     margin: -5,
     ...Platform.select({

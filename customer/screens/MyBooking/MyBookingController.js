@@ -12,7 +12,7 @@ export async function getMyBookingList() {
   if (shouldRefresh) {
     deleteItemAsync('shouldRefresh.myBookingList');
     myBookingStore.removeNewBookingMark();
-    
+
     let fetched = await fetchMyBookingList();
     if (fetched.status != 200)
       return [];
@@ -73,6 +73,17 @@ export function goToMyBookingScreen() {
 
 export async function purgeMyBookingList() {
   deleteItemAsync('myBookings');
+}
+
+export async function cancelReservation(rsvNo) {
+  const version = 'v1';
+  let request = {
+    path: `/${version}/activities/mybooking/${rsvNo}/cancel`,
+    method: 'POST',
+    requiredAuthLevel: AUTH_LEVEL.User
+  }
+  let response = await fetchTravoramaApi(request);
+  return (response.status === 200);
 }
 
 export async function fetchMyBookingActivityHistoryList(startDate, endDate, page, perPage) {
