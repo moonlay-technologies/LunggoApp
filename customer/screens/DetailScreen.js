@@ -61,14 +61,16 @@ class DetailScreen extends Component {
       path: `/${version}/activities/${id}`,
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
-    fetchTravoramaApi(request).then(response => {
-      this.setState(response.activityDetail);
-      if (!response.activityDetail.package) {
-        console.log('PACKAGES:');
-        console.log(response.activityDetail.package);
-        console.error(response.activityDetail.package);
-      }
-    }).catch(error => console.log(error));
+    this.props.withConnectivityHandler( () => fetchTravoramaApi(request))
+      .then(response => {
+        this.setState(response.activityDetail);
+        if (!response.activityDetail.package) {
+          console.log('PACKAGES:');
+          console.log(response.activityDetail.package);
+          console.error(response.activityDetail.package);
+        }
+      })
+      .catch(error => console.log(error));
 
     request.path = `/${version}/activities/${id}/availabledates`;
     fetchTravoramaApi(request).then(response => {
@@ -83,18 +85,7 @@ class DetailScreen extends Component {
     });
   }
 
-  _isDateAvailable = (availableDates) => {
-    if (availableDates.length > 0) {
-      return (
-        true
-      );
-    }
-    else {
-      return (
-        false
-      )
-    }
-  }
+  _isDateAvailable = availableDates => (availableDates && availableDates.length > 0)
 
   render() {
     const { requiredPaxData, isLoading, name, city, duration, price, id,

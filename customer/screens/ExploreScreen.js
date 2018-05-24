@@ -3,7 +3,7 @@
 import React from 'react';
 import {
   Image, Platform, ScrollView, Text, TouchableOpacity, View,
-  Button, TextInput, StyleSheet, Dimensions
+  TextInput, StyleSheet, Dimensions
 } from 'react-native';
 import SearchHeader from './SearchActivity/SearchHeader';
 import { Icon } from 'react-native-elements';
@@ -109,7 +109,7 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
   }
 
   _refreshContents = () => {
-    this.setState({isLoading: true});
+    this.setState({isLoading: true, errorMessage: ''});
     this.props.withConnectivityHandler( () => {
       Promise.all([
         search('tiket').then(tiketList => this.setState({ tiketList })),
@@ -152,7 +152,12 @@ const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
           {/*<ActivityFlightHotelTab/>*/}
 
           { this.state.errorMessage ?
-            <Text>{this.state.errorMessage}</Text>
+            <View>
+              <Text>{this.state.errorMessage}</Text>
+              <TouchableOpacity onPress={this._refreshContents}>
+                <Text>Coba lagi</Text>
+              </TouchableOpacity>
+            </View>
             :
             <View>
               <RenderHeader title='Tiket' searchUrl='tiket' {...props}/>

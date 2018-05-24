@@ -24,7 +24,7 @@ class MyBookingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Pembelian',
+    header: null,
   }
 
   listenerSubcription = null;

@@ -43,7 +43,7 @@ export async function fetchTravoramaApi(request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(request.data),
-    }).catch(console.error);
+    }).catch(console.log);
     if (response == null || response == ' ') {
       console.log('response null, please check your connection!');
       return { message: 'response null, please check your connection!' }

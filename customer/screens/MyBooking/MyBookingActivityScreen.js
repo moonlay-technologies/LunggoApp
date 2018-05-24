@@ -6,12 +6,13 @@ import BlankScreen from './MyBookingBlankScreen';
 import { TrxListItem, ActivityListItem } from './MyBookingListItems';
 import { getMyBookingList, shouldRefreshMyBookingList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 import MenuButton from './../../../commons/components/MenuButton';
 import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
 
 
-export default class MyBookingScreen extends React.Component {
+class MyBookingScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -23,7 +24,7 @@ export default class MyBookingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Aktivitas',
+    header: null,
   }
 
   listenerSubcription = null;
@@ -45,18 +46,22 @@ export default class MyBookingScreen extends React.Component {
     let isLoggedIn = await checkUserLoggedIn();
     this.setState({ isLoggedIn });
   }
-
-  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
-    if (shouldLoading) {
+  
+  _refreshMyBookingList = (shouldShowLoadingIndicator = true, shouldRefreshFromDatabase = true) => {
+    if(shouldShowLoadingIndicator) {
       this.setState({ isLoading: true });
     }
-    if (refreshing) {
+    if(shouldRefreshFromDatabase){
       shouldRefreshMyBookingList();
     }
-    getMyBookingList().then(list => {
-      let activities = list.reduce((result, cart) => result.concat(cart.activities), []);
-      this.setState({ activityList: activities });
-    }).finally(() => this.setState({ isLoading: false }));
+    this.props.withConnectivityHandler(getMyBookingList)
+      .then(list => {
+        const activityList = list.reduce(
+          (result, cart) => result.concat(cart.activities)
+        , [] );
+        this.setState({ activityList });
+      })
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
@@ -115,6 +120,7 @@ export default class MyBookingScreen extends React.Component {
       )
   }
 }
+export default withConnectivityHandler(MyBookingScreen, {hasOfflineNotificationBar: false});
 
 const styles = StyleSheet.create({
   separator: {
