@@ -15,10 +15,10 @@ import BlankScreen from './CartBlankScreen';
 import { getCart } from './CartController';
 import SearchHeader from './../SearchActivity/SearchHeader';
 import cartCountStore from './CartCountStorage';
-import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
 import { AUTH_LEVEL, fetchTravoramaApi } from '../../../api/Common';
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 
-export default class CartScreen extends React.Component {
+class CartScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -26,6 +26,7 @@ export default class CartScreen extends React.Component {
       totalPrice: props.totalPrice,
       isLoading: true,
       list: [],
+      errorMessage: '',
     };
   }
 
@@ -40,10 +41,12 @@ export default class CartScreen extends React.Component {
 
   _refreshCart = () => {
     this.setState({ isLoading: true });
-    getCart().then(({ cartId, list, totalPrice, status }) => {
-      this.setState({ cartId, list, totalPrice, status, isLoading: false });
-    }).catch(error => console.log(error))
-      .finally(() => this.setState({ isLoading: false }));
+    this.props.withConnectivityHandler(getCart, true)
+      .then( ({ cartId, list, totalPrice, status }) =>
+        this.setState({ cartId, list, totalPrice, status })
+      )
+      .catch( err => this.setState({errorMessage: err}))
+      .finally( () => this.setState({ isLoading: false }) );
   }
 
   _goToRincian = () => {
@@ -104,14 +107,14 @@ export default class CartScreen extends React.Component {
       this.navigateToBookingScreen(this.state.availableDateTimes, item);
     }).catch(error => console.log(error));
   }
-  response
+
   _onPressEdit = item => {
     this.goToBookingScreen(item.activityDetail.id, item);
   }
 
   _onPressItem = item => {
     this.props.navigation.navigate('DetailScreen', { details: item.activityDetail, hideFooter: true });
-  };
+  }
 
   _onPressDelete = (index, rsvNo) => {
     this.setState({ isLoading: true });
@@ -127,12 +130,18 @@ export default class CartScreen extends React.Component {
     }).catch(error => console.error(error));
   }
 
-  _goToPayment = () => this.props.navigation.navigate('PaymentScreen', { cartId: this.state.cartId });
+  _goToPayment = () => {
+    this.props.withConnectivityHandler( () =>
+      this.props.navigation.navigate(
+        'PaymentScreen', { cartId: this.state.cartId }
+      )
+    );
+  }
 
   render() {
-    let { cartId, isLoading, list, totalPrice, status } = this.state;
-    if (isLoading) return (
-      <LoadingAnimation />)
+    let { cartId, isLoading, list, totalPrice, status, errorMessage } = this.state;
+    if (isLoading) return <LoadingAnimation />
+    else if (errorMessage) return <Text>{errorMessage}</Text>
     else if (status == 200 && list && list.length > 0) return (
       <View style={{ flex: 1 }}>
         <View style={[styles.container, { backgroundColor: '#fff' }]}>
@@ -177,13 +186,13 @@ export default class CartScreen extends React.Component {
               Bayar
             </Button>
           </View>
-          <OfflineNotificationBar />
         </View>
       </View>
     );
     else return <BlankScreen {...this.props} />
   }
 }
+export default withConnectivityHandler(CartScreen, {hasOfflineNotificationBar: false});
 
 class ListItem extends React.PureComponent {
 

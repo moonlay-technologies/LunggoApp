@@ -6,13 +6,14 @@ import BlankScreen from './MyBookingBlankScreen';
 import { TrxListItem, ActivityListItem } from './MyBookingListItems';
 import { shouldRefreshMyBookingActivityList, myBookingActivityItemStore, getMyBookingActivityList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 import MenuButton from './../../../commons/components/MenuButton';
 import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
 import { observer } from 'mobx-react';
 
 @observer
-export default class MyBookingActivityScreen extends React.Component {
+class MyBookingActivityScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -24,7 +25,7 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Aktivitas',
+    header: null,
   }
 
   listenerSubcription = null;
@@ -44,18 +45,24 @@ export default class MyBookingActivityScreen extends React.Component {
     let isLoggedIn = await checkUserLoggedIn();
     this.setState({ isLoggedIn });
   }
-
-  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
+  
+  _refreshMyBookingList = (shouldShowLoadingIndicator = true, shouldRefreshFromDatabase = true) => {
     console.log("melakuka refresh activity list my booking");
-    if (shouldLoading) {
+    if(shouldShowLoadingIndicator) {
       this.setState({ isLoading: true });
     }
-    if (refreshing) {
+    if(shouldRefreshFromDatabase){
       shouldRefreshMyBookingActivityList();
     }
-    getMyBookingActivityList().then(list => {
-      this.setState({ list });
-    }).finally(() => this.setState({ isLoading: false }));
+    this.props.withConnectivityHandler(getMyBookingActivityList)
+      .then(list => {
+        this.setState({ list });
+        // const activityList = list.reduce(
+        //   (result, cart) => result.concat(cart.activities)
+        // , [] );
+        // this.setState({ activityList });
+      })
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
@@ -114,6 +121,7 @@ export default class MyBookingActivityScreen extends React.Component {
       )
   }
 }
+export default withConnectivityHandler(MyBookingActivityScreen, {hasOfflineNotificationBar: false});
 
 const styles = StyleSheet.create({
   separator: {

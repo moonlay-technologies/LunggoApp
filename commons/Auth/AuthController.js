@@ -4,10 +4,10 @@ import {
 } from '../../constants/env';
 import { fetchProfile } from '../ProfileController';
 
+const LOGGING = true;
+
 async function fetchAuth(data) {
   let url = API_DOMAIN + `/v1/login`;
-  console.log(url);
-  console.log(data);
   let response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -17,8 +17,8 @@ async function fetchAuth(data) {
     body: JSON.stringify(data)
   }).catch(console.error);
   response = await response.json();
-  __DEV__ && console.log('AUTH response:');
-  __DEV__ && console.log(response);
+  // LOGGING && __DEV__ && console.log('AUTH response:');
+  // LOGGING && __DEV__ && console.log(response);
   return response;
 }
 
@@ -35,17 +35,12 @@ async function setAccessToken(tokenData) {
 export async function fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, password) {
   let data = { clientId, clientSecret, deviceId, email, countryCallCd, phoneNumber, password };
 
-  if (!data.email) delete data.email;
-  if (!data.countryCallCd) delete data.countryCallCd;
-  if (!data.phoneNumber) delete data.phoneNumber;
-
   let response = await fetchAuth(data);
 
   switch (response.status) {
     case 200:
       response.authLevel = AUTH_LEVEL.User;
       setAccessToken(response);
-      await fetchProfile();
       break;
     case 400:
     case 500:
@@ -64,7 +59,6 @@ async function waitFetchingAuth() {
 
   while (global.isFetchingAuth) {
     await sleep(10);
-    // console.log('still waiting for global.isFetchingAuth')
   }
   return;
 }
@@ -84,18 +78,17 @@ export async function getAuthAccess() {
       ]);
     let data = { clientId, clientSecret, deviceId };
 
-    // console.warn('sengaja ditutup dulu validasi expTimenya buat testing refreshToken')
-    /**/if (new Date(expTime) > new Date()) { //// token not expired
-      console.log(
-        'session not expired, continue the request...'
+    if (new Date(expTime) > new Date()) { //// token not expired
+      LOGGING && console.log(
+        'session has not expired, continue the request without new auth...'
       )
       //already logged in, go to next step
-      global.isFetchingAuth = false;
       global.accessToken = accessToken;
       global.authLevel = authLevel;
+      global.isFetchingAuth = false;
       return { accessToken, authLevel };
-    } //// if it's not, then token is expired or client doesnt have expTime
-    else/**/ if (refreshToken) {
+    }
+    else if (refreshToken) { //// if token is expired or client doesnt have expTime
       console.log('....     prepare login by refreshToken')
       data.refreshToken = refreshToken;
     } else {

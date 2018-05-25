@@ -6,13 +6,15 @@ import BlankScreen from './MyBookingBlankScreen';
 import { TrxListItem } from './MyBookingListItems';
 import { getMyBookingTrxList, myBookingTrxItemStore, shouldRefreshMyBookingTrxList } from './MyBookingController';
 import LoadingAnimation from '../../components/LoadingAnimation'
+import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
 import MenuButton from './../../../commons/components/MenuButton';
 import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
 import { observer } from 'mobx-react';
 
 @observer
-export default class MyBookingTrxScreen extends React.Component {
+class MyBookingTrxScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ export default class MyBookingTrxScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Pembelian',
+    header: null,
   }
 
   listenerSubcription = null;
@@ -47,16 +49,17 @@ export default class MyBookingTrxScreen extends React.Component {
   }
 
   _goToTrxHistory = () => this.props.navigation.navigate('MyBookingTrxHistory');
-  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
-    if (shouldLoading) {
+  _refreshMyBookingList = (shouldShowLoadingIndicator = true, shouldRefreshFromDatabase = true) => {
+    if(shouldShowLoadingIndicator)
+    {
       this.setState({ isLoading: true });
     }
-    if (refreshing) {
+    if(shouldRefreshFromDatabase){
       shouldRefreshMyBookingTrxList();
     }
-    getMyBookingTrxList().then(list => {
-      this.setState({ list });
-    }).finally(() => this.setState({ isLoading: false }));
+    this.props.withConnectivityHandler(getMyBookingTrxList)
+      .then(list => this.setState({ list }))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _keyExtractor = (item, index) => index
@@ -113,6 +116,7 @@ export default class MyBookingTrxScreen extends React.Component {
       )
   }
 }
+export default withConnectivityHandler(MyBookingTrxScreen, {hasOfflineNotificationBar: false});
 
 const styles = StyleSheet.create({
   container: {

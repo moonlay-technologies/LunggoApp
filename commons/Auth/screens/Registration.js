@@ -15,9 +15,11 @@ import {
 } from '../../FormValidation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import OfflineNotificationBar from './../../components/OfflineNotificationBar';
+import withConnectivityHandler from '../../../higherOrderComponents/withConnectivityHandler';
+
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
-export default class Registration extends React.Component {
+class Registration extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -79,50 +81,52 @@ export default class Registration extends React.Component {
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
 
-    fetchTravoramaApi(request).then(response => {
-      if (response.status == 200) {
-        fetchTravoramaLoginApi(accountData.email, '62', accountData.phone, accountData.password)
-          .then(response => {
-            if (response.status == 200) {
-              console.log('1212121');
-              setItemAsync('isLoggedIn', 'true');
-              registerForPushNotificationsAsync();
-              fetchWishlist();
-              goToPhoneVerification();
-              // this.setState({ isLoading: false });
-            } else {
-              console.log(response);
-              let error = 'Terjadi kesalahan pada server';
+    this.props.withConnectivityHandler( () => {
+      fetchTravoramaApi(request).then(response => {
+        if (response.status == 200) {
+          fetchTravoramaLoginApi(accountData.email, '62', accountData.phone, accountData.password)
+            .then(response => {
+              if (response.status == 200) {
+                console.log('1212121');
+                setItemAsync('isLoggedIn', 'true');
+                registerForPushNotificationsAsync();
+                fetchWishlist();
+                goToPhoneVerification();
+                // this.setState({ isLoading: false });
+              } else {
+                console.log(response);
+                let error = 'Terjadi kesalahan pada server';
+              }
+              this.setState({ error });
             }
-            this.setState({ error });
-          }
-          ).catch(error => {
-            // this.setState({ isLoading: false });
-            console.log("Login error!!");
-            console.log(error);
-          }).finally(() => this.setState({ isLoading: false }));
-      }
-      else {
-        this.setState({ isLoading: false });
-        console.log(request);
-        console.log(response);
-        let error;
-        switch (response.error) {
-          case 'ERR_EMAIL_ALREADY_EXIST':
-            error = 'Email ' + accountData.email + ' sudah pernah terdaftar';
-            break;
-          case 'ERR_PHONENUMBER_ALREADY_EXIST':
-            error = 'Nomor ' + reversePhoneWithoutCountryCode_Indonesia(accountData.phone) + ' sudah pernah terdaftar';
-            break;
-          case 'ERR_INVALID_REQUEST':
-            error = 'Ada kesalahan pengisian data';
-            break;
-          default:
-            error = 'Terjadi kesalahan pada server';
+            ).catch(error => {
+              // this.setState({ isLoading: false });
+              console.log("Login error!!");
+              console.log(error);
+            }).finally(() => this.setState({ isLoading: false }));
         }
-        this.setState({ error });
-      }
-    }).catch(error => console.log(error));
+        else {
+          this.setState({ isLoading: false });
+          console.log(request);
+          console.log(response);
+          let error;
+          switch (response.error) {
+            case 'ERR_EMAIL_ALREADY_EXIST':
+              error = 'Email ' + accountData.email + ' sudah pernah terdaftar';
+              break;
+            case 'ERR_PHONENUMBER_ALREADY_EXIST':
+              error = 'Nomor ' + reversePhoneWithoutCountryCode_Indonesia(accountData.phone) + ' sudah pernah terdaftar';
+              break;
+            case 'ERR_INVALID_REQUEST':
+              error = 'Ada kesalahan pengisian data';
+              break;
+            default:
+              error = 'Terjadi kesalahan pada server';
+          }
+          this.setState({ error });
+        }
+      }).catch(error => console.log(error));
+    });
   }
 
   _goToLoginScreen = () => this.props.navigation.replace('LoginScreen', this.props.navigation.state.params)
@@ -131,6 +135,7 @@ export default class Registration extends React.Component {
     return (
 
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <OfflineNotificationBar ref={ i => this.networkBar = i } />
         <LoadingModal isVisible={this.state.isLoading} />
         <ScrollView keyboardShouldPersistTaps="handled">
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
@@ -147,10 +152,10 @@ export default class Registration extends React.Component {
             Sudah punya akun? Login di sini
           </Text>
         </TouchableOpacity>
-        <OfflineNotificationBar/>
       </View>
 
 
     );
   }
 }
+export default withConnectivityHandler(Registration);
