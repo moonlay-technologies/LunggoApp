@@ -88,6 +88,7 @@ export async function fetchMyBookingTrxList() {
     await setItemAsync('myBookingTrxLastUpdate', response.lastUpdate);
     console.log("bagian sini");
     myBookingTrxItemStore.setMyBookingTrxItem(response.myBookings);
+    myBookingStore.setNewBookingMark();
   }
   return response;
 }
@@ -110,6 +111,8 @@ export async function fetchMyBookingActivityList() {
     await setItemAsync('myBookingsActivity', myReservationsJson);
     await setItemAsync('myBookingActivityLastUpdate', response.lastUpdate);
     myBookingActivityItemStore.setMyBookingActivityItem(response.myReservations);
+    myBookingStore.setNewBookingMark();
+
   }
   return response;
 }
@@ -206,7 +209,7 @@ async function downloadPdfVouchers(bookings) {
 class MyBookingStoreMobx {
   @observable hasNewBooking = false;
 
-@action setNewBookingMark = () => {
+  @action setNewBookingMark = () => {
     console.log('diset');
     this.hasNewBooking = true;
   }
@@ -219,26 +222,26 @@ class MyBookingStoreMobx {
 
 class MyBookingTrxItemStoreMobx {
   @observable myBookingTrxItem;
-  
+
   @action setMyBookingTrxItem = item => {
     this.myBookingTrxItem = item;
     console.log("ngeset myBooking cart item mobx");
   }
 
-  @action removeMyBookingTrxItem = () =>{
+  @action removeMyBookingTrxItem = () => {
     this.myBookingTrxItem = undefined;
   }
 }
 
 class MyBookingActivityItemStoreMobx {
   @observable myBookingActivityItem;
-  
+
   @action setMyBookingActivityItem = item => {
     this.myBookingActivityItem = item;
     console.log("ngeset myBooking activities item mobx");
   }
 
-  @action removeMyBookingActivityItem = () =>{
+  @action removeMyBookingActivityItem = () => {
     this.myBookingActivityItem = undefined;
   }
 }

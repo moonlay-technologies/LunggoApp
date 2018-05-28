@@ -70,10 +70,10 @@ export default class BookingDetail extends React.Component {
         props.navigation.state.params.ticketCount.map(({ count, totalPrice, type }) => {
           if (type == packageType) {
             count = count;
+            counter.push({ type, minCount, amount, count });
+            totalCount += count;
+            price += amount * count;
           };
-          counter.push({ type, minCount, amount, count });
-          totalCount += count;
-          price += amount * count;
         }
         )
       });
@@ -82,7 +82,7 @@ export default class BookingDetail extends React.Component {
       editRsv = true;
       rsvNo = props.navigation.state.params.rsvNo;
       contact = props.navigation.state.params.contact;
-      date = props.navigation.state.params.selectedDateTime.date.substring(0,10);
+      date = props.navigation.state.params.selectedDateTime.date.substring(0, 10);
       time = props.navigation.state.params.selectedDateTime.session;
       isDateSelected = true;
       isContactFilled = true;
@@ -209,12 +209,12 @@ export default class BookingDetail extends React.Component {
         }
         await cartCountStore.setCartCount();
         shouldRefreshMyBookingTrxList();
-        if (this.state.editRsv){
+        if (this.state.editRsv) {
           this._goToCart();
         }
-        else{
+        else {
           this.setState({ isContinueToCartModalVisible: true });
-        } 
+        }
       }
     } catch (error) {
       this.setState({ isLoading: false });

@@ -560,7 +560,7 @@ class MainInfo extends Component {
             </View>
             <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
-                {cancellation.some(c => c.valuePercentage < 100) ? 'Aktivitas ini tidak dapat dibatalkan' : 'Aktivitas ini dapat di-refund'}
+                {/* {cancellation.some(c => c.valuePercentage < 100) ? 'Aktivitas ini tidak dapat dibatalkan' : 'Aktivitas ini dapat di-refund'} */}
               </Text>
             </View>
           </View>
