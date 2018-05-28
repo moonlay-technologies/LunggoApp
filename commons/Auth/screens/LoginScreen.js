@@ -83,7 +83,7 @@ class LoginScreen extends React.Component {
           let error;
           switch (response.error) {
             case 'ERR_NOT_REGISTERED':
-              error = `Akun ${this.state.userName} tidak ditemukan`;
+              error = `Akun ${this.state.userName} tidak terdaftar`;
               break;
             case 'ERR_INVALID_PASSWORD':
               error = 'Password salah';
