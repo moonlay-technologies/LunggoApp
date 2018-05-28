@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput,
-  TouchableOpacity, Keyboard, TouchableWithoutFeedback, Platform,
+  StyleSheet, Text, View, Image, TextInput, ScrollView, 
+  TouchableOpacity, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform,
 } from 'react-native';
 import { fetchTravoramaLoginApi } from '../AuthController'
 import {
@@ -13,22 +13,27 @@ import { Icon } from 'react-native-elements';
 import Button from 'react-native-button';
 import globalStyles from '../../globalStyles';
 import { Notifications } from 'expo';
-import registerForPushNotificationsAsync
-  from '../../../api/NotificationController';
+import registerForPushNotificationsAsync, { addMyBookingListener }  from '../../../api/NotificationController';
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { LinearGradient } from 'expo';
 import { fetchProfile } from '../../ProfileController';
-import { APP_TYPE } from '../../../constants/env';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import LoadingModal from './../../components/LoadingModal';
+import { observer } from 'mobx-react';
+import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 const { setItemAsync } = Expo.SecureStore;
 
+@observer
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { error: [] };
+    this.state = { error: [], isLoading: false };
   }
 
   _onLoginPressed = () => {
+    Keyboard.dismiss();
     let { userName, password } = this.state;
     let errorUserName = validateUserName(userName);
     let errorPassword = validatePassword(password);
@@ -48,7 +53,6 @@ export default class LoginScreen extends React.Component {
   };
 
   _login = () => {
-    this.setState({ isLoading: true });
     let { navigation } = this.props;
     let { navigate, goBack, replace, pop } = navigation;
     let { params } = navigation.state;
@@ -60,29 +64,26 @@ export default class LoginScreen extends React.Component {
     } else {
       email = this.state.userName;
     }
-    console.log(isPhoneNo);
-    console.log(phoneNumber);
-    console.log(countryCallCd);
-    console.log(email);
 
-    fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password, APP_TYPE == 'OPERATOR')
-      .then(response => {
-        this.setState({ isLoading: false });
+    this.setState({ isLoading: true });
+
+    fetchTravoramaLoginApi(email, countryCallCd, phoneNumber, this.state.password)
+      .then(async response => {
         if (response.status == 200) {
           setItemAsync('isLoggedIn', 'true');
-          if (APP_TYPE == 'OPERATOR') {
+          await cartCountStore.setCartCount();
+          await fetchWishlist();
+          await registerForPushNotificationsAsync();
+          let { resetAfter, thruBeforeLogin } = params;
+          console.log('params');
+          console.log(params);
+          if (resetAfter)
             backToMain(navigation);
-          } else {
-            registerForPushNotificationsAsync();
-            fetchWishlist();
-            let { resetAfter, thruBeforeLogin } = params;
-            if (resetAfter)
-              backToMain(navigation);
-            else if (thruBeforeLogin)
-              pop(2);
-            else
-              pop();
-          }
+          else if (thruBeforeLogin)
+            pop(2);
+          else
+            pop();
+
         } else {
           console.log(response);
           let error;
@@ -98,11 +99,12 @@ export default class LoginScreen extends React.Component {
           }
           this.setState({ error });
         }
-      }).catch(error => {
         this.setState({ isLoading: false });
+      }).catch(error => {
         console.log("Login error!!");
         console.log(error);
-      })
+        this.setState({ isLoading: false })
+      });
   }
 
   _toggleShowPassword = () => {
@@ -124,13 +126,12 @@ export default class LoginScreen extends React.Component {
         <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
       </View> : null;
 
-    let errorMessage = error ?
+    let errorMessage = error ? !errorPassword ?  
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         <Text style={{ color: '#fc2b4e' }}>{error}</Text>
-      </View> : null;
+      </View> : null : null;
 
     let registerHereButton =
-      (params && params.appType == 'OPERATOR') ? null :
         <TouchableOpacity
           style={{
             position: 'absolute', bottom: 20,
@@ -144,8 +145,11 @@ export default class LoginScreen extends React.Component {
         </TouchableOpacity>
 
     return (
+      
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
+        <KeyboardAwareScrollView enableOnAndroid = {true} enableAutomaticScroll = {true} keyboardShouldPersistTaps="handled">
+          <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 30 }}>
             <Text style={globalStyles.categoryTitle1}>Login</Text>
           </View>
@@ -226,17 +230,20 @@ export default class LoginScreen extends React.Component {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-
-
+         
+          
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
             <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>
               Lupa Password?
               </Text>
           </TouchableOpacity>
+          </KeyboardAwareScrollView>
           {registerHereButton}
+          <OfflineNotificationBar/>
         </View>
       </TouchableWithoutFeedback>
+      
     );
   }
 }

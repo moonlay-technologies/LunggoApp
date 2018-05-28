@@ -4,15 +4,19 @@ import React from 'react';
 import Button from 'react-native-button';
 import {
   Platform, StyleSheet, Text, View, Image, ScrollView,
-  FlatList, TouchableOpacity, ActivityIndicator
+  FlatList, TouchableOpacity, ActivityIndicator, RefreshControl
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
 import { Rating, Icon } from 'react-native-elements';
 import * as Formatter from '../../components/Formatter';
-import { deleteCart } from './CartController';
+import { deleteCart, setCartCount } from './CartController';
 import LoadingAnimation from '../../components/LoadingAnimation';
 import BlankScreen from './CartBlankScreen';
 import { getCart } from './CartController';
+import SearchHeader from './../SearchActivity/SearchHeader';
+import cartCountStore from './CartCountStorage';
+import OfflineNotificationBar from './../../../commons/components/OfflineNotificationBar';
+import { AUTH_LEVEL, fetchTravoramaApi } from '../../../api/Common';
 
 export default class CartScreen extends React.Component {
 
@@ -30,14 +34,21 @@ export default class CartScreen extends React.Component {
   };
 
   componentDidMount() {
+    this._refreshCart();
+    cartCountStore.setCartCount();
+  }
+
+  _refreshCart = () => {
+    this.setState({ isLoading: true });
     getCart().then(({ cartId, list, totalPrice, status }) => {
       this.setState({ cartId, list, totalPrice, status, isLoading: false });
-    }).catch(error => console.log(error));
+    }).catch(error => console.log(error))
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   _goToRincian = () => {
     let { cartId, list, totalPrice, status } = this.state;
-    let title = "Nomor Keranjang #" + cartId;
+    let title = __DEV__ && `dev only - cartId : ${cartId}`
     let total = totalPrice;
     let breakdown = list.map(rsv => ({
       name: rsv.activityDetail.name,
@@ -61,23 +72,57 @@ export default class CartScreen extends React.Component {
       index={index}
       onPress={() => this._onPressItem(item)}
       onPressDelete={this._onPressDelete}
+      onPressEdit={() => this._onPressEdit(item)}
     />
   );
 
+  navigateToBookingScreen = (availableDateTimes, item) => {
+    console.log("navigasi ke bookingscreen");
+    let activityPackage = item.activityDetail.package;
+    console.log(activityPackage);
+    this.props.navigation.navigate('BookingDetail', {
+      editRsv: true,
+      package: activityPackage,
+      ticketCount: item.ticketCount,
+      totalPrice: item.totalPrice,
+      rsvNo: item.rsvNo,
+      contact: item.contact,
+      selectedDateTime: item.selectedDateTime,
+      availableDateTimes,
+      activityId: item.activityDetail.id
+    });
+  }
+
+  goToBookingScreen = (id, item) => {
+    const version = 'v1';
+    let request = {
+      path: `/${version}/activities/${id}/availabledates`,
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+    };
+    fetchTravoramaApi(request).then(response => {
+      this.setState(response);
+      this.navigateToBookingScreen(this.state.availableDateTimes, item);
+    }).catch(error => console.log(error));
+  }
+  response
+  _onPressEdit = item => {
+    this.goToBookingScreen(item.activityDetail.id, item);
+  }
+
   _onPressItem = item => {
-    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail })
+    this.props.navigation.navigate('DetailScreen', { details: item.activityDetail, hideFooter: true });
   };
 
   _onPressDelete = (index, rsvNo) => {
     this.setState({ isLoading: true });
     let { list, totalPrice } = this.state;
     let deletedItemPrice = list[index].payment.originalPrice;
-    deleteCart(rsvNo).then(response => {
+    deleteCart(rsvNo).then(async response => {
       if (response.status == 200) {
         list.splice(index, 1);
         totalPrice -= deletedItemPrice;
         this.setState({ totalPrice, isLoading: false });
-        this.forceUpdate();
+        await cartCountStore.setCartCount();
       }
     }).catch(error => console.error(error));
   }
@@ -90,16 +135,15 @@ export default class CartScreen extends React.Component {
       <LoadingAnimation />)
     else if (status == 200 && list && list.length > 0) return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ backgroundColor: '#fff', }}>
-          <View style={styles.container}>
-            <FlatList
-              contentContainerStyle={styles.list}
-              data={this.state.list}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
-          </View>
-        </ScrollView>
+        <View style={[styles.container, { backgroundColor: '#fff' }]}>
+          <FlatList
+            contentContainerStyle={styles.list}
+            data={this.state.list}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            refreshControl={<RefreshControl onRefresh={this._refreshCart.bind(this)} refreshing={this.state.isLoading} />}
+          />
+        </View>
 
         {/*bottom CTA button*/}
         <View style={globalStyles.bottomCtaBarContainer}>
@@ -133,6 +177,7 @@ export default class CartScreen extends React.Component {
               Bayar
             </Button>
           </View>
+          <OfflineNotificationBar />
         </View>
       </View>
     );
@@ -191,9 +236,9 @@ class ListItem extends React.PureComponent {
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'flex-end' }}>
-            {/*<TouchableOpacity style={{marginRight:20}}>
+            <TouchableOpacity onPress={() => this.props.onPressEdit(this.props)} style={{ marginRight: 20 }}>
               <Text style={styles.actionText}>Edit</Text>
-            </TouchableOpacity>*/}
+            </TouchableOpacity>
             <TouchableOpacity onPress={this._onPressDelete}>
               <Text style={styles.actionText}>Hapus</Text>
             </TouchableOpacity>

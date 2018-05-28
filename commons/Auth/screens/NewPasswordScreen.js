@@ -14,6 +14,8 @@ import LoadingAnimation from '../../../customer/components/LoadingAnimation'
 import { fetchWishlist, backToMain } from '../../../api/Common';
 import { fetchTravoramaLoginApi } from '../AuthController';
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
+import LoadingModal from './../../components/LoadingModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -32,6 +34,7 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   _submit = () => {
+    Keyboard.dismiss();
     let { password } = this.state;
     let { countryCallCd, phone, email, otp } = this.props.navigation.state.params;
     let errorPassword = validatePassword(password);
@@ -49,6 +52,7 @@ export default class NewPasswordScreen extends React.Component {
               setItemAsync('isLoggedIn', 'true');
               registerForPushNotificationsAsync();
               fetchWishlist();
+              this.setState({ isLoading: false, errorMessage: message });
               backToMain(this.props.navigation);
             } else {
               console.log(response);
@@ -61,7 +65,7 @@ export default class NewPasswordScreen extends React.Component {
             console.log(error);
           });
       }
-      this.setState({ isLoading: false, errorMessage: message });
+      
     });
   }
 
@@ -70,26 +74,25 @@ export default class NewPasswordScreen extends React.Component {
   }
 
   render() {
-    let { password, showPassword, isLoading, errorMessage } = this.state;
+    let { password, showPassword, isLoading, errorMessage, errorPassword } = this.state;
+
+    let errorMessagePassword = errorPassword ?
+    <View style={{ alignItems: 'center', marginBottom: 10 }}>
+      <Text style={{ color: '#fc2b4e' }}>{errorPassword}</Text>
+    </View> : null;
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAvoidingView behavior="position" style={styles.container}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true} style={styles.container}>
+          <LoadingModal isVisible={isLoading} />
           <View style={{ marginBottom: 15 }}>
             <Text style={styles.categoryTitle}>Masukkan Password Baru</Text>
           </View>
-          <View style={{ marginBottom: 25 }}>
-            <Text style={styles.mediumText}>Password minimal 6 karakter</Text>
-          </View>
-          {errorMessage ?
-            <View style={{ alignItems: 'center', marginBottom: 10 }}>
-              <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
-            </View> : null
-          }
           <View>
             <TextInput
               style={styles.searchInput}
               underlineColorAndroid='transparent'
-              placeholder='New Password'
+              placeholder='Password minimal 6 karakter'
               secureTextEntry={!showPassword}
               autoCapitalize='none'
               autoCorrect={false}
@@ -112,6 +115,12 @@ export default class NewPasswordScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
+          {errorMessagePassword}
+          {errorMessage ?
+            <View style={{ alignItems: 'center', marginBottom: 10 }}>
+              <Text style={{ color: '#fc2b4e' }}>{errorMessage}</Text>
+            </View> : null
+          }
           <Button
             containerStyle={{
               marginTop: 40,
@@ -130,7 +139,7 @@ export default class NewPasswordScreen extends React.Component {
             Ubah Password
           </Button>
           {isLoading && <LoadingAnimation />}
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     );
   }

@@ -108,6 +108,15 @@ export default StyleSheet.create({
     borderTopColor: "#efefef",
     borderTopWidth: 1,
   },
+  bottomCtaBarContainer3: {
+    position:'absolute',
+    bottom:0,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderTopColor: "#efefef",
+    borderTopWidth: 1,
+  },
     bottomCtaBarContainer2: {
     position: 'absolute',
     bottom: 0,

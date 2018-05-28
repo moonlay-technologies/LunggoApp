@@ -5,11 +5,17 @@ import { phoneWithoutCountryCode_Indonesia } from '../components/Formatter';
 import PersonDataForm from '../../commons/components/PersonDataForm';
 import { AUTH_LEVEL, fetchTravoramaApi, backToMain } from '../../api/Common';
 import { fetchProfile } from '../../commons/ProfileController';
+import LoadingAnimation from './../components/LoadingAnimation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import LoadingModal from './../../commons/components/LoadingModal';
 
 export default class ChangeProfile extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      isLoading: false
+    };
   }
 
   _changeProfile = async  profile => {
@@ -22,24 +28,34 @@ export default class ChangeProfile extends React.Component {
       requiredAuthLevel: AUTH_LEVEL.User,
     }
     var changeProfileResponse = await fetchTravoramaApi(request);
-    this.setState({ isLoading: false });
+
     if (changeProfileResponse.status == 200) {
       await fetchProfile();
-      backToMain(this.props.navigation);
+      this.props.navigation.goBack();
     } else {
       // TODO: display if timeout or failed
       console.log('failed to fetch profile. response:');
       console.log(changeProfileResponse);
     }
+
+    this.setState({ isLoading: false });
   }
 
   render() {
+    if (this.state.isLoading){
+      return <LoadingModal isVisible={this.state.isLoading} />
+    }
+    else
+
     return (
-      <PersonDataForm
-        contact={this.props.navigation.state.params.profile}
-        onSubmit={this._changeProfile}
-        formTitle='Ubah Profil'
-        submitButtonText='OK' />
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
+        <LoadingModal isVisible={this.state.isLoading} />
+        <PersonDataForm
+          contact={this.props.navigation.state.params.profile}
+          onSubmit={this._changeProfile}
+          formTitle='Ubah Profil'
+          submitButtonText='OK' />
+      </KeyboardAwareScrollView>
     );
   }
 }

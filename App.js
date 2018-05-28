@@ -1,9 +1,13 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import Expo, { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 import Colors from './constants/Colors';
+import UpdateNotifModal from './customer/components/UpdateNotifModal';
+import { fetchTravoramaApi, AUTH_LEVEL } from './api/Common';
+import { addMyBookingListener } from './api/NotificationController';
+import intervalController from './customer/screens/IntervalController';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -16,6 +20,10 @@ export default class App extends React.Component {
       skipIntro: false,
       isLoggedIn: false,
     };
+  }
+
+  componentWillUnmount() {
+    intervalController.stop();
   }
 
   render() {
@@ -36,14 +44,45 @@ export default class App extends React.Component {
             skipIntro={this.state.skipIntro}
             isLoggedIn={this.state.isLoggedIn}
           />
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
         </View>
       );
     }
   }
 
+  _checkVersion = () => {
+    //currentVersion di Api masih 1.0.1
+    //let currentVersion = "1.0.0";
+    let currentVersion = Expo.Constants.manifest.version;
+    let urlPlatform = '';
+    let platform = Platform.OS;
+    const version = 'v1';
+    fetchTravoramaApi({
+      method: 'POST',
+      path: '/checkversion',
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+      data: { currentVersion, platform },
+    }).then(response => {
+      console.log('cek versi');
+      console.log(response);
+      console.log('tutub');
+      console.log(Platform);
+      console.log(Expo.Constants.manifest);
+      if (response.mustUpdate == true) {
+        this.setState({
+          isNotifModalVisible: true,
+          currentVersion: currentVersion,
+          latestVersion: response.latestVersion,
+          urlPlatform: response.updateUrl,
+          forceToUpdate: response.forceToUpdate
+        });
+      }
+    });
+  }
+
   _loadResourcesAsync = async () => {
     return Promise.all([
-      getItemAsync('skipIntro').then(res => this.setState({ skipIntro:res })),
+      getItemAsync('skipIntro').then(res => this.setState({ skipIntro: res })),
       getItemAsync('isLoggedIn').then(isLoggedIn => this.setState({ isLoggedIn })),
       Asset.loadAsync([
         require('./assets/images/robot-dev.png'),
@@ -78,6 +117,9 @@ export default class App extends React.Component {
         HindLight: require('./assets/fonts/hind-light.ttf'),
 
       }),
+      this._checkVersion(),
+      addMyBookingListener(),
+      intervalController.start(),
     ]);
   };
 

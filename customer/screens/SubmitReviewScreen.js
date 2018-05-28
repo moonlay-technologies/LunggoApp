@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import {
-  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Keyboard
+  Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Keyboard, KeyboardAvoidingView
 } from 'react-native';
 import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn, backToMain,
 } from '../../api/Common';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LinearGradient } from 'expo';
 export default class SubmitReviewScreen extends React.Component {
 
   static navigationOptions = {
@@ -32,6 +33,7 @@ export default class SubmitReviewScreen extends React.Component {
   }
 
   _submitReview = async () => {
+    Keyboard.dismiss();
     await this._validate();
     if (!this.state.isValidated)
       return;
@@ -58,7 +60,8 @@ export default class SubmitReviewScreen extends React.Component {
   render() {
     let { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableAutomaticScroll={true} enableOnAndroid={true} extraScrollHeight={94}>
+      <View style={styles.container}>      
         <View style={styles.containerReview}>
           <View>
             {/* <View style={{ marginBottom: 40 }}>
@@ -87,11 +90,35 @@ export default class SubmitReviewScreen extends React.Component {
               Review minimal memiliki 20 karakter
             </Text>}
         </View>
-        <TouchableOpacity style={styles.containerSubmit} onPress={() => this._submitReview()}>
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
-        </TouchableOpacity>
-      </View>
+        <TouchableOpacity
+            onPress={this._submitReview}
+            style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
+            activeOpacity={0.6}
+            styleDisabled={{ opacity: .7 }}
+          >
+            <LinearGradient
+              colors={['#00d3c5', '#35eac6', '#6affc6']}
+              start={[0, 0]}
+              end={[1, 0]}
+              style={{ height: 45, paddingTop: 11, alignItems: 'center', borderRadius: 25, width: '100%' }}>
+              <Text style={{
+                backgroundColor: 'transparent',
+                fontSize: 18, color: '#ffffff',
+                fontFamily: 'HindSemiBold',
+              }}>
+                Lanjut
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        
 
+        {/*<TouchableOpacity style={styles.containerSubmit} onPress={() => this._submitReview()}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Lanjut</Text>
+            </TouchableOpacity>*/}
+       
+      </View>
+      
+      </KeyboardAwareScrollView>
 
     );
   }

@@ -1,25 +1,31 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { WebView, TouchableOpacity } from 'react-native';
+// import {SHA1} from 'crypto-js';
+// import Base64 from 'crypto-js/enc-base64';
 import { clientId, clientSecret } from '../../constants/env';
-import { NavigationActions } from 'react-navigation';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
+import { backToMain } from '../../api/Common';
 
-export default class EditDetailActivity extends Component {
+export default class HelpScreen extends React.Component {
 
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Ubah Detail',
-  })
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Bantuan',
+    }
+  }
 
   render() {
-    let text = 'Ingin mengubah detail aktivitas kamu';
+    let text = 'Butuh bantuan';
+    let url = DOMAIN + '/id/webview/redirectcontact?text=' + text;
+    console.log(url);
     return (
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/webview/redirectcontact?text=' + text,
+          uri: url,
           // uri: DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
@@ -28,6 +34,7 @@ export default class EditDetailActivity extends Component {
             "X-Client-Secret": clientSecret
           }
         }}
+        onMessage={this._onMessage}
       />
     );
   }

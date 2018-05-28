@@ -4,6 +4,11 @@ import {
   TextInput, TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { observer, Observer } from 'mobx-react';
+import { getCart, getCartCount } from '../Cart/CartController';
+import SubmitRatingScreen from './../SubmitRatingScreen';
+import cartCountStore from './../Cart/CartCountStorage';
+import Colors from '../../../constants/Colors';
 
 export default class SearchHeader extends React.Component {
 
@@ -12,6 +17,7 @@ export default class SearchHeader extends React.Component {
     this.state = {
       searchString: '',
       placeholder: 'Cari petualanganmu berikutnya...',
+      isLoading: false,
     };
   }
 
@@ -45,10 +51,11 @@ export default class SearchHeader extends React.Component {
                 color='#ccc' />
             </View>
           </View>
-          <TouchableOpacity style={{flex:1,alignItems:'center',}} onPress={this._goToCart} activeOpacity={0.8} >
-            <Icon name='shopping-basket' type='entypo' size={26} color='#00d3c5' />
-            {/*<View style={styles.notification}>
-              <Text style={styles.txtNotification}>5</Text>
+          <TouchableOpacity style={{ flex: 1, alignItems: 'center', }} onPress={this._goToCart} activeOpacity={0.8} >
+            <Icon name='ios-cart' type='ionicon' size={33} color='#00d3c5' />
+            <CartBubble />
+            {/* <View style={styles.notification}>
+              <Text style={styles.txtNotification}>3</Text>
             </View>*/}
           </TouchableOpacity>
         </View>
@@ -57,6 +64,25 @@ export default class SearchHeader extends React.Component {
   }
 }
 
+@observer
+export class CartBubble extends React.Component {
+
+  render() {
+    let cartCount = cartCountStore.cartCount;
+    let jumlah = cartCount ? cartCount > 0 ? cartCount : null : null
+    console.log('jumlah' + jumlah);
+    console.log('cartCountstore: ' + cartCount)
+    return (
+      (jumlah) && (
+        <View style={styles.notification}>
+          {
+            <Text style={styles.txtNotification}> {jumlah} </Text>
+          }
+        </View>
+      )
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   flowRight: {
@@ -65,15 +91,15 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   notification: {
-    backgroundColor: '#ffc943',
-    height: 16,
-    width: 16,
+    backgroundColor: Colors.primaryColor,
+    height: 18,
+    width: 18,
     position: 'absolute',
     right: 0,
-    top: -3,
+    top: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 8,
+    borderRadius: 9,
   },
   txtNotification: {
     color: '#fff',

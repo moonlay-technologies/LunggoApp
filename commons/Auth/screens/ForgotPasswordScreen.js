@@ -11,6 +11,9 @@ import { validatePhone } from '../../../commons/FormValidation';
 import { sendOtp } from '../ResetPasswordController';
 import LoadingAnimation from '../../../customer/components/LoadingAnimation';
 import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import LoadingModal from './../../components/LoadingModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 
 export default class ForgotPasswordScreen extends React.Component {
   constructor(props, context) {
@@ -40,7 +43,7 @@ export default class ForgotPasswordScreen extends React.Component {
       return this.setState({ errorMessage });
     }
     this.setState({ isLoading: true });
-    sendOtp(countryCallCd, phone).then(response => {
+    sendOtp({ countryCallCd, phoneNumber: phone }).then(response => {
       if (response.status == 200 ||
         response.error == 'ERR_TOO_MANY_SEND_SMS_IN_A_TIME') {
         this.props.navigation.replace('OtpVerification', {
@@ -55,8 +58,11 @@ export default class ForgotPasswordScreen extends React.Component {
     let { phone, isLoading, errorMessage } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAvoidingView behavior="padding" style={styles.container}>
-          <View style={{ marginBottom: 15 }}>
+       
+          <View style = {styles.container}>
+          <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
+          <LoadingModal isVisible={isLoading} />
+          <View style={{ marginBottom: 15 }} >
             <Text style={styles.categoryTitle}>Lupa Password?</Text>
           </View>
           <View style={{ marginBottom: 25 }}>
@@ -102,8 +108,11 @@ export default class ForgotPasswordScreen extends React.Component {
           >
             Kirim
           </Button>
-          {isLoading && <LoadingAnimation />}
-        </KeyboardAvoidingView>
+          <OfflineNotificationBar/>
+          </KeyboardAwareScrollView>
+          </View>
+        
+        
       </TouchableWithoutFeedback>
     );
   }

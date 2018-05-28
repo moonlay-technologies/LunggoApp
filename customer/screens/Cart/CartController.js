@@ -1,5 +1,12 @@
 'use strict';
 import { AUTH_LEVEL, fetchTravoramaApi } from '../../../api/Common';
+import { async } from './../../../api/Common';
+import SearchHeader from './../SearchActivity/SearchHeader';
+import { observer } from 'mobx-react';
+import { action } from 'mobx';
+import cartCountStore from './CartCountStorage';
+
+const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getCart() {
   const version = 'v1';
@@ -8,7 +15,9 @@ export async function getCart() {
   try {
     let response = await fetchTravoramaApi(request);
     let { cartId, status, rsvList, totalPrice } = response;
-    if (status!=200) console.log(response)
+    if (status!=200) {
+      console.log(response)
+    }
     return { cartId, status, list:rsvList, totalPrice };
     // else if (response.status == 401) return {list:[], totalPrice:0};
   } catch(error) {
@@ -27,3 +36,4 @@ export async function deleteCart(rsvNo) {
     console.log(error);
   }
 }
+

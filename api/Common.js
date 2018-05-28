@@ -106,3 +106,13 @@ export function backToMain(navigation) {
   });
   navigation.dispatch(action);
 }
+
+export function backToMyBookings(navigation) {
+  let { reset, navigate } = NavigationActions;
+  const action = reset({
+    index: 0,
+    actions: [navigate({ routeName: 'Main' })],
+  });
+  navigation.dispatch(action);
+}
+

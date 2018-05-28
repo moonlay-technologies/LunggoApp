@@ -57,6 +57,18 @@ export default class RincianHarga extends Component {
               </View>
             )}
 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 0 }}>
+
+              <View style={{ flex: 2, paddingRight: 5 }}>
+                <Text style={styles.activityDesc}>
+                  Pajak dan Biaya Lainnya
+                </Text>
+              </View>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <Text style={styles.activityDesc}>Termasuk</Text>
+              </View>
+            </View>
+
             <View style={{ marginVertical: 5 }}></View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>

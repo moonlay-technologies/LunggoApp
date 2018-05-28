@@ -7,12 +7,12 @@ import Colors from '../constants/Colors';
 
 import HomeScreen from '../customer/screens/HomeScreen';
 import Explore from '../customer/screens/ExploreScreen';
-import MyBooking from '../customer/screens/MyBooking/MyBookingScreen';
-// import LinksScreen from '../customer/screens/LinksScreen';
-// import SettingsScreen from '../customer/screens/SettingsScreen';
+import MyBooking from '../navigation/MyBookingTabNavigator';
 import Wishlist from '../customer/screens/Wishlist/WishlistScreen';
 import MessageBlank from '../customer/screens/MessageBlank';
 import AccountPage from '../customer/screens/AccountPage';
+import { observer } from 'mobx-react';
+import { myBookingStore } from '../customer/screens/MyBooking/MyBookingController';
 
 export default TabNavigator(
   {
@@ -24,55 +24,49 @@ export default TabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
-      /*headerRight:
-        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-          <View style={styles.containerCart}>
-            <Entypo name='shopping-basket' size={26} color='#23d3c3' />
-            <View style={styles.notification}>
-              <Text style={styles.txtNotification}>5</Text>
-            </View>
-          </View>
-        </TouchableOpacity>,*/
       headerStyle: {
         backgroundColor: '#fff',
         ...Platform.select({
           ios: {
-            /* paddingHorizontal:15,
-             paddingTop:30,
-             paddingBottom:10,
-             shadowColor: '#cdcdcd',
-             shadowOffset: { height: 3 },
-             shadowOpacity: 0.2,
-             shadowRadius: 2,
-             paddingVertical:15,*/
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
             height: 51
           },
           android: {
-            //paddingHorizontal:12.6,
-            //paddingVertical:12.6,
-            //paddingRight:25,
             backgroundColor: 'cyan',
             elevation: 0,
             borderBottomColor: "#ececec",
             borderBottomWidth: 1,
-            backgroundColor: '#fbfbfb',
-            borderBottomColor: '#ececec',
             height: 20,
             marginTop: 0
           },
         }),
       },
+      tabBarLabel: () => {
+        const { routeName } = navigation.state;
+        switch (routeName) {
+          case 'Explore':
+            return 'Jelajah';
+          case 'MyBooking':
+            return 'Pesananku';
+          case 'Favorit':
+            return 'Favorit';
+          case 'MessageBlank':
+            return 'Inbox';
+          case 'AccountPage':
+            return 'Akun';
+        }
+      },
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let iconName, control;
         switch (routeName) {
           case 'Explore':
             iconName = `ios-search${focused ? '' : '-outline'}`;
             break;
           case 'MyBooking':
             iconName = `ios-paper${focused ? '' : '-outline'}`;
+            control = myBookingBubbleControl;
             break;
           case 'Favorit':
             iconName = `ios-heart${focused ? '' : '-outline'}`;
@@ -84,28 +78,20 @@ export default TabNavigator(
             iconName = `ios-person${focused ? '' : '-outline'}`;
         }
         return (
-          <Ionicons
-            name={iconName}
-            size={28}
-            style={{ marginBottom: -4, }}
-            color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
-          />
+          <View>
+            <Ionicons
+              name={iconName}
+              size={28}
+              style={{ marginBottom: 0, }}
+              color={focused ? Colors.bottomTabSelected : Colors.bottomTabBlurred}
+            />
+            <IconBubble control={control} />
+          </View>
         );
       },
-      // tabBarOnPress: ({ scene }) => {
-      //   let focused = scene.focused;
-      //   let route = scene.route.routeName;
-      //   if (!focused) {
-      //     if (route == 'Favorit') {
-      //       navigation.setParams({ shouldRefresh: true });
-      //     }
-      //     navigation.navigate(route);
-      //   }
-      // }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
-    //initialLayout: {width:100, height:300},
     animationEnabled: false,
     swipeEnabled: true,
     lazy: false,
@@ -118,6 +104,7 @@ export default TabNavigator(
         ...Platform.select({
           ios: {
             marginBottom: -8,
+            marginTop:-8
           },
           android: {
             lineHeight: 18,
@@ -131,8 +118,30 @@ export default TabNavigator(
   }
 );
 
-const styles = StyleSheet.create({
+const myBookingBubbleControl = () => {
+  return myBookingStore.hasNewBooking;
+}
 
+@observer
+class IconBubble extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    if (this.props.control) {
+      let display = this.props.control();
+      return display && (
+        <View style={styles.notification} />
+      );
+    } else {
+      return null;
+    }
+  }
+}
+
+const styles = StyleSheet.create({
   containerCart: {
     ...Platform.select({
       ios: {
@@ -197,5 +206,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
       },
     }),
+  },
+  notification: {
+    backgroundColor: Colors.primaryColor,
+    height: 8,
+    width: 8,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 9,
   },
 });

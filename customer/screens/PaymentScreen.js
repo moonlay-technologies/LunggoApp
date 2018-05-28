@@ -8,30 +8,36 @@ import { clientId, clientSecret } from '../../constants/env';
 import { DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
+import { shouldRefreshMyBookingTrxList } from './MyBooking/MyBookingController';
+import { backToMyBookings } from './../../api/Common';
+import cartCountStore from './Cart/CartCountStorage';
 
 export default class PaymentScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Pembayaran',
-      headerLeft: (
-        <TouchableOpacity style={{ paddingLeft: 10 }}
-          onPress={() => backToMain(navigation) }>
-          <Icon name='close' type='evilicons' size={20} />
-        </TouchableOpacity>
-      ),
+      title: 'Pembayaran'
     }
   }
 
   _onMessage = event => {
     if (event.nativeEvent.data == 'ExploreScreen') {
+      shouldRefreshMyBookingTrxList();
       return backToMain(this.props.navigation);
     }
+    if (event.nativeEvent.data == 'backToMyBookings') {
+      shouldRefreshMyBookingTrxList();
+      return backToMyBookings(this.props.navigation);
+    }
+  }
+
+  componentWillUnmount() {
+    cartCountStore.setCartCount();
   }
 
   render() {
     let { rsvNo, cartId } = this.props.navigation.state.params;
-    let url = DOMAIN + '/id/Payment/Payment?cartId=' + cartId;
+    let url = DOMAIN + '/Payment_v2/Payment/Payment?cartId=' + cartId;
     console.log(url);
     return (
       <WebView

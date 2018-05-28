@@ -12,7 +12,7 @@ import { NavigationActions } from 'react-navigation';
 export default class ContinueToCartModal extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = { isVisible: false };
   }
 
@@ -38,9 +38,9 @@ export default class ContinueToCartModal extends React.Component {
   }
 
   render() {
-    if (this.state.isVisible) return (
+    return (
       <Modal
-        isVisible={true}
+        isVisible={this.state.isVisible}
         onBackButtonPress={this._goToCart}
       >
         <View style={{ flex: 1 }}></View>
@@ -70,7 +70,6 @@ export default class ContinueToCartModal extends React.Component {
         <View style={{ flex: 1 }}></View>
       </Modal>
     );
-    else return null;
   }
 }
 

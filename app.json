@@ -6,7 +6,7 @@
     "scheme": "travorama",
     "privacy": "public",
     "sdkVersion": "27.0.0",
-    "version": "1.0.0",
+    "version": "0.1.2",
     "orientation": "portrait",
     "primaryColor": "#01d4cb",
     "icon": "./assets/icons/app-icon.png",
@@ -28,12 +28,19 @@
     },
     "ios": {
       "bundleIdentifier": "com.travelmadezy.travorama",
+      "icon": "./assets/icons/logo-ios.png",
       "supportsTablet": true,
       "buildNumber": "1"
     },
     "android": {
+      "icon": "./assets/icons/logo-android.png",
       "package": "com.travelmadezy.travorama",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAO1G0xY7slJppr3ibKsjUCzWl5l9lsbZs"
+        }
+      }
     }
   }
 }

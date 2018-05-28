@@ -1,13 +1,13 @@
 'use strict';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 
-export async function sendOtp(countryCallCd, phoneNumber) {
+export async function sendOtp({ countryCallCd, phoneNumber, email }) {
   const version = 'v1';
   let request = {
     method: 'POST',
     path: `/${version}/account/requestotp`,
     requiredAuthLevel: AUTH_LEVEL.Guest,
-    data: { countryCallCd, phoneNumber },
+    data: { countryCallCd, phoneNumber, email },
   };
   try {
     let response = await fetchTravoramaApi(request);

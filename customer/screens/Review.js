@@ -10,6 +10,7 @@ import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { MultilineText } from '../components/StyledText'
+import Avatar from './../../commons/components/Avatar';
 
 export default class ReviewScreen extends React.Component {
 
@@ -61,7 +62,7 @@ export default class ReviewScreen extends React.Component {
           {reviews.map((review, index) =>
             <View style={styles.containerReview} key={index}>
               <View style={{ flexDirection: 'row' }}>
-                <Image style={styles.thumbprofile} source={{ uri: review.avatar }} />
+                <Avatar size={45} name={review.name} style={styles.thumbprofile} source={{ uri: review.avatar }} />
                 <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                   <Text style={styles.reviewTitle}>{review.name}</Text>
                   <Text style={styles.reviewDate}>{Formatter.dateLong(review.date)}</Text>
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   reviewDate: {
     fontSize: 13,
     color: '#9a9a9a',
-    marginTop:5
+    marginTop: 5
   },
   containerInfoReview: {
     backgroundColor: '#f7f7f7',

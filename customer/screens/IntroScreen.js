@@ -77,7 +77,7 @@ export default class IntroScreen extends Component {
           <Image style={styles.slides} source={require('../../assets/images/welcome1.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome2.jpg')} />
           <Image style={styles.slides} source={require('../../assets/images/welcome3.jpg')} />
-          <BeforeLoginScreen {...this.props} onIntro={true} />
+          <BeforeLoginScreen {...this.props} resetAfter={true} onIntro={true}/>
         </Swiper>
       </View >
     );

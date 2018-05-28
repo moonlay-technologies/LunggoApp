@@ -12,12 +12,19 @@ import search from './SearchActivity/SearchController';
 import Swiper from 'react-native-swiper';
 import * as Formatter from '../components/Formatter';
 import Carousel from 'react-native-snap-carousel';
-import LoadingAnimation from '../components/LoadingAnimation'
+import LoadingAnimation from '../components/LoadingAnimation';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
+import UpdateNotifModal from '../components/UpdateNotifModal';
+import { observer } from 'mobx-react';
+import cartCountStore from './Cart/CartCountStorage';
+import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import intervalController from './IntervalController';
+import { fetchMyBookingTrxList, fetchMyBookingActivityList } from './MyBooking/MyBookingController';
 
 const { width } = Dimensions.get('window');
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
+@observer
 export default class ExploreScreen extends React.Component {
 
   constructor(props) {
@@ -30,6 +37,10 @@ export default class ExploreScreen extends React.Component {
       promoList: [],
       isLoading: true,
       wishlists: {},
+      isNotifModalVisible: false,
+      currentVersion: '0.0.0',
+      latestVersion: '0.0.0',
+      urlPlatform: ''
     };
     setItemAsync('skipIntro', 'true');
     this._onWishlist = this._onWishlist.bind(this)
@@ -37,8 +48,38 @@ export default class ExploreScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Jelajah',
-    header: (props) => <SearchHeader {...props} />
+    header: null
   };
+
+  _checkVersion = () => {
+    //currentVersion di Api masih 1.0.1
+    //let currentVersion = "1.0.0";
+    let currentVersion = Expo.Constants.manifest.version;
+    let urlPlatform = '';
+    let platform = Platform.OS;
+    const version = 'v1';
+    fetchTravoramaApi({
+      method: 'POST',
+      path: '/checkversion',
+      requiredAuthLevel: AUTH_LEVEL.Guest,
+      data: { currentVersion, platform },
+    }).then(response => {
+      console.log('cek versi');
+      console.log(response);
+      console.log('tutub');
+      console.log(Platform);
+      console.log(Expo.Constants.manifest);
+      if (response.mustUpdate == true) {
+        this.setState({
+          isNotifModalVisible: true,
+          currentVersion: currentVersion,
+          latestVersion: response.latestVersion,
+          urlPlatform: response.updateUrl,
+          forceToUpdate: response.forceToUpdate
+        });
+      }
+    });
+  }
 
   _getWishlist = async () => {
     setTimeout(async () => {
@@ -75,7 +116,8 @@ export default class ExploreScreen extends React.Component {
       search('paket').then(paketList => this.setState({ paketList })),
       search('trip').then(tripList => this.setState({ tripList })),
       search('tur').then(turList => this.setState({ turList })),
-      this._getPromos().then(promoList => this.setState({ promoList }))
+      this._getPromos().then(promoList => this.setState({ promoList })),
+      this._getWishlist()
     ]).then(response => {
       this.setState({ isLoading: false });
     });
@@ -83,8 +125,12 @@ export default class ExploreScreen extends React.Component {
 
   componentDidMount() {
     this._refreshContents();
-    this.props.navigation.addListener('willFocus', this._getWishlist);
+    this.props.navigation.addListener('didFocus', this._getWishlist);
+    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingTrxList));
+    this.props.navigation.addListener('didFocus', () => intervalController.register(fetchMyBookingActivityList));
+    //this.props.navigation.addListener('willFocus', this._cartCountGetter);
     this._getWishlist();
+    cartCountStore.setCartCount();
   }
 
   _onWishlist = async ({ id, wishlisted }) => {
@@ -98,12 +144,16 @@ export default class ExploreScreen extends React.Component {
     let placeSrc = [require('../../assets/images/yogya.jpg'), require('../../assets/images/surabaya.jpg'), require('../../assets/images/bg.jpg')];
     let places = [...placeSrc, ...placeSrc, ...placeSrc];
     let placeList = places.map(place => { return { mediaSrc: place } });
-    if (this.state.isLoading)
+    if (this.state.isLoading) {
       return <LoadingAnimation />
+    }
     else
-      return (
+      console.log('version modal: ' + this.state.isNotifModalVisible);
+    return (
+      <View>
+        <SearchHeader {...this.props} />
         <ScrollView style={{ backgroundColor: '#fff' }}>
-
+          <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
           {/*<View style={{flexDirection:'row', marginTop:20}}>
             <View style={{flex:1, padding:10, borderColor:'#3adfb5', backgroundColor:'#3adfb5', borderRadius:5, borderWidth:2, flexDirection:'row', justifyContent:'center'}}>
               <View>
@@ -162,9 +212,10 @@ export default class ExploreScreen extends React.Component {
           {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
 
           <View style={{ paddingTop: 10 }}></View>
-
+          <OfflineNotificationBar />
         </ScrollView>
-      );
+      </View>
+    );
   }
 
   _goTo = (screen, params) =>
@@ -189,7 +240,7 @@ export default class ExploreScreen extends React.Component {
   }
 
   _renderPromo({ list, itemsPerScreen, height }) {
-    let itemWidth = ((width - 1.5 * THUMBNAIL_WS) / itemsPerScreen - THUMBNAIL_WS);
+    let itemWidth = ((width - 1.5 * THUMBNAIL_SPACING) / itemsPerScreen - THUMBNAIL_SPACING);
     let style = StyleSheet.create({
       containerThumbnail: {
         backgroundColor: 'transparent',
@@ -232,7 +283,7 @@ export default class ExploreScreen extends React.Component {
         <TouchableOpacity key={item.id}
           style={{
             width: itemWidth,
-            marginLeft: THUMBNAIL_WS,
+            marginLeft: THUMBNAIL_SPACING,
 
           }}
           activeOpacity={1}
@@ -254,7 +305,7 @@ export default class ExploreScreen extends React.Component {
         data={list}
         renderItem={_renderItem}
         sliderWidth={width}
-        itemWidth={itemWidth + THUMBNAIL_WS}
+        itemWidth={itemWidth + THUMBNAIL_SPACING}
         layout={'default'}
         firstItem={0}
         activeSlideAlignment={'start'}
@@ -265,7 +316,7 @@ export default class ExploreScreen extends React.Component {
   }
 
   _renderContent({ list, itemsPerScreen, height }) {
-    let itemWidth = ((width - 1.5 * THUMBNAIL_WS) / itemsPerScreen - THUMBNAIL_WS);
+    let itemWidth = (width - THUMBNAIL_PEEK) / itemsPerScreen - THUMBNAIL_SPACING;
     let style = StyleSheet.create({
       containerThumbnail: {
         backgroundColor: 'transparent',
@@ -308,7 +359,7 @@ export default class ExploreScreen extends React.Component {
         <TouchableOpacity key={item.id}
           style={{
             width: itemWidth,
-            marginLeft: THUMBNAIL_WS,
+            marginLeft: THUMBNAIL_SPACING,
           }}
           activeOpacity={1}
           onPress={() => this._onPressProduct(item)}
@@ -336,7 +387,7 @@ export default class ExploreScreen extends React.Component {
                   {Formatter.price(item.price)}
                 </Text>
               </View>
-              {itemsPerScreen < 3 && (
+              {(itemsPerScreen < 3) && (
                 <View>
                   <WishButton wishlisted={this.state.wishlists[item.id]} onPress={this._onWishlist}
                     id={item.id} big={itemsPerScreen == 1} {...this.props} />
@@ -354,7 +405,7 @@ export default class ExploreScreen extends React.Component {
         data={list}
         renderItem={_renderItem}
         sliderWidth={width}
-        itemWidth={itemWidth + THUMBNAIL_WS}
+        itemWidth={itemWidth + THUMBNAIL_SPACING}
         layout={'default'}
         firstItem={0}
         activeSlideAlignment={'start'}
@@ -365,7 +416,8 @@ export default class ExploreScreen extends React.Component {
   }
 }
 
-const THUMBNAIL_WS = 10;
+const THUMBNAIL_SPACING = 10;
+const THUMBNAIL_PEEK = width * 0.06;
 const styles = StyleSheet.create({
   /*  slides:{
       backgroundColor:'red',
@@ -589,7 +641,7 @@ const styles = StyleSheet.create({
   },
   container: {
     // flex: 1,
-    padding: THUMBNAIL_WS,
+    padding: THUMBNAIL_SPACING,
     backgroundColor: '#fff',
     ...Platform.select({
       ios: {

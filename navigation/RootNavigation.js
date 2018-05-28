@@ -8,21 +8,13 @@ import { StackNavigator } from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync
   from '../api/NotificationController';
-import { APP_TYPE } from '../constants/env';
-
 import {
   SearchActivity, MyBooking, BookedPageDetail, DetailScreen, Review,
   PaymentScreen, PaxChoice, BookingDetail, AddPax, CalendarPicker,
   AdvanceSearch, RincianHarga,
 } from '../customer/screens/Screens';
 
-import {
-  Dashboard, AppointmentList, AppointmentDetail, AppointmentRequest,
-  ActivityList, Mutasi,
-} from '../operator/screens/Screens';
 
-import EditActivity from '../operator/screens/EditActivity';
-import EditDetailActivity from '../operator/screens/EditDetailActivity';
 import Cart from '../customer/screens/Cart/CartScreen'
 import MapScreen from '../customer/screens/MapScreen';
 import AccountPage from '../customer/screens/AccountPage';
@@ -36,18 +28,16 @@ import {
 
 import CancelationPolicy from '../customer/screens/Terms/CancelationPolicy';
 import WebViewScreen from '../customer/screens/WebViewScreen';
+import HelpScreen from '../customer/screens/HelpScreen';
 import Referral from '../customer/screens/ReferralPage';
 import ReferralHistory from '../customer/screens/RiwayatReferral';
 import ChangeProfile from '../customer/screens/ChangeProfile';
-import F_AppointmentDetail from '../operator/screens/F_AppointmentDetail';
-
-// import Filter from '../screens/Filter';
-// import WelcomeScreen from '../screens/WelcomeScreen';
+import RefundScreen from '../customer/screens/RefundScreen';
+import MyBookingActivityHistory from '../customer/screens/MyBooking/MyBookingActivityHistoryScreen';
+import MyBookingTrxHistory from '../customer/screens/MyBooking/MyBookingTrxHistoryScreen';
 
 import IntroScreen from '../customer/screens/IntroScreen';
-
-
-import Settings from '../customer/screens/SettingsScreen';
+// import Filter from '../screens/Filter';
 import NotFound from '../commons/NotFoundScreen';
 
 export default class RootNavigator extends React.Component {
@@ -55,13 +45,12 @@ export default class RootNavigator extends React.Component {
   rootStackNavigator = StackNavigator(
     {
       Main: __DEV__ ? {
-        //screen: MainTabNavigator
         //screen:Referral
-        screen:F_AppointmentDetail
-        //screen:Dashboard
-       // screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        // screen:F_ReservationDetail
+        // screen:Dashboard
+        screen: MainTabNavigator 
       } : {
-        screen: (APP_TYPE=='CUSTOMER') ? MainTabNavigator : Dashboard
+        screen: MainTabNavigator 
       },
       SearchActivity: { screen: SearchActivity },
       DetailScreen: { screen: DetailScreen },
@@ -73,39 +62,32 @@ export default class RootNavigator extends React.Component {
       Registration: { screen: Registration },
       BookedPageDetail: { screen: BookedPageDetail },
       LoginScreen: { screen: LoginScreen },
-      AppointmentList: { screen: AppointmentList },
-      AppointmentDetail: { screen: AppointmentDetail },
-      AppointmentRequest: { screen: AppointmentRequest },
-      ActivityList: { screen: ActivityList },
       Review: { screen: Review },
-      Mutasi: { screen: Mutasi,  },
       RincianHarga: { screen: RincianHarga },
       ForgotPassword: { screen: ForgotPassword },
       MapScreen: { screen: MapScreen },
       Cart: { screen: Cart },
       AddBookingContact: { screen: AddBookingContact },
-      EditActivity: { screen: EditActivity },
-      EditDetailActivity: { screen: EditDetailActivity },
       OtpVerification: { screen: OtpVerification },
       NewPassword: { screen: NewPassword },
       SubmitRating: { screen: SubmitRating },
       SubmitReview: { screen: SubmitReview },
       CancelationPolicy: { screen: CancelationPolicy },
-      Settings: { screen: Settings },
       NotFound: { screen: NotFound },
       IntroScreen: { screen: IntroScreen },
       BeforeLoginScreen: { screen: BeforeLoginScreen },
       WebViewScreen: { screen: WebViewScreen },
+      HelpScreen: { screen: HelpScreen },
       Referral: { screen: Referral },
-      F_AppointmentDetail: { screen: F_AppointmentDetail },
+      // ReservationDetail: { screen: ReservationDetail },
       ReferralHistory: { screen: ReferralHistory },
       ChangeProfile: { screen: ChangeProfile },
+      RefundScreen: { screen: RefundScreen },
+      MyBookingActivityHistory: { screen: MyBookingActivityHistory },
+      MyBookingTrxHistory: { screen: MyBookingTrxHistory },
     },
     {
-      initialRouteParams: { appType: APP_TYPE },
-      initialRouteName: (APP_TYPE == 'CUSTOMER') ?
-        (this.props.skipIntro) ? 'Main' : 'IntroScreen' :
-        (this.props.isLoggedIn) ? 'Main' : 'LoginScreen',
+      initialRouteName: (this.props.skipIntro) ? 'Main' : 'IntroScreen',
       navigationOptions: () => ({
         headerTitleStyle: {
           fontWeight: 'normal',

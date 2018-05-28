@@ -13,15 +13,18 @@ export var date = date =>
 export var dateLong = date =>
   Moment(date).format('D MMMM YYYY');
 
-//// display how many pax (e.g. )
-export var paxCount = paxCount => paxCount.filter(p => p.count != 0)
-  .map(p => p.count + ' ' + p.type).join(', ')
+export var timeFromNow = timeLimit => Moment(timeLimit).fromNow();
 
 //// Format number to "1.000.000"
 export var number = int => int.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 //// Format price to "Rp 1.000.000"
-export var rupiah = int => 'Rp ' + number(int);
+export var rupiah = int => {
+  const numStr = number(int);
+  if (numStr.substr(0,1)=='-') return '–Rp ' + numStr.substr(1);
+  else return 'Rp ' + numStr;
+}
+
 export var price = rupiah; //// use rupiah as default price
 
 // export var dollar = int => '$' + int;
@@ -105,8 +108,3 @@ export var terbilang = int => {
   }
   return result;
 }
-
-//// hari/tanggal/bulan/tahun - and other date format formatters
-//// format negative numbers pake '-' dan pake '()'
-//// format '2 jam 45 menit 30 detik'
-

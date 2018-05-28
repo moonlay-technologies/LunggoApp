@@ -5,14 +5,20 @@ import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
-import { Rating, Icon, CheckBox } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform
 } from 'react-native';
-import { getProfile } from '../../commons/ProfileController';
 import ContinueToCartModal from '../components/ContinueToCartModal';
-import { shouldRefreshMyBookingList } from './MyBooking/MyBookingController';
+import { shouldRefreshMyBookingTrxList } from './MyBooking/MyBookingController';
+import LoadingModal from './../../commons/components/LoadingModal';
+import cartCountStore from './Cart/CartCountStorage';
+import OfflineNotificationBar from './../../commons/components/OfflineNotificationBar';
+import { deleteCart } from './Cart/CartController';
+import { Moment } from 'moment';
+import { NavigationActions } from 'react-navigation';
+import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -40,20 +46,77 @@ export default class BookingDetail extends React.Component {
 
   constructor(props) {
     super(props);
+    let isDateSelected = false;
+    let isDateValid = true;
+    let isPaxFilled = true;
+    let isContactFilled = false;
+    let isContactNeverFilled = true;
+    let editRsv = null;
+    let rsvNo = null;
+    let contact = null;
+    let date = null;
+    let time = null;
     let counter = [], totalCount = 0, price = 0;
-    props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
-      counter.push({ type, amount, minCount, count: minCount });
-      totalCount += minCount;
-      price += amount * minCount;
-    });
+    console.log('lihat props availableDateTimes');
+    console.log(props.navigation.state.params.availableDateTimes);
+    console.log('konstruksi props');
+    console.log(props.navigation.state.params.editRsv);
+    console.log('ticket count');
+    console.log(props.navigation.state.params.ticketCount);
+    if (props.navigation.state.params.editRsv) {
+      props.navigation.state.params.package[0].price.map(({ type, minCount, amount }) => {
+        let count = 0;
+        let packageType = type;
+        props.navigation.state.params.ticketCount.map(({ count, totalPrice, type }) => {
+          if (type == packageType) {
+            count = count;
+            counter.push({ type, minCount, amount, count });
+            totalCount += count;
+            price += amount * count;
+          };
+        }
+        )
+      });
+      console.log("lihat props");
+      console.log(this.props.navigation.state.params);
+      editRsv = true;
+      rsvNo = props.navigation.state.params.rsvNo;
+      contact = props.navigation.state.params.contact;
+      date = props.navigation.state.params.selectedDateTime.date.substring(0, 10);
+      time = props.navigation.state.params.selectedDateTime.session;
+      isDateSelected = true;
+      isContactFilled = true;
+      isContactNeverFilled = false;
+    }
+    else {
+      props.navigation.state.params.package[0].price.map(({ type, amount, minCount }) => {
+        counter.push({ type, amount, minCount, count: minCount });
+        totalCount += minCount;
+        price += amount * minCount;
+      });
+    }
+    console.log('date');
+    console.log(date);
+    let maxCount = props.navigation.state.params.package[0].maxCount;
+    let defaultMaxCount = props.navigation.state.params.package[0].maxCount;
     this.state = {
-      counter, totalCount, price,
-      isDateSelected: true,
-      isPaxFilled: true,
-      isContactFilled: true,
-      isContactNeverFilled: true,
+      counter, totalCount, price, maxCount, defaultMaxCount, editRsv, rsvNo, contact, date, time,
+      isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled,
       isBookButtonPressed: false
     };
+  }
+
+
+  _goToCart = () => {
+    this.setState({ isVisible: false, isLoading: true });
+    let { reset, navigate } = NavigationActions;
+    const action = reset({
+      index: 1,
+      actions: [
+        navigate({ routeName: 'Main' }),
+        navigate({ routeName: 'Cart' })],
+    });
+    this.props.navigation.dispatch(action);
   }
 
   static navigationOptions = {
@@ -71,11 +134,23 @@ export default class BookingDetail extends React.Component {
 
   setSchedule = scheduleObj => {
     scheduleObj.isDateSelected = true;
+    scheduleObj.isDateValid = true;
     this.setState(scheduleObj);
+    console.log(scheduleObj.paxSlot);
+    if (scheduleObj.paxSlot < this.state.maxCount) {
+      this.setState({
+        maxCount: scheduleObj.paxSlot
+      });
+    }
+    else {
+      this.setState({
+        maxCount: this.state.defaultMaxCount
+      });
+    }
   }
 
   setContact = contactObj => {
-    this.setState({ contact: contactObj, isContactFilled: true, isContactNeverFilled: false });
+    this.setState({ contact: contactObj, isContactFilled: true });
   }
 
   _book = async () => {
@@ -89,7 +164,7 @@ export default class BookingDetail extends React.Component {
     //// validation
     this.setState({ isBookButtonPressed: true });
     if (!pax) this.setState({ isPaxFilled: false });
-    if (!date) this.setState({ isDateSelected: false });
+    if (!date) this.setState({ isDateValid: false });
     if (!contact) this.setState({ isContactFilled: false });
     if (!pax || !date || !contact) return;
 
@@ -108,7 +183,7 @@ export default class BookingDetail extends React.Component {
 
     let data = {
       date, pax, contact, ticketCount, selectedSession,
-      packageId: params.activityId, activityId: params.activityId,
+      packageId: params.package[0].packageId, activityId: params.activityId,
       paxes: [contact],
     };
 
@@ -123,16 +198,24 @@ export default class BookingDetail extends React.Component {
 
       //// after done booking and get RsvNo, add item to cart
       response = await fetchTravoramaCartAddApi(response.rsvNo);
+      this.setState({ isLoading: false });
       if (response.status != 200) {
         console.error("Cart API: status other than 200 returned!");
         console.log(response);
-        this.setState({ isLoading: false });
         return;
       } else {
-        shouldRefreshMyBookingList();
-        this.setState({ isContinueToCartModalVisible: true });
+        if (this.state.editRsv) {
+          deleteCart(this.state.rsvNo);
+        }
+        await cartCountStore.setCartCount();
+        shouldRefreshMyBookingTrxList();
+        if (this.state.editRsv) {
+          this._goToCart();
+        }
+        else {
+          this.setState({ isContinueToCartModalVisible: true });
+        }
       }
-      this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
       console.log(error);
@@ -143,13 +226,20 @@ export default class BookingDetail extends React.Component {
     this.props.navigation.navigate('AddBookingContact', {
       setContact: this.setContact,
       contact: this.state.contact,
+      isContactNeverFilled: this.state.isContactNeverFilled,
     });
   }
 
   _goToCalendarPicker = () => {
     let { navigation } = this.props;
+    console.log('availableDateTimes');
+    console.log(navigation.state.params.availableDateTimes);
     let { availableDateTimes } = navigation.state.params;
     let { price, date, time } = this.state;
+    console.log("selected date");
+    console.log(date);
+    console.log("selected time");
+    console.log(time);
     navigation.navigate('CalendarPicker', {
       price, availableDateTimes,
       setSchedule: this.setSchedule,
@@ -190,22 +280,22 @@ export default class BookingDetail extends React.Component {
     this.props.navigation.navigate('RincianHarga', { breakdown, total })
   }
 
-  _onBookForSelfRadioButtonPressed = async () => {
-    let contact = await getProfile();
-    this.setState({ contact, isContactFilled: true, isContactNeverFilled: false });
-  }
-
   render() {
     let { requiredPaxData } = this.props.navigation.state.params;
-    let { price, pax, date, time, isDateSelected, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
+    let { price, pax, date, time, paxSlot, isDateSelected, isDateValid, isPaxFilled, isContactFilled, isContactNeverFilled, isBookButtonPressed, contact, totalCount, counter } = this.state;
 
     let selectedDateText = date ?
-      `${Formatter.dateFullShort(date)}, pk ${time}` : 'Atur Jadwal';
+      `${Formatter.dateFullShort(date)}\n${time}` : '';
 
     let addEditButton = isEdit => !!isEdit ?
-      <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>
+      <View>
+        <Text style={styles.clickableText}>UBAH</Text>
+      </View>
       :
-      <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
+      <View>
+
+      </View>
+
 
     let counterButtons = counterArr => {
       let add = counterObj => {
@@ -226,65 +316,54 @@ export default class BookingDetail extends React.Component {
         }
       }
       return counterArr.map((counterObj, index) =>
-        <View style={{ flexDirection: 'row', marginBottom: 20 }} key={index}>
+        <View style={{ flexDirection: 'row', marginVertical: 10 }} key={index}>
           <View style={{ flex: 1 }}>
             <Text style={styles.activityDesc}>{counterObj.type}</Text>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1, flexDirection: 'row', }}>
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#f9a3a3', justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => substract(counterObj)}
-            >
-              <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
-            </TouchableOpacity>
-
+            {
+              (counterObj.count > counterObj.minCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => substract(counterObj)}
+                >
+                  <Icon name='minus' type='entypo' size={10} color='#ff5f5f' />
+                </TouchableOpacity>
+              )
+            }
+            {
+              (counterObj.count <= counterObj.minCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, marginLeft: 15, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}
+                  disabled={true}
+                >
+                  <Icon name='minus' type='entypo' size={10} color='#d3d3d3' />
+                </TouchableOpacity>
+              )
+            }
             <Text style={[styles.activityDesc, { width: 35, textAlign: 'center' }]}>{counterObj.count}</Text>
-
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => add(counterObj)}
-            >
-              <Icon name='plus' type='octicon' size={10} color='#ff5f5f' />
-            </TouchableOpacity>
+            {
+              (this.state.totalCount < this.state.maxCount) && (
+                <TouchableOpacity style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#ff5f5f', justifyContent: 'center', alignItems: 'center' }}
+                  onPress={() => add(counterObj)}
+                >
+                  <Icon name='plus' type='octicon' size={10} color='#ff5f5f' />
+                </TouchableOpacity>
+              )
+            }
+            {
+              (this.state.totalCount >= this.state.maxCount) && (
+                <TouchableOpacity disabled={true} style={{ borderWidth: 1, borderRadius: 2, paddingVertical: 5, paddingHorizontal: 15, borderColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                  <Icon name='plus' type='octicon' size={10} color='#d3d3d3' />
+                </TouchableOpacity>
+              )
+            }
           </View>
+          <OfflineNotificationBar />
         </View>
       );
     }
 
-    let paxForm = /*(!!requiredPaxData) ?
-      <View style={{
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 20,
-        marginTop: 20
-      }}>
-        <Text style={styles.activityDesc}>
-          Atur Peserta
-        </Text>
-        <TouchableOpacity
-          containerStyle={styles.addButton}
-          onPress={this._goToPaxChoice}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: 10 }}>
-              { isPaxFilled ||
-                <Text style={styles.validation}>
-                  Mohon isi peserta
-                </Text>
-              }
-            </View>
-            <Icon name='plus' type='evilicon' size={26} color='#01d4cb' />
-          </View>
-
-        </TouchableOpacity>
-      </View>
-      :*/
-      <View style={{
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        marginVertical: 20,
-      }}>
+    let paxForm =
+      <View>
         {counterButtons(counter)}
       </View>;
 
@@ -311,211 +390,215 @@ export default class BookingDetail extends React.Component {
       :
       <View style={{ flex: 1.5, justifyContent: 'center' }} />
 
+    let validasiPaxCount = () => {
+      console.log("jalanin validasi paxCount");
+      console.log("totalCount: ");
+      console.log(this.state.totalCount);
+      console.log(this.state.maxCount);
+      if (this.state.totalCount > this.state.maxCount) {
+        console.log("masuk ke error");
+        return (
+          <Text style={{ color: "red" }}>total pax lebih dari jumlah maksimal</Text>
+        )
+      }
+    }
+
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-        {/* <View style={styles.container}>
-          <Text style={styles.activityTitle}>Paket Tur</Text>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={{marginTop:10}}>
-              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-            </View>
-          </View>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={{marginTop:10}}>
-              <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-            </View>
-          </View>
-          <View style={styles.containerPackage}>
-            <View style={{ flexDirection:'row'}}>
-              <View style={{flex:1.6}}>
-                <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
-                <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-              </View>
-              <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                <Button
-                  containerStyle={globalStyles.ctaButton7}
-                  style={{fontSize: 12, color: '#fff'}}
-                >
-                  Pilih
-                </Button>
-              </View>
-            </View>
-            <View style={styles.containerMoreDescription}>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #1
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #2
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-              <View style={{marginBottom:10}}>
-                <Text style={styles.activityDesc1}>
-                  Hightlight #3
-                </Text>
-                <Text style={styles.activityDesc}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam.
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
+      <View style={{ flex: 1, backgroundColor: '#FAFAFA', paddingBottom: 100 }}>
+        <ScrollView style={{ flex: 1, }}>
+          <ContinueToCartModal
+            isVisible={this.state.isContinueToCartModalVisible}
+            {...this.props}
+          />
+          <LoadingModal isVisible={this.state.isLoading} />
 
-        <View style={styles.divider} /> */}
+          <View style={styles.container}>
+            {/*<View style={{marginBottom:30}}>
+            <Text style={styles.activityTitle}>Paket Tur</Text>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={styles.containerMoreDescription}>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #1
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #2
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #3
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>*/}
 
-        <View style={styles.container}>
+            <View style={{ marginBottom: 30 }}>
+              <TouchableOpacity onPress={this._goToCalendarPicker} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Jadwal</Text>
+                    {isDateValid || <Text style={styles.validation}>Mohon pilih jadwal</Text>}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isDateSelected ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
+                </View>
 
-          <View>
-            <Text style={styles.activityTitle}>Jadwal</Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              borderBottomColor: '#efefef',
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-              marginVertical: 20,
-            }}>
-              <Text style={this.state.isDateSelected ?
-                styles.normalText : styles.warningText} >
-                {selectedDateText}
-              </Text>
-              {isDateSelected ||
-                <Text style={styles.validation}>
-                  Mohon isi jadwal
-                </Text>
-              }
-              <TouchableOpacity containerStyle={styles.addButton}
-                onPress={this._goToCalendarPicker} >
-                {addEditButton(date)}
+                {this.state.isDateSelected ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Pilih Jadwal yang kamu inginkan</Text>
+                  </View>
+                }
+
+
               </TouchableOpacity>
-            </View>
-          </View>
 
-          <View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityTitle}>Peserta</Text>
-              <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                <Text style={styles.seeMore}>{totalCount} orang</Text>
-              </View>
-            </View>
-
-            {/* 
-            {pax && pax.map( item =>
-              <View  key={item.key} style={{paddingVertical:20, borderBottomWidth:1, borderBottomColor:'#efefef',}}>
-                <Text>{item.name}</Text>
-              </View>
-            )} */}
-            {paxForm}
-          </View>
-
-          <View>
-            <Text style={styles.activityTitle}>
-              Kontak tamu yang dapat dihubungi
-            </Text>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              // borderBottomColor: '#efefef',
-              // borderBottomWidth:1,
-              // paddingBottom:20,
-              paddingTop: 20,
-              // marginVertical:20,
-            }}>
-              {isContactFilled && contact &&
-                <Text style={styles.normalText}>
-                  {contact.name}{'\n'}
-                  {contact.email}{'\n'}
-                  {/*contact.countryCallCd} - */}0{contact.phone}
-                </Text>
-              }
-              {isContactNeverFilled &&
-                <View>
-                  <CheckBox
-                    size={18}
-                    textStyle={{ fontSize: 13 }}
-                    style={{ flex: 1, marginBottom: 20 }}
-                    title='Pesan untuk saya sendiri'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checkedColor='#01d4cb'
-                    uncheckedColor='grey'
-                    onPress={this._onBookForSelfRadioButtonPressed}
-                    checked={false}
-                  />
-                  <CheckBox
-                    size={18}
-                    textStyle={{ fontSize: 13 }}
-                    style={{ flex: 1 }}
-                    title='Pesan untuk orang lain'
-                    checkedIcon='dot-circle-o'
-                    uncheckedIcon='circle-o'
-                    checkedColor='#01d4cb'
-                    uncheckedColor='grey'
-                    onPress={this._goToBookingContact}
-                    checked={false}
-                  />
+              {this.state.isDateSelected &&
+                <View style={styles.containerPackage}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={this.state.isDateSelected ?
+                      styles.activityDesc : styles.warningText} >
+                      {selectedDateText}
+                    </Text>
+                  </View>
                 </View>
               }
-              <TouchableOpacity containerStyle={styles.addButton}
-                onPress={this._goToBookingContact} >
-                {isContactNeverFilled ||
-                  <Text style={{ fontSize: 12, color: '#01d4cb' }}> Ubah </Text>}
-              </TouchableOpacity>
             </View>
-            {!isContactFilled && isBookButtonPressed &&
-              <Text style={styles.warningText} >
-                Mohon isi data kontak tamu
+
+            <View style={{ marginBottom: 30 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityTitle}>Peserta</Text>
+                <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                  <Text style={styles.seeMore}>{totalCount} orang</Text>
+                </View>
+              </View>
+
+              <View style={styles.containerPackage}>
+                {paxForm}
+                {validasiPaxCount()}
+              </View>
+
+            </View>
+
+            <View>
+              <TouchableOpacity onPress={this._goToBookingContact} >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View>
+                    <Text style={styles.activityTitle}>Kontak Peserta</Text>
+                    {/*isContactFilled || <Text style={styles.validation}>Mohon masukkan kontak</Text>*/}
+                  </View>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={styles.clickableText}>
+                      {isContactFilled ? 'Ubah' : 'Pilih'}
+                    </Text>
+                  </View>
+                </View>
+
+                {isContactFilled ||
+                  <View style={styles.containerPackage}>
+                    <Text style={styles.activityDesc}>Masukkan kontak untuk aktivitas ini</Text>
+                  </View>
+                }
+
+              </TouchableOpacity>
+              {isContactFilled && contact &&
+                <View style={styles.containerPackage}>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Text style={styles.activityDesc}>
+                      {contact.name}{'\n'}
+                      {contact.email}{'\n'}
+                      {Formatter.reversePhoneWithoutCountryCode_Indonesia(contact.phone)}
+                    </Text>
+                  </View>
+                </View>
+              }
+              {!isContactFilled && isBookButtonPressed &&
+                <Text style={styles.warningText} >
+                  Mohon isi data kontak peserta
               </Text>
-            }
+              }
+            </View>
+
           </View>
 
-        </View>
-
-
-
-        <View style={globalStyles.bottomCtaBarContainer1}>
+        </ScrollView>
+        <View style={globalStyles.bottomCtaBarContainer3}>
           {rincianHarga}
           <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
             <Button
@@ -525,40 +608,41 @@ export default class BookingDetail extends React.Component {
               disabled={this.state.isLoading}
               styleDisabled={{ color: '#aaa' }}
             >
-              Pesan
+              {this.state.editRsv ? 'Edit' : 'Pesan'}
             </Button>
           </View>
         </View>
-        {/*bottom CTA button*/}
-        <ContinueToCartModal
-          isVisible={this.state.isContinueToCartModalVisible}
-          {...this.props}
-        />
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  clickableText: {
+    color: '#00d3c5',
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
   container: {
     padding: 20,
-    backgroundColor: '#fff',
-    flex: 1
+    backgroundColor: '#fafafa',
+    flex: 1,
   },
   containerPackage: {
     backgroundColor: '#fff',
-    borderRadius: 3,
-    padding: 10,
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     marginTop: 15,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: '#B0B0B0',
         shadowOffset: {
           width: 0,
           height: 1
         },
-        shadowRadius: 2,
-        shadowOpacity: 0.2
+        shadowRadius: 3,
+        shadowOpacity: 0.3
       },
       android: {
         elevation: 2,
@@ -586,7 +670,7 @@ const styles = StyleSheet.create({
     marginTop: 3
   },
   activityTitle: {
-    fontFamily: 'HindBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({
@@ -710,7 +794,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    backgroundColor: '#e3e3e3',
+    backgroundColor: '#efefef',
     marginTop: 5,
     marginBottom: 5,
   },

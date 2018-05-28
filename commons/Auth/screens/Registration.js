@@ -1,17 +1,20 @@
 'use strict';
 
 import React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { phoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import { TouchableOpacity, Text, View, ScrollView, Keyboard } from 'react-native';
+import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
 import { fetchTravoramaApi, fetchWishlist, AUTH_LEVEL, backToMain } from '../../../api/Common';
 import registerForPushNotificationsAsync from '../../../api/NotificationController';
 import { fetchTravoramaLoginApi } from '../AuthController';
 import PersonDataForm from '../../components/PersonDataForm';
 import { shouldRefreshProfile } from '../../ProfileController';
+import LoadingModal from './../../components/LoadingModal';
+import { NavigationActions } from 'react-navigation';
 import {
   validateUserName, validatePassword, validatePhone,
 } from '../../FormValidation';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class Registration extends React.Component {
@@ -24,11 +27,13 @@ export default class Registration extends React.Component {
   }
 
   _register = accountData => {
-    let { navigate, goBack, replace, pop } = this.props.navigation;
+    Keyboard.dismiss();
+    let { navigate, goBack, replace, pop, dispatch } = this.props.navigation;
     let { params } = this.props.navigation.state;
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, error: null });
 
     let onOtpPhoneVerified = ({ countryCallCd, phone, otp, navigation }) => {
+      this.setState({ isLoading: true });
       let request = {
         path: '/v1/account/verifyphone',
         method: 'POST',
@@ -46,16 +51,25 @@ export default class Registration extends React.Component {
           else
             pop();
         }
-      });
+      }).finally(() => this.setState({ isLoading: false }));
     };
 
     let goToPhoneVerification = () => {
-      console.log('masuk');
-      replace('OtpVerification', {
-        countryCallCd: accountData.countryCallCd,
-        phone: accountData.phone,
-        onVerified: onOtpPhoneVerified,
+      let { reset, navigate } = NavigationActions;
+      const action = reset({
+        index: 1,
+        actions: [
+          navigate({ routeName: 'Main' }),
+          navigate({
+            routeName: 'OtpVerification',
+            params: {
+              countryCallCd: accountData.countryCallCd,
+              phone: accountData.phone,
+              onVerified: onOtpPhoneVerified,
+            }
+          })],
       });
+      dispatch(action);
     };
 
     let request = {
@@ -64,6 +78,7 @@ export default class Registration extends React.Component {
       data: { ...accountData, phone: phoneWithoutCountryCode_Indonesia(accountData.phone), countryCallCd: '62' },
       requiredAuthLevel: AUTH_LEVEL.Guest,
     };
+
     fetchTravoramaApi(request).then(response => {
       if (response.status == 200) {
         fetchTravoramaLoginApi(accountData.email, '62', accountData.phone, accountData.password)
@@ -85,7 +100,7 @@ export default class Registration extends React.Component {
             // this.setState({ isLoading: false });
             console.log("Login error!!");
             console.log(error);
-          });
+          }).finally(() => this.setState({ isLoading: false }));
       }
       else {
         this.setState({ isLoading: false });
@@ -97,7 +112,7 @@ export default class Registration extends React.Component {
             error = 'Email ' + accountData.email + ' sudah pernah terdaftar';
             break;
           case 'ERR_PHONENUMBER_ALREADY_EXIST':
-            error = 'Nomor ' + accountData.phone + ' sudah pernah terdaftar';
+            error = 'Nomor ' + reversePhoneWithoutCountryCode_Indonesia(accountData.phone) + ' sudah pernah terdaftar';
             break;
           case 'ERR_INVALID_REQUEST':
             error = 'Ada kesalahan pengisian data';
@@ -114,10 +129,17 @@ export default class Registration extends React.Component {
 
   render() {
     return (
+
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <LoadingModal isVisible={this.state.isLoading} />
+        <ScrollView keyboardShouldPersistTaps="handled">
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
         <PersonDataForm onSubmit={this._register} formTitle='Daftar Akun Baru' hasPasswordField={true}
-          submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading}
+          submitButtonText='Daftarkan' buttonDisabled={this.state.isLoading} errorMessage={this.state.error}
         />
+        
+        </KeyboardAwareScrollView>
+        </ScrollView>
         <TouchableOpacity style={{ marginBottom: 30, alignItems: 'center' }}
           onPress={this._goToLoginScreen}
         >
@@ -125,7 +147,10 @@ export default class Registration extends React.Component {
             Sudah punya akun? Login di sini
           </Text>
         </TouchableOpacity>
+        <OfflineNotificationBar/>
       </View>
+
+
     );
   }
 }
