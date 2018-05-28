@@ -125,7 +125,7 @@ export default class DetailScreen extends Component {
 
             {!isLoading && (
               <View>
-                <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} />
+                <MainInfo name={name} shortDesc={shortDesc} city={city} duration={duration} cancellation={cancellation} />
                 <Contents contents={contents} />
 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('CancelationPolicy')}>
@@ -136,7 +136,7 @@ export default class DetailScreen extends Component {
                       </Text>
                       <Text style={styles.activityDesc}>
                         {cancellation.map(c =>
-                          `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}% + ${rupiah(c.valueConstant)}.\n`)}
+                          `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}%${c.valueConstant ? `+ ${rupiah(c.valueConstant)}` : ''}.\n`)}
                       </Text>
                     </View>
                     <View style={{ alignItems: 'flex-end', flex: 0.2, }}>
