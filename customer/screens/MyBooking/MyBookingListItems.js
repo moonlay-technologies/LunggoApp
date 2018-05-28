@@ -15,6 +15,7 @@ import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 import { Icon } from 'react-native-elements';
 import Modal from '../../../commons/components/Modal';
 import Moment from 'moment';
+import { dateFullShort } from './../../components/Formatter';
 
 const { width } = Dimensions.get('window');
 
@@ -163,6 +164,7 @@ export class ActivityListItem extends React.PureComponent {
             <View style={{ flexDirection: 'row', position: 'relative' }}>
               <View style={{ width: 70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
               <View style={{ flex: 3 }}>
+                <Text style={styles.activityDesc}>No. Pesanan: {item.rsvNo}</Text>
                 <Text style={styles.activityTitle}>
                   {item.name}
                 </Text>
@@ -189,68 +191,69 @@ export class ActivityListItem extends React.PureComponent {
                     color='#454545' />
                 </TouchableOpacity>
 
-                <Modal ref='settingModal'
-                  style={styles.modalStyle}
-                  animationIn='fadeIn'
-                  animationOut='fadeOut'
-                  backdropOpacity={0}
-                  tapX={this.state.tapX}
-                  tapY={this.state.tapY}
-                >
-
-                  {item.bookingStatus == 'Ticketed' &&
-                    <TouchableOpacity
-                      onPress={(() => {
-                        this._closeSettingModal();
-                        item.hasPdfVoucher
-                          ? this._viewPdfVoucher(item)
-                          : this._goToBookedPageDetail();
-                      })}
-                      style={{ padding: 10, }}
-                    >
-                      <Text style={styles.teks3a}>Lihat Tiket</Text>
-                    </TouchableOpacity>
-                  }
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      this._closeSettingModal()
-                      this._goToBookedPageDetail();
-                    }}
-                    style={{ padding: 10, }}
+                {this.props.showActionButtons &&
+                  <Modal ref='settingModal'
+                    style={styles.modalStyle}
+                    animationIn='fadeIn'
+                    animationOut='fadeOut'
+                    backdropOpacity={0}
+                    tapX={this.state.tapX}
+                    tapY={this.state.tapY}
                   >
-                    <Text style={styles.teks3a}>Lihat Detail</Text>
-                  </TouchableOpacity>
 
-                  {(item.refundBankAccount || item.needRefundBankAccount) &&
+                    {item.bookingStatus == 'Ticketed' &&
+                      <TouchableOpacity
+                        onPress={(() => {
+                          this._closeSettingModal();
+                          item.hasPdfVoucher
+                            ? this._viewPdfVoucher(item)
+                            : this._goToBookedPageDetail();
+                        })}
+                        style={{ padding: 10, }}
+                      >
+                        <Text style={styles.teks3a}>Lihat Tiket</Text>
+                      </TouchableOpacity>
+                    }
+
                     <TouchableOpacity
                       onPress={() => {
                         this._closeSettingModal()
-                        this._goToRefundScreen();
+                        this._goToBookedPageDetail();
                       }}
                       style={{ padding: 10, }}
                     >
-                      <Text style={styles.teks3a}>{item.refundBankAccount ? 'Ubah Nomor Rekening Refund' : 'Isi Nomor Rekening Refund'}</Text>
+                      <Text style={styles.teks3a}>Lihat Detail</Text>
                     </TouchableOpacity>
-                  }
 
-                  {item.bookingStatus != 'CancelByCustomer' &&
-                    item.bookingStatus != 'CancelByOperator' &&
-                    item.bookingStatus != 'CancelByAdmin' &&
-                    item.bookingStatus != 'DeniedByOperator' &&
-                    item.bookingStatus != 'DeniedByAdmin' &&
-                    <TouchableOpacity
-                      onPress={() => {
-                        this._closeSettingModal()
-                        this._cancelActivity();
-                      }}
-                      style={{ padding: 10, }}
-                    >
-                      <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
-                    </TouchableOpacity>
-                  }
-                </Modal>
+                    {(item.refundBankAccount || item.needRefundBankAccount) &&
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._closeSettingModal()
+                          this._goToRefundScreen();
+                        }}
+                        style={{ padding: 10, }}
+                      >
+                        <Text style={styles.teks3a}>{item.refundBankAccount ? 'Ubah Nomor Rekening Refund' : 'Isi Nomor Rekening Refund'}</Text>
+                      </TouchableOpacity>
+                    }
 
+                    {item.bookingStatus != 'CancelByCustomer' &&
+                      item.bookingStatus != 'CancelByOperator' &&
+                      item.bookingStatus != 'CancelByAdmin' &&
+                      item.bookingStatus != 'DeniedByOperator' &&
+                      item.bookingStatus != 'DeniedByAdmin' &&
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._closeSettingModal()
+                          this._cancelActivity();
+                        }}
+                        style={{ padding: 10, }}
+                      >
+                        <Text style={styles.teks3a}>Batalkan Aktivitas</Text>
+                      </TouchableOpacity>
+                    }
+                  </Modal>
+                }
                 {/* <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
         <View>
           <View style={{ paddingVertical: 25, paddingHorizontal: 15 }}>
@@ -273,6 +276,7 @@ export class ActivityListItem extends React.PureComponent {
             {this.props.showActionButtons && this._buttons(item)} */}
               </View>
             </View>
+
 
             {/*
         {(item.requestRating || item.requestReview) && (
@@ -360,9 +364,9 @@ export class TrxListItem extends React.PureComponent {
           <View>
             <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
           </View>
-          {/* <View>
-            <Text style={styles.headerText}>Tanggal Pesanan: <Text style={styles.activityDesc}>20 Jan 2018, 12.00 PM</Text></Text>
-          </View> */}
+          <View>
+            <Text style={styles.headerText}>Waktu Pemesanan: <Text style={styles.activityDesc}>{dateFullShort(item.trxTime)}</Text></Text>
+          </View>
         </View>
 
         <FlatList
