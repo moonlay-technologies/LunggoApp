@@ -5,7 +5,7 @@ import { WebView, TouchableOpacity } from 'react-native';
 // import {SHA1} from 'crypto-js';
 // import Base64 from 'crypto-js/enc-base64';
 import { clientId, clientSecret } from '../../constants/env';
-import { DOMAIN } from '../../constants/env';
+import { WEB_DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 import { backToMain } from '../../api/Common';
 import { shouldRefreshMyBookingTrxList } from './MyBooking/MyBookingController';
@@ -37,14 +37,14 @@ export default class PaymentScreen extends React.Component {
 
   render() {
     let { rsvNo, cartId } = this.props.navigation.state.params;
-    let url = DOMAIN + '/Payment_v2/Payment/Payment?cartId=' + cartId;
+    let url = WEB_DOMAIN + '/Payment_v2/Payment/Payment?cartId=' + cartId;
     console.log(url);
     return (
       <WebView
         startInLoadingState={true}
         source={{
           uri: url,
-          // uri: DOMAIN + '/id/payment/cartcheckout',
+          // uri: WEB_DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
           headers: {

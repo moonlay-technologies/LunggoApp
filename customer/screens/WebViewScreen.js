@@ -3,7 +3,7 @@
 import React from 'react';
 import { WebView, TouchableOpacity } from 'react-native';
 import { clientId, clientSecret } from '../../constants/env';
-import { DOMAIN } from '../../constants/env';
+import { WEB_DOMAIN } from '../../constants/env';
 import { Icon } from 'react-native-elements';
 
 export default class PaymentScreen extends React.Component {
