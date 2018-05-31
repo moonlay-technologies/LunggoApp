@@ -120,12 +120,46 @@ export class ActivityListItem extends React.PureComponent {
         case 'CancelByOperator':
         case 'CancelByAdmin':
         case 'DeniedByOperator':
+        return (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Status: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Amount: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
+            </View>
+            {item.needRefundBankAccount &&
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={this._goToRefundScreen}
+                >
+                  Refund
+              </Button>
+              </View>
+            }
+          </View>);
         case 'DeniedByAdmin':
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
                 <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Status: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Amount: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
               </View>
               {item.needRefundBankAccount &&
                 <View>

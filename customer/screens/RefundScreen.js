@@ -62,7 +62,7 @@ export default class RefundScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.isLoading && <LoadingModal />}
+        {this.state.isLoading && <LoadingModal isVisible={this.state.isLoading}/>}
         <ScrollView
           showsVerticalScrollIndicator={false}
         >
