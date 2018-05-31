@@ -15,6 +15,7 @@ import {
 import { LinearGradient } from 'expo';
 import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import LoadingModal from './../../commons/components/LoadingModal';
+import { fetchMyBookingActivityList } from './MyBooking/MyBookingController';
 
 export default class RefundScreen extends Component {
 
@@ -47,9 +48,15 @@ export default class RefundScreen extends Component {
     let response = await fetchTravoramaApi(request);
     console.log(response);
     let success = (response.status === 200);
-    if (success)
-      this.props.navigation.goBack();
-    this.setState({ isLoading: true });
+    if (success) {
+      this.setState({ isLoading: true });
+      fetchMyBookingActivityList().then(a => {
+        this.setState({ isLoading: false });
+        this.props.navigation.goBack();
+      }
+      )
+    }
+
   }
 
   render() {
