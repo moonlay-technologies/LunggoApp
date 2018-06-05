@@ -245,6 +245,7 @@ export default class OtpVerificationScreen extends React.Component {
             <CTA
               label='Verifikasi'
               typeButton='ctaPrimary'
+              typeText='ctaTextPrimary'
               onPress={this._verifyOtp}
               disabled={isLoading}
             />

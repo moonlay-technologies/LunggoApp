@@ -203,6 +203,7 @@ export default class CalendarPicker extends React.Component {
                 <CTA
                   label='OK'
                   typeButton='ctaPrimary'
+                  typeText='ctaTextPrimary'
                   onPress={this._return}
                 />
               </View>

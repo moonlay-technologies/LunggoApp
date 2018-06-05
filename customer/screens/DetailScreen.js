@@ -258,6 +258,7 @@ class Footer extends Component {
             <CTA
               label='Pesan'
               typeButton='ctaPrimary'
+              typeText='ctaTextPrimary'
               onPress={this._onCtaButtonClick}
               disabled={!_isDateAvailable}
             />

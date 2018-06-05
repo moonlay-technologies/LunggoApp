@@ -144,6 +144,7 @@ export default class Referral extends React.Component {
                   <CTA
                     label='Share'
                     typeButton='ctaPrimary'
+                    typeText='ctaTextPrimary'
                   />
                 </View>
               </View>

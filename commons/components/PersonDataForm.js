@@ -269,6 +269,7 @@ export default class PersonDataForm extends React.Component {
             <CTA
               label='Daftarkan'
               typeButton='ctaPrimary'
+              typeText='ctaTextPrimary'
               onPress={this._onSubmitForm}
               disabled={this.props.buttonDisabled}
             />

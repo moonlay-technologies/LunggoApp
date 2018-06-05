@@ -24,6 +24,7 @@ import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 import CTA from '../../components/CTA';
+import FormInput from '../../components/FormInput';
 const { setItemAsync } = Expo.SecureStore;
 
 @observer
@@ -235,12 +236,12 @@ export default class LoginScreen extends React.Component {
             <CTA
               label='Masuk'
               typeButton='ctaPrimary'
+              typeText='ctaTextPrimary'
               onPress={this._onLoginPressed}
               disabled={isLoading}
             />
           </View>
          
-          
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}
             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
             <Text style={{ fontSize: 12, color: '#464646', fontFamily: 'Hind' }}>

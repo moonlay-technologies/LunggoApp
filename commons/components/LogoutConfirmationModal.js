@@ -15,6 +15,7 @@ import { purgeMyBookingList } from '../../customer/screens/MyBooking/MyBookingCo
 import { purgeProfile } from '../ProfileController';
 import cartCountStore from './../../customer/screens/Cart/CartCountStorage';
 import { deletePushNotificationAsync, removeMyBookingListener } from '../../api/NotificationController';
+import CTA from './CTA';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -53,12 +54,18 @@ export default class LogoutConfirmationModal extends React.Component {
             Apakah kamu yakin mau log out?
           </Text>
           <View style={{ marginVertical: 10 }}>
-            <Button
+            {/* <Button
               containerStyle={globalStyles.ctaButton2}
               style={{ fontSize: 14, color: '#fff', fontFamily: 'Hind', }}
               onPress={this.closeModal}>
               Tidak
-            </Button>
+            </Button> */}
+            <CTA
+              label='Tidak'
+              typeButton='ctaModalPrimary'
+              typeText='ctaTextModalPrimary'
+              onPress={this.closeModal}
+            />
           </View>
           <View>
             <Button

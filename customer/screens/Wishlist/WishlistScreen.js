@@ -4,6 +4,7 @@ import React from 'react';
 import LoadingAnimation from '../../components/LoadingAnimation';
 import BlankScreen from './WishlistBlankScreen';
 import ListScreen from '../SearchActivity/ActivityResultScreen';
+import { View } from 'react-native';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -54,7 +55,11 @@ export default class WishlistScreen extends React.Component {
     let { props } = this;
     if (isLoading) return <LoadingAnimation />
     else if (list && list.length > 0)
-      return <ListScreen list={list} isWishlist={true} onWishlist={this._onWishlist} {...props} />
+      return (
+        <View style={{ backgroundColor: '#fff', flex: 1 }}>
+          <ListScreen list={list} isWishlist={true} onWishlist={this._onWishlist} {...props} />
+        </View>
+      )
     else return <BlankScreen {...props} />
   }
 }

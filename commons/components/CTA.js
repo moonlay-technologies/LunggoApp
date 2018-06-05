@@ -11,11 +11,16 @@ export default class CTA extends React.Component {
     let typeStyle =
       this.props.typeButton == 'ctaSecondary' ? styles.ctaSecondary :
         this.props.typeButton == 'ctaPrimary' ? styles.ctaPrimary :
+          this.props.typeButton == 'ctaModalPrimary' ? styles.ctaModalPrimary :
+          null;
+    let typeLabel =
+      this.props.typeText == 'ctaTextPrimary' ? styles.ctaTextPrimary :
+        this.props.typeText == 'ctaTextModalPrimary' ? styles.ctaTextModalPrimary :
           null;
     return (
       <Button
         containerStyle={typeStyle}
-        style={styles.ctaTextPrimary}
+        style={typeLabel}
         onPress={this.props.onPress}
         disabled={this.props.disabled}
         styleDisabled={{ color: '#aaa' }}
@@ -50,6 +55,11 @@ const styles = StyleSheet.create({
     //   },
     // }),
   },
+  ctaModalPrimary: {
+    backgroundColor: Colors.primary,
+    height: 40,
+    borderRadius: 5,
+  },
   ctaTextPrimary: {
     fontSize: 16,
     color: '#fff',
@@ -60,6 +70,24 @@ const styles = StyleSheet.create({
         lineHeight: 15 * 0.8,
         paddingTop: 12,
         marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+      },
+    }),  
+  },
+  ctaTextModalPrimary: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'Hind-SemiBold',
+    marginTop: 12,
+    ...Platform.select({
+      ios: {
+        lineHeight: 15,
+        paddingTop: 5,
+        backgroundColor:'transparent',
+        marginBottom: -5
       },
       android: {
         //lineHeight:24

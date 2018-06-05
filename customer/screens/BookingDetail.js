@@ -615,6 +615,7 @@ export default class BookingDetail extends React.Component {
               <CTA
                 label='Pesan'
                 typeButton='ctaPrimary'
+                typeText='ctaTextPrimary'
                 onPress={this._book}
                 disabled={this.state.isLoading}
               />

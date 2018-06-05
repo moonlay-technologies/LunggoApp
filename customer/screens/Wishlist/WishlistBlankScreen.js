@@ -36,6 +36,7 @@ export default class WishlistBlank extends React.Component {
               <CTA
                 label='Jelajah Sekarang'
                 typeButton='ctaSecondary'
+                typeText='ctaTextPrimary'
                 onPress={() => this.props.navigation.goBack()}
                 />
             </View>

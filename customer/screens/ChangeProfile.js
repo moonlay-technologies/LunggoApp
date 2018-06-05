@@ -48,7 +48,7 @@ export default class ChangeProfile extends React.Component {
     else
 
     return (
-      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
+      <KeyboardAwareScrollView style={{backgroundColor:'#fff'}} keyboardShouldPersistTaps="handled" enableOnAndroid={true} enableAutomaticScroll={true}>
         <LoadingModal isVisible={this.state.isLoading} />
         <PersonDataForm
           contact={this.props.navigation.state.params.profile}

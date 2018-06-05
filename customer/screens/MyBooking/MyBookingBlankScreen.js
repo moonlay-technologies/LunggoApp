@@ -63,6 +63,7 @@ export default class MyBookingBlankScreen extends React.Component {
             <CTA
               label='Jelajah Sekarang'
               typeButton='ctaSecondary'
+              typeText='ctaTextPrimary'
               onPress={() => isLoggedIn
                 ? this.props.navigation.goBack()
                 : this.props.navigation.navigate('LoginScreen', { resetAfter: true })
