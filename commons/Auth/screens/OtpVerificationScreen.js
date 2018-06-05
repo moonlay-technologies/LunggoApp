@@ -19,6 +19,7 @@ import LoadingModal from './../../components/LoadingModal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import OfflineNotificationBar from './../../components/OfflineNotificationBar';
 import { phoneWithoutCountryCode_Indonesia, reversePhoneWithoutCountryCode_Indonesia } from '../../../customer/components/Formatter';
+import CTA from '../../components/CTA';
 
 const defaultCooldown = 120;
 
@@ -231,7 +232,7 @@ export default class OtpVerificationScreen extends React.Component {
               />
             </View>
           </View>
-          <Button
+          {/* <Button
             containerStyle={{ marginTop: 50, height: 45, paddingTop: 13, paddingBottom: 10, overflow: 'hidden', borderRadius: 25, backgroundColor: '#01d4cb', }}
             style={{ fontSize: 16, color: '#ffffff' }}
             onPress={this._verifyOtp}
@@ -239,7 +240,15 @@ export default class OtpVerificationScreen extends React.Component {
             styleDisabled={{ color: '#aaa' }}
           >
             Verifikasi
-          </Button>
+          </Button> */}
+          <View style={{marginTop:25}}>
+            <CTA
+              label='Verifikasi'
+              typeButton='ctaPrimary'
+              onPress={this._verifyOtp}
+              disabled={isLoading}
+            />
+          </View>
           <TouchableOpacity style={{ alignItems: 'center', marginTop: 15, }}
             onPress={this._sendOtp} activeOpacity={cooldown ? 1 : 0}
           >

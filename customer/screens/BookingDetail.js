@@ -19,6 +19,7 @@ import { deleteCart } from './Cart/CartController';
 import { Moment } from 'moment';
 import { NavigationActions } from 'react-navigation';
 import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
+import CTA from '../../commons/components/CTA';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -601,7 +602,7 @@ export default class BookingDetail extends React.Component {
         <View style={globalStyles.bottomCtaBarContainer3}>
           {rincianHarga}
           <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
-            <Button
+            {/* <Button
               containerStyle={globalStyles.ctaButton}
               style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
               onPress={this._book}
@@ -609,7 +610,15 @@ export default class BookingDetail extends React.Component {
               styleDisabled={{ color: '#aaa' }}
             >
               {this.state.editRsv ? 'Edit' : 'Pesan'}
-            </Button>
+            </Button> */}
+            <View style={{width:'100%'}}>
+              <CTA
+                label='Pesan'
+                typeButton='ctaPrimary'
+                onPress={this._book}
+                disabled={this.state.isLoading}
+              />
+            </View>
           </View>
         </View>
       </View>

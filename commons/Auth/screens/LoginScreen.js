@@ -23,6 +23,7 @@ import { observer } from 'mobx-react';
 import cartCountStore from './../../../customer/screens/Cart/CartCountStorage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import OfflineNotificationBar from './../../components/OfflineNotificationBar';
+import CTA from '../../components/CTA';
 const { setItemAsync } = Expo.SecureStore;
 
 @observer
@@ -209,7 +210,7 @@ export default class LoginScreen extends React.Component {
           {errorMessagePassword}
           {errorMessage}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={this._onLoginPressed}
             style={{ alignItems: 'center', width: '100%', marginTop: 30 }}
             activeOpacity={0.6}
@@ -229,7 +230,15 @@ export default class LoginScreen extends React.Component {
                 Masuk
               </Text>
             </LinearGradient>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={{marginTop:20}}>
+            <CTA
+              label='Masuk'
+              typeButton='ctaPrimary'
+              onPress={this._onLoginPressed}
+              disabled={isLoading}
+            />
+          </View>
          
           
           <TouchableOpacity style={{ marginTop: 15, alignItems: 'flex-end' }}

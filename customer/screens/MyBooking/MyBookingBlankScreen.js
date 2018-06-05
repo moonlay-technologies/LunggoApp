@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
 import { checkUserLoggedIn } from '../../../commons/Auth/AuthController';
+import CTA from '../../../commons/components/CTA';
 
 export default class MyBookingBlankScreen extends React.Component {
 
@@ -49,7 +50,7 @@ export default class MyBookingBlankScreen extends React.Component {
             </View>
           </View>
           <View style={{ width: '100%', marginTop: 30 }}>
-            <Button
+            {/* <Button
               containerStyle={globalStyles.ctaButton}
               style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
               onPress={() => isLoggedIn
@@ -58,7 +59,15 @@ export default class MyBookingBlankScreen extends React.Component {
               }
             >
               {isLoggedIn ? 'Jelajah Sekarang' : 'Login'}
-            </Button>
+            </Button> */}
+            <CTA
+              label='Jelajah Sekarang'
+              typeButton='ctaSecondary'
+              onPress={() => isLoggedIn
+                ? this.props.navigation.goBack()
+                : this.props.navigation.navigate('LoginScreen', { resetAfter: true })
+              }
+            />
           </View>
         </View>
       </View>

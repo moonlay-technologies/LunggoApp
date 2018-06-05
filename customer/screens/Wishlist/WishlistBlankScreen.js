@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
-
+import CTA from '../../../commons/components/CTA';
 export default class WishlistBlank extends React.Component {
   
   static navigationOptions = {
@@ -23,7 +23,7 @@ export default class WishlistBlank extends React.Component {
                 <Text style={styles.textCart}>Semua aktivitas favorit kamu akan terdaftar disini. {"\n"}Ayo mulai mencari dan rasakan kemudahannya!</Text>
               </View>
             </View>
-            <View style={{width:'100%', marginTop:30}}>
+            {/* <View style={{width:'100%', marginTop:30}}>
               <Button
                   containerStyle={globalStyles.ctaButton}
                   style={{fontSize: 16, color: '#fff', fontWeight:'bold'}}
@@ -31,7 +31,15 @@ export default class WishlistBlank extends React.Component {
                 >
                   Jelajah Sekarang
               </Button>
+            </View> */}
+            <View style={{ width:'100%',marginTop: 30}}>
+              <CTA
+                label='Jelajah Sekarang'
+                typeButton='ctaSecondary'
+                onPress={() => this.props.navigation.goBack()}
+                />
             </View>
+
           </View>
         </View>
     );

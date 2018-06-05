@@ -13,6 +13,7 @@ import globalStyles from '../../commons/globalStyles';
 import Modal from 'react-native-modal';
 import Button from 'react-native-button';
 import * as Formatter from '../components/Formatter';
+import CTA from '../../commons/components/CTA';
 
 export default class CalendarPicker extends React.Component {
 
@@ -191,13 +192,20 @@ export default class CalendarPicker extends React.Component {
               </Text>  */}
             </View>
             <View style={{ alignItems: 'flex-end', flex: 1, justifyContent: 'flex-end' }}>
-              <Button
+              {/* <Button
                 containerStyle={globalStyles.ctaButton}
                 style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
                 onPress={this._return}
               >
                 OK
-              </Button>
+              </Button> */}
+              <View style={{width:'100%'}}>
+                <CTA
+                  label='OK'
+                  typeButton='ctaPrimary'
+                  onPress={this._return}
+                />
+              </View>
             </View>
           </View>
         </View>

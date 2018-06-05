@@ -22,6 +22,7 @@ import { MultilineText, ListedText } from '../components/StyledText'
 import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 import LoadingModal from './../../commons/components/LoadingModal';
+import CTA from '../../commons/components/CTA';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
@@ -244,7 +245,7 @@ class Footer extends Component {
 
         </View>
         <View style={{ alignItems: 'flex-end', flex: 1 }}>
-          <Button
+          {/* <Button
             containerStyle={globalStyles.ctaButton}
             style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
             onPress={this._onCtaButtonClick}
@@ -252,7 +253,15 @@ class Footer extends Component {
             styleDisabled={{ color: '#aaa' }}
           >
             {'Pesan'}
-          </Button>
+          </Button> */}
+          <View style={{width:'100%'}}>
+            <CTA
+              label='Pesan'
+              typeButton='ctaPrimary'
+              onPress={this._onCtaButtonClick}
+              disabled={!_isDateAvailable}
+            />
+          </View>
         </View>
       </View>
     );

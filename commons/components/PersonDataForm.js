@@ -13,6 +13,7 @@ import globalStyles from '../globalStyles';
 import { reversePhoneWithoutCountryCode_Indonesia, phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
 import { WideCTAButton } from './Buttons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import CTA from './CTA';
 
 
 export default class PersonDataForm extends React.Component {
@@ -119,9 +120,9 @@ export default class PersonDataForm extends React.Component {
       </View> : null;
 
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <TouchableWithoutFeedback style={{backgroundColor:'#fff', flex:1}} onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
+        <KeyboardAwareScrollView style={{backgroundColor:'#fff', flex:1}} keyboardShouldPersistTaps="handled" enableOnAndroid = {true} enableAutomaticScroll = {true}>
           <View style={{ marginBottom: 25 }}>
             <Text style={globalStyles.categoryTitle1}>
               {this.props.formTitle}
@@ -258,11 +259,21 @@ export default class PersonDataForm extends React.Component {
             </View>
           }
 
-          <WideCTAButton
+          {/* <WideCTAButton
             onPress={this._onSubmitForm}
             disabled={this.props.buttonDisabled}
             text={this.props.submitButtonText}
-          />
+          /> */}
+
+          <View style={{marginTop:20}}>
+            <CTA
+              label='Daftarkan'
+              typeButton='ctaPrimary'
+              onPress={this._onSubmitForm}
+              disabled={this.props.buttonDisabled}
+            />
+          </View>
+          
           </KeyboardAwareScrollView>
         </View>
 

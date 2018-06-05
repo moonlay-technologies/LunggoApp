@@ -12,6 +12,7 @@ import Modal from '../../commons/components/Modal';
 import globalStyles from '../../commons/globalStyles';
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../api/Common';
 import { Icon } from 'react-native-elements';
+import CTA from '../../commons/components/CTA';
 
 export default class Referral extends React.Component {
 
@@ -118,7 +119,7 @@ export default class Referral extends React.Component {
                 {/*<Text style={styles.btnSalin}>Salin</Text>*/}
               </View>
               <View style={{alignItems: 'center', width:'100%', marginTop:10}} >
-                <LinearGradient
+                {/* <LinearGradient
                   colors={['#00d3c5', '#35eac6']}
                   start={[0, 0]}
                   end={[1, 0]}
@@ -138,7 +139,13 @@ export default class Referral extends React.Component {
                   }}>
                     Share
                   </Text>
-                </LinearGradient>
+                </LinearGradient> */}
+                <View style={{width:'100%'}}>
+                  <CTA
+                    label='Share'
+                    typeButton='ctaPrimary'
+                  />
+                </View>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -303,5 +310,6 @@ const styles = StyleSheet.create({
     // justifyContent:'space-between',
     width:'100%',
     marginTop:25,
+    borderRadius:5
   },
 });

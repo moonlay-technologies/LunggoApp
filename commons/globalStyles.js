@@ -10,7 +10,7 @@ export default StyleSheet.create({
     paddingBottom: 13,
     overflow: 'hidden',
     borderRadius:25,
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.primary,
   },
   ctaButton2: {
     height: 40,
@@ -19,7 +19,7 @@ export default StyleSheet.create({
     paddingBottom: 13,
     overflow: 'hidden',
     borderRadius:3,
-    backgroundColor: Colors.primaryColor,
+    backgroundColor: Colors.primary,
   },
   ctaButton3: {
     height: 20,
