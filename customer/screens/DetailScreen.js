@@ -564,6 +564,26 @@ class MainInfo extends Component {
               </Text>
             </View>
           </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <View style={{ justifyContent: 'center' }}>
+              <Icon name='md-paper' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                E-Voucher/Tiket Fisik/Harus dicetak
+              </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+            <View style={{ justifyContent: 'center' }}>
+              <Icon name='md-contacts' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.activityDesc}>
+                Private/Join Group
+              </Text>
+            </View>
+          </View>
 
         </View>
         <View style={styles.divider} />

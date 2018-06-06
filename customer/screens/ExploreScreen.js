@@ -205,11 +205,17 @@ export default class ExploreScreen extends React.Component {
           {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
           {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
 
+          {this._renderHeader({ title: 'Eksplor Aktivitas' })}
+          {this._renderEksplor({ list: this.state.promoList, itemsPerScreen: 2, height: 150 })}
+
           {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
           {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
 
           {this._renderHeader({ title: 'Promo Terkini' })}
           {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
+
+          
+          
 
           <View style={{ paddingTop: 10 }}></View>
           <OfflineNotificationBar />
@@ -239,6 +245,85 @@ export default class ExploreScreen extends React.Component {
     )
   }
 
+  _renderEksplor({ list, itemsPerScreen, height }) {
+    let itemWidth = ((width - 1.5 * THUMBNAIL_SPACING) / itemsPerScreen - THUMBNAIL_SPACING);
+    let style = StyleSheet.create({
+      containerThumbnail: {
+        backgroundColor: '#000',
+        borderRadius: 5,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 3,
+            shadowOpacity: 0.7
+          },
+        })
+      },
+      thumbnail: {
+        backgroundColor: 'transparent',
+        resizeMode: 'cover',
+        width: itemWidth,
+        opacity:0.9,
+        height: height,
+        borderRadius: 5,
+        ...Platform.select({
+          ios: {
+            shadowColor: '#000000',
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowRadius: 6,
+            shadowOpacity: 0.7
+          },
+
+        }),
+      }
+    });
+
+    let _renderItem = ({ item, index }) => {
+      return (
+        <TouchableOpacity key={item.id}
+          style={{
+            width: itemWidth,
+            marginLeft: THUMBNAIL_SPACING,
+          }}
+          activeOpacity={1}
+          onPress={() => this._onPressPromo(item)}
+        >
+          <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
+            <Image
+              style={style.thumbnail}
+              source={require('../assets/images/city.jpg')}>
+            </Image>
+            <View style={{alignItems:'center', position:'absolute', width:'100%', bottom:10}}>
+                <Text style={styles.namaEksplor}>Kota</Text>
+              </View>
+          </View>
+
+        </TouchableOpacity>
+      );
+    }
+    
+    return (
+      <Carousel
+        ref={c => this._carousel = c}
+        data={list}
+        renderItem={_renderItem}
+        sliderWidth={width}
+        itemWidth={itemWidth + THUMBNAIL_SPACING}
+        layout={'default'}
+        firstItem={0}
+        activeSlideAlignment={'start'}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
+      />
+    );
+  }
   _renderPromo({ list, itemsPerScreen, height }) {
     let itemWidth = ((width - 1.5 * THUMBNAIL_SPACING) / itemsPerScreen - THUMBNAIL_SPACING);
     let style = StyleSheet.create({
@@ -475,6 +560,25 @@ const styles = StyleSheet.create({
       },
       android: {
         lineHeight: 18,
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  namaEksplor: {
+    fontSize: 24,
+    color: '#fff',
+    fontFamily: 'Hind-Bold',
+    backgroundColor:'transparent',
+    ...Platform.select({
+      ios: {
+
+        lineHeight: 10,
+        paddingTop: 18,
+        marginBottom: -10,
+      },
+      android: {
+        //lineHeight: 18,
         //paddingTop: 23 - (23* 1),
 
       },
