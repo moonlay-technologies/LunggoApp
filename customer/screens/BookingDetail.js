@@ -5,7 +5,7 @@ import { AUTH_LEVEL, fetchTravoramaApi } from '../../api/Common';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
 import Button from 'react-native-button';
-import { Icon } from 'react-native-elements';
+import { Icon, colors } from 'react-native-elements';
 import {
   StyleSheet, TouchableOpacity, Text, View, Image, TextInput,
   ScrollView, Platform
@@ -19,6 +19,7 @@ import { deleteCart } from './Cart/CartController';
 import { Moment } from 'moment';
 import { NavigationActions } from 'react-navigation';
 import { phoneWithoutCountryCode_Indonesia } from './../components/Formatter';
+import Colors from '../../constants/Colors';
 
 async function fetchTravoramaCartAddApi(rsvNo) {
   const version = 'v1';
@@ -413,95 +414,7 @@ export default class BookingDetail extends React.Component {
           <LoadingModal isVisible={this.state.isLoading} />
 
           <View style={styles.container}>
-            {/*<View style={{marginBottom:30}}>
-            <Text style={styles.activityTitle}>Paket Tur</Text>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
-                  </Button>
-                </View>
-              </View>
-              <View style={styles.containerMoreDescription}>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #1
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #2
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #3
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>*/}
+
 
             <View style={{ marginBottom: 30 }}>
               <TouchableOpacity onPress={this._goToCalendarPicker} >
@@ -537,6 +450,157 @@ export default class BookingDetail extends React.Component {
                 </View>
               }
             </View>
+
+            <View style={{marginBottom:30}}>
+            <Text style={styles.activityTitle}>Paket Tur</Text>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                  <View style={{flexDirection:'row', marginVertical:5}}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+                    </View>
+                    <View style={{ marginLeft:5}}>
+                      <Text style={styles.activityDesc}>Tidak bisa refund</Text>
+                    </View>
+                  </View>
+                  <View style={{marginTop:5}}><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                  <View style={{flexDirection:'row', marginVertical:5}}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+                    </View>
+                    <View style={{ marginLeft:5}}>
+                      <Text style={styles.activityDesc}>Tidak bisa refund</Text>
+                    </View>
+                  </View>
+                  <View style={{marginTop:5}}><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7b}
+                    style={{fontSize: 12, color: '#f57b76'}}
+                  >
+                    Ubah
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #4</Text></View>
+                  <View style={{flexDirection:'row', marginVertical:5}}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+                    </View>
+                    <View style={{ marginLeft:5}}>
+                      <Text style={styles.activityDesc}>Tidak bisa refund</Text>
+                    </View>
+                  </View>
+                  <View style={{marginTop:5}}><Text style={styles.hargaDesc}>Not available</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7a}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={{marginTop:10}}>
+                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
+              </View>
+            </View>
+            <View style={styles.containerPackage}>
+              <View style={{ flexDirection:'row'}}>
+                <View style={{flex:1.6}}>
+                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                  <View style={{flexDirection:'row', marginVertical:5}}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+                    </View>
+                    <View style={{ marginLeft:5}}>
+                      <Text style={styles.activityDesc}>Tidak bisa refund</Text>
+                    </View>
+                  </View>
+                  <View style={{marginTop:5}}><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                </View>
+                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
+                  <Button
+                    containerStyle={globalStyles.ctaButton7}
+                    style={{fontSize: 12, color: '#fff'}}
+                  >
+                    Pilih
+                  </Button>
+                </View>
+              </View>
+              <View style={styles.containerMoreDescription}>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #1
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Hightlight #2
+                  </Text>
+                  <Text style={styles.activityDesc}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et 
+                    dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                </View>
+                <View style={{marginBottom:15}}>
+                  <Text style={styles.activityDesc1}>
+                    Kebijakan Pembatalan
+                  </Text>
+                  <View style={{ flex: 1, flexDirection: 'row',marginTop:10}}>
+                    <View>
+                      <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20, marginTop:3 }} />
+                    </View>
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={styles.activityDesc}>
+                        Pesanan ini tidak dapat di-refund. Kebijakan pembatalan berlaku setelah pesanan anda dikonfirmasi.
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={{alignItems:'flex-start'}}>
+                  <Text style={styles.hyperlink}>
+                    Tutup Detail Paket
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
 
             <View style={{ marginBottom: 30 }}>
               <View style={{ flexDirection: 'row' }}>
@@ -649,6 +713,29 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  containerPackageSelected: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor:'#00d3c5',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginTop: 15,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#B0B0B0',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowRadius: 3,
+        shadowOpacity: 0.3
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
   addButton: {
     height: 35,
     width: '100%',
@@ -725,6 +812,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#454545',
     fontFamily: 'Hind-SemiBold',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 10,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
+  },
+  hyperlink: {
+    fontSize: 13,
+    color:'#f57b76',
+    fontFamily: 'Hind',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
