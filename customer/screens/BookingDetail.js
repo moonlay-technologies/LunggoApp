@@ -413,7 +413,8 @@ export default class BookingDetail extends React.Component {
           <LoadingModal isVisible={this.state.isLoading} />
 
           <View style={styles.container}>
-            {/*<View style={{marginBottom:30}}>
+
+          <View style={{marginBottom:30}}>
             <Text style={styles.activityTitle}>Paket Tur</Text>
             <View style={styles.containerPackage}>
               <View style={{ flexDirection:'row'}}>
@@ -501,7 +502,7 @@ export default class BookingDetail extends React.Component {
                 </View>
               </View>
             </View>
-          </View>*/}
+          </View>
 
             <View style={{ marginBottom: 30 }}>
               <TouchableOpacity onPress={this._goToCalendarPicker} >
