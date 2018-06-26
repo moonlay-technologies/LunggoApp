@@ -27,6 +27,7 @@ async function getBookingList(listType, dataVarName, shouldRefreshVarName) {
   const secureStoreJSONData = await getItemAsync(dataVarName);
   if (secureStoreJSONData) {
     const parsedSecureStoreData = await JSON.parse(secureStoreJSONData);
+    setMobXBookingItem(parsedSecureStoreData, listType);
     // let bookings = parsedSecureStoreData.reduce((a, b) => a.concat(b.activities), []);
     // setTimeout(() => downloadPdfVouchers(bookings), 0);
     return parsedSecureStoreData;
@@ -35,19 +36,58 @@ async function getBookingList(listType, dataVarName, shouldRefreshVarName) {
   }
 }
 
+async function getListFromServer(listType) {
+  const fetched = listType == 'cartList'
+    ? await fetchMyBookingTrxList()
+    : await fetchMyBookingActivityList();
+  if (fetched.status != 200)
+    return [];
+  else return listType == 'cartList'
+    ? fetched.myBookings
+    : fetched.myReservations;
+}
 
-
+export async function fetchMyBookingTrxList() {
+  const responseVarName = 'myBookings';
+  const secureStoreVarName = 'myBookings';
+  const lastUpdateVarName = 'myBookingTrxLastUpdate';
+  const itemType = 'cart';
+  return fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
 }
 
 export async function fetchMyBookingActivityList() {
+  const responseVarName = 'myReservations';
+  const secureStoreVarName = 'myBookingsActivity';
+  const lastUpdateVarName = 'myBookingActivityLastUpdate';
+  const itemType = 'reservation';
+  return fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+}
 
+async function fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName) {
+  const version = 'v1';
+  const lastUpdate = await getItemAsync(lastUpdateVarName) || '';
+  const request = {
+    path: `/${version}/activities/mybooking/${itemType}/active?lastupdate=${lastUpdate}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
   if (response.mustUpdate) {
+    let listJSON = await JSON.stringify(response[responseVarName]);
+    
+    await setItemAsync(secureStoreVarName, listJSON);
+    await setItemAsync(lastUpdateVarName, response.lastUpdate);
+    
+    setMobXBookingItem(response[responseVarName], `${itemType}List`);
     myBookingStore.setNewBookingMark();
   }
   return response;
+}
+
+function setMobXBookingItem (data, listType) {
+  if (listType == 'cartList')
+    myBookingTrxItemStore.setMyBookingTrxItem(data);
+  else
+    myBookingActivityItemStore.setMyBookingActivityItem(data);
 }
 
 export async function shouldRefreshMyBookingTrxList() {
@@ -101,8 +141,7 @@ export async function fetchMyBookingActivityHistoryList(startDate, endDate, page
     path: `/${version}/activities/mybooking?startDate=${startDate}&endDate=${endDate}&page=${page}&perPage=${perPage}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
-  let response = await fetchTravoramaApi(request);
-  return response;
+  return await fetchTravoramaApi(request);
 }
 
 export async function fetchMyBookingTrxHistoryList(startDate, endDate, page, perPage) {
@@ -111,8 +150,7 @@ export async function fetchMyBookingTrxHistoryList(startDate, endDate, page, per
     path: `/${version}/activities/mybooking?startDate=${startDate}&endDate=${endDate}&page=${page}&perPage=${perPage}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
-  let response = await fetchTravoramaApi(request);
-  return response;
+  return await fetchTravoramaApi(request);
 }
 
 async function downloadPdfVouchers(bookings) {
@@ -138,6 +176,7 @@ async function downloadPdfVouchers(bookings) {
   }
 }
 class MyBookingStoreMobx {
+  @observable hasNewBooking = false
 
   @action setNewBookingMark = () => {
     this.hasNewBooking = true;
@@ -149,6 +188,7 @@ class MyBookingStoreMobx {
 }
 
 class MyBookingTrxItemStoreMobx {
+  @observable myBookingTrxItem
 
   @action setMyBookingTrxItem = item => {
     this.myBookingTrxItem = item;
@@ -160,6 +200,7 @@ class MyBookingTrxItemStoreMobx {
 }
 
 class MyBookingActivityItemStoreMobx {
+  @observable myBookingActivityItem
 
   @action setMyBookingActivityItem = item => {
     this.myBookingActivityItem = item;
