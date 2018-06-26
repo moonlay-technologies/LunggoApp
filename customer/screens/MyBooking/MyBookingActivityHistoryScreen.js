@@ -31,9 +31,11 @@ export default class MyBookingActivityHistoryScreen extends React.Component {
   }
 
   componentDidMount() {
-    let { params } = this.props.navigation.state;
-    if (params && !params.loggedIn) {
-      return this.setState({ isLoading: false });
+    const { params } = this.props.navigation.state;
+    if (params && params.loggedIn == false) {
+      this.setState({ isLoading: false });
+    } else {
+      this._refreshMyBookingList();
     }
   }
 
