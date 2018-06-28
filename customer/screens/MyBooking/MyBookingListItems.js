@@ -6,7 +6,7 @@ import {
   Platform, StyleSheet, Text, View, Image, ScrollView, Dimensions,
   RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback, Alert
 } from 'react-native';
-import { getMyBookingTrxList, cancelReservation, fetchMyBookingActivityList, myBookingActivityItemStore, changeReservationToCancelMobx } from './MyBookingController';
+import { getMyBookingTrxList, cancelReservation, fetchMyBookingActivityList, myBookingActivityItemStore, cancelReservationInMobX } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -70,7 +70,7 @@ export class ActivityListItem extends React.PureComponent {
     console.log('canceled');
     cancelReservation(this.props.item.rsvNo);
     console.log("buka my reservation aldjawajdlajksdlajlksdk");
-    changeReservationToCancelMobx(this.props.item.rsvNo);
+    cancelReservationInMobX(this.props.item.rsvNo);
     fetchMyBookingActivityList();
   }
 

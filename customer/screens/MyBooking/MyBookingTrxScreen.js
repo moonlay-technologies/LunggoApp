@@ -4,8 +4,7 @@ import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import { TrxListItem } from './MyBookingListItems';
-import { getMyBookingTrxList, myBookingTrxItemStore, shouldRefreshMyBookingTrxList } from './MyBookingController';
-import LoadingAnimation from '../../components/LoadingAnimation'
+import { getMyBookingTrxList, shouldRefreshMyBookingTrxList } from './MyBookingController';
 import MenuButton from './../../../commons/components/MenuButton';
 import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
@@ -96,7 +95,7 @@ export default class MyBookingTrxScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <View style={{ flex: -1 }}>
             <FlatList
-              data={myBookingTrxItemStore.myBookingTrxItem}
+              data={myBookingStore.pendingMyBookingTrxs}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}

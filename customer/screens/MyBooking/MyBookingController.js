@@ -1,50 +1,74 @@
 'use strict';
+
+// import { downloadPdfVouchers } from "./MyBookingHelpers";
+import { myBookingStore } from "./MyBookingStore";
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
-import { Permissions, Notifications } from 'expo';
 import { NavigationActions } from 'react-navigation';
-import { observable, action } from 'mobx';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getMyBookingTrxList() {
   const dataVarName = 'myBookings';
   const shouldRefreshVarName = 'shouldRefresh.myBookingTrxList';
-  getBookingList('cartList', dataVarName, shouldRefreshVarName);
+  getBookingList('pending', dataVarName, shouldRefreshVarName);
 }
 
 export async function getMyBookingActivityList() {
   const dataVarName = 'myBookingsActivity';
   const shouldRefreshVarName = 'shouldRefreshmyBookingActivityList';
-  getBookingList('reservationList', dataVarName, shouldRefreshVarName)
+  getBookingList('active', dataVarName, shouldRefreshVarName)
 }
 
-async function getBookingList(listType, dataVarName, shouldRefreshVarName) {
+export async function getUnreviewedBookingList() {
+  const dataVarName = 'unreviewedMyBookingList';
+  const shouldRefreshVarName = 'shouldRefresh.unreviewedBookingList';
+  getBookingList('unreviewed', dataVarName, shouldRefreshVarName)
+}
+
+export async function getUnreviewedBookingList() {
+  const dataVarName = 'myBookingHistoryList';
+  const shouldRefreshVarName = 'shouldRefresh.myBookingHistoryList';
+  getBookingList('history', dataVarName, shouldRefreshVarName)
+}
+
+async function getBookingList(myBookingState, dataVarName, shouldRefreshVarName) {
   const shouldRefreshFromServer = await getItemAsync(shouldRefreshVarName);
   if (shouldRefreshFromServer) {
     deleteItemAsync(shouldRefreshVarName);
     myBookingStore.removeNewBookingMark();
-    return getListFromServer(listType);
+    return getListFromServer(myBookingState);
   }
   const secureStoreJSONData = await getItemAsync(dataVarName);
   if (secureStoreJSONData) {
     const parsedSecureStoreData = await JSON.parse(secureStoreJSONData);
-    setMobXBookingItem(parsedSecureStoreData, listType);
+    myBookingStore.setMyBookingStore(myBookingState, parsedSecureStoreData);
     // let bookings = parsedSecureStoreData.reduce((a, b) => a.concat(b.activities), []);
     // setTimeout(() => downloadPdfVouchers(bookings), 0);
     return parsedSecureStoreData;
   } else {
-    return getListFromServer(listType);
+    return getListFromServer(myBookingState);
   }
 }
 
-async function getListFromServer(listType) {
-  const fetched = listType == 'cartList'
-    ? await fetchMyBookingTrxList()
-    : await fetchMyBookingActivityList();
+async function getListFromServer(myBookingState) {
+  let fetchFn;
+  switch (myBookingState) {
+    case 'pending':
+      fetchFn = fetchMyBookingTrxList;
+      break;
+    case 'active':
+      fetchFn = fetchMyBookingActivityList;
+      break;
+    case 'unreviewed':
+      fetchFn = fetchUnreviewedBookingList;
+      break;
+    case 'history':
+      fetchFn = fetchBookingHistoryList;
+      break;
+  }
+  const fetched = await fetchFn();
   if (fetched.status != 200)
     return [];
-  else return listType == 'cartList'
-    ? fetched.myBookings
-    : fetched.myReservations;
+  else return fetched.data;
 }
 
 export async function fetchMyBookingTrxList() {
@@ -52,7 +76,8 @@ export async function fetchMyBookingTrxList() {
   const secureStoreVarName = 'myBookings';
   const lastUpdateVarName = 'myBookingTrxLastUpdate';
   const itemType = 'cart';
-  return fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const state = 'pending';
+  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
 }
 
 export async function fetchMyBookingActivityList() {
@@ -60,14 +85,33 @@ export async function fetchMyBookingActivityList() {
   const secureStoreVarName = 'myBookingsActivity';
   const lastUpdateVarName = 'myBookingActivityLastUpdate';
   const itemType = 'reservation';
-  return fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const state = 'active';
+  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
 }
 
-async function fetchFromServer(itemType, responseVarName, secureStoreVarName, lastUpdateVarName) {
+export async function fetchUnreviewedBookingList() {
+  const responseVarName = 'unreviewedBookingList';
+  const secureStoreVarName = responseVarName;
+  const lastUpdateVarName = responseVarName + 'LastUpdate';
+  const itemType = 'reservation';
+  const state = 'unreviewed';
+  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+}
+
+export async function fetchBookingHistoryList() {
+  const responseVarName = 'bookingHistoryList';
+  const secureStoreVarName = responseVarName;
+  const lastUpdateVarName = responseVarName + 'LastUpdate';
+  const itemType = 'reservation';
+  const state = 'history';
+  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+}
+
+async function fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName) {
   const version = 'v1';
   const lastUpdate = await getItemAsync(lastUpdateVarName) || '';
   const request = {
-    path: `/${version}/activities/mybooking/${itemType}/active?lastupdate=${lastUpdate}`,
+    path: `/${version}/activities/mybooking/${itemType}?state=${state}&lastupdate=${lastUpdate}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
@@ -77,18 +121,12 @@ async function fetchFromServer(itemType, responseVarName, secureStoreVarName, la
     await setItemAsync(secureStoreVarName, listJSON);
     await setItemAsync(lastUpdateVarName, response.lastUpdate);
     
-    setMobXBookingItem(response[responseVarName], `${itemType}List`);
+    myBookingStore.setMyBookingStore(state, response[responseVarName]);
     myBookingStore.setNewBookingMark();
   }
   return response;
 }
 
-function setMobXBookingItem (data, listType) {
-  if (listType == 'cartList')
-    myBookingTrxItemStore.setMyBookingTrxItem(data);
-  else
-    myBookingActivityItemStore.setMyBookingActivityItem(data);
-}
 
 export async function shouldRefreshMyBookingTrxList() {
   setItemAsync('shouldRefresh.myBookingTrxList', 'true');
@@ -152,73 +190,3 @@ export async function fetchMyBookingTrxHistoryList(startDate, endDate, page, per
   }
   return await fetchTravoramaApi(request);
 }
-
-async function downloadPdfVouchers(bookings) {
-  console.log('download');
-
-  for (let i = 0; i < bookings.length; i++) {
-    let booking = bookings[i];
-    if (!booking.isPdfUploaded)
-      continue;
-    let { rsvNo, pdfUrl } = booking;
-    let directory = Expo.FileSystem.documentDirectory;
-    let path = directory + 'myBookings/';
-    let info = await Expo.FileSystem.getInfoAsync(path);
-    let isDirectoryExist = info.exists && info.isDirectory;
-    if (!isDirectoryExist)
-      Expo.FileSystem.makeDirectoryAsync(path);
-    let isLocalUriExist = await getItemAsync('myBookings.pdfVoucher.' + rsvNo);
-    if (!isLocalUriExist) {
-      let { status, uri } = await Expo.FileSystem.downloadAsync(pdfUrl, path + rsvNo);
-      if (status == 200)
-        await setItemAsync('myBookings.pdfVoucher.' + rsvNo, uri);
-    }
-  }
-}
-class MyBookingStoreMobx {
-  @observable hasNewBooking = false
-
-  @action setNewBookingMark = () => {
-    this.hasNewBooking = true;
-  }
-
-  @action removeNewBookingMark = () => {
-    this.hasNewBooking = false;
-  }
-}
-
-class MyBookingTrxItemStoreMobx {
-  @observable myBookingTrxItem
-
-  @action setMyBookingTrxItem = item => {
-    this.myBookingTrxItem = item;
-  }
-
-  @action removeMyBookingTrxItem = () => {
-    this.myBookingTrxItem = undefined;
-  }
-}
-
-class MyBookingActivityItemStoreMobx {
-  @observable myBookingActivityItem
-
-  @action setMyBookingActivityItem = item => {
-    this.myBookingActivityItem = item;
-  }
-
-  @action removeMyBookingActivityItem = () => {
-    this.myBookingActivityItem = undefined;
-  }
-}
-
-export const changeReservationToCancelMobx = rsvNo =>{
-  myBookingActivityItemStore.myBookingActivityItem.map(a => {
-    if(a.rsvNo == rsvNo){
-      a.bookingStatus = "CancelByCustomer";
-    }
-  })
-}
-
-export const myBookingTrxItemStore = new MyBookingTrxItemStoreMobx;
-export const myBookingActivityItemStore = new MyBookingActivityItemStoreMobx;
-export const myBookingStore = new MyBookingStoreMobx;

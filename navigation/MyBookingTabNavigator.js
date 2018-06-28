@@ -13,6 +13,8 @@ export default TabNavigator(
   {
     MyBookingActivity: { screen: MyBookingActivity },
     MyBookingTrx: { screen: MyBookingTrx },
+    MyBookingTrx: { screen: MyBookingTrx },
+    MyBookingTrx: { screen: MyBookingTrx },
   },
   {
     navigationOptions: ({ navigation }) => ({
