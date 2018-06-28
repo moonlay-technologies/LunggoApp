@@ -4,8 +4,6 @@ class IntervalController {
         this.functions.map(func => {
             func();
         });
-        console.log("isi dari functions");
-        console.log(this.functions);
     }
 
     start = () => {

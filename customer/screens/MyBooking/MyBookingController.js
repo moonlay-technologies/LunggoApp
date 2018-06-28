@@ -247,7 +247,7 @@ class MyBookingActivityItemStoreMobx {
 }
 
 export const changeReservationToCancelMobx = rsvNo =>{
-  myBookingActivityItemStore.myBookingActivityItem.map(a => {
+  myBookingActivityItemStore.myBookingActivityItem.forEach(a => {
     if(a.rsvNo == rsvNo){
       a.bookingStatus = "CancelByCustomer";
     }

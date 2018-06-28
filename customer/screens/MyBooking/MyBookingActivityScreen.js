@@ -24,7 +24,7 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Aktivitas',
+    title: 'Voucher',
   }
 
   listenerSubcription = null;
@@ -71,23 +71,7 @@ export default class MyBookingActivityScreen extends React.Component {
       />
     </View>
   )
-
-  header = () => (
-    <View style={{ height: 90, justifyContent: 'center' }}>
-      <MenuButton
-        label='Lihat Riwayat Aktivitas'
-        icon={
-          <Icon
-            name='ios-time-outline'
-            type='ionicon'
-            size={26}
-            color='#454545'
-          />
-        }
-        onPress={this._goToActivityHistory}
-      />
-    </View>
-  )
+  
 
   render() {
     let { isLoading, isLoggedIn, activityList, status } = this.state;
@@ -103,7 +87,6 @@ export default class MyBookingActivityScreen extends React.Component {
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}
               refreshing={this.state.isLoading}
-              ListHeaderComponent={this.header}
               ListEmptyComponent={<BlankScreen {...props} />}
             />
           </View>

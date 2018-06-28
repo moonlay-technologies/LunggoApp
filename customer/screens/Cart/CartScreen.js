@@ -3,7 +3,7 @@
 import React from 'react';
 import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, Text, View, Image, ScrollView,
+  Platform, StyleSheet, Text, View, Image, ScrollView, Alert,
   FlatList, TouchableOpacity, ActivityIndicator, RefreshControl
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
@@ -188,7 +188,12 @@ export default class CartScreen extends React.Component {
 class ListItem extends React.PureComponent {
 
   _onPressDelete = () =>
-    this.props.onPressDelete(this.props.index, this.props.item.rsvNo)
+    Alert.alert('Menghapus Pesanan', 'Hapus pesanan ' + this.props.item.title + '?',
+      [
+        { text: 'Ya', onPress: () => this.props.onPressDelete(this.props.index, this.props.item.rsvNo) },
+        { text: 'Tidak' },
+      ]);
+
 
   render() {
     const { item } = this.props;

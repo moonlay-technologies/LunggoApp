@@ -73,7 +73,7 @@ export default class RincianHarga extends Component {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#efefef', paddingTop: 15 }}>
               <View style={{ flex: 1, paddingRight: 5 }}>
-                <Text style={styles.activityDesc}>Total</Text>
+                <Text style={styles.activityDesc}>Subtotal</Text>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end' }}>
                 <Text style={styles.activityDesc}>{Formatter.price(bd.details.reduce((sum, det) => sum + det.totalPrice, 0))}</Text>

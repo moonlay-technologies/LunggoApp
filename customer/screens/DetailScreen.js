@@ -487,7 +487,7 @@ class MainInfo extends Component {
 
   render() {
     console.log('main info rerendered');
-    let { name, shortDesc, city, duration = {}, cancellation } = this.props;
+    let { name, shortDesc, city, duration, cancellation, isOpenTrip, isInstantConfirmation, mustPrinted, operationTime } = this.props;
     return (
       <View>
         <View style={{ paddingTop: 10, paddingBottom: 25, flex: 1 }}>
@@ -514,76 +514,52 @@ class MainInfo extends Component {
               </Text>
             </View>
           </View>
-          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='md-people' type='ionicon' size={18} color='#009389' style={{width:20}} />
+          {(duration || operationTime) &&
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <View style={{ justifyContent: 'center' }}>
+                <Icon name='md-alarm' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+              </View>
+              <View style={{ marginLeft: 10 }}>
+                <Text style={styles.activityDesc}>
+                  {duration && 'Durasi: ' + duration}
+                  {operationTime && 'Jam Operasional: ' + operationTime}
+                </Text>
+              </View>
             </View>
-            <View style={{marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                DUMMY Maksimum 6 orang
-                  </Text>
+          }
+          {cancellation &&
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <View style={{ justifyContent: 'center' }}>
+                <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+              </View>
+              <View style={{ marginLeft: 10 }}>
+                <Text style={styles.activityDesc}>
+                  {cancellation.some(c => c.valuePercentage < 100) ? 'Aktivitas ini tidak dapat dibatalkan' : 'Aktivitas ini dapat di-refund'}
+                </Text>
+              </View>
             </View>
-          </View> */}
-          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='calendar' type='octicon' size={18} color='#009389' style={{width:20}} />
-            </View>
-            <View style={{marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                DUMMY Khusus hari minggu
-                  </Text>
-            </View>
-          </View> */}
-          {/* <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{justifyContent:'center'}}>
-              <Icon name='info' type='octicon' size={18} color='#009389' style={{width:20}} />
-            </View>
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                DUMMY Untuk usia diatas 10 tahun
-                  </Text>
-            </View>
-          </View> */}
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{ justifyContent: 'center' }}>
-              <Icon name='md-alarm' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
-            </View>
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                {duration.amount + " " + duration.unit}
-              </Text>
-            </View>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{ justifyContent: 'center' }}>
-              <Icon name='md-refresh' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
-            </View>
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                {/* {cancellation.some(c => c.valuePercentage < 100) ? 'Aktivitas ini tidak dapat dibatalkan' : 'Aktivitas ini dapat di-refund'} */}
-              </Text>
-            </View>
-          </View>
+          }
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
             <View style={{ justifyContent: 'center' }}>
               <Icon name='md-paper' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
             </View>
             <View style={{ marginLeft: 10 }}>
               <Text style={styles.activityDesc}>
-                E-Voucher/Tiket Fisik/Harus dicetak
+                {[mustPrinted ? 'Harus Dicetak' : 'E-Voucher', isInstantConfirmation && 'Konfirmasi Instan'].filter(e => e).join(', ')}
               </Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
-            <View style={{ justifyContent: 'center' }}>
-              <Icon name='md-contacts' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
-            </View>
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.activityDesc}>
-                Private/Join Group
-              </Text>
-            </View>
-          </View>
+          {isOpenTrip != null &&
+            <View style={{ flex: 1, flexDirection: 'row', marginTop: 8 }}>
+              <View style={{ justifyContent: 'center' }}>
+                <Icon name='md-contacts' type='ionicon' size={18} color='#009389' style={{ width: 20 }} />
+              </View>
+              <View style={{ marginLeft: 10 }}>
+                <Text style={styles.activityDesc}>
+                  {isOpenTrip ? 'Open Trip' : 'Private Trip'}
+                </Text>
+              </View>
+            </View>}
 
         </View>
         <View style={styles.divider} />
