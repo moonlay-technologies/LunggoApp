@@ -7,37 +7,37 @@ import { NavigationActions } from 'react-navigation';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export async function getMyBookingTrxList() {
-  const dataVarName = 'myBookings';
+  const secureStoreVarName = 'myBookings';
   const shouldRefreshVarName = 'shouldRefresh.myBookingTrxList';
-  getBookingList('pending', dataVarName, shouldRefreshVarName);
+  getBookingList('pending', secureStoreVarName, shouldRefreshVarName);
 }
 
 export async function getMyBookingActivityList() {
-  const dataVarName = 'myBookingsActivity';
+  const secureStoreVarName = 'myBookingsActivity';
   const shouldRefreshVarName = 'shouldRefreshmyBookingActivityList';
-  getBookingList('active', dataVarName, shouldRefreshVarName)
+  getBookingList('active', secureStoreVarName, shouldRefreshVarName)
 }
 
 export async function getUnreviewedBookingList() {
-  const dataVarName = 'unreviewedMyBookingList';
+  const secureStoreVarName = 'unreviewedMyBookings';
   const shouldRefreshVarName = 'shouldRefresh.unreviewedBookingList';
-  getBookingList('unreviewed', dataVarName, shouldRefreshVarName)
+  getBookingList('unreviewed', secureStoreVarName, shouldRefreshVarName)
 }
 
 export async function getUnreviewedBookingList() {
-  const dataVarName = 'myBookingHistoryList';
+  const secureStoreVarName = 'myBookingHistories';
   const shouldRefreshVarName = 'shouldRefresh.myBookingHistoryList';
-  getBookingList('history', dataVarName, shouldRefreshVarName)
+  getBookingList('history', secureStoreVarName, shouldRefreshVarName)
 }
 
-async function getBookingList(myBookingState, dataVarName, shouldRefreshVarName) {
+async function getBookingList(myBookingState, secureStoreVarName, shouldRefreshVarName) {
   const shouldRefreshFromServer = await getItemAsync(shouldRefreshVarName);
   if (shouldRefreshFromServer) {
     deleteItemAsync(shouldRefreshVarName);
     myBookingStore.removeNewBookingMark();
     return getListFromServer(myBookingState);
   }
-  const secureStoreJSONData = await getItemAsync(dataVarName);
+  const secureStoreJSONData = await getItemAsync(secureStoreVarName);
   if (secureStoreJSONData) {
     const parsedSecureStoreData = await JSON.parse(secureStoreJSONData);
     myBookingStore.setMyBookingStore(myBookingState, parsedSecureStoreData);
@@ -66,67 +66,62 @@ async function getListFromServer(myBookingState) {
       break;
   }
   const fetched = await fetchFn();
-  if (fetched.status != 200)
-    return [];
-  else return fetched.data;
+  if (fetched.status == 200)
+    return fetched.data;
+  throw `status not 200 while fetching myBooking ${myBookingState}`;
 }
 
 export async function fetchMyBookingTrxList() {
-  const responseVarName = 'myBookings';
   const secureStoreVarName = 'myBookings';
   const lastUpdateVarName = 'myBookingTrxLastUpdate';
-  const itemType = 'cart';
-  const state = 'pending';
-  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const itemStructure = 'cart';
+  const myBookingState = 'pending';
+  return fetchFromServer(myBookingState, itemStructure, secureStoreVarName, lastUpdateVarName);
 }
 
 export async function fetchMyBookingActivityList() {
-  const responseVarName = 'myReservations';
   const secureStoreVarName = 'myBookingsActivity';
   const lastUpdateVarName = 'myBookingActivityLastUpdate';
-  const itemType = 'reservation';
-  const state = 'active';
-  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const itemStructure = 'reservation';
+  const myBookingState = 'active';
+  return fetchFromServer(myBookingState, itemStructure, secureStoreVarName, lastUpdateVarName);
 }
 
 export async function fetchUnreviewedBookingList() {
-  const responseVarName = 'unreviewedBookingList';
-  const secureStoreVarName = responseVarName;
-  const lastUpdateVarName = responseVarName + 'LastUpdate';
-  const itemType = 'reservation';
-  const state = 'unreviewed';
-  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const secureStoreVarName = 'unreviewedMyBookings';
+  const lastUpdateVarName = secureStoreVarName + 'LastUpdate';
+  const itemStructure = 'reservation';
+  const myBookingState = 'unreviewed';
+  return fetchFromServer(myBookingState, itemStructure, secureStoreVarName, lastUpdateVarName);
 }
 
 export async function fetchBookingHistoryList() {
-  const responseVarName = 'bookingHistoryList';
-  const secureStoreVarName = responseVarName;
-  const lastUpdateVarName = responseVarName + 'LastUpdate';
-  const itemType = 'reservation';
-  const state = 'history';
-  return fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName);
+  const secureStoreVarName = 'myBookingHistories';
+  const lastUpdateVarName = secureStoreVarName + 'LastUpdate';
+  const itemStructure = 'reservation';
+  const myBookingState = 'history';
+  return fetchFromServer(myBookingState, itemStructure, secureStoreVarName, lastUpdateVarName);
 }
 
-async function fetchFromServer(state, itemType, responseVarName, secureStoreVarName, lastUpdateVarName) {
+async function fetchFromServer(myBookingState, itemStructure, secureStoreVarName, lastUpdateVarName) {
   const version = 'v1';
   const lastUpdate = await getItemAsync(lastUpdateVarName) || '';
   const request = {
-    path: `/${version}/activities/mybooking/${itemType}?state=${state}&lastupdate=${lastUpdate}`,
+    path: `/${version}/activities/mybooking/${itemStructure}?state=${myBookingState}&lastupdate=${lastUpdate}`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
   if (response.mustUpdate) {
-    let listJSON = await JSON.stringify(response[responseVarName]);
+    const listJSON = await JSON.stringify(response.list);
     
     await setItemAsync(secureStoreVarName, listJSON);
     await setItemAsync(lastUpdateVarName, response.lastUpdate);
     
-    myBookingStore.setMyBookingStore(state, response[responseVarName]);
+    myBookingStore.setMyBookingStore(myBookingState, response.list);
     myBookingStore.setNewBookingMark();
   }
   return response;
 }
-
 
 export async function shouldRefreshMyBookingTrxList() {
   setItemAsync('shouldRefresh.myBookingTrxList', 'true');
@@ -139,6 +134,18 @@ export async function shouldRefreshMyBookingActivityList() {
   deleteItemAsync("myBookingActivityLastUpdate");
   myBookingStore.setNewBookingMark();
 }
+
+// export async function shouldRefreshUnreviewedMyBookingList() {
+//   setItemAsync('shouldRefreshmyBookingActivityList', 'true');
+//   deleteItemAsync("unreviewedMyBookingsLastUpdate");
+//   myBookingStore.setNewBookingMark();
+// }
+
+// export async function shouldRefreshMyBookingHistoryList() {
+//   setItemAsync('shouldRefreshmyBookingActivityList', 'true');
+//   deleteItemAsync("myBookingHistoriesLastUpdate");
+//   myBookingStore.setNewBookingMark();
+// }
 
 export async function myBookingListenerFunction({ origin, data }) {
   console.log("cool data: " + origin + data);

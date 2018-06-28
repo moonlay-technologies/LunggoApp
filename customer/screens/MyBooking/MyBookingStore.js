@@ -40,6 +40,6 @@ export const cancelReservationInMobX = rsvNo => {
       a.bookingStatus = "CancelByCustomer";
     }
   });
-};
+}
 
 export const myBookingStore = new MyBookingStoreMobx;
