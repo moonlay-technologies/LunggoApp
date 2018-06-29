@@ -1,13 +1,10 @@
 'use strict';
 
 import React from 'react';
-import { View, ActivityIndicator, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import { ActivityListItem } from './MyBookingListItems';
-import { getUnreviewedBookingList, myBookingStore } from './MyBookingController';
-import LoadingAnimation from '../../components/LoadingAnimation'
-import MenuButton from './../../../commons/components/MenuButton';
-import { Icon } from 'react-native-elements';
+import { getUnreviewedBookingList, myBookingStore, shouldRefreshUnreviewedMyBookingList } from './MyBookingController';
 import { checkUserLoggedIn } from '../../../api/Common';
 import { observer } from 'mobx-react';
 
@@ -50,11 +47,11 @@ export default class MyBookingActivityScreen extends React.Component {
       this.setState({ isLoading: true });
     }
     if (refreshing) {
-      shouldRefreshMyBookingActivityList();
+      shouldRefreshUnreviewedMyBookingList();
     }
-    getUnreviewedBookingList().then(list => {
-      // this.setState({ list });
-    }).finally(() => this.setState({ isLoading: false }));
+    getUnreviewedBookingList().then( () =>
+      this.setState({ isLoading: false })
+    );
   }
 
   _keyExtractor = (item, index) => index;

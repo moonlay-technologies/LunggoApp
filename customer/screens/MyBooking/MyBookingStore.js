@@ -1,7 +1,7 @@
 'use strict';
 import { observable, action } from 'mobx';
 
-class MyBookingStoreMobx {
+export default class MyBookingStoreMobx {
   
   @observable hasNewBooking = false;
   @observable pendingMyBookingTrxs = null;
@@ -15,6 +15,9 @@ class MyBookingStoreMobx {
   @action setMyBookingStore = (state, list) => {
     const observable = this._getObservableNameFromMyBookingState(state);
     this[observable] = list;
+    console.log('observable')
+    console.log(observable)
+    console.log(this[observable])
   }
 
   removeMyBookingStore = state => this.setMyBookingStore(state, null)
@@ -42,4 +45,4 @@ export const cancelReservationInMobX = rsvNo => {
   });
 }
 
-export const myBookingStore = new MyBookingStoreMobx;
+// export MyBookingStoreMobx;

@@ -1,14 +1,10 @@
 'use strict';
 
 import React from 'react';
-import { View, ActivityIndicator, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import { TrxListItem, ActivityListItem } from './MyBookingListItems';
-import { shouldRefreshMyBookingActivityList, getMyBookingActivityList, myBookingStore } from './MyBookingController';
-// import { myBookingStore } from "./MyBookingStore";
-import LoadingAnimation from '../../components/LoadingAnimation'
-import MenuButton from './../../../commons/components/MenuButton';
-import { Icon } from 'react-native-elements';
+import { ActivityListItem } from './MyBookingListItems';
+import { getMyBookingHistoryList, myBookingStore, shouldRefreshMyBookingHistoryList } from './MyBookingController';
 import { checkUserLoggedIn } from '../../../api/Common';
 import { observer } from 'mobx-react';
 
@@ -19,13 +15,13 @@ export default class MyBookingActivityScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      activityList: [],
+      list: [],
       isLoggedIn: false,
     };
   }
 
   static navigationOptions = {
-    title: 'Voucher',
+    title: 'Riwayat',
   }
 
   listenerSubcription = null;
@@ -46,20 +42,18 @@ export default class MyBookingActivityScreen extends React.Component {
     this.setState({ isLoggedIn });
   }
 
-  _refreshMyBookingList = async (shouldLoading = true, refreshing = true) => {
-    console.log("melakuka refresh activity list my booking");
+  _refreshMyBookingList = (shouldLoading = true, refreshing = true) => {
     if (shouldLoading) {
       this.setState({ isLoading: true });
     }
     if (refreshing) {
-      await shouldRefreshMyBookingActivityList();
+      shouldRefreshMyBookingHistoryList();
     }
-    getMyBookingActivityList().then(list => {
-      this.setState({ list });
-    }).finally(() => this.setState({ isLoading: false }));
+    getMyBookingHistoryList().then( () =>
+        this.setState({ isLoading: false })
+    );
   }
 
-  _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
   _keyExtractor = (item, index) => index;
   _renderItem = ({ item, index }) => (
     <View style={{ backgroundColor: 'white' }}>
@@ -73,39 +67,20 @@ export default class MyBookingActivityScreen extends React.Component {
     </View>
   )
 
-  // header = () => (
-  //   <View style={{ height: 90, justifyContent: 'center' }}>
-  //     <MenuButton
-  //       label='Lihat Riwayat Aktivitas'
-  //       icon={
-  //         <Icon
-  //           name='ios-time-outline'
-  //           type='ionicon'
-  //           size={26}
-  //           color='#454545'
-  //         />
-  //       }
-  //       onPress={this._goToActivityHistory}
-  //     />
-  //   </View>
-  // )
-
   render() {
-    let { isLoading, isLoggedIn, activityList, status } = this.state;
+    let { isLoading, isLoggedIn, status } = this.state;
     let { props } = this;
-    console.log(myBookingStore)
-    console.log('=======================myBookingStore=======================')
+
     if (isLoggedIn)
       return (
         <View style={{ flex: 1 }}>
           <View style={{ flex: -1 }}>
             <FlatList
-              data={myBookingStore.activeMyBookings}
+              data={myBookingStore.myBookingHistories}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}
               refreshing={this.state.isLoading}
-              //ListHeaderComponent={this.header}
               ListEmptyComponent={<BlankScreen {...props} />}
             />
           </View>

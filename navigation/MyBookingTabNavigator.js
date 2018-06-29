@@ -8,13 +8,14 @@ import Colors from '../constants/Colors';
 import MyBookingTrx from '../customer/screens/MyBooking/MyBookingTrxScreen';
 import MyBookingActivity from '../customer/screens/MyBooking/MyBookingActivityScreen';
 import UnreviewedMyBooking from '../customer/screens/MyBooking/MyBookingUnreviewedScreen';
+import MyBookingHistory from '../customer/screens/MyBooking/MyBookingHistoryScreen';
 
 export default TabNavigator(
   {
     MyBookingActivity: { screen: MyBookingActivity },
     MyBookingTrx: { screen: MyBookingTrx },
     UnreviewedMyBooking: { screen: UnreviewedMyBooking },
-    MyBookingHistory: { screen: MyBookingTrx },
+    MyBookingHistory: { screen: MyBookingHistory },
   },
   {
     navigationOptions: ({ navigation }) => ({
