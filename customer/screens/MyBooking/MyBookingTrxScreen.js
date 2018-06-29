@@ -23,7 +23,7 @@ export default class MyBookingTrxScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Pembelian',
+    title: 'Daftar Pembelian',
   }
 
   listenerSubcription = null;

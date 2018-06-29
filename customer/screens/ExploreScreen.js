@@ -35,6 +35,14 @@ export default class ExploreScreen extends React.Component {
       tripList: [],
       turList: [],
       promoList: [],
+      eksplorList: [
+        { title: 'Kota', image: 0, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+        { title: 'Alam', image: 1, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+        { title: 'Taman Hiburan', image: 2, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+        { title: 'Romantis', image: 3, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+        { title: 'Tur', image: 4, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+        { title: 'Transportasi', image: 5, action: () => this._goTo('SearchActivity', { searchString: 'a' }) },
+      ],
       isLoading: true,
       wishlists: {},
       isNotifModalVisible: false,
@@ -43,7 +51,15 @@ export default class ExploreScreen extends React.Component {
       urlPlatform: ''
     };
     setItemAsync('skipIntro', 'true');
-    this._onWishlist = this._onWishlist.bind(this)
+    this._onWishlist = this._onWishlist.bind(this),
+      this.eksplorImages = [
+        require('../assets/images/city.jpg'),
+        require('../assets/images/alam.jpg'),
+        require('../assets/images/taman-hiburan.jpg'),
+        require('../assets/images/romantic.jpg'),
+        require('../assets/images/other-img1.jpg'),
+        require('../assets/images/transportasi.jpg'),
+      ]
   }
 
   static navigationOptions = {
@@ -150,7 +166,7 @@ export default class ExploreScreen extends React.Component {
     else
       console.log('version modal: ' + this.state.isNotifModalVisible);
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <SearchHeader {...this.props} />
         <ScrollView style={{ backgroundColor: '#fff' }}>
           <UpdateNotifModal isVisible={this.state.isNotifModalVisible} currentVersion={this.state.currentVersion} latestVersion={this.state.latestVersion} urlPlatform={this.state.urlPlatform} forceToUpdate={this.state.forceToUpdate} />
@@ -193,29 +209,32 @@ export default class ExploreScreen extends React.Component {
             </View>
           </View> */}
 
-          {this._renderHeader({ title: 'Tiket', searchUrl: 'tiket' })}
+          {this._renderHeader({ title: 'Pilihan Editor', searchUrl: 'tiket' })}
           {this._renderContent({ list: this.state.tiketList, itemsPerScreen: 1, height: 200 })}
 
-          {this._renderHeader({ title: 'Paket', searchUrl: 'paket' })}
-          {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
-
-          {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })}
-          {this._renderContent({ list: this.state.tripList, itemsPerScreen: 3, height: 150 })}
-
-          {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })}
-          {this._renderContent({ list: this.state.turList, itemsPerScreen: 1, height: 100 })}
-
           {this._renderHeader({ title: 'Eksplor Aktivitas' })}
-          {this._renderEksplor({ list: this.state.promoList, itemsPerScreen: 2, height: 150 })}
-
-          {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
-          {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
+          {this._renderEksplor({ list: this.state.eksplorList, itemsPerScreen: 3, height: 150 })}
 
           {this._renderHeader({ title: 'Promo Terkini' })}
           {this._renderPromo({ list: this.state.promoList, itemsPerScreen: 1, height: 100 })}
 
+          {this._renderHeader({ title: 'Aktivitas', searchUrl: 'a' })}
+          {this._renderContent({ list: this.state.paketList, itemsPerScreen: 2, height: 150 })}
+
+          {/* {this._renderHeader({ title: 'Trip', searchUrl: 'trip' })} */}
+          {this._renderContent({ list: this.state.tripList, itemsPerScreen: 2, height: 150 })}
+
+          {/* {this._renderHeader({ title: 'Tur Keliling Kota', searchUrl: 'tur' })} */}
+          {this._renderContent({ list: this.state.turList, itemsPerScreen: 2, height: 150 })}
+
+
+          {/* {this._renderHeader({ title: 'Destinasi Favorit' })} */}
+          {/* {this._renderContent({ list: placeList, itemsPerScreen: 3, height: 150 })} */}
+
           
-          
+
+
+
 
           <View style={{ paddingTop: 10 }}></View>
           <OfflineNotificationBar />
@@ -251,6 +270,7 @@ export default class ExploreScreen extends React.Component {
       containerThumbnail: {
         backgroundColor: '#000',
         borderRadius: 5,
+        marginBottom:30,
         ...Platform.select({
           ios: {
             shadowColor: '#000000',
@@ -267,7 +287,7 @@ export default class ExploreScreen extends React.Component {
         backgroundColor: 'transparent',
         resizeMode: 'cover',
         width: itemWidth,
-        opacity:0.9,
+        opacity: 0.9,
         height: height,
         borderRadius: 5,
         ...Platform.select({
@@ -287,28 +307,28 @@ export default class ExploreScreen extends React.Component {
 
     let _renderItem = ({ item, index }) => {
       return (
-        <TouchableOpacity key={item.id}
+        <TouchableOpacity key={index}
           style={{
             width: itemWidth,
             marginLeft: THUMBNAIL_SPACING,
           }}
           activeOpacity={1}
-          onPress={() => this._onPressPromo(item)}
+          onPress={item.action}
         >
           <View style={[style.containerThumbnail, { paddingTop: 0 }]}>
             <Image
               style={style.thumbnail}
-              source={require('../assets/images/city.jpg')}>
+              source={this.eksplorImages[item.image]}>
             </Image>
-            <View style={{alignItems:'center', position:'absolute', width:'100%', bottom:10}}>
-                <Text style={styles.namaEksplor}>Kota</Text>
-              </View>
+            <View style={{ alignItems: 'center', position: 'absolute', width: '100%', bottom: 10 }}>
+              <Text style={styles.namaEksplor}>{item.title}</Text>
+            </View>
           </View>
 
         </TouchableOpacity>
       );
     }
-    
+
     return (
       <Carousel
         ref={c => this._carousel = c}
@@ -330,6 +350,7 @@ export default class ExploreScreen extends React.Component {
       containerThumbnail: {
         backgroundColor: 'transparent',
         paddingBottom: 8,
+        marginBottom:30,
         ...Platform.select({
           ios: {
             shadowColor: '#000000',
@@ -566,10 +587,11 @@ const styles = StyleSheet.create({
     }),
   },
   namaEksplor: {
+    textAlign: 'center',
     fontSize: 24,
     color: '#fff',
     fontFamily: 'Hind-Bold',
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
 

@@ -13,6 +13,7 @@ import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
 import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
 import Moment from 'moment';
+import { fetchTravoramaApi } from '../../../api/Common';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -52,8 +53,9 @@ export default class BookedPageDetail extends React.Component {
     WebBrowser.openBrowserAsync(pdfUrl);
   }
 
-  _callOperator = () => Linking.openURL('tel:' + this.details.operatorPhone)
-  _smsOperator = () => Linking.openURL('sms:' + this.details.operatorPhone)
+  _call = (phone) => Linking.openURL('tel:+' + phone)
+  _sms = (phone) => Linking.openURL('sms:+' + phone)
+  _email = (email) => Linking.openURL('mailto:' + email)
 
   _goToRefundScreen = () => {
     this.props.navigation.navigate
@@ -151,22 +153,22 @@ export default class BookedPageDetail extends React.Component {
 
     switch (bookingStatus) {
       case 'Booked':
-        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View>;
+        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View></View>;
       case 'ForwardedToOperator':
         let now = Moment();
         let daysDiff = Moment(now).diff(timeLimit, 'days');
         let hoursDiff = Moment(now).diff(timeLimit, 'hours') - (daysDiff * 24);
         let timeLimitString = (daysDiff ? `${daysDiff} hari ` : '') + `${hoursDiff} jam`;
         return (
-          <View><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Sedang menunggu konfirmasi operator*</Text></View>
+          <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Voucher sedang dalam proses*</Text></View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
-                * Aktivitas akan dibatalkan otomatis jika dalam <Text style={{ fontWeight: 'bold' }}>{timeLimitString}</Text>{"\n"}operator tidak mengonfirmasi pesanan kamu
+                * Aktivitas akan dibatalkan otomatis jika dalam <Text style={{ fontWeight: 'bold' }}>1x24 jam</Text>{"\n"}operator tidak mengonfirmasi pesanan kamu
             </Text>
             </View>
           </View>);
       case 'Ticketing':
-        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang diproses</Text></View>;
+        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang diproses</Text></View></View>;
       case 'Ticketed':
         return null;
 
@@ -174,9 +176,11 @@ export default class BookedPageDetail extends React.Component {
       case 'CancelByAdmin':
       case 'DeniedByOperator':
       case 'DeniedByAdmin':
+      case 'NoResponseByAdmin':
+      case 'NoResponseByOperator':
         return (
-          <View>
-            <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh operator</Text></View>
+          <View style={styles.container}>
+            <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Aktivitas tidak dapat diproses</Text></View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
                 <Text style={{ fontWeight: 'bold' }}>Alasan: </Text>{cancellationReason}
@@ -184,13 +188,15 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>);
       case 'CancelByCustomer':
-        return <View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan sendiri</Text></View>;
+        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh pemesan</Text></View></View>;
       default:
         return (
-          <View style={styles.labelText}>
-            <Text style={{ color: '#ff5f5f' }}>
-              Terjadi kesalahan pada sistem
+          <View style={styles.container}>
+            <View style={styles.labelText}>
+              <Text style={{ color: '#ff5f5f' }}>
+                Terjadi kesalahan pada sistem
           </Text>
+            </View>
           </View>);
     }
   }
@@ -198,13 +204,19 @@ export default class BookedPageDetail extends React.Component {
   render() {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
       selectedSession, operatorName, operatorPhone, ticketNumber,
-      operatorEmail, totalPaxCount, latitude, longitude, paxes,
-      hasPdfVoucher, isPdfUploaded, paxCount, contact
+      operatorEmail, totalPaxCount, latitude, longitude, paxes, refundBankAccount,
+      hasPdfVoucher, isPdfUploaded, paxCount, contact, rsvNo, cancellation
     } = this.details;
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
 
+        <View style={{ marginTop: 15 }}>
+          {this._showStatus()}
+        </View>
+
         {this._showTicket()}
+
+        {this._showRefundButton()}
 
         <View style={styles.container}>
 
@@ -213,6 +225,9 @@ export default class BookedPageDetail extends React.Component {
             <Image style={styles.thumbprofile} source={{ uri: mediaSrc }} />
 
             <View style={{ flex: 3, paddingLeft: 15 }}>
+              <Text style={styles.activityDesc}>
+                No. Pesanan: {rsvNo}
+              </Text>
               <View style={{ marginBottom: 3 }}>
                 <Text style={styles.activityTitle}>
                   {name}
@@ -263,13 +278,7 @@ export default class BookedPageDetail extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={{ marginTop: 15 }}>
-            {this._showStatus()}
-          </View>
-
         </View>
-
-        {this._showRefundButton()}
 
         <View style={styles.divider} />
         <View style={styles.container}>
@@ -283,7 +292,7 @@ export default class BookedPageDetail extends React.Component {
           </Text>
           <View style={{ marginBottom: 0 }}>
             <Text style={styles.sectionTitle}>
-              Atas Nama
+              Kontak Peserta
             </Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -329,56 +338,83 @@ export default class BookedPageDetail extends React.Component {
           </View>
         </View>
 
-        <View style={styles.divider} />
-        <View style={styles.container}>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.sectionTitle}>
-              Kontak Operator
+        {bookingStatus == 'Ticketed' &&
+          <View>
+            <View style={styles.divider} />
+
+            <View style={styles.container}>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.sectionTitle}>
+                  Kontak Operator
             </Text>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{ flex: 2, flexDirection: 'row' }}>
-              <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 15 }]} />
-              <View>
-                <View style={{ marginBottom: 7 }}>
-                  <Text style={styles.reviewTitle}>
-                    {operatorName}
-                  </Text>
+              </View>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{ flex: 2, flexDirection: 'row' }}>
+                  <Avatar size={40} name={operatorName} style={[styles.avatar, { marginRight: 15 }]} />
+                  <View>
+                    <View style={{ marginBottom: 7 }}>
+                      <Text style={styles.reviewTitle}>
+                        {operatorName}
+                      </Text>
+                    </View>
+                    <Text style={styles.activityDesc}>
+                      {operatorPhone}
+                    </Text>
+                    <Text style={styles.activityDesc}>
+                      {operatorEmail}
+                    </Text>
+                  </View>
                 </View>
-                <Text style={styles.activityDesc}>
-                  {operatorPhone}
-                </Text>
-                <Text style={styles.activityDesc}>
-                  {operatorEmail}
-                </Text>
+                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+                  <TouchableOpacity onPress={() => this._call(this.details.operatorPhone)} style={[styles.iconKontak, { marginRight: 15 }]}>
+                    <Icon
+                      name='ios-call'
+                      type='ionicon'
+                      size={23}
+                      color='#00d3c5' />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this._sms(this.details.operatorPhone)} style={styles.iconKontak}>
+                    <Icon
+                      name='ios-mail'
+                      type='ionicon'
+                      size={23}
+                      color='#00d3c5' />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-              <TouchableOpacity onPress={this._callOperator} style={[styles.iconKontak, { marginRight: 15 }]}>
-                <Icon
-                  name='ios-call'
-                  type='ionicon'
-                  size={23}
-                  color='#00d3c5' />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this._smsOperator} style={styles.iconKontak}>
-                <Icon
-                  name='ios-mail'
-                  type='ionicon'
-                  size={23}
-                  color='#00d3c5' />
-              </TouchableOpacity>
+            <View style={[styles.container, { flex: 1, }]}>
+              <Text style={styles.sectionTitle}>
+                Lokasi
+              </Text>
+              <Maps lat={latitude} long={longitude} name={name}
+                address={address} city={city} {...this.props} />
             </View>
           </View>
-        </View>
-        <View style={[styles.container, { flex: 1, }]}>
-          <Text style={styles.sectionTitle}>
-            Lokasi
-          </Text>
-          {/* <Maps lat={latitude} long={longitude} name={name}
-            address={address} city={city} {...this.props} /> */}
-        </View>
+        }
+        {(bookingStatus == 'Ticketed' || bookingStatus == 'Ticketing' || bookingStatus == 'Booked' || bookingStatus == 'ForwardedToOperator') &&
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.sectionTitle}>
+                Ketentuan Pembatalan
+            </Text>
+            </View>
+            <Text>Voucher ini dapat dibatalkan</Text>
 
+            {/* {cancellation.map(c =>
+              `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}%${c.valueConstant ? `+ ${rupiah(c.valueConstant)}` : ''}.\n`)} */}
+
+            <View>
+              <Button
+                containerStyle={styles.containerbtn}
+                style={styles.statusbtn}
+                onPress={() => this.props.navigation.navigate('RefundScreen', { rsvNo: rsvNo, ...refundBankAccount })}
+              >
+                Refund
+                </Button>
+            </View>
+          </View>
+        }
         <View style={styles.container}>
           <View>
             <Text style={styles.sectionTitle}>
@@ -399,7 +435,7 @@ export default class BookedPageDetail extends React.Component {
                 size={22}
                 color='#00d3c5' />
             </View>
-            <Text style={styles.activityDesc}>0855-7467-9737</Text>
+            <Text style={styles.activityDesc} onPress={() => this._call('085574679737')}>0855-7467-9737</Text>
           </View>
 
           <View style={{ flexDirection: 'row' }}>
@@ -410,7 +446,7 @@ export default class BookedPageDetail extends React.Component {
                 size={22}
                 color='#00d3c5' />
             </View>
-            <Text style={styles.activityDesc}>cs@travorama.com</Text>
+            <Text style={styles.activityDesc} onPress={() => this._email('cs@travorama.com')}>cs@travorama.com</Text>
           </View>
 
         </View>
@@ -447,7 +483,7 @@ export default class BookedPageDetail extends React.Component {
             </Text>
           </View>
         </View>*/}
-      </ScrollView>
+      </ScrollView >
     );
   }
 }
@@ -631,5 +667,31 @@ const styles = StyleSheet.create({
     height: 26,
     justifyContent: 'center',
     marginRight: 5
+  },
+  containerbtn: {
+    backgroundColor: '#00d3c5',
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 3,
+    alignItems: 'center',
+    marginTop: 7
+  },
+  statusbtn: {
+    fontSize: 12,
+    color: '#fff',
+    fontFamily: 'Hind-SemiBold',
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        lineHeight: 15 * 0.8,
+        paddingTop: 4,
+        marginBottom: -10
+      },
+      android: {
+        //lineHeight:24
+        //paddingTop: 23 - (23* 1),
+
+      },
+    }),
   },
 });

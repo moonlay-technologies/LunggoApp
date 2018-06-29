@@ -414,95 +414,95 @@ export default class BookingDetail extends React.Component {
 
           <View style={styles.container}>
 
-          <View style={{marginBottom:30}}>
-            <Text style={styles.activityTitle}>Paket Tur</Text>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
+            {/* <View style={{ marginBottom: 30 }}>
+              <Text style={styles.activityTitle}>Paket Tur</Text>
+              <View style={styles.containerPackage}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1.6 }}>
+                    <View><Text style={styles.activityTitle}>Paket Tour Disney Land #1</Text></View>
+                    <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                  </View>
+                  <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <Button
+                      containerStyle={globalStyles.ctaButton7}
+                      style={{ fontSize: 12, color: '#fff' }}
+                    >
+                      Pilih
                   </Button>
+                  </View>
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
                 </View>
               </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
+              <View style={styles.containerPackage}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1.6 }}>
+                    <View><Text style={styles.activityTitle}>Paket Tour Disney Land #2</Text></View>
+                    <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                  </View>
+                  <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <Button
+                      containerStyle={globalStyles.ctaButton7}
+                      style={{ fontSize: 12, color: '#fff' }}
+                    >
+                      Pilih
                   </Button>
+                  </View>
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
                 </View>
               </View>
-              <View style={{marginTop:10}}>
-                <Text style={styles.moreDesc}>Lihat Selengkapnya</Text>
-              </View>
-            </View>
-            <View style={styles.containerPackage}>
-              <View style={{ flexDirection:'row'}}>
-                <View style={{flex:1.6}}>
-                  <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
-                  <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
-                </View>
-                <View style={{flex:1, alignItems:'flex-end', justifyContent:'center'}}>
-                  <Button
-                    containerStyle={globalStyles.ctaButton7}
-                    style={{fontSize: 12, color: '#fff'}}
-                  >
-                    Pilih
+              <View style={styles.containerPackage}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 1.6 }}>
+                    <View><Text style={styles.activityTitle}>Paket Tour Disney Land #3</Text></View>
+                    <View><Text style={styles.hargaDesc}>Rp 500.000</Text></View>
+                  </View>
+                  <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <Button
+                      containerStyle={globalStyles.ctaButton7}
+                      style={{ fontSize: 12, color: '#fff' }}
+                    >
+                      Pilih
                   </Button>
+                  </View>
+                </View>
+                <View style={styles.containerMoreDescription}>
+                  <View style={{ marginBottom: 15 }}>
+                    <Text style={styles.activityDesc1}>
+                      Hightlight #1
+                  </Text>
+                    <Text style={styles.activityDesc}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing
+                      elit, sed do eiusmod tempor incididunt ut labore et
+                      dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                  </View>
+                  <View style={{ marginBottom: 15 }}>
+                    <Text style={styles.activityDesc1}>
+                      Hightlight #2
+                  </Text>
+                    <Text style={styles.activityDesc}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing
+                      elit, sed do eiusmod tempor incididunt ut labore et
+                      dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                  </View>
+                  <View style={{ marginBottom: 15 }}>
+                    <Text style={styles.activityDesc1}>
+                      Hightlight #3
+                  </Text>
+                    <Text style={styles.activityDesc}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing
+                      elit, sed do eiusmod tempor incididunt ut labore et
+                      dolore magna aliqua. Ut enim ad minim veniam.
+                  </Text>
+                  </View>
                 </View>
               </View>
-              <View style={styles.containerMoreDescription}>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #1
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #2
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-                <View style={{marginBottom:15}}>
-                  <Text style={styles.activityDesc1}>
-                    Hightlight #3
-                  </Text>
-                  <Text style={styles.activityDesc}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit, sed do eiusmod tempor incididunt ut labore et 
-                    dolore magna aliqua. Ut enim ad minim veniam.
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
+            </View> */}
 
             <View style={{ marginBottom: 30 }}>
               <TouchableOpacity onPress={this._goToCalendarPicker} >

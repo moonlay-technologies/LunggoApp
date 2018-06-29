@@ -31,6 +31,7 @@ export class ActivityListItem extends React.PureComponent {
         bottom: null,
       }
     }
+    this._openSettingModal = this._openSettingModal.bind(this);
   }
 
   _viewPdfVoucher = async item => {
@@ -50,6 +51,10 @@ export class ActivityListItem extends React.PureComponent {
     console.log('this.props');
     this.props.navigation.navigate
       ('RefundScreen', { rsvNo: this.props.item.rsvNo, ...this.props.item.refundBankAccount });
+  };
+
+  _goToHelpScreen = () => {
+    this.props.navigation.navigate('HelpScreen');
   };
 
   _openSettingModal = (evt) => {
@@ -87,7 +92,7 @@ export class ActivityListItem extends React.PureComponent {
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusTextOk}>Menunggu Konfirmasi (maks. {timeLimitString})</Text>
+                <Text style={styles.statusTextOk}>Menunggu Konfirmasi (maks. 1x24 jam)</Text>
               </View>
             </View>);
         case 'Ticketing':
@@ -121,23 +126,36 @@ export class ActivityListItem extends React.PureComponent {
         case 'CancelByAdmin':
         case 'DeniedByOperator':
         case 'DeniedByAdmin':
+        case 'NoResponseByAdmin':
+        case 'NoResponseByOperator':
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
                 <Text style={styles.statusTextDanger}>Dibatalkan</Text>
               </View>
-              {item.needRefundBankAccount &&
-                <View>
+              <View style={{ flexDirection: 'row', width: '100%', flex: 1, alignContent: 'space-between' }}>
+                {item.needRefundBankAccount &&
+                  <View>
+                    <Button
+                      containerStyle={styles.containerbtn}
+                      style={styles.statusbtn}
+                      onPress={this._goToRefundScreen}
+                    >
+                      Refund
+                </Button>
+                  </View>
+                }
+                <View style={{ marginLeft: 20 }}>
                   <Button
                     containerStyle={styles.containerbtn}
                     style={styles.statusbtn}
-                    onPress={this._goToRefundScreen}
+                    onPress={this._goToHelpScreen}
                   >
-                    Refund
+                    Tanya Travorama
                 </Button>
                 </View>
-              }
+              </View>
             </View>);
         default:
           return (
@@ -171,13 +189,16 @@ export class ActivityListItem extends React.PureComponent {
                 <Text style={styles.activityTitle}>
                   {item.name}
                 </Text>
+                <Text style={styles.activityDesc}>
+                  Paket 5D4N
+                </Text>
                 <View style={{ flexDirection: 'row', }}>
-                  <Text style={styles.activityDesc}>{Formatter.dateLong(item.date)}</Text>
+                  <Text style={styles.activityDesc}>Tgl. Aktivitas: {Formatter.dateLong(item.date)}</Text>
                   <Text style={styles.activityDesc}>, </Text>
                   <Text style={styles.activityDesc}>{item.selectedSession}</Text>
                 </View>
                 <Text style={styles.activityDesc}>
-                  {getPaxCountText(item.paxCount)}
+                  a.n. {item.contact.name}, {getPaxCountText(item.paxCount)}
                 </Text>
                 <View>
                   {this.props.showActionButtons && this._buttons(item)}
@@ -245,6 +266,8 @@ export class ActivityListItem extends React.PureComponent {
                       item.bookingStatus != 'CancelByAdmin' &&
                       item.bookingStatus != 'DeniedByOperator' &&
                       item.bookingStatus != 'DeniedByAdmin' &&
+                      item.bookingStatus != 'NoResponseByAdmin' &&
+                      item.bookingStatus != 'NoResponseByOperator' &&
                       <TouchableOpacity
                         onPress={() => {
                           this._closeSettingModal()
@@ -322,7 +345,6 @@ export class TrxListItem extends React.PureComponent {
 
   _showInvoice = () => {
     let { item } = this.props;
-    let title = "No. Transaksi: " + item.cartId;
     let total = item.totalFinalPrice;
     let breakdown = item.activities.map(rsv => {
       return {
@@ -340,7 +362,7 @@ export class TrxListItem extends React.PureComponent {
     let modifiers = [];
     (item.totalDiscount != 0) && modifiers.push({ name: "Diskon", amount: -item.totalDiscount });
     (item.totalUniqueCode != 0) && modifiers.push({ name: "Kode unik", amount: item.totalUniqueCode });
-    this.props.navigation.navigate('RincianHarga', { title, total, breakdown, modifiers });
+    this.props.navigation.navigate('RincianHarga', { total, breakdown, modifiers });
   }
   _showInstruction = () => this.props.navigation.navigate('PaymentScreen') /// TODO ganti jd INstruction
 
@@ -360,15 +382,21 @@ export class TrxListItem extends React.PureComponent {
 
   render() {
     let { item } = this.props;
+    console.log(item.trxTime);
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
+    console.log('item.trxTime');
     return (
       <View style={styles.cartbox}>
 
         <View style={{ borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10, paddingHorizontal: 15 }}>
           <View>
-            <Text style={styles.headerText}>No. Transaksi: <Text style={styles.activityDesc}>{item.cartId}</Text></Text>
-          </View>
-          <View>
-            <Text style={styles.headerText}>Waktu Pemesanan: <Text style={styles.activityDesc}>{dateFullShort(item.trxTime)}</Text></Text>
+            <Text style={styles.activityDesc}>Waktu Pemesanan: <Text style={styles.activityDesc}>{dateFullShort(item.trxTime)}</Text></Text>
           </View>
         </View>
 
