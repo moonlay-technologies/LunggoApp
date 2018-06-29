@@ -8,7 +8,7 @@ import {
   Platform, StyleSheet, TouchableOpacity, Text, View, Image,
   TextInput, ScrollView, Linking
 } from 'react-native';
-import Maps from '../../components/Maps';
+// import Maps from '../../components/Maps';
 import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
 import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
@@ -375,8 +375,8 @@ export default class BookedPageDetail extends React.Component {
           <Text style={styles.sectionTitle}>
             Lokasi
           </Text>
-          <Maps lat={latitude} long={longitude} name={name}
-            address={address} city={city} {...this.props} />
+          {/* <Maps lat={latitude} long={longitude} name={name}
+            address={address} city={city} {...this.props} /> */}
         </View>
 
         <View style={styles.container}>
