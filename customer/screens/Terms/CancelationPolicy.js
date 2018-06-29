@@ -3,7 +3,7 @@
 import React from 'react';
 import { WebView } from 'react-native';
 import { clientId, clientSecret } from '../../../constants/env';
-import { DOMAIN } from '../../../constants/env';
+import { WEB_DOMAIN } from '../../../constants/env';
 
 export default class CancelationPolicy extends React.Component {
 
@@ -17,8 +17,8 @@ export default class CancelationPolicy extends React.Component {
       <WebView
         startInLoadingState={true}
         source={{
-          uri: DOMAIN + '/id/webview/cancellationpolicy',
-          // uri: DOMAIN + '/id/payment/cartcheckout',
+          uri: WEB_DOMAIN + '/id/webview/cancellationpolicy',
+          // uri: WEB_DOMAIN + '/id/payment/cartcheckout',
           // '/id/payment/payment?rsvno=' + rsvNo +
           // '&regid=' + encodeURIComponent(Base64.stringify( SHA1(rsvNo) )),
           headers: {

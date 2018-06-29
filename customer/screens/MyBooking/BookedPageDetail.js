@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     width: 60,
   },
   activityTitle: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 15,
     color: '#454545',
     ...Platform.select({
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 18,
     color: '#454545',
     ...Platform.select({
@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
     }),
   },
   reviewTitle: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 17,
     color: '#454545',
     ...Platform.select({
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
 
   },
   kodetiket: {
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 24,
     color: '#00d3c5',
     ...Platform.select({

@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   txtNotification: {
     color: '#fff',
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     fontSize: 12,
     ...Platform.select({
       ios: {

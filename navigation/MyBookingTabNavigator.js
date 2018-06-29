@@ -52,7 +52,7 @@ export default TabNavigator(
         },
       labelStyle: {
         fontSize: 12,
-        fontFamily: 'Hind-SemiBold',
+        fontFamily: 'HindSemiBold',
         ...Platform.select({
           ios: {
             marginBottom: -8,

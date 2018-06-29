@@ -233,7 +233,7 @@ var styles = StyleSheet.create({
   activityDesc1: {
     fontSize: 16,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 15 * 0.8,

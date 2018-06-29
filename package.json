@@ -1,10 +1,11 @@
 {
-  "name": "Travorama",
-  "version": "0.0.0",
+  "name": "travorama",
+  "version": "0.1.2",
   "description": "Make travel less hassle",
-  "author": "CarlosWirama",
+  "author": "TravelMadezy",
   "license": "",
   "main": "node_modules/expo/AppEntry.js",
+  "private": true,
   "scripts": {
     "test": "node ./node_modules/jest/bin/jest.js --watch"
   },
@@ -14,13 +15,14 @@
   "dependencies": {
     "@expo/samples": "^2.0.2",
     "@expo/vector-icons": "^6.3.1",
+    "chalk": "^2.4.1",
     "crypto-js": "^3.1.9-1",
-    "expo": "^21.0.3",
+    "expo": "^27.0.0",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
     "moment": "^2.21.0",
-    "react": "16.0.0-alpha.12",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-21.0.2.tar.gz",
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
     "react-native-button": "^2.3.0",
     "react-native-calendars": "^1.17.3",
     "react-native-collapsible": "^0.9.0",
@@ -42,11 +44,11 @@
     "react-native-swiper": "^1.5.13",
     "react-native-timeline-listview": "^0.2.3",
     "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.4.0",
+    "react-navigation": "1.5.11",
     "react-redux": "^5.0.7"
   },
   "devDependencies": {
-    "jest-expo": "^21.0.0"
+    "jest-expo": "^27.0.0"
   },
   "rnpm": {
     "assets": [

@@ -133,7 +133,7 @@ export default class Referral extends React.Component {
                   <Text style={{
                     backgroundColor: 'transparent',
                     fontSize: 18, color: '#ffffff',
-                    fontFamily: 'Hind-SemiBold',
+                    fontFamily: 'HindSemiBold',
                     //color: !this.state.expDate ? '#aaa' : 'white',
                   }}>
                     Share
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     padding:10,
   },
   h1:{
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 20,
     color: '#454545',
     backgroundColor:'transparent',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   h2: {
     fontSize: 15,
     color: '#fff',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   h2Credit: {
     fontSize: 15,
     color: '#fff',
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     marginLeft: 5,
     ...Platform.select({
       ios: {
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 15.5,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     textAlign:'center',
     ...Platform.select({
       ios: {

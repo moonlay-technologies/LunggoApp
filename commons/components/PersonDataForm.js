@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,

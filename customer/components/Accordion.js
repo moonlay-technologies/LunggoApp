@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     padding:20,
   },
   h1:{
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 20,
     color: '#454545',
     backgroundColor:'transparent',
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   activityJudulReward: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 14,

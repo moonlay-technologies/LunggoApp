@@ -171,7 +171,7 @@ export default class RefundScreen extends Component {
               <Text style={{
                 backgroundColor: 'transparent',
                 fontSize: 18, color: '#ffffff',
-                fontFamily: 'Hind-SemiBold',
+                fontFamily: 'HindSemiBold',
               }}>
                 OK
               </Text>
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   labelUangRefund: {
     fontSize: 18,
     color: '#00d3c5',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   labelRefund: {
     fontSize: 18,
     color: '#454545',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     ...Platform.select({
       ios: {
         lineHeight: 14,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 14,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 14,

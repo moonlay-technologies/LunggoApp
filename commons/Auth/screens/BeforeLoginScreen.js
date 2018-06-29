@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Colors from '../../../constants/Colors';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import Button from 'react-native-button';
 import globalStyles from '../../../commons/globalStyles';
 import { Icon } from 'react-native-elements';
@@ -21,7 +21,7 @@ export default class BeforeLoginScreen extends React.Component {
   render() {
     let { navigate, goBack, replace } = this.props.navigation;
     return (
-      <Image style={styles.bgImg} source={require('../../../assets/images/bglogin2.jpg')}>
+      <ImageBackground style={styles.bgImg} source={require('../../../assets/images/bglogin2.jpg')}>
 
         {!!this.props.onIntro || (
           <TouchableOpacity style={{ alignItems: 'flex-start', marginTop: 20, marginHorizontal: 20 }}
@@ -55,7 +55,7 @@ export default class BeforeLoginScreen extends React.Component {
               <Text style={{
                 backgroundColor: 'transparent',
                 fontSize: 18, color: '#ffffff',
-                fontFamily: 'Hind-SemiBold',
+                fontFamily: 'HindSemiBold',
               }}>
                 Daftar
               </Text>
@@ -73,7 +73,7 @@ export default class BeforeLoginScreen extends React.Component {
 
 
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 }
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#23d3c3',
   },
   bgImg: {
-    resizeMode: 'cover',
+    // resizeMode:'cover', 
     flex: 1,
     width: null,
     height: null,

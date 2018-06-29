@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   reviewTitle: {
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     fontSize: 17,
     color: '#454545',
     ...Platform.select({
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   txtBesar: {
     fontSize: 30,
     color: '#000',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 6,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   nilaiBesar: {
     fontSize: 60,
     color: '#ff5f5f',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 10,

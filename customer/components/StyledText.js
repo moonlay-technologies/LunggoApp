@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   activityDesc: {
     fontSize: 15.5,
     color: '#454545',
-    fontFamily: 'Hind-Light',
+    fontFamily: 'HindLight',
     ...Platform.select({
       ios: {
         lineHeight: 14,
