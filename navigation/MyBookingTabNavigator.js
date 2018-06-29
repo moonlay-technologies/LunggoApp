@@ -5,16 +5,16 @@ import { TabNavigator, TabBarTop } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../customer/screens/HomeScreen';
 import MyBookingTrx from '../customer/screens/MyBooking/MyBookingTrxScreen';
 import MyBookingActivity from '../customer/screens/MyBooking/MyBookingActivityScreen';
+import UnreviewedMyBooking from '../customer/screens/MyBooking/MyBookingUnreviewedScreen';
 
 export default TabNavigator(
   {
     MyBookingActivity: { screen: MyBookingActivity },
     MyBookingTrx: { screen: MyBookingTrx },
-    MyBookingTrx: { screen: MyBookingTrx },
-    MyBookingTrx: { screen: MyBookingTrx },
+    UnreviewedMyBooking: { screen: UnreviewedMyBooking },
+    MyBookingHistory: { screen: MyBookingTrx },
   },
   {
     navigationOptions: ({ navigation }) => ({

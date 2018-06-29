@@ -4,7 +4,7 @@ import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import { TrxListItem } from './MyBookingListItems';
-import { getMyBookingTrxList, shouldRefreshMyBookingTrxList } from './MyBookingController';
+import { getMyBookingTrxList, shouldRefreshMyBookingTrxList, myBookingStore } from './MyBookingController';
 import MenuButton from './../../../commons/components/MenuButton';
 import { Icon } from 'react-native-elements';
 import { checkUserLoggedIn } from '../../../api/Common';
@@ -68,22 +68,22 @@ export default class MyBookingTrxScreen extends React.Component {
     />
   )
 
-  header = () => (
-    <View style={{ height: 90, justifyContent: 'center' }}>
-      <MenuButton
-        label='Lihat Riwayat Pembelian'
-        icon={
-          <Icon
-            name='ios-time-outline'
-            type='ionicon'
-            size={26}
-            color='#454545'
-          />
-        }
-        onPress={this._goToTrxHistory}
-      />
-    </View>
-  );
+  // header = () => (
+  //   <View style={{ height: 90, justifyContent: 'center' }}>
+  //     <MenuButton
+  //       label='Lihat Riwayat Pembelian'
+  //       icon={
+  //         <Icon
+  //           name='ios-time-outline'
+  //           type='ionicon'
+  //           size={26}
+  //           color='#454545'
+  //         />
+  //       }
+  //       onPress={this._goToTrxHistory}
+  //     />
+  //   </View>
+  // );
 
   render() {
     let { isLoading, isLoggedIn, list, status } = this.state;
@@ -101,7 +101,7 @@ export default class MyBookingTrxScreen extends React.Component {
               onRefresh={this._refreshMyBookingList}
               refreshing={this.state.isLoading}
               ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
-              ListHeaderComponent={this.header}
+              // ListHeaderComponent={this.header}
               ListEmptyComponent={<BlankScreen {...props} />}
             />
           </View>

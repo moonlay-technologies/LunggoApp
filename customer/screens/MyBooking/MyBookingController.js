@@ -2,6 +2,7 @@
 
 // import { downloadPdfVouchers } from "./MyBookingHelpers";
 import { myBookingStore } from "./MyBookingStore";
+export { myBookingStore } from "./MyBookingStore";
 import { fetchTravoramaApi, AUTH_LEVEL } from '../../../api/Common';
 import { NavigationActions } from 'react-navigation';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -24,7 +25,7 @@ export async function getUnreviewedBookingList() {
   getBookingList('unreviewed', secureStoreVarName, shouldRefreshVarName)
 }
 
-export async function getUnreviewedBookingList() {
+export async function getMyBookingHistoryList() {
   const secureStoreVarName = 'myBookingHistories';
   const shouldRefreshVarName = 'shouldRefresh.myBookingHistoryList';
   getBookingList('history', secureStoreVarName, shouldRefreshVarName)
