@@ -13,6 +13,7 @@ import globalStyles from '../globalStyles';
 import { reversePhoneWithoutCountryCode_Indonesia, phoneWithoutCountryCode_Indonesia } from '../../customer/components/Formatter';
 import { WideCTAButton } from './Buttons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 
 
 export default class PersonDataForm extends React.Component {
@@ -128,7 +129,7 @@ export default class PersonDataForm extends React.Component {
             </Text>
           </View>
           {this.props.additionalContent}
-
+          <RadioForm/>
           <View style={{ marginBottom: 5 }}>
             <Text style={styles.label}>Nama Lengkap</Text>
           </View>

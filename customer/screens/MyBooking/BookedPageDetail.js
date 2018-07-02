@@ -13,6 +13,7 @@ import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
 import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
 import Moment from 'moment';
+import 'moment/locale/id';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -55,9 +56,20 @@ export default class BookedPageDetail extends React.Component {
   _callOperator = () => Linking.openURL('tel:' + this.details.operatorPhone)
   _smsOperator = () => Linking.openURL('sms:' + this.details.operatorPhone)
 
-  _goToRefundScreen = () => {
+  _cancelReservation = () => {
+    let status = 'cancel';
+    this._goToRefundScreen(status);
+  }
+
+  _goToRefundScreen = (status='refund') => {
+    let dateUtcNow = new Date();
+    let fullRefund = this.details.price;
+    let refundPolicies = this.details.refundPolicies;
+    let selectedPolicy = refundPolicies ? refundPolicies.filter(a => Moment(dateUtcNow).diff(Moment(a.startDate)) >= 0) : null;
+    let amount = this.details.refundAmount ? this.details.refundAmount : selectedPolicy ? selectedPolicy.length > 0 ? selectedPolicy.map(a => a.amount).sort(function(a, b){return a-b})[0] : fullRefund : null;
+    console.log(amount);
     this.props.navigation.navigate
-      ('RefundScreen', { rsvNo: this.details.rsvNo, ...this.details.refundBankAccount });
+      ('RefundScreen', { rsvNo: this.details.rsvNo, ...this.details.refundBankAccount, refundPolicies: this.details.refundPolicies, fullRefund: this.details.price, status: status, amount: amount });
   };
 
   _showTicket() {
@@ -113,12 +125,15 @@ export default class BookedPageDetail extends React.Component {
 
   _showRefundButton() {
     let { bookingStatus, needRefundBankAccount, refundBankAccount } = this.details;
-
-    if (bookingStatus == 'CancelByOperator' ||
+    console.log("show refund bank account");
+    console.log(refundBankAccount);
+    if ((bookingStatus == 'CancelByOperator' ||
       bookingStatus == 'CancelByAdmin' ||
       bookingStatus == 'DeniedByOperator' ||
       bookingStatus == 'DeniedByAdmin' ||
-      bookingStatus == 'CancelByCustomer') {
+      bookingStatus == 'CancelByCustomer' ||
+      bookingStatus == "NoResponseByOperator" ||
+      bookingStatus == "NoResponseByCustomer") && !refundBankAccount) {
       return (
         <View style={styles.container}>
           <View style={{ marginBottom: 0, alignItems: 'center' }}>
@@ -199,8 +214,53 @@ export default class BookedPageDetail extends React.Component {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
       selectedSession, operatorName, operatorPhone, ticketNumber,
       operatorEmail, totalPaxCount, latitude, longitude, paxes,
-      hasPdfVoucher, isPdfUploaded, paxCount, contact
+      hasPdfVoucher, isPdfUploaded, paxCount, contact, refundPolicies
     } = this.details;
+
+    console.log("refundPolicies :");
+    console.log(refundPolicies);
+
+    let refundItem = bookingStatus == "Booked" ||
+    bookingStatus == "Confirmed" || 
+    bookingStatus == "Ticketed" ||
+    bookingStatus == "Ticketing" ||
+    bookingStatus == "Forwarded"  ? refundPolicies ? (
+      <View>
+        <Text style={styles.activityDesc}>
+          {refundPolicies.map(a => {
+            let b = "● Ada refund: " + a.amount + ", dimulai tanggal: " + a.startDate + "\n\n";
+            return b;
+          })}
+        </Text>
+      </View>
+    ) :
+      (
+        <View>
+          <Text style={styles.activityDesc}>
+            Tidak ada refund
+          </Text>
+        </View>
+      )
+      :
+      null
+
+    let cancelButton = bookingStatus == "Ticketing" ||
+      bookingStatus == "Ticketed" ||
+      bookingStatus == "Forwarded" ||
+      bookingStatus == "Booked" ||
+      bookingStatus == "Confirmed" ?
+      (<View>
+        <Button
+          containerStyle={styles.labelOk}
+          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+          onPress={this._cancelReservation}
+        >
+          Batalkan
+        </Button>
+      </View>) :
+      null;
+
+
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
 
@@ -375,9 +435,30 @@ export default class BookedPageDetail extends React.Component {
           <Text style={styles.sectionTitle}>
             Lokasi
           </Text>
-          <Maps lat={latitude} long={longitude} name={name}
-            address={address} city={city} {...this.props} />
+          {/* <Maps lat={latitude} long={longitude} name={name}
+            address={address} city={city} {...this.props} /> */}
         </View>
+        {
+          (bookingStatus == "Ticketing" ||
+          bookingStatus == "Ticketed" ||
+          bookingStatus == "Forwarded" ||
+          bookingStatus == "Booked" ||
+          bookingStatus == "Confirmed") && (
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.sectionTitle}>
+              Ketentuan Pembatalan
+            </Text>
+            {
+              refundItem
+            }
+          </View>
+          {
+            cancelButton
+          }   
+        </View>
+        )
+        }
 
         <View style={styles.container}>
           <View>

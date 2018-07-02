@@ -159,7 +159,7 @@ export default class DetailScreen extends Component {
                   <Text style={styles.sectionTitle}>
                     Lokasi
                   </Text>
-                  <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+                  {/* <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} /> */}
                 </View>
 
                 {/* {additionalContents &&

@@ -114,9 +114,64 @@ export class ActivityListItem extends React.PureComponent {
               </View>
             </View>);
         case 'CancelByCustomer':
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+              </View>
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
+              </Button>
+                </View>
+              }
+            </View>);
         case 'CancelByOperator':
         case 'CancelByAdmin':
+        case 'NoResponseByOperator':
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusTextDanger}>Tidak direspon operator</Text>
+              </View>
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
+              </Button>
+                </View>
+              }
+            </View>);
         case 'DeniedByOperator':
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+              </View>
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
+              </Button>
+                </View>
+              }
+            </View>);
         case 'DeniedByAdmin':
           return (
             <View>
@@ -242,6 +297,8 @@ export class ActivityListItem extends React.PureComponent {
                       item.bookingStatus != 'CancelByAdmin' &&
                       item.bookingStatus != 'DeniedByOperator' &&
                       item.bookingStatus != 'DeniedByAdmin' &&
+                      item.bookingStatus != 'NoResponseByOperator' &&
+                      item.bookingStatus != 'NoResponseByAdmin' &&
                       <TouchableOpacity
                         onPress={() => {
                           this._closeSettingModal()
