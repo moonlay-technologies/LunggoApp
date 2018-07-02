@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import { ActivityListItem } from './MyBookingListItems';
+import { ActivityListItem } from './MyBookingActiveListItem';
 import { shouldRefreshMyBookingActivityList, getMyBookingActivityList,
   myBookingStore } from './MyBookingController';
 import { checkUserLoggedIn } from '../../../api/Common';
