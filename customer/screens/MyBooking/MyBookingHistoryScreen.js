@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
 import { ActivityListItem } from './MyBookingListItems';
 import { getMyBookingHistoryList, myBookingStore, shouldRefreshMyBookingHistoryList } from './MyBookingController';
@@ -15,7 +15,6 @@ export default class MyBookingActivityScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      list: [],
       isLoggedIn: false,
     };
   }
@@ -60,15 +59,15 @@ export default class MyBookingActivityScreen extends React.Component {
       <ActivityListItem
         item={item}
         index={index}
-        // onPressItem={this._onPressItem}
         navigation={this.props.navigation}
         showActionButtons={true}
+        myBookingState="history"
       />
     </View>
   )
 
   render() {
-    let { isLoading, isLoggedIn, status } = this.state;
+    let { isLoading, isLoggedIn } = this.state;
     let { props } = this;
 
     if (isLoggedIn)
@@ -80,20 +79,16 @@ export default class MyBookingActivityScreen extends React.Component {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}
-              refreshing={this.state.isLoading}
-              ListEmptyComponent={<BlankScreen {...props} />}
+              refreshing={isLoading}
+              ListEmptyComponent={
+                <BlankScreen isLoggedIn={isLoggedIn} {...props} />
+              }
             />
           </View>
         </View>);
     else
       return (
-        <BlankScreen {...props} />
+        <BlankScreen isLoggedIn={isLoggedIn} {...props} />
       )
   }
 }
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 20
-  }
-});

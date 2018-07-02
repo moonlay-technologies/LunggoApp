@@ -63,7 +63,6 @@ export default class MyBookingTrxScreen extends React.Component {
     <TrxListItem
       item={item}
       index={index}
-      // onPressItem={this._onPressItem}
       navigation={this.props.navigation}
     />
   )
@@ -102,13 +101,15 @@ export default class MyBookingTrxScreen extends React.Component {
               refreshing={this.state.isLoading}
               ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
               // ListHeaderComponent={this.header}
-              ListEmptyComponent={<BlankScreen {...props} />}
+              ListEmptyComponent={
+                <BlankScreen isLoggedIn={isLoggedIn} {...props} />
+              }
             />
           </View>
         </View>);
     else
       return (
-        <BlankScreen {...props} />
+        <BlankScreen isLoggedIn={isLoggedIn} {...props} />
       )
   }
 }

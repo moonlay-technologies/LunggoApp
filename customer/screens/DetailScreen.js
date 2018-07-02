@@ -2,14 +2,11 @@
 
 import React, { Component } from 'react';
 import {
-  Platform, StyleSheet, Text, View, Image, TextInput,
+  Platform, StyleSheet, Text, View, Image,
   ScrollView, TouchableOpacity, Animated
 } from 'react-native';
 import * as Formatter from '../components/Formatter';
 import globalStyles from '../../commons/globalStyles';
-import Colors from '../../constants/Colors';
-import ImageSlider from 'react-native-image-slider';
-import Accordion from '../components/Accordion';
 import Button from 'react-native-button';
 import { Rating, Icon } from 'react-native-elements';
 import WishButton from '../components/WishButton';
@@ -19,26 +16,23 @@ import {
   AUTH_LEVEL, fetchTravoramaApi, checkUserLoggedIn,
 } from '../../api/Common';
 import { MultilineText, ListedText } from '../components/StyledText'
-import Maps from '../components/Maps';
+// import Maps from '../components/Maps';
 import Avatar from './../../commons/components/Avatar';
 import LoadingModal from './../../commons/components/LoadingModal';
 import { rupiah } from './../components/Formatter';
-
-const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 
 export default class DetailScreen extends Component {
 
   constructor(props) {
     super(props);
     this._onWishlist = this._onWishlist.bind(this);
-    let { details, id } = this.props.navigation.state.params;
-
-    let item = { ...details }
-    if (!Array.isArray(item.mediaSrc))
+    const { details, id } = props.navigation.state.params;
+    const _id = id || details.activityId || details.id;
+    let item = { ...details, id: _id }
+    if (Array.isArray(item.mediaSrc) == false)
       item.mediaSrc = [details.mediaSrc];
 
     this.state = {
-      ...id,
       ...item,
       review: {
         rating: 0.0,
@@ -64,8 +58,6 @@ export default class DetailScreen extends Component {
     fetchTravoramaApi(request).then(response => {
       this.setState(response.activityDetail);
       if (!response.activityDetail.package) {
-        console.log('PACKAGES:');
-        console.log(response.activityDetail.package);
         console.error(response.activityDetail.package);
       }
     }).catch(error => console.log(error));
@@ -83,28 +75,17 @@ export default class DetailScreen extends Component {
     });
   }
 
-  _isDateAvailable = (availableDates) => {
-    if (availableDates.length > 0) {
-      return (
-        true
-      );
-    }
-    else {
-      return (
-        false
-      )
-    }
+  _isDateAvailable = availableDates => {
+    return (availableDates && availableDates.length > 0);
   }
 
   render() {
+    console.log(this.props.navigation.state.params)
+    console.log('=========this.props.navigation.state.params')
     const { requiredPaxData, isLoading, name, city, duration, price, id,
       mediaSrc, address, lat, long, wishlisted, shortDesc, contents, cancellation,
       review, reviewCount, rating, ratingCount, additionalContents, availableDateTimes } = this.state;
     let hideFooter = this.props.navigation.state.params.hideFooter;
-    console.log("hide footer params: ");
-    console.log(this.props.navigation.state.params.hideFooter);
-    console.log("hide footer: ");
-    console.log(hideFooter);
     return (
       <View>
         <ScrollView
@@ -135,7 +116,7 @@ export default class DetailScreen extends Component {
                         Ketentuan Pembatalan
                       </Text>
                       <Text style={styles.activityDesc}>
-                        {cancellation.map(c =>
+                        {!!cancellation && cancellation.map(c =>
                           `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}%${c.valueConstant ? `+ ${rupiah(c.valueConstant)}` : ''}.\n`)}
                       </Text>
                     </View>
@@ -159,7 +140,8 @@ export default class DetailScreen extends Component {
                   <Text style={styles.sectionTitle}>
                     Lokasi
                   </Text>
-                  <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} />
+                  {/* TODO error nih */}
+                  {/* <Maps lat={lat} long={long} name={name} address={address} city={city} {...this.props} /> */}
                 </View>
 
                 {/* {additionalContents &&
@@ -486,7 +468,6 @@ class Contents extends Component {
 class MainInfo extends Component {
 
   render() {
-    console.log('main info rerendered');
     let { name, shortDesc, city, duration, cancellation, isOpenTrip, isInstantConfirmation, mustPrinted, operationTime } = this.props;
     return (
       <View>

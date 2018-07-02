@@ -3,10 +3,9 @@
 import React from 'react';
 import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, Text, View, Image, TouchableOpacity,
+  Platform, StyleSheet, Text, View, Image,
 } from 'react-native';
 import globalStyles from '../../../commons/globalStyles';
-import { checkUserLoggedIn } from '../../../commons/Auth/AuthController';
 
 export default class MyBookingBlankScreen extends React.Component {
 
@@ -19,21 +18,8 @@ export default class MyBookingBlankScreen extends React.Component {
     title: 'Pesananku',
   };
 
-  _checkLoggedIn = async () => {
-    let isLoggedIn = await checkUserLoggedIn();
-    this.setState({ isLoggedIn });
-  }
-
-  componentDidMount() {
-    this._checkLoggedIn();
-  }
-
-  componentWillReceiveProps() {
-    this._checkLoggedIn();
-  }
-
   render() {
-    let { isLoggedIn } = this.state;
+    let { isLoggedIn, navigation } = this.props;
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
@@ -53,8 +39,8 @@ export default class MyBookingBlankScreen extends React.Component {
               containerStyle={globalStyles.ctaButton}
               style={{ fontSize: 16, color: '#fff', fontWeight: 'bold' }}
               onPress={() => isLoggedIn
-                ? this.props.navigation.goBack()
-                : this.props.navigation.navigate('LoginScreen', { resetAfter: true })
+                ? navigation.goBack()
+                : navigation.navigate('LoginScreen', { resetAfter: true })
               }
             >
               {isLoggedIn ? 'Jelajah Sekarang' : 'Login'}

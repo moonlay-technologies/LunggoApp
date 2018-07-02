@@ -3,13 +3,11 @@
 import React from 'react';
 import Button from 'react-native-button';
 import {
-  Platform, StyleSheet, Text, View, Image, ScrollView, Dimensions,
-  RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback, Alert
+  Platform, StyleSheet, Text, View, Image, Dimensions,
+  FlatList, TouchableOpacity, TouchableWithoutFeedback, Alert
 } from 'react-native';
-import { getMyBookingTrxList, cancelReservation, fetchMyBookingActivityList, myBookingActivityItemStore, cancelReservationInMobX } from './MyBookingController';
-import globalStyles from '../../../commons/globalStyles';
+import { cancelReservation, fetchMyBookingActivityList, cancelReservationInMobX } from './MyBookingController';
 import * as Formatter from '../../components/Formatter';
-const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 import { WebBrowser } from 'expo';
 import { getPaxCountText } from '../../../commons/otherCommonFunctions';
 import { Icon } from 'react-native-elements';
@@ -24,12 +22,8 @@ export class ActivityListItem extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalLocation: {
-        left: null,
-        right: null,
-        top: null,
-        bottom: null,
-      }
+      //tapX: ,
+      //tapY: ,
     }
     this._openSettingModal = this._openSettingModal.bind(this);
   }
@@ -56,7 +50,6 @@ export class ActivityListItem extends React.PureComponent {
   };
 
   _openSettingModal = (evt) => {
-
     this.setState({ tapX: evt.nativeEvent.pageX, tapY: evt.nativeEvent.pageY })
     this.refs.settingModal.openModal();
   }
@@ -104,19 +97,14 @@ export class ActivityListItem extends React.PureComponent {
                 <Text style={styles.statusTextOk}>Tiket Terbit</Text>
               </View>
               <View>
-                <Button
-                  containerStyle={styles.containerbtn}
-                  style={styles.statusbtn}
-                  onPress={() =>
-                    item.hasPdfVoucher
-                      ? this._viewPdfVoucher(item)
-                      : this._goToBookedPageDetail()
-                  }
-                >
-                  Lihat Tiket
-                </Button>
+                <StatusButton text="Lihat Tiket" onPress={
+                  () => item.hasPdfVoucher
+                    ? this._viewPdfVoucher(item)
+                    : this._goToBookedPageDetail()
+                } />
               </View>
-            </View>);
+            </View>
+          );
         case 'CancelByCustomer':
         case 'CancelByOperator':
         case 'CancelByAdmin':
@@ -132,24 +120,10 @@ export class ActivityListItem extends React.PureComponent {
               </View>
               <View style={{ flexDirection: 'row', width: '100%', flex: 1, alignContent: 'space-between' }}>
                 {item.needRefundBankAccount &&
-                  <View>
-                    <Button
-                      containerStyle={styles.containerbtn}
-                      style={styles.statusbtn}
-                      onPress={this._goToRefundScreen}
-                    >
-                      Refund
-                </Button>
-                  </View>
+                  <StatusButton text="Refund" onPress={this._goToRefundScreen}/>
                 }
                 <View style={{ marginLeft: 20 }}>
-                  <Button
-                    containerStyle={styles.containerbtn}
-                    style={styles.statusbtn}
-                    onPress={this._goToHelpScreen}
-                  >
-                    Tanya Travorama
-                </Button>
+                  <StatusButton text="Tanya Travorama" onPress={this._goToHelpScreen}/>
                 </View>
               </View>
             </View>);
@@ -157,9 +131,12 @@ export class ActivityListItem extends React.PureComponent {
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>Terjadi kesalahan pada sistem</Text>
+                <Text style={styles.activityDesc}>
+                  Terjadi kesalahan pada sistem
+                </Text>
               </View>
-            </View>);
+            </View>
+          );
       }
     }
 
@@ -173,7 +150,7 @@ export class ActivityListItem extends React.PureComponent {
   }
 
   render() {
-    let { item } = this.props;
+    let { item, showActionButtons, myBookingState } = this.props;
     return (
       <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
         <View>
@@ -197,7 +174,9 @@ export class ActivityListItem extends React.PureComponent {
                   a.n. {item.contact.name}, {getPaxCountText(item.paxCount)}
                 </Text>
                 <View>
-                  {this.props.showActionButtons && this._buttons(item)}
+                  {myBookingState == 'active' && showActionButtons && this._buttons(item)}
+                  {myBookingState == 'unreviewed' && this._inputReview(item)}
+                  {myBookingState == 'history' && this._buyAgain(item)}
                 </View>
               </View>
               <View style={{ position: 'relative' }}>
@@ -324,6 +303,32 @@ export class ActivityListItem extends React.PureComponent {
       </TouchableWithoutFeedback>
     )
   }
+
+  _inputReview = item =>
+    <View>
+      <Text>Berikan Review</Text>
+      <TouchableOpacity onPress={ () => this._writeReview(item)}>
+        <Text>bintangbintang</Text>
+      </TouchableOpacity>
+    </View>
+
+  _buyAgain = item =>
+    <View style={{flexDirection: 'row'}}>
+      <Text style={{flex:1}}>{Formatter.price(item.price)}</Text>
+      <StatusButton text="Beli Lagi"
+        onPress={() => this._onClickBuyAgain(item)}
+      />
+    </View>
+
+  _writeReview = item => {
+    const dest = item.requestRating ? 'SubmitRating' : 'SubmitReview';
+    this.props.navigation.navigate( dest, { rsvNo: item.rsvNo });
+  }
+
+  _onClickBuyAgain = item => {
+    this.props.navigation.navigate('DetailScreen', { details: item });
+  }
+
 }
 
 export class TrxListItem extends React.PureComponent {
@@ -383,7 +388,11 @@ export class TrxListItem extends React.PureComponent {
 
         <View style={{ borderBottomWidth: 1, borderBottomColor: '#ececec', paddingBottom: 10, paddingHorizontal: 15 }}>
           <View>
-            <Text style={styles.activityDesc}>Waktu Pemesanan: <Text style={styles.activityDesc}>{dateFullShort(item.trxTime)}</Text></Text>
+            <Text style={styles.activityDesc}>
+              Waktu Pemesanan: <Text style={styles.activityDesc}>
+                {dateFullShort(item.trxTime)}
+              </Text>
+            </Text>
           </View>
         </View>
 
@@ -400,7 +409,9 @@ export class TrxListItem extends React.PureComponent {
 
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={styles.totalText}>{Formatter.price(item.totalFinalPrice)}</Text>
+              <Text style={styles.totalText}>
+                {Formatter.price(item.totalFinalPrice)}
+              </Text>
               {this._labelPaymentStatus(item.paymentStatus)}
             </View>
           </View>
@@ -419,6 +430,15 @@ export class TrxListItem extends React.PureComponent {
     )
   }
 }
+
+const StatusButton = props =>
+  <Button
+    containerStyle={styles.containerbtn}
+    style={styles.statusbtn}
+    onPress={props.onPress}
+  >
+    {props.text}
+  </Button>
 
 const styles = StyleSheet.create({
   container: {

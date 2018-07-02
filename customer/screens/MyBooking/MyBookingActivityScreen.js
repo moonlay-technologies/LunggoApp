@@ -1,14 +1,11 @@
 'use strict';
 
 import React from 'react';
-import { View, ActivityIndicator, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, FlatList } from 'react-native';
 import BlankScreen from './MyBookingBlankScreen';
-import { TrxListItem, ActivityListItem } from './MyBookingListItems';
-import { shouldRefreshMyBookingActivityList, getMyBookingActivityList, myBookingStore } from './MyBookingController';
-// import { myBookingStore } from "./MyBookingStore";
-import LoadingAnimation from '../../components/LoadingAnimation'
-import MenuButton from './../../../commons/components/MenuButton';
-import { Icon } from 'react-native-elements';
+import { ActivityListItem } from './MyBookingListItems';
+import { shouldRefreshMyBookingActivityList, getMyBookingActivityList,
+  myBookingStore } from './MyBookingController';
 import { checkUserLoggedIn } from '../../../api/Common';
 import { observer } from 'mobx-react';
 
@@ -19,7 +16,6 @@ export default class MyBookingActivityScreen extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      activityList: [],
       isLoggedIn: false,
     };
   }
@@ -65,9 +61,9 @@ export default class MyBookingActivityScreen extends React.Component {
       <ActivityListItem
         item={item}
         index={index}
-        // onPressItem={this._onPressItem}
         navigation={this.props.navigation}
         showActionButtons={true}
+        myBookingState="active"
       />
     </View>
   )
@@ -90,7 +86,7 @@ export default class MyBookingActivityScreen extends React.Component {
   // )
 
   render() {
-    let { isLoading, isLoggedIn, activityList, status } = this.state;
+    let { isLoading, isLoggedIn } = this.state;
     let { props } = this;
     if (isLoggedIn)
       return (
@@ -101,21 +97,17 @@ export default class MyBookingActivityScreen extends React.Component {
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onRefresh={this._refreshMyBookingList}
-              refreshing={this.state.isLoading}
+              refreshing={isLoading}
               //ListHeaderComponent={this.header}
-              ListEmptyComponent={<BlankScreen {...props} />}
+              ListEmptyComponent={
+                <BlankScreen isLoggedIn={isLoggedIn} {...props} />
+              }
             />
           </View>
         </View>);
     else
       return (
-        <BlankScreen {...props} />
+        <BlankScreen isLoggedIn={isLoggedIn} {...props} />
       )
   }
 }
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 20
-  }
-});

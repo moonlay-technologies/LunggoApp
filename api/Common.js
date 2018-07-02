@@ -7,7 +7,7 @@ export { checkUserLoggedIn } from '../commons/Auth/AuthController';
 export { AUTH_LEVEL } from '../constants/env';
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
-const LOGGING = true;
+const LOGGING = false;
 
 //// fetch API
 export async function fetchTravoramaApi(request) {

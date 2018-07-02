@@ -1,12 +1,10 @@
 import React from 'react';
 import {
-  Platform, StyleSheet, FlatList, Text, View, Image,
+  Platform, StyleSheet, Text, View,
   TextInput, TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { observer, Observer } from 'mobx-react';
-import { getCart, getCartCount } from '../Cart/CartController';
-import SubmitRatingScreen from './../SubmitRatingScreen';
+import { observer } from 'mobx-react';
 import cartCountStore from './../Cart/CartCountStorage';
 import Colors from '../../../constants/Colors';
 
@@ -30,7 +28,6 @@ export default class SearchHeader extends React.Component {
   _goToCart = () => this.props.navigation.navigate('Cart');
 
   render() {
-    let { navigate } = this.props.navigation;
     return (
       <View style={{ elevation: 0.75, backgroundColor: '#fff' }}>
         <View style={[styles.header, styles.flowRight]}>
