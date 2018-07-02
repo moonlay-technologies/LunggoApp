@@ -54,7 +54,7 @@ export default class MyBookingActivityScreen extends React.Component {
     );
   }
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index.toString();
   _renderItem = ({ item, index }) => (
     <View style={{ backgroundColor: 'white' }}>
       <ActivityListItem

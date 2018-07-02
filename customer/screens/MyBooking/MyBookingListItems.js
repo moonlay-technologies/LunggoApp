@@ -47,8 +47,6 @@ export class ActivityListItem extends React.PureComponent {
   };
 
   _goToRefundScreen = () => {
-    console.log(this.props);
-    console.log('this.props');
     this.props.navigation.navigate
       ('RefundScreen', { rsvNo: this.props.item.rsvNo, ...this.props.item.refundBankAccount });
   };
@@ -72,9 +70,7 @@ export class ActivityListItem extends React.PureComponent {
   };
 
   _confirmCancelActivity = () => {
-    console.log('canceled');
     cancelReservation(this.props.item.rsvNo);
-    console.log("buka my reservation aldjawajdlajksdlajlksdk");
     cancelReservationInMobX(this.props.item.rsvNo);
     fetchMyBookingActivityList();
   }
@@ -382,15 +378,6 @@ export class TrxListItem extends React.PureComponent {
 
   render() {
     let { item } = this.props;
-    console.log(item.trxTime);
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
-    console.log('item.trxTime');
     return (
       <View style={styles.cartbox}>
 

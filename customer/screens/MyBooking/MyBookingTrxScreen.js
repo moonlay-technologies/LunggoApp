@@ -58,7 +58,7 @@ export default class MyBookingTrxScreen extends React.Component {
     }).finally(() => this.setState({ isLoading: false }));
   }
 
-  _keyExtractor = (item, index) => index
+  _keyExtractor = (item, index) => index.toString();
   _renderItem = ({ item, index }) => (
     <TrxListItem
       item={item}

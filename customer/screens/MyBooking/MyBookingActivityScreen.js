@@ -47,7 +47,6 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   _refreshMyBookingList = async (shouldLoading = true, refreshing = true) => {
-    console.log("melakuka refresh activity list my booking");
     if (shouldLoading) {
       this.setState({ isLoading: true });
     }
@@ -60,7 +59,7 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   _goToActivityHistory = () => this.props.navigation.navigate('MyBookingActivityHistory');
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index.toString();
   _renderItem = ({ item, index }) => (
     <View style={{ backgroundColor: 'white' }}>
       <ActivityListItem
@@ -93,8 +92,6 @@ export default class MyBookingActivityScreen extends React.Component {
   render() {
     let { isLoading, isLoggedIn, activityList, status } = this.state;
     let { props } = this;
-    console.log(myBookingStore)
-    console.log('=======================myBookingStore=======================')
     if (isLoggedIn)
       return (
         <View style={{ flex: 1 }}>

@@ -64,8 +64,7 @@ export default class BookedPageDetail extends React.Component {
 
   _showTicket() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
-    console.log("ticcketnumber =" + ticketNumber);
-
+    
     if (bookingStatus == 'Ticketed' && hasPdfVoucher && isPdfUploaded) {
       return (
         <View style={styles.container}>
@@ -153,14 +152,19 @@ export default class BookedPageDetail extends React.Component {
 
     switch (bookingStatus) {
       case 'Booked':
-        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Menunggu proses pembayaran</Text></View></View>;
+        return <BookingStatusText text="Menunggu proses pembayaran"/>;
       case 'ForwardedToOperator':
         let now = Moment();
         let daysDiff = Moment(now).diff(timeLimit, 'days');
         let hoursDiff = Moment(now).diff(timeLimit, 'hours') - (daysDiff * 24);
         let timeLimitString = (daysDiff ? `${daysDiff} hari ` : '') + `${hoursDiff} jam`;
         return (
-          <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Voucher sedang dalam proses*</Text></View>
+          <View style={styles.container}>
+            <View style={styles.labelText}>
+              <Text style={{ color: '#ff5f5f' }}>
+                Voucher sedang dalam proses*
+              </Text>
+            </View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
               <Text style={[styles.activityDesc, { textAlign: 'center', color: '#1e1e1e' }]}>
                 * Aktivitas akan dibatalkan otomatis jika dalam <Text style={{ fontWeight: 'bold' }}>1x24 jam</Text>{"\n"}operator tidak mengonfirmasi pesanan kamu
@@ -168,7 +172,7 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>);
       case 'Ticketing':
-        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Tiket sedang diproses</Text></View></View>;
+        return <BookingStatusText text="Tiket sedang diproses"/>;
       case 'Ticketed':
         return null;
 
@@ -188,16 +192,9 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>);
       case 'CancelByCustomer':
-        return <View style={styles.container}><View style={styles.labelText}><Text style={{ color: '#ff5f5f' }}>Dibatalkan oleh pemesan</Text></View></View>;
+        return <BookingStatusText text="Dibatalkan"/>;
       default:
-        return (
-          <View style={styles.container}>
-            <View style={styles.labelText}>
-              <Text style={{ color: '#ff5f5f' }}>
-                Terjadi kesalahan pada sistem
-          </Text>
-            </View>
-          </View>);
+        return <BookingStatusText text="Terjadi kesalahan pada sistem"/>;
     }
   }
 
@@ -387,8 +384,8 @@ export default class BookedPageDetail extends React.Component {
               <Text style={styles.sectionTitle}>
                 Lokasi
               </Text>
-              <Maps lat={latitude} long={longitude} name={name}
-                address={address} city={city} {...this.props} />
+              {/* <Maps lat={latitude} long={longitude} name={name}
+                address={address} city={city} {...this.props} /> */}
             </View>
           </View>
         }
@@ -487,6 +484,15 @@ export default class BookedPageDetail extends React.Component {
     );
   }
 }
+
+const BookingStatusText = props =>
+  <View style={styles.container}>
+    <View style={styles.labelText}>
+      <Text style={{ color: '#ff5f5f' }}>
+        {props.text}
+      </Text>
+    </View>
+  </View>
 
 const styles = StyleSheet.create({
   container: {
@@ -679,7 +685,7 @@ const styles = StyleSheet.create({
   statusbtn: {
     fontSize: 12,
     color: '#fff',
-    fontFamily: 'Hind-SemiBold',
+    fontFamily: 'HindSemiBold',
     backgroundColor: 'transparent',
     ...Platform.select({
       ios: {

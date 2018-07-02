@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     color: '#fff',
-    fontFamily: 'Hind-Bold',
+    fontFamily: 'HindBold',
     backgroundColor: 'transparent',
     ...Platform.select({
       ios: {

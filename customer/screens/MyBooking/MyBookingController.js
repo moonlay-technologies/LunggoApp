@@ -41,13 +41,9 @@ async function getBookingList(myBookingState, secureStoreVarName, shouldRefreshV
     myBookingStore.removeNewBookingMark();
     return getListFromServer(myBookingState);
   }
-  console.log('=========== get booking list, with secureStoreVarName: '+secureStoreVarName)
   const secureStoreJSONData = await getItemAsync(secureStoreVarName);
   if (secureStoreJSONData) {
     const parsedSecureStoreData = await JSON.parse(secureStoreJSONData);
-    console.log('===========setMyBookingStore in getbookinglist===========')
-    console.log('parsedSecureStoreData')
-    console.log(parsedSecureStoreData)
     myBookingStore.setMyBookingStore(myBookingState, parsedSecureStoreData);
     // let bookings = parsedSecureStoreData.reduce((a, b) => a.concat(b.activities), []);
     // setTimeout(() => downloadPdfVouchers(bookings), 0);
@@ -120,20 +116,11 @@ async function fetchFromServer(myBookingState, itemStructure, secureStoreVarName
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
-  console.log('response dari '+request.path)
-  console.log(response)
   if (response.mustUpdate) {
     const listJSON = JSON.stringify(response.list);
-    console.log('response.list')
-    console.log(response.list)
-    console.log('listJSON')
-    console.log(listJSON)
     await setItemAsync(secureStoreVarName, listJSON);
     // await setItemAsync(lastUpdateVarName, JSON.stringify(response.lastUpdate));
     
-    console.log('===========setMyBookingStore in fetchFromServer===========')
-    console.log('response.list')
-    console.log(response.list)
     myBookingStore.setMyBookingStore(myBookingState, response.list);
     myBookingStore.setNewBookingMark();
   }
@@ -165,13 +152,10 @@ export async function shouldRefreshMyBookingHistoryList() {
 }
 
 export async function myBookingListenerFunction({ origin, data }) {
-  console.log("cool data: " + origin + data);
   if (data.function && data.function == "refreshMyBooking" && origin == "received") {
-    console.log("refreshing my bookinglist");
     shouldRefreshMyBookingTrxList();
   }
   if (data.function && data.function == "refreshMyBooking" && origin == "selected") {
-    console.log("selecting notif");
     goToMyBookingScreen();
   }
 }
