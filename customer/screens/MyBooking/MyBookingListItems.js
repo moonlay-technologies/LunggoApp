@@ -157,32 +157,32 @@ export class ActivityListItem extends React.PureComponent {
               }
             </View>);
         case 'DeniedByOperator':
-        return (
-          <View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityDesc}>Status: </Text>
-              <Text style={styles.statusTextDanger}>Dibatalkan</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityDesc}>Refund Status: </Text>
-              <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.activityDesc}>Refund Amount: </Text>
-              <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
-            </View>
-            {item.needRefundBankAccount &&
-              <View>
-                <Button
-                  containerStyle={styles.containerbtn}
-                  style={styles.statusbtn}
-                  onPress={this._goToRefundScreen}
-                >
-                  Refund
-              </Button>
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
               </View>
-            }
-          </View>);
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Status: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Amount: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
+              </View>
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
+              </Button>
+                </View>
+              }
+            </View>);
         case 'DeniedByAdmin':
           return (
             <View>
@@ -229,8 +229,26 @@ export class ActivityListItem extends React.PureComponent {
     );
   }
 
+  _cancelReservation = () => {
+    let status = 'cancel';
+    this._goToRefundScreen(status);
+  }
+
+  _goToRefundScreen = (status = 'refund') => {
+    let { item } = this.props;
+    let dateUtcNow = new Date();
+    let fullRefund = item.price;
+    let refundPolicies = item.refundPolicies;
+    let selectedPolicy = refundPolicies ? refundPolicies.filter(a => Moment(dateUtcNow).diff(Moment(a.startDate)) >= 0) : null;
+    let amount = item.refundAmount ? item.refundAmount : selectedPolicy ? selectedPolicy.length > 0 ? selectedPolicy.map(a => a.amount).sort(function (a, b) { return a - b })[0] : fullRefund : null;
+    console.log(amount);
+    this.props.navigation.navigate
+      ('RefundScreen', { rsvNo: item.rsvNo, ...item.refundBankAccount, refundPolicies: item.refundPolicies, fullRefund: this.price, status: status, amount: amount });
+  };
+
   render() {
     let { item } = this.props;
+
     return (
       <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
         <View>
@@ -321,7 +339,7 @@ export class ActivityListItem extends React.PureComponent {
                       <TouchableOpacity
                         onPress={() => {
                           this._closeSettingModal()
-                          this._cancelActivity();
+                          this._cancelReservation();
                         }}
                         style={{ padding: 10, }}
                       >

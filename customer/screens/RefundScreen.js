@@ -101,16 +101,18 @@ export default class RefundScreen extends Component {
 
 
   _submit = async () => {
-
+    
     await this._checkRefundData();
+    
     console.log("kondisi error");
     console.log(this.state.error);
     if (this.state.error) return;
+    this.setState({ isLoading: true });
     if (this.state.status == 'cancel') {
       await cancelReservation(this.state.rsvNo, this.state.cancellationReason == "Lainnya" ? this.state.otherReason : this.state.cancellationReason);
     }
+    
     let namaBank = this.refs.namaBank.value()
-    this.setState({ isLoading: true });
     const version = 'v1';
     let request = {
       path: `/${version}/activities/mybooking/${this.state.rsvNo}/refund/bankaccount`,
@@ -127,17 +129,8 @@ export default class RefundScreen extends Component {
       }
     }
     let response = await fetchTravoramaApi(request);
-    console.log(response);
-    let success = (response.status === 200);
-    if (success) {
-      this.setState({ isLoading: true });
-      fetchMyBookingActivityList().then(a => {
-        this.setState({ isLoading: false });
-        this.props.navigation.goBack();
-      }
-      )
-    }
-
+    this.setState({ isLoading: false });
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -158,7 +151,7 @@ export default class RefundScreen extends Component {
     }];
     return (
       <View style={styles.container}>
-        {this.state.isLoading && <LoadingModal isVisible={this.state.isLoading}/>}
+        {this.state.isLoading && <LoadingModal isVisible={this.state.isLoading} />}
         <ScrollView
           showsVerticalScrollIndicator={false}
         >
@@ -281,26 +274,32 @@ export default class RefundScreen extends Component {
               </View>
             </View>)
           }
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.label}>Alasan Pembatalan</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <RadioForm
-              radio_props={radio_props}
-              initial={-1}
-              animation={false}
-              onPress={(value) => this.setState({ cancellationReason: value, errorCancellationReason: undefined })}
-              buttonColor={'#000000'}
-              selectedButtonColor={'#00d3c5'}
-              buttonSize={10}
-              style={{ alignItems: 'flex-start' }}
-            />
-            <Text style={[styles.activityDesc, { color: 'red' }]} >
-              {
-                this.state.errorCancellationReason
-              }
-            </Text>
-          </View>
+          {
+            this.state.status == 'cancel' && (
+              <View>
+                <View style={{ marginBottom: 10 }}>
+                  <Text style={styles.label}>Alasan Pembatalan</Text>
+                </View>
+                <View style={{ marginBottom: 10 }}>
+                  <RadioForm
+                    radio_props={radio_props}
+                    initial={-1}
+                    animation={false}
+                    onPress={(value) => this.setState({ cancellationReason: value, errorCancellationReason: undefined })}
+                    buttonColor={'#000000'}
+                    selectedButtonColor={'#00d3c5'}
+                    buttonSize={10}
+                    style={{ alignItems: 'flex-start' }}
+                  />
+                  <Text style={[styles.activityDesc, { color: 'red' }]} >
+                    {
+                      this.state.errorCancellationReason
+                    }
+                  </Text>
+                </View>
+              </View>
+            )
+          }
           {
             this.state.cancellationReason == "Lainnya" && (
               <View style={{ marginBottom: 10 }}>
