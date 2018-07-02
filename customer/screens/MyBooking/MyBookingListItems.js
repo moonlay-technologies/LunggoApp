@@ -6,7 +6,7 @@ import {
   Platform, StyleSheet, Text, View, Image, ScrollView, Dimensions,
   RefreshControl, FlatList, TouchableOpacity, TouchableWithoutFeedback, Alert
 } from 'react-native';
-import { getMyBookingTrxList, cancelReservation } from './MyBookingController';
+import { getMyBookingTrxList, cancelReservation, fetchMyBookingActivityList, myBookingActivityItemStore, changeReservationToCancelMobx } from './MyBookingController';
 import globalStyles from '../../../commons/globalStyles';
 import * as Formatter from '../../components/Formatter';
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
@@ -69,6 +69,9 @@ export class ActivityListItem extends React.PureComponent {
   _confirmCancelActivity = () => {
     console.log('canceled');
     cancelReservation(this.props.item.rsvNo);
+    console.log("buka my reservation aldjawajdlajksdlajlksdk");
+    changeReservationToCancelMobx(this.props.item.rsvNo);
+    fetchMyBookingActivityList();
   }
 
   _buttons = item => {
@@ -154,30 +157,46 @@ export class ActivityListItem extends React.PureComponent {
               }
             </View>);
         case 'DeniedByOperator':
-          return (
-            <View>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
-              </View>
-              {item.needRefundBankAccount &&
-                <View>
-                  <Button
-                    containerStyle={styles.containerbtn}
-                    style={styles.statusbtn}
-                    onPress={this._goToRefundScreen}
-                  >
-                    Refund
+        return (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Status: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Amount: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
+            </View>
+            {item.needRefundBankAccount &&
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={this._goToRefundScreen}
+                >
+                  Refund
               </Button>
-                </View>
-              }
-            </View>);
+              </View>
+            }
+          </View>);
         case 'DeniedByAdmin':
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.activityDesc}>Status: </Text>
                 <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Status: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Refund Amount: </Text>
+                <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
               </View>
               {item.needRefundBankAccount &&
                 <View>

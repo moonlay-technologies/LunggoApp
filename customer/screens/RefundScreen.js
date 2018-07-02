@@ -20,7 +20,8 @@ import 'moment/locale/id';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import { Dropdown } from 'react-native-material-dropdown';
 import { CheckBox } from 'react-native-elements';
-import { getMyBookingTrxList, cancelReservation, async } from './MyBooking/MyBookingController';
+import { getMyBookingTrxList, cancelReservation } from './MyBooking/MyBookingController';
+import { fetchMyBookingActivityList } from './MyBooking/MyBookingController';
 
 export default class RefundScreen extends Component {
 
@@ -128,9 +129,15 @@ export default class RefundScreen extends Component {
     let response = await fetchTravoramaApi(request);
     console.log(response);
     let success = (response.status === 200);
-    if (success)
-      this.props.navigation.goBack();
-    this.setState({ isLoading: true });
+    if (success) {
+      this.setState({ isLoading: true });
+      fetchMyBookingActivityList().then(a => {
+        this.setState({ isLoading: false });
+        this.props.navigation.goBack();
+      }
+      )
+    }
+
   }
 
   render() {
@@ -151,7 +158,7 @@ export default class RefundScreen extends Component {
     }];
     return (
       <View style={styles.container}>
-        {this.state.isLoading && <LoadingModal />}
+        {this.state.isLoading && <LoadingModal isVisible={this.state.isLoading}/>}
         <ScrollView
           showsVerticalScrollIndicator={false}
         >

@@ -249,6 +249,14 @@ class MyBookingActivityItemStoreMobx {
   }
 }
 
+export const changeReservationToCancelMobx = rsvNo =>{
+  myBookingActivityItemStore.myBookingActivityItem.map(a => {
+    if(a.rsvNo == rsvNo){
+      a.bookingStatus = "CancelByCustomer";
+    }
+  })
+}
+
 export const myBookingTrxItemStore = new MyBookingTrxItemStoreMobx;
 export const myBookingActivityItemStore = new MyBookingActivityItemStoreMobx;
 export const myBookingStore = new MyBookingStoreMobx;
