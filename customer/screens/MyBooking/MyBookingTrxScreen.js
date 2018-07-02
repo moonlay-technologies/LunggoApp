@@ -23,7 +23,7 @@ export default class MyBookingTrxScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Daftar Pembelian',
+    title: 'Konfirmasi Pembayaran',
   }
 
   listenerSubcription = null;

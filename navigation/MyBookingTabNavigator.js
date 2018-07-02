@@ -46,6 +46,7 @@ export default TabNavigator(
     lazy: false,
 
     tabBarOptions: {
+      scrollEnabled: true,
       activeTintColor: Colors.bottomTabSelected,
       inactiveTintColor: '#49ddd3',
       indicatorStyle: {

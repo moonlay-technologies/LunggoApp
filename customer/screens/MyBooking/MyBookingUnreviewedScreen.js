@@ -21,7 +21,7 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Butuh Review',
+    title: 'Beri Ulasan',
   }
 
   listenerSubcription = null;

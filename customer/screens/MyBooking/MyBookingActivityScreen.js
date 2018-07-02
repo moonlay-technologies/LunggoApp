@@ -21,7 +21,7 @@ export default class MyBookingActivityScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: 'Voucher',
+    title: 'Pesanan Aktif',
   }
 
   listenerSubcription = null;
