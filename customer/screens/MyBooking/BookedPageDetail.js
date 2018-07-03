@@ -13,7 +13,7 @@ import { WebBrowser } from 'expo';
 import Avatar from './../../../commons/components/Avatar';
 import { reversePhoneWithoutCountryCode_Indonesia } from './../../components/Formatter';
 import Moment from 'moment';
-import { fetchTravoramaApi } from '../../../api/Common';
+import 'moment/locale/id';
 
 export default class BookedPageDetail extends React.Component {
 
@@ -57,14 +57,25 @@ export default class BookedPageDetail extends React.Component {
   _sms = (phone) => Linking.openURL('sms:+' + phone)
   _email = (email) => Linking.openURL('mailto:' + email)
 
-  _goToRefundScreen = () => {
+  _cancelReservation = () => {
+    let status = 'cancel';
+    this._goToRefundScreen(status);
+  }
+
+  _goToRefundScreen = (status = 'refund') => {
+    let dateUtcNow = new Date();
+    let fullRefund = this.details.price;
+    let refundPolicies = this.details.refundPolicies;
+    let selectedPolicy = refundPolicies ? refundPolicies.filter(a => Moment(dateUtcNow).diff(Moment(a.startDate)) >= 0) : null;
+    let amount = this.details.refundAmount ? this.details.refundAmount : selectedPolicy ? selectedPolicy.length > 0 ? selectedPolicy.map(a => a.amount).sort(function (a, b) { return a - b })[0] : fullRefund : null;
+    console.log(amount);
     this.props.navigation.navigate
-      ('RefundScreen', { rsvNo: this.details.rsvNo, ...this.details.refundBankAccount });
+      ('RefundScreen', { rsvNo: this.details.rsvNo, ...this.details.refundBankAccount, refundPolicies: this.details.refundPolicies, fullRefund: this.details.price, status: status, amount: amount });
   };
 
   _showTicket() {
     let { bookingStatus, hasPdfVoucher, isPdfUploaded, ticketNumber } = this.details;
-    
+
     if (bookingStatus == 'Ticketed' && hasPdfVoucher && isPdfUploaded) {
       return (
         <View style={styles.container}>
@@ -114,12 +125,15 @@ export default class BookedPageDetail extends React.Component {
 
   _showRefundButton() {
     let { bookingStatus, needRefundBankAccount, refundBankAccount } = this.details;
-
-    if (bookingStatus == 'CancelByOperator' ||
+    console.log("show refund bank account");
+    console.log(refundBankAccount);
+    if ((bookingStatus == 'CancelByOperator' ||
       bookingStatus == 'CancelByAdmin' ||
       bookingStatus == 'DeniedByOperator' ||
       bookingStatus == 'DeniedByAdmin' ||
-      bookingStatus == 'CancelByCustomer') {
+      bookingStatus == 'CancelByCustomer' ||
+      bookingStatus == "NoResponseByOperator" ||
+      bookingStatus == "NoResponseByCustomer") && !refundBankAccount) {
       return (
         <View style={styles.container}>
           <View style={{ marginBottom: 0, alignItems: 'center' }}>
@@ -152,7 +166,7 @@ export default class BookedPageDetail extends React.Component {
 
     switch (bookingStatus) {
       case 'Booked':
-        return <BookingStatusText text="Menunggu proses pembayaran"/>;
+        return <BookingStatusText text="Menunggu proses pembayaran" />;
       case 'ForwardedToOperator':
         let now = Moment();
         let daysDiff = Moment(now).diff(timeLimit, 'days');
@@ -172,7 +186,7 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>);
       case 'Ticketing':
-        return <BookingStatusText text="Tiket sedang diproses"/>;
+        return <BookingStatusText text="Tiket sedang diproses" />;
       case 'Ticketed':
         return null;
 
@@ -192,18 +206,63 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>);
       case 'CancelByCustomer':
-        return <BookingStatusText text="Dibatalkan"/>;
+        return <BookingStatusText text="Dibatalkan" />;
       default:
-        return <BookingStatusText text="Terjadi kesalahan pada sistem"/>;
+        return <BookingStatusText text="Terjadi kesalahan pada sistem" />;
     }
   }
 
   render() {
     let { name, mediaSrc, date, price, city, address, bookingStatus,
       selectedSession, operatorName, operatorPhone, ticketNumber,
-      operatorEmail, totalPaxCount, latitude, longitude, paxes, refundBankAccount,
-      hasPdfVoucher, isPdfUploaded, paxCount, contact, rsvNo, cancellation
+      operatorEmail, totalPaxCount, latitude, longitude, paxes,
+      hasPdfVoucher, isPdfUploaded, paxCount, contact, refundPolicies
     } = this.details;
+
+    console.log("refundPolicies :");
+    console.log(refundPolicies);
+
+    let refundItem = bookingStatus == "Booked" ||
+      bookingStatus == "Confirmed" ||
+      bookingStatus == "Ticketed" ||
+      bookingStatus == "Ticketing" ||
+      bookingStatus == "Forwarded" ? refundPolicies ? (
+        <View>
+          <Text style={styles.activityDesc}>
+            {refundPolicies.map(a => {
+              let b = "● Ada refund: " + a.amount + ", dimulai tanggal: " + a.startDate + "\n\n";
+              return b;
+            })}
+          </Text>
+        </View>
+      ) :
+        (
+          <View>
+            <Text style={styles.activityDesc}>
+              Tidak ada refund
+          </Text>
+          </View>
+        )
+      :
+      null
+
+    let cancelButton = bookingStatus == "Ticketing" ||
+      bookingStatus == "Ticketed" ||
+      bookingStatus == "Forwarded" ||
+      bookingStatus == "Booked" ||
+      bookingStatus == "Confirmed" ?
+      (<View>
+        <Button
+          containerStyle={styles.labelOk}
+          style={{ fontSize: 12, color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
+          onPress={this._cancelReservation}
+        >
+          Batalkan
+        </Button>
+      </View>) :
+      null;
+
+
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
 
@@ -389,29 +448,28 @@ export default class BookedPageDetail extends React.Component {
             </View>
           </View>
         }
-        {(bookingStatus == 'Ticketed' || bookingStatus == 'Ticketing' || bookingStatus == 'Booked' || bookingStatus == 'ForwardedToOperator') &&
-          <View style={styles.container}>
-            <View>
-              <Text style={styles.sectionTitle}>
-                Ketentuan Pembatalan
+        {
+          (bookingStatus == "Ticketing" ||
+            bookingStatus == "Ticketed" ||
+            bookingStatus == "Forwarded" ||
+            bookingStatus == "Booked" ||
+            bookingStatus == "Confirmed") && (
+            <View style={styles.container}>
+              <View>
+                <Text style={styles.sectionTitle}>
+                  Ketentuan Pembatalan
             </Text>
+                {
+                  refundItem
+                }
+              </View>
+              {
+                cancelButton
+              }
             </View>
-            <Text>Voucher ini dapat dibatalkan</Text>
-
-            {/* {cancellation.map(c =>
-              `Pembatalan H${c.thresholdDays < 0 ? c.thresholdDays : `+${c.thresholdDays}`} dari waktu ${c.thresholdFrom == 'Book' ? 'pemesanan' : 'kegiatan'} dikenakan biaya admin sebesar ${c.valuePercentage}%${c.valueConstant ? `+ ${rupiah(c.valueConstant)}` : ''}.\n`)} */}
-
-            <View>
-              <Button
-                containerStyle={styles.containerbtn}
-                style={styles.statusbtn}
-                onPress={() => this.props.navigation.navigate('RefundScreen', { rsvNo: rsvNo, ...refundBankAccount })}
-              >
-                Refund
-                </Button>
-            </View>
-          </View>
+          )
         }
+
         <View style={styles.container}>
           <View>
             <Text style={styles.sectionTitle}>

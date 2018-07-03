@@ -40,9 +40,15 @@ export class ActivityListItem extends React.PureComponent {
       ('BookedPageDetail', { details: this.props.item })
   };
 
-  _goToRefundScreen = () => {
+  _goToRefundScreen = (status = 'refund') => {
+    let { item } = this.props;
+    let dateUtcNow = new Date();
+    let fullRefund = item.price;
+    let refundPolicies = item.refundPolicies;
+    let selectedPolicy = refundPolicies ? refundPolicies.filter(a => Moment(dateUtcNow).diff(Moment(a.startDate)) >= 0) : null;
+    let amount = item.refundAmount ? item.refundAmount : selectedPolicy ? selectedPolicy.length > 0 ? selectedPolicy.map(a => a.amount).sort(function (a, b) { return a - b })[0] : fullRefund : null;
     this.props.navigation.navigate
-      ('RefundScreen', { rsvNo: this.props.item.rsvNo, ...this.props.item.refundBankAccount });
+      ('RefundScreen', { rsvNo: item.rsvNo, ...item.refundBankAccount, refundPolicies: item.refundPolicies, fullRefund: this.price, status: status, amount: amount });
   };
 
   _goToHelpScreen = () => {
@@ -66,6 +72,7 @@ export class ActivityListItem extends React.PureComponent {
     cancelReservation(this.props.item.rsvNo);
     cancelReservationInMobX(this.props.item.rsvNo);
     fetchMyBookingActivityList();
+    this._goToRefundScreen('cancel');
   }
 
   _buttons = item => {
@@ -78,12 +85,11 @@ export class ActivityListItem extends React.PureComponent {
           let hoursDiff = Moment(now).diff(item.timeLimit, 'hours') - (daysDiff * 24);
           let timeLimitString = (daysDiff ? `${daysDiff} hari ` : '') + `${hoursDiff} jam`;
           return (
-            <View>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>Status: </Text>
-                <Text style={styles.statusTextOk}>Menunggu Konfirmasi (maks. 1x24 jam)</Text>
-              </View>
-            </View>);
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextOk}>Menunggu Konfirmasi (maks. {timeLimitString})</Text>
+            </View>
+          );
         case 'Ticketing':
           return <View style={{ flexDirection: 'row' }}>
             <Text style={styles.activityDesc}>Status: </Text>
@@ -106,12 +112,101 @@ export class ActivityListItem extends React.PureComponent {
             </View>
           );
         case 'CancelByCustomer':
+          return (
+            <View>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.activityDesc}>Status: </Text>
+                <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+              </View>
+              {item.needRefundBankAccount &&
+                <View>
+                  <Button
+                    containerStyle={styles.containerbtn}
+                    style={styles.statusbtn}
+                    onPress={this._goToRefundScreen}
+                  >
+                    Refund
+              </Button>
+                </View>
+              }
+            </View>
+          );
         case 'CancelByOperator':
         case 'CancelByAdmin':
-        case 'DeniedByOperator':
-        case 'DeniedByAdmin':
-        case 'NoResponseByAdmin':
         case 'NoResponseByOperator':
+        return (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextDanger}>Tidak direspon operator</Text>
+            </View>
+            {item.needRefundBankAccount &&
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={this._goToRefundScreen}
+                >
+                  Refund
+            </Button>
+              </View>
+            }
+          </View>);
+        case 'DeniedByOperator':
+        return (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Status: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Amount: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
+            </View>
+            {item.needRefundBankAccount &&
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={this._goToRefundScreen}
+                >
+                  Refund
+            </Button>
+              </View>
+            }
+          </View>);
+        case 'DeniedByAdmin':
+        return (
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Status: </Text>
+              <Text style={styles.statusTextDanger}>Dibatalkan</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Status: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundStatus}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>Refund Amount: </Text>
+              <Text style={styles.statusTextDanger}>{item.refundAmount}</Text>
+            </View>
+            {item.needRefundBankAccount &&
+              <View>
+                <Button
+                  containerStyle={styles.containerbtn}
+                  style={styles.statusbtn}
+                  onPress={this._goToRefundScreen}
+                >
+                  Refund
+              </Button>
+              </View>
+            }
+          </View>);
+        case 'NoResponseByAdmin':
           return (
             <View>
               <View style={{ flexDirection: 'row' }}>
@@ -119,22 +214,25 @@ export class ActivityListItem extends React.PureComponent {
                 <Text style={styles.statusTextDanger}>Dibatalkan</Text>
               </View>
               <View style={{ flexDirection: 'row', width: '100%', flex: 1, alignContent: 'space-between' }}>
-                {item.needRefundBankAccount &&
-                  <StatusButton text="Refund" onPress={this._goToRefundScreen}/>
+                { item.needRefundBankAccount &&
+                  <View  style={{ marginRight: 20 }}>
+                    <StatusButton text="Refund"
+                      onPress={this._goToRefundScreen}
+                    />
+                  </View>
                 }
-                <View style={{ marginLeft: 20 }}>
-                  <StatusButton text="Tanya Travorama" onPress={this._goToHelpScreen}/>
-                </View>
+                <StatusButton text="Tanya Travorama"
+                  onPress={this._goToHelpScreen}
+                />
               </View>
-            </View>);
+            </View>
+          );
         default:
           return (
-            <View>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.activityDesc}>
-                  Terjadi kesalahan pada sistem
-                </Text>
-              </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.activityDesc}>
+                Terjadi kesalahan pada sistem
+              </Text>
             </View>
           );
       }
@@ -142,21 +240,22 @@ export class ActivityListItem extends React.PureComponent {
 
     return (
       <View style={{ flexDirection: 'row' }}>
-        <View>
-          {renderStatus(item)}
-        </View>
+        {renderStatus(item)}
       </View >
     );
   }
 
   render() {
-    let { item, showActionButtons, myBookingState } = this.props;
+    let { item, showActionButtons } = this.props;
     return (
       <TouchableWithoutFeedback onPress={this._goToBookedPageDetail}>
         <View>
           <View style={{ paddingVertical: 25, paddingHorizontal: 15 }}>
             <View style={{ flexDirection: 'row', position: 'relative' }}>
-              <View style={{ width: 70 }}><Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} /></View>
+              <View style={{ width: 70 }}>
+                <Image style={styles.thumbprofile} source={{ uri: item.mediaSrc }} />
+              </View>
+
               <View style={{ flex: 3 }}>
                 <Text style={styles.activityDesc}>No. Pesanan: {item.rsvNo}</Text>
                 <Text style={styles.activityTitle}>
@@ -177,6 +276,7 @@ export class ActivityListItem extends React.PureComponent {
                   {showActionButtons && this._buttons(item)}
                 </View>
               </View>
+              
               <View style={{ position: 'relative' }}>
                 <TouchableOpacity
                   style={{ width: 25, alignItems: 'center' }}
@@ -407,7 +507,7 @@ export class TrxListItem extends React.PureComponent {
 const StatusButton = props =>
   <Button
     containerStyle={styles.containerbtn}
-    style={styles.statusbtn}
+    style={[styles.statusbtn, {...props.style}]}
     onPress={props.onPress}
   >
     {props.text}

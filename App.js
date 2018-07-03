@@ -8,6 +8,13 @@ import UpdateNotifModal from './customer/components/UpdateNotifModal';
 import { fetchTravoramaApi, AUTH_LEVEL } from './api/Common';
 import { addMyBookingListener } from './api/NotificationController';
 import intervalController from './customer/screens/IntervalController';
+import Sentry from 'sentry-expo';
+// import { SentrySeverity, SentryLog } from 'react-native-sentry';
+
+// Remove this once Sentry is correctly setup.
+Sentry.enableInExpoDevelopment = true;
+
+Sentry.config('https://7391f7e783ef48c99ceaece922e55393@sentry.io/1207572').install();
 
 const { getItemAsync, setItemAsync, deleteItemAsync } = Expo.SecureStore;
 

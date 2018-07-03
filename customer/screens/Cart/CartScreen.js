@@ -64,7 +64,7 @@ export default class CartScreen extends React.Component {
     this.props.navigation.navigate('RincianHarga', { title, total, breakdown });
   }
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => index.toString();
 
   _renderItem = ({ item, index }) => (
     <ListItem

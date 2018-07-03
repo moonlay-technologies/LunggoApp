@@ -1,12 +1,8 @@
 'use strict';
 
 import React from 'react';
-import Button from 'react-native-button';
-import {
-  Platform, StyleSheet, Text, View, Image,
-  TouchableOpacity, TouchableWithoutFeedback
-} from 'react-native';
-import * as Formatter from '../../components/Formatter';
+import { Text, View, Image, TouchableOpacity,
+  TouchableWithoutFeedback } from 'react-native';
 
 
 export class ActivityListItem extends React.PureComponent {

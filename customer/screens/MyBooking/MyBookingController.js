@@ -112,14 +112,14 @@ async function fetchFromServer(myBookingState, itemStructure, secureStoreVarName
   const lastUpdate = await getItemAsync(lastUpdateVarName) || '';
   // if (itemStructure == 'trx') myBookingState = 'active';
   const request = {
-    path: `/${version}/activities/mybooking/${itemStructure}?state=${myBookingState}`,//&lastupdate=${lastUpdate}`,
+    path: `/${version}/activities/mybooking/${itemStructure}?state=${myBookingState}&lastupdate=${lastUpdate}&perpage=1000`,
     requiredAuthLevel: AUTH_LEVEL.User,
   }
   let response = await fetchTravoramaApi(request);
   if (response.mustUpdate) {
     const listJSON = JSON.stringify(response.list);
     await setItemAsync(secureStoreVarName, listJSON);
-    // await setItemAsync(lastUpdateVarName, JSON.stringify(response.lastUpdate));
+    await setItemAsync(lastUpdateVarName, response.lastUpdate);
     
     myBookingStore.setMyBookingStore(myBookingState, response.list);
     myBookingStore.setNewBookingMark();
@@ -170,12 +170,15 @@ export async function purgeMyBookingList() {
   deleteItemAsync('myBookings');
 }
 
-export async function cancelReservation(rsvNo) {
+export async function cancelReservation(rsvNo,cancellationReason) {
   const version = 'v1';
   let request = {
     path: `/${version}/activities/mybooking/${rsvNo}/cancel`,
     method: 'POST',
-    requiredAuthLevel: AUTH_LEVEL.User
+    requiredAuthLevel: AUTH_LEVEL.User,
+    data: {
+      cancellationReason: cancellationReason
+    }
   }
   let response = await fetchTravoramaApi(request);
   return (response.status === 200);
